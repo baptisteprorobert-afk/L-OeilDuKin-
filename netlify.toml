@@ -1,0 +1,14 @@
+# Netlify : site statique, aucune étape de build.
+[build]
+  publish = "."
+
+# Toujours servir la dernière version de la page et du service worker.
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
