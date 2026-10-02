@@ -1,6 +1,6 @@
 // Service worker : l'app fonctionne hors connexion après la première ouverture.
 // Pour forcer une mise à jour chez tous les appareils, change CACHE_VERSION.
-const CACHE_VERSION = "suivi-tests-v1";
+const CACHE_VERSION = "suivi-tests-v5";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png", "icons/apple-touch-icon.png"];
 
 self.addEventListener("install", (event) => {

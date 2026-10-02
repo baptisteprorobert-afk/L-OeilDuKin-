@@ -473,6 +473,84 @@
   .checkin-card input:not([type=checkbox]){ width:100%; min-height:44px; border:1px solid var(--border); border-radius:10px; padding:0 12px; font-size:15px; font-family:var(--sans); background:#fff; color:var(--text); }
   .checkin-card input:not([type=checkbox]):focus{ outline:none; border-color:var(--blue); }
   .checkin-card .quality-chip{ min-height:40px; display:inline-flex; align-items:center; }
+
+  /* ---------- Planificateur v2 + suggestions ---------- */
+  .struct-card{ border:1.5px solid var(--border); border-radius:14px; padding:12px 14px; margin-bottom:8px; cursor:pointer; background:#fff; }
+  .struct-card.selected{ border-color:var(--blue); background:#f3f6ff; }
+  .struct-card b{ font-size:15px; }
+  .struct-card .sf{ font-size:13px; font-weight:600; margin-top:2px; }
+  .struct-card .sw{ font-size:12.5px; color:var(--muted); margin-top:4px; line-height:1.4; }
+  .tpl-day select{ min-height:44px; font-size:14px; }
+  .tpl-day.off b, .tpl-day.off span{ color:var(--muted-2); }
+  .reco-card{ border:1.5px solid #cfe0ff; background:#f3f7ff; border-radius:14px; padding:10px 12px; }
+  .reco-card.none{ border-color:var(--border); background:#f7f8fa; }
+  .reco-head{ display:flex; justify-content:space-between; gap:8px; font-size:12px; color:var(--muted); }
+  .reco-tag{ font-weight:700; color:#1f4fc0; }
+  .reco-main{ font-size:20px; font-weight:700; margin-top:2px; }
+  .reco-delta{ font-size:14px; font-weight:700; margin-left:6px; }
+  .reco-delta.up{ color:var(--green); } .reco-delta.down{ color:var(--orange); }
+  .reco-why{ font-size:12.5px; color:var(--muted); margin-top:4px; line-height:1.4; }
+  .reco-warn{ font-size:12.5px; color:#8a5200; margin-top:4px; line-height:1.4; }
+  .reco-actions{ display:flex; gap:6px; margin-top:4px; }
+  .lt-btn.muted{ color:var(--muted); }
+  .prog-input{ width:72px !important; min-height:40px; text-align:center; }
+  .prog-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:8px 0; border-bottom:1px solid #eef0f3; font-size:14px; }
+  .prog-row .pr-in{ display:flex; align-items:center; gap:6px; }
+
+  @media (max-width: 760px){
+    #toggleAcwlChartBtn, #toggleMuscleTrackBtn, #toggleRecoBtn{ display:block; width:100%; margin-left:0 !important; min-height:44px; text-align:left; font-size:14px; }
+  }
+
+  /* ---------- notes lues, groupes, séance du jour ---------- */
+  .chip-label{ flex-basis:100%; font-size:12px; color:var(--muted); font-weight:600; margin-top:2px; }
+  .chip-btn .cnt{ display:inline-block; margin-left:6px; min-width:18px; padding:0 5px; border-radius:9px; background:#e8effd; color:#1f4fc0; font-size:11px; font-weight:700; line-height:18px; }
+  .chip-btn.on .cnt{ background:#fff; color:var(--text); }
+  .sym-wrap{ margin-top:10px; }
+  .sym-chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+  .sym-chip{ min-height:36px; border-radius:18px; padding:0 12px; font-size:13px; font-weight:600; border:1px solid var(--border); background:#fff; color:var(--text); }
+  .sym-chip.sev-info{ background:#f1f3f6; color:#4b5565; }
+  .sym-chip.sev-vigilance{ background:#fff8e8; border-color:#f4d9b8; color:#8a5200; }
+  .sym-chip.sev-attention{ background:#fdf0ef; border-color:#f3c4bf; color:#b3261e; }
+  .sym-chip.ign{ text-decoration:line-through; opacity:0.5; }
+  .plan-ex{ background:#fff; border:1px solid var(--border); border-radius:16px; padding:12px; }
+  .plan-head{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin-bottom:6px; }
+  .plan-head b{ font-size:14px; }
+  .plan-item{ width:100%; min-height:52px; border:0; border-top:1px solid #eef0f3; background:transparent; display:flex; align-items:center; justify-content:space-between; gap:10px; text-align:left; padding:8px 2px; color:var(--text); }
+  .plan-item b{ display:block; font-size:15px; }
+  .plan-sug{ font-size:13px; font-weight:700; color:#1f4fc0; white-space:nowrap; }
+
+  /* ---------- mode autonome ---------- */
+  .auto-only{ display:none !important; }
+  body.mode-autonome .main-nav .auto-only{ display:block !important; }
+  body.mode-autonome .main-nav .adv-nav{ display:none !important; }
+  body.mode-autonome .adv-only{ display:none !important; }
+  @media (max-width: 760px){ body.mode-autonome .main-nav .auto-only{ display:flex !important; } }
+  .today-card{ background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:16px; margin-bottom:12px; }
+  .today-title{ font-size:24px; font-weight:700; margin:2px 0; }
+  .today-ctx{ font-size:14px; color:var(--muted); margin-bottom:10px; }
+  .today-session{ display:flex; align-items:center; gap:12px; background:var(--surface-2); border:1px solid var(--border); border-radius:14px; padding:12px; margin-bottom:10px; }
+  .today-session b{ font-size:18px; display:block; }
+  .today-actions{ display:flex; flex-direction:column; gap:8px; }
+  .today-h{ font-size:15px; font-weight:700; margin:0 0 8px; }
+  .rv-row{ display:flex; justify-content:space-between; gap:10px; padding:7px 0; border-bottom:1px solid #eef0f3; font-size:14px; }
+  .rv-row:last-child{ border-bottom:0; }
+  .rv-row .rv-v{ font-weight:700; text-align:right; }
+  .rv-tag{ font-size:12px; font-weight:700; padding:2px 8px; border-radius:10px; margin-left:6px; }
+  .rv-tag.low{ background:#eef2ff; color:#1f4fc0; } .rv-tag.ok{ background:#e6f6ee; color:#157a4f; } .rv-tag.high{ background:#fff8e8; color:#8a5200; }
+  .safety-banner{ background:#fdf0ef; border:1px solid #f3c4bf; color:#8a1f17; border-radius:14px; padding:12px 14px; font-size:13.5px; margin-bottom:12px; line-height:1.45; }
+  .rec-list{ margin:6px 0 0; padding-left:18px; font-size:14px; line-height:1.5; }
+  .ob-goal{ margin-bottom:8px; }
+
+  /* ---------- charges cibles ---------- */
+  .tgt-card{ border:1px solid var(--border); border-radius:14px; padding:12px 14px; margin-bottom:10px; background:#fff; }
+  .tgt-card h4{ margin:0 0 4px; font-size:16px; }
+  .tgt-line{ font-size:13.5px; margin-top:5px; line-height:1.4; }
+  .tgt-line b{ font-weight:700; }
+  .tgt-line.muted{ color:var(--muted); }
+  .tgt-line.warn{ color:#8a5200; }
+  .pct-row{ display:flex; gap:6px; flex-wrap:wrap; margin:6px 0; }
+  .coef-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:8px 0; border-bottom:1px solid #eef0f3; font-size:13.5px; }
+  @media (max-width: 760px){ #toggleTargetBtn{ display:block; width:100%; margin-left:0 !important; min-height:44px; text-align:left; font-size:14px; } }
 </style>
 </head>
 <body>
@@ -494,6 +572,10 @@
 
   <main>
     <div id="emptyState">Sélectionne ou crée un patient pour commencer.</div>
+
+    <div id="todayView" hidden>
+      <div id="todayContent"></div>
+    </div>
 
     <div id="leaderboardView" hidden>
       <h2 style="margin:0 0 4px;">🏆 Leaderboard</h2>
@@ -518,17 +600,21 @@
           <button class="btn-ghost" id="calNextBtn">Mois suivant →</button>
         </div>
         <div class="cal-grid" id="calGrid"></div>
-        <div class="acwl-stat-row">
+        <div class="acwl-stat-row adv-only">
           <div class="acwl-stat"><div class="label">Charge aiguë (7j, UA/jour)</div><div class="value" id="acwlAcute">—</div></div>
           <div class="acwl-stat"><div class="label">Charge chronique (28j, UA/jour)</div><div class="value" id="acwlChronic">—</div></div>
           <div class="acwl-stat"><div class="label">ACWL</div><div class="value" id="acwlRatio">—</div></div>
           <div class="acwl-stat"><div class="label">Tonnage muscu (7j) — séparé</div><div class="value" id="acwlTonnage">—</div></div>
         </div>
-        <div class="tc-sub" id="acwlNote" style="margin-top:8px;"></div>
-        <button class="btn-ghost" id="toggleAcwlChartBtn" style="margin-top:14px;">📈 Afficher le graphique de charge</button>
+        <div class="tc-sub adv-only" id="acwlNote" style="margin-top:8px;"></div>
+        <button class="btn-ghost adv-only" id="toggleAcwlChartBtn" style="margin-top:14px;">📈 Afficher le graphique de charge</button>
         <button class="btn-ghost" id="toggleMuscleTrackBtn" style="margin-top:14px; margin-left:8px;">💪 Suivi par groupe musculaire</button>
         <div id="muscleTrackWrap" hidden style="margin-top:14px; background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px;"></div>
-        <div id="acwlChartWrap" hidden style="margin-top:14px; background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px;">
+        <button class="btn-ghost" id="toggleRecoBtn" style="margin-top:14px; margin-left:8px;">🎯 Suggestions de charge</button>
+        <div id="recoPanelWrap" hidden style="margin-top:14px; background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px; overflow-x:auto;"></div>
+        <button class="btn-ghost" id="toggleTargetBtn" style="margin-top:14px; margin-left:8px;">🧪 Charges cibles (tests)</button>
+        <div id="targetPanelWrap" hidden style="margin-top:14px; background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px;"></div>
+        <div id="acwlChartWrap" class="adv-only" hidden style="margin-top:14px; background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px;">
           <div style="display:flex; gap:16px; font-size:11px; color:var(--muted); margin-bottom:8px;">
             <span><span style="display:inline-block; width:9px; height:9px; border-radius:2px; background:#2f6fed; margin-right:4px;"></span>Charge aiguë (moy. 7j)</span>
             <span><span style="display:inline-block; width:9px; height:9px; border-radius:2px; background:rgba(31,169,113,0.25); margin-right:4px;"></span>Intervalle sûr (0,8–1,3 × chronique)</span>
@@ -575,10 +661,11 @@
       <div id="backupBanner" class="backup-banner" hidden></div>
       <div id="patientCardsGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:14px;"></div>
       <div class="data-card">
-        <div><b>Sauvegarde des données</b><div class="tc-sub" id="lastExportLabel">Jamais exportée</div></div>
+        <div><b>Sauvegarde des données</b><div class="tc-sub" id="lastExportLabel">Jamais exportée</div><div class="tc-sub">« Importer » accepte une sauvegarde complète ou un patient partagé.</div></div>
         <div class="data-actions">
           <button type="button" class="btn-ghost" id="dataExportBtn">Exporter</button>
           <button type="button" class="btn-ghost" id="dataImportBtn">Importer</button>
+          <button type="button" class="btn-ghost" id="openModeBtn">Mode et réglages</button>
         </div>
       </div>
     </div>
@@ -592,6 +679,7 @@
           <div class="sub" id="patientSub"></div>
         </div>
         <div class="header-actions">
+          <button class="btn-ghost" id="sharePatientBtn" title="Envoyer ce patient en fichier">Partager</button>
           <button class="btn-ghost" id="openRefBtn" title="Positions de test & normes">📖 Référence</button>
           <button class="btn-ghost btn-danger" id="deletePatientBtn">Supprimer</button>
         </div>
@@ -739,6 +827,7 @@
       </button>
       <div class="day-section-head"><b>Exercices</b><span class="tc-sub" id="dayTonnageLabel"></span></div>
       <div id="dayEntriesList"></div>
+      <div id="planExercises"></div>
       <button type="button" class="add-ex-btn" id="openAddExBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Ajouter un exercice</button>
       <div class="tc-sub" id="stretchWeekReminder" style="text-align:center; margin-top:2px;"></div>
     </div>
@@ -763,19 +852,21 @@
       </div>
 
       <div id="exerciseFields" class="kind-fields">
-        <label class="fl" for="exName">Nom de l'exercice</label>
+        <div class="fl">1 · Groupe musculaire</div>
+        <div id="exGroupChips" class="chip-row"></div>
+        <label class="fl" for="exName">2 · Exercice : touche-en un dans la liste ou tape un nouveau nom</label>
         <input id="exName" class="big-input" list="exerciseNamesDatalist" placeholder="Ex. Squat, Bulgarian Split Squat…" autocomplete="off">
         <datalist id="exerciseNamesDatalist"></datalist>
         <div id="exNameChips" class="chip-row"></div>
         <div id="exLastTimeReminder" class="lasttime-card"></div>
+        <div id="exRecoCard"></div>
         <div class="steppers">
           <div class="stepper-row"><label class="st-label" for="exSets">Séries</label><div class="st-ctl"><button type="button" class="st-btn" data-stepfor="exSets" data-step="-1" aria-label="Moins : séries"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button><input id="exSets" class="st-input" type="number" inputmode="decimal" step="any" min="0" placeholder="0"><button type="button" class="st-btn" data-stepfor="exSets" data-step="1" aria-label="Plus : séries"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
           <div class="stepper-row"><label class="st-label" for="exReps">Répétitions</label><div class="st-ctl"><button type="button" class="st-btn" data-stepfor="exReps" data-step="-1" aria-label="Moins : répétitions"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button><input id="exReps" class="st-input" type="number" inputmode="decimal" step="any" min="0" placeholder="0"><button type="button" class="st-btn" data-stepfor="exReps" data-step="1" aria-label="Plus : répétitions"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
           <div class="stepper-row"><label class="st-label" for="exLoad">Charge</label><div class="st-ctl"><button type="button" class="st-btn" data-stepfor="exLoad" data-step="-2.5" aria-label="Moins : charge"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button><input id="exLoad" class="st-input" type="number" inputmode="decimal" step="any" min="0" placeholder="0"><span class="st-unit">kg</span><button type="button" class="st-btn" data-stepfor="exLoad" data-step="2.5" aria-label="Plus : charge"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
         </div>
         <div id="exTonnagePreview" class="live-preview"></div>
-        <label class="fl" for="exGroup">Groupe musculaire</label>
-        <select id="exGroup" class="sel"></select>
+        <select id="exGroup" hidden></select>
         <div hidden><input id="exRpe" type="number"></div>
       </div>
 
@@ -802,7 +893,9 @@
       </div>
 
       <div id="isometricFields" class="kind-fields" hidden>
-        <label class="fl" for="isoName">Nom de l'exercice isométrique</label>
+        <div class="fl">1 · Groupe musculaire</div>
+        <div id="isoGroupChips" class="chip-row"></div>
+        <label class="fl" for="isoName">2 · Exercice isométrique : touche-en un ou tape un nouveau nom</label>
         <input id="isoName" class="big-input" list="exerciseNamesDatalist" placeholder="Ex. Isométrie quadriceps 90°, wall sit…" autocomplete="off">
         <div id="isoNameChips" class="chip-row"></div>
         <div id="isoLastTimeReminder" class="lasttime-card"></div>
@@ -816,10 +909,10 @@
           <div class="stepper-row"><label class="st-label" for="isoReps">Répétitions</label><div class="st-ctl"><button type="button" class="st-btn" data-stepfor="isoReps" data-step="-1" aria-label="Moins : répétitions"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button><input id="isoReps" class="st-input" type="number" inputmode="decimal" step="any" min="0" placeholder="0"><button type="button" class="st-btn" data-stepfor="isoReps" data-step="1" aria-label="Plus : répétitions"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
           <div class="stepper-row"><label class="st-label" for="isoDuree">Temps exposé / rép.</label><div class="st-ctl"><button type="button" class="st-btn" data-stepfor="isoDuree" data-step="-5" aria-label="Moins : temps exposé / rép."><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button><input id="isoDuree" class="st-input" type="number" inputmode="decimal" step="any" min="0" placeholder="0"><span class="st-unit">s</span><button type="button" class="st-btn" data-stepfor="isoDuree" data-step="5" aria-label="Plus : temps exposé / rép."><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
         </div>
+        <div id="isoTargetCard"></div>
         <div id="isoTotalPreview" class="live-preview"></div>
-        <label class="fl" for="isoGroup">Groupe musculaire</label>
-        <select id="isoGroup" class="sel"></select>
-        <div hidden><input id="isoRpe" type="number"></div>
+        <select id="isoGroup" hidden></select>
+        <div hidden><input id="isoRpe" type="number"><input id="isoPct" type="number"></div>
       </div>
 
       <div class="type-block">
@@ -829,7 +922,7 @@
       </div>
     </div>
     <div class="sheet-foot">
-      <div class="tc-sub" style="text-align:center;">Le RPE s'ajoute ensuite depuis la carte de l'exercice.</div>
+      <div class="tc-sub" style="text-align:center;">L'intensité (RIR ou RPE) s'ajoute ensuite depuis la carte de l'exercice.</div>
       <button type="button" class="btn-primary btn-lg" id="addNextEntryBtn">Enregistrer et ajouter un autre</button>
       <button type="button" class="btn-ghost btn-lg" id="addDayEntryBtn">Enregistrer</button>
       <button type="button" class="btn-ghost btn-lg btn-danger" id="deleteEntryBtn" hidden>Supprimer cet exercice</button>
@@ -877,7 +970,7 @@
           </div>
         </div>
       </div>
-      <div class="load-box"><div><div class="tc-sub">Charge de séance</div><div id="closeLoadFormula" style="font-size:14px; margin-top:1px;"></div></div><div id="closeLoadValue" class="load-value">—</div></div>
+      <div class="load-box adv-only"><div><div class="tc-sub">Charge de séance</div><div id="closeLoadFormula" style="font-size:14px; margin-top:1px;"></div></div><div id="closeLoadValue" class="load-value">—</div></div>
       <div>
         <label class="fl" for="daySessionNote">Note de séance (facultatif)</label>
         <input id="daySessionNote" class="note-input" placeholder="Ex. genou stable, charge montée sur le rowing" autocomplete="off">
@@ -898,8 +991,9 @@
     <div class="sheet-handle"></div>
     <div class="sheet-head"><h3 id="rpeSheetTitle">RPE de l'exercice</h3><button type="button" class="icon-btn" id="closeRpeSheetBtn" aria-label="Fermer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div class="sheet-body">
+      <div class="tc-sub" id="rpeHelp" hidden>RIR = nombre de répétitions qu'il te restait. 0 : tu ne pouvais plus en faire. 2 : tu en aurais fait 2 de plus.</div>
       <div id="rpeSheetRow"></div>
-      <div class="scale-legend"><span>Très facile</span><span>Maximal</span></div>
+      <div class="scale-legend" id="rpeLegend"><span>Très facile</span><span>Maximal</span></div>
     </div>
     <div class="sheet-foot"><button type="button" class="btn-ghost btn-lg" id="clearRpeBtn">Effacer le RPE</button></div>
   </div>
@@ -989,23 +1083,77 @@
   </div>
 </div>
 
-<!-- Week template modal -->
+<!-- Réglages de l'application / mode d'utilisation -->
+<div id="modeOverlay" class="modal-overlay" hidden>
+  <div class="modal-box wide">
+    <div class="modal-header">
+      <h2>Réglages de l'application</h2>
+      <button class="btn-ghost" id="closeModeBtn">Fermer</button>
+    </div>
+    <label>Mode d'utilisation</label>
+    <div id="modeCards"></div>
+    <div id="modeExtra"></div>
+    <label>Données</label>
+    <div class="data-actions">
+      <button type="button" class="btn-ghost" id="modeExportBtn">Exporter</button>
+      <button type="button" class="btn-ghost" id="modeImportBtn">Importer</button>
+    </div>
+    <div class="tc-sub" id="modeExportLabel" style="margin-top:6px;"></div>
+    <p class="tc-sub" style="margin-top:14px;">Les recommandations de l'application sont indicatives. Elles ne remplacent pas l'avis d'un professionnel de santé ou d'un préparateur physique.</p>
+  </div>
+</div>
+
+<!-- Démarrage guidé (mode autonome) -->
+<div id="onboardOverlay" class="modal-overlay" hidden>
+  <div class="modal-box wide">
+    <div class="modal-header">
+      <h2>Démarrage guidé</h2>
+      <button class="btn-ghost" id="closeOnboardBtn">Fermer</button>
+    </div>
+    <div class="tc-sub" id="onboardStepLabel"></div>
+    <div id="onboardBody"></div>
+    <div class="modal-actions">
+      <button class="btn-ghost" id="onboardBackBtn">Retour</button>
+      <button class="btn-primary" id="onboardNextBtn">Suivant</button>
+    </div>
+  </div>
+</div>
+
+<!-- Planificateur v2 -->
 <div id="weekTemplateOverlay" class="modal-overlay" hidden>
   <div class="modal-box wide">
     <div class="modal-header">
-      <h2 id="weekTemplateTitle">Semaine type</h2>
+      <h2 id="weekTemplateTitle">Planificateur</h2>
       <button class="btn-ghost" id="closeWeekTemplateBtn">Fermer</button>
     </div>
-    <p class="tc-sub">Une proposition de départ à partir de la dominante, de la maintenance et des expositions du bloc. Ce sont des repères modifiables, pas des règles : change n'importe quel jour.</p>
-    <label>Séances par semaine</label>
+    <p class="tc-sub">Des recommandations de départ, calculées à partir de tes jours disponibles et du bloc en cours. Rien n'est imposé : tu peux tout modifier.</p>
+    <label>1 · Jours où tu peux t'entraîner</label>
     <div class="quality-chip-grid" id="weekTemplateN"></div>
-    <label>Jours</label>
+    <div class="tc-sub" id="weekTemplateDaysNote" style="margin-top:6px;"></div>
+    <label>2 · Structures recommandées</label>
+    <div id="weekTemplateStructures"></div>
+    <label>3 · Ta semaine</label>
     <div id="weekTemplateDays"></div>
+    <label>Zone à protéger (facultatif)</label>
+    <select id="weekTemplateZone"></select>
     <div class="w-callout warn" id="weekTemplateInfo" style="display:none; margin-top:10px;"></div>
     <div class="tc-sub" id="weekTemplateStatus" style="margin-top:8px;"></div>
     <div class="modal-actions">
-      <button class="btn-ghost" id="weekTemplateSuggestBtn">Re-proposer</button>
       <button class="btn-primary" id="weekTemplateApplyBtn">Appliquer au calendrier du bloc</button>
+    </div>
+  </div>
+</div>
+
+<!-- Réglages des suggestions de charge -->
+<div id="progSettingsOverlay" class="modal-overlay" hidden>
+  <div class="modal-box wide">
+    <div class="modal-header">
+      <h2>Réglages des suggestions</h2>
+      <button class="btn-ghost" id="closeProgSettingsBtn">Fermer</button>
+    </div>
+    <div id="progSettingsBody"></div>
+    <div class="modal-actions">
+      <button class="btn-ghost" id="resetProgSettingsBtn">Rétablir les valeurs par défaut</button>
     </div>
   </div>
 </div>
@@ -1296,6 +1444,8 @@ var state = loadData();
 if(!state.functionalMovements) state.functionalMovements = [];
 if(!state.presetsPerso) state.presetsPerso = [];
 if(!state.settings) state.settings = { hardRpe: 7 };
+if(state.settings.hardRir === undefined) state.settings.hardRir = 2;
+if(!state.settings.prog) state.settings.prog = {};
 migratePeriodizationData();
 var activeTab = 'overview';
 var profilsSubview = 'list';
@@ -1382,7 +1532,11 @@ function renderProfilsListCards(){
 /* ============================================================
    PATIENT VIEW / TABS
    ============================================================ */
+function isAutonomous(){ return !!(state.settings && state.settings.mode === 'autonome'); }
 function renderAll(){
+  document.body.classList.toggle("mode-autonome", isAutonomous());
+  if(isAutonomous() && (appMode === 'leaderboard' || appMode === 'periodisation')) appMode = 'today';
+  if(!isAutonomous() && appMode === 'today') appMode = 'profils';
   var emptyState = document.getElementById("emptyState");
   var patientView = document.getElementById("patientView");
   var leaderboardView = document.getElementById("leaderboardView");
@@ -1399,6 +1553,13 @@ function renderAll(){
   document.getElementById("periodisationView").hidden = true;
   profilsListView.hidden = true;
   patientView.hidden = true;
+  document.getElementById("todayView").hidden = true;
+
+  if(appMode === 'today'){
+    document.getElementById("todayView").hidden = false;
+    renderToday();
+    return;
+  }
 
   if(appMode === 'leaderboard'){
     leaderboardView.hidden = false;
@@ -1457,6 +1618,7 @@ function renderAll(){
 document.getElementById("appNav").addEventListener("click", function(e){
   var btn = e.target.closest("button[data-appmode]");
   if(!btn) return;
+  if(btn.dataset.appmode === 'reglages'){ openModeModal(); return; }
   appMode = btn.dataset.appmode;
   if(appMode === 'profils') profilsSubview = 'list';
   renderAll();
@@ -2252,7 +2414,11 @@ function renderDashboard(patient){
   var quotidiennes = patient.periodization.decisions.filter(function(d){ return d.type === 'quotidienne'; });
   var lastDecision = quotidiennes.length ? quotidiennes[quotidiennes.length-1] : null;
   var meta = lastDate ? ((patient.program.dayMeta || {})[lastDate] || {}) : {};
-  var reponseTxt = lastDate ? ("J+1 : " + (meta.j1 ? meta.j1 : "—") + " · J+2 : " + (meta.j2 ? meta.j2 : "—") + " · Baseline : " + (meta.retourBaseline || "—")) : "—";
+  var reponseTxt = lastDate ? ("J+1 : " + (meta.j1 ? escHtml(meta.j1) : "—") + " · J+2 : " + (meta.j2 ? escHtml(meta.j2) : "—") + " · Baseline : " + (meta.retourBaseline || "—")) : "—";
+  if(lastDate){
+    var flagged = readNotes(meta).filter(function(n){ return !n.ignored && symLevel(n) >= 1; });
+    if(flagged.length) reponseTxt += '<div style="color:#8a5200; margin-top:4px;">Lu : ' + flagged.map(function(n){ return n.label.toLowerCase(); }).join(", ") + '</div>';
+  }
   el.innerHTML = '<div class="dash-grid">' +
     '<div class="dash-card"><div class="label">Où suis-je</div><div class="value">' + ouSuisJe + '</div></div>' +
     '<div class="dash-card"><div class="label">Où je vais</div><div class="value">' + ouVaisJe + '</div></div>' +
@@ -2349,15 +2515,16 @@ function renderCheckin(patient){
       '<div class="item">RPE séance<b>' + (meta.sessionRpe !== undefined ? meta.sessionRpe : "—") + '</b></div>' +
     '</div>' +
     '<label class="w-field-label">J+1 — symptômes / fonction / réponse à la charge</label>' +
-    '<input id="j1Input" placeholder="ex : douleur stable, RAS le lendemain..." value="' + (meta.j1 || "") + '">' +
+    '<input id="j1Input" placeholder="ex : courbatures légères, pas de douleur..." value="' + escHtml(meta.j1 || "") + '">' +
     '<label class="w-field-label">J+2 — symptômes / fonction / réponse à la charge</label>' +
-    '<input id="j2Input" placeholder="..." value="' + (meta.j2 || "") + '">' +
+    '<input id="j2Input" placeholder="..." value="' + escHtml(meta.j2 || "") + '">' +
     '<label class="w-field-label">Retour à la baseline ?</label>' +
     '<div class="quality-chip-grid" id="baselineGrid">' + ["oui","non","partiel"].map(function(v){ return '<div class="quality-chip' + (meta.retourBaseline===v?' selected single':'') + '" data-baseline="' + v + '">' + v.charAt(0).toUpperCase()+v.slice(1) + '</div>'; }).join("") + '</div>' +
     '<label class="w-field-label">Performance</label>' +
     '<div class="quality-chip-grid" id="perfGrid">' + [["stable","Stable"],["amelioree","Améliorée"],["diminuee","Diminuée"],["non_mesuree","Non mesurée"]].map(function(v){ return '<div class="quality-chip' + (meta.performance===v[0]?' selected single':'') + '" data-perf="' + v[0] + '">' + v[1] + '</div>'; }).join("") + '</div>' +
     '<label class="w-field-label">Commentaire (facultatif)</label>' +
-    '<input id="commentInput" value="' + (meta.commentaire || "") + '">' +
+    '<input id="commentInput" value="' + escHtml(meta.commentaire || "") + '">' +
+    '<div id="symptomChips"></div>' +
     '<label class="w-field-label" style="margin-top:18px;">Dernière décision : <b>' + (lastDecision ? lastDecision.choix : "—") + '</b> — Décision pour aujourd\'hui ?</label>' +
     '<div class="quality-chip-grid" id="decisionGrid">' + ["Augmenter","Maintenir","Diminuer","Modifier","Reporter"].map(function(d){ return '<div class="quality-chip" data-decision="' + d + '">' + d + '</div>'; }).join("") + '</div>' +
     '<button class="btn-ghost" id="toggleWellnessChartBtn" style="margin-top:16px;">📈 Afficher la tendance Wellness / Readiness / Douleur</button>' +
@@ -2379,7 +2546,10 @@ function renderCheckin(patient){
     m.commentaire = document.getElementById("commentInput").value;
     patient.program.dayMeta[lastDate] = m;
     saveData();
+    renderSymptomChips(patient, lastDate);
+    renderDashboard(patient);
   }
+  renderSymptomChips(patient, lastDate);
   document.getElementById("j1Input").addEventListener("change", saveMeta);
   document.getElementById("j2Input").addEventListener("change", saveMeta);
   document.getElementById("commentInput").addEventListener("change", saveMeta);
@@ -3476,113 +3646,265 @@ function measureHintsHtml(patient){
     '<p class="tc-sub" style="margin-top:6px;">Un déficit ne dicte pas la qualité à travailler : c\'est un point de départ pour ton raisonnement.</p></div>';
 }
 
-function suggestWeekTemplate(m, n){
-  var days = ["","","","","","",""];
-  var dom = QUALITY_TO_SESSION[m.dominante];
-  var pattern = WEEK_DAY_PATTERNS[n];
-  if(!dom || !pattern) return { days: days, unmapped: !dom };
-  function uniqMapped(list){
-    var out = [];
-    (list || []).forEach(function(q){ var k = QUALITY_TO_SESSION[q]; if(k && k !== dom && out.indexOf(k) === -1) out.push(k); });
-    return out;
-  }
-  var maint = uniqMapped(m.maintenance), expo = uniqMapped(m.expositions).filter(function(k){ return maint.indexOf(k) === -1; });
-  var pool = n >= 4 ? maint.concat(expo) : (maint.length ? maint : expo);
-  var domCount = pool.length ? Math.max(1, Math.round(n / 2)) : n;
-  var domPos = [];
-  if(domCount === n){ for(var a=0;a<n;a++) domPos.push(a); }
-  else if(domCount === 1){ domPos = [0]; }
-  else { for(var j=0;j<domCount;j++) domPos.push(Math.round(j * (n - 1) / (domCount - 1))); }
-  var seq = [], pi = 0;
-  for(var i=0;i<n;i++){
-    if(domPos.indexOf(i) !== -1) seq.push(dom);
-    else { seq.push(pool[pi % pool.length]); pi++; }
-  }
-  pattern.forEach(function(dayIdx, idx){ days[dayIdx] = seq[idx]; });
-  return { days: days, unmapped: false };
+var FOCUS_LABELS = { full:"Full body", upper:"Haut du corps", lower:"Bas du corps", push:"Push", pull:"Pull", legs:"Legs", complement:"Complément", poitrine:"Pectoraux", dos:"Dos", jambes:"Jambes", epaules:"Épaules", bras:"Bras" };
+var FOCUS_REGIONS = { full:["push","pull","legs"], upper:["push","pull"], lower:["legs"], push:["push"], pull:["pull"], legs:["legs"], complement:[], poitrine:["push"], dos:["pull"], jambes:["legs"], epaules:["push"], bras:["push","pull"] };
+var STRENGTH_DOMINANTES = ["force","hypertrophie","endurance_force","puissance","rfd","force_vitesse","tendineux","autre"];
+var ZONES = { "":"Aucune", genou:"Genou", cheville_pied:"Cheville / pied", hanche:"Hanche", epaule:"Épaule", coude_poignet:"Coude / poignet", dos:"Dos" };
+var ZONE_REGIONS = { genou:["legs"], cheville_pied:["legs"], hanche:["legs"], epaule:["push","pull"], coude_poignet:["push","pull"], dos:["legs","pull"] };
+var SPLIT_STRUCTURES = {
+  2:[ { id:"fb2", name:"Full body × 2", seq:["full","full"], freq:"Chaque grand groupe 2× par semaine", why:"Avec 2 jours, c'est la structure qui permet de travailler chaque groupe deux fois.", cons:"Séances longues et peu de volume par groupe à chaque fois." } ],
+  3:[ { id:"fb3", name:"Full body × 3", seq:["full","full","full"], freq:"Chaque groupe 3× par semaine", why:"Fréquence élevée, séances courtes et simples à organiser.", cons:"Demande des jours non consécutifs pour bien récupérer." },
+      { id:"ulf", name:"Haut / Bas / Full", seq:["upper","lower","full"], freq:"Haut ≈ 2×, bas ≈ 2×", why:"Plus de volume par région à chaque séance qu'en full body.", cons:"La séance Full reste chargée." } ],
+  4:[ { id:"ul2", name:"Haut / Bas × 2", seq:["upper","lower","upper","lower"], freq:"Chaque groupe 2× par semaine", why:"Le meilleur équilibre fréquence / volume à 4 jours, avec une alternance haut / bas naturelle.", cons:"Les séances « haut » sont assez denses." },
+      { id:"pplc", name:"Push / Pull / Legs + complément", seq:["push","pull","legs","complement"], freq:"Chaque groupe 1× + une séance complément", why:"Séances très ciblées ; la 4e sert à rattraper un point faible.", cons:"1× par groupe est moins favorable à l'hypertrophie, à volume égal." } ],
+  5:[ { id:"hyb5", name:"Haut / Bas / Push / Pull / Legs", seq:["upper","lower","push","pull","legs"], freq:"Chaque groupe 2× par semaine", why:"Combine les deux logiques pour garder 2× par groupe sur 5 jours.", cons:"Structure moins courante : repère-toi sur le calendrier." },
+      { id:"ul5", name:"Haut / Bas / Haut / Bas / Full", seq:["upper","lower","upper","lower","full"], freq:"Chaque groupe 2 à 3× par semaine", why:"Fréquence élevée avec des séances plus courtes.", cons:"Sollicitations très répétées : surveille la récupération." } ],
+  6:[ { id:"ppl2", name:"Push / Pull / Legs × 2", seq:["push","pull","legs","push","pull","legs"], freq:"Chaque groupe 2× par semaine", why:"La structure la plus classique à 6 jours.", cons:"Un seul jour de repos par semaine." },
+      { id:"bp6", name:"Split par groupe musculaire", seq:["poitrine","dos","jambes","epaules","bras","jambes"], freq:"Chaque groupe ≈ 1× par semaine (jambes 2×)", why:"Séances très ciblées, utile si la fréquence n'est pas ta priorité.", cons:"1× par semaine est moins favorable à l'hypertrophie, à volume égal (méta-analyse de Schoenfeld, 2016)." } ]
+};
+function getStructures(m, n){
+  if(n < 2) return [];
+  if(STRENGTH_DOMINANTES.indexOf(m.dominante) !== -1) return SPLIT_STRUCTURES[Math.min(n, 6)];
+  return [{ id:"qual", name:"Séances de " + QUALITY_LABELS[m.dominante] + " + entretien", seq:[], freq:"La qualité dominante occupe environ la moitié des séances",
+    why:"Pour ce type de bloc, une répartition par régions du corps n'a pas de sens : la dominante prend la moitié des séances, la maintenance complète.",
+    cons:"Les expositions (RFD, sprint…) se glissent en petite dose dans les séances plutôt que d'avoir leur propre jour." }];
 }
-function adjacentHighWarnings(days){
-  var w = [];
-  for(var i=0;i<6;i++){
-    if(HIGH_NEURAL.indexOf(days[i]) !== -1 && HIGH_NEURAL.indexOf(days[i+1]) !== -1)
-      w.push(DAY_LABELS[i] + "–" + DAY_LABELS[i+1] + " (" + SESSION_LABELS[days[i]] + " puis " + SESSION_LABELS[days[i+1]] + ")");
+function overlapCount(a, b){
+  var ra = FOCUS_REGIONS[a] || [], rb = FOCUS_REGIONS[b] || [], c = 0;
+  ra.forEach(function(x){ if(rb.indexOf(x) !== -1) c++; });
+  return c;
+}
+// Place les focus sur les jours choisis en minimisant le chevauchement de régions entre jours proches.
+function arrangeFocus(seq, dayIdxs){
+  var n = seq.length, best = null, bestCost = Infinity;
+  function cost(perm){
+    var c = 0;
+    for(var i=0;i<n;i++) for(var j=i+1;j<n;j++){
+      var gap = dayIdxs[j] - dayIdxs[i]; gap = Math.min(gap, 7 - gap);
+      if(gap === 1) c += 4 * overlapCount(perm[i], perm[j]);
+      else if(gap === 2) c += overlapCount(perm[i], perm[j]);
+    }
+    return c;
   }
-  return w;
+  function permute(arr, l){
+    if(l === n){ var c = cost(arr); if(c < bestCost){ bestCost = c; best = arr.slice(); } return; }
+    var seen = {};
+    for(var i=l;i<n;i++){
+      if(seen[arr[i]]) continue;
+      seen[arr[i]] = true;
+      var t = arr[l]; arr[l] = arr[i]; arr[i] = t;
+      permute(arr, l + 1);
+      t = arr[l]; arr[l] = arr[i]; arr[i] = t;
+    }
+  }
+  permute(seq.slice(), 0);
+  return best || seq.slice();
+}
+function mappedSessions(list, exclude){
+  var out = [];
+  (list || []).forEach(function(q){ var k = QUALITY_TO_SESSION[q]; if(k && k !== exclude && out.indexOf(k) === -1) out.push(k); });
+  return out;
+}
+function buildRows(m, struct, avail){
+  var rows = [null,null,null,null,null,null,null];
+  var n = avail.length;
+  if(!struct || n === 0) return rows;
+  var dom = QUALITY_TO_SESSION[m.dominante] || "hypertrophie";
+  var maint = mappedSessions(m.maintenance, dom);
+  if(struct.id === "qual"){
+    var expo = mappedSessions(m.expositions, dom).filter(function(k){ return maint.indexOf(k) === -1; });
+    var pool = n >= 4 ? maint.concat(expo) : (maint.length ? maint : expo);
+    var domCount = pool.length ? Math.max(1, Math.round(n / 2)) : n;
+    var domPos = [];
+    if(domCount === n){ for(var a=0;a<n;a++) domPos.push(a); }
+    else if(domCount === 1){ domPos = [0]; }
+    else { for(var j=0;j<domCount;j++) domPos.push(Math.round(j * (n - 1) / (domCount - 1))); }
+    var pi = 0;
+    avail.forEach(function(d, i){
+      var sess = domPos.indexOf(i) !== -1 ? dom : pool[pi++ % pool.length];
+      rows[d] = { focus: RUN_SESSION_KEYS.indexOf(sess) !== -1 ? "" : "full", session: sess };
+    });
+    return rows;
+  }
+  var focuses = arrangeFocus(struct.seq, avail);
+  var distinct = [];
+  focuses.forEach(function(f){ if(distinct.indexOf(f) === -1) distinct.push(f); });
+  var domCount = maint.length ? Math.max(distinct.length, Math.ceil(n / 2)) : n;
+  // Choisit quelles séances portent la qualité dominante : au moins une par focus,
+  // en évitant si possible deux séances très neurales sur des jours consécutifs.
+  var best = null, bestCost = Infinity;
+  for(var mask = 0; mask < (1 << n); mask++){
+    var cnt = 0, b;
+    for(b = 0; b < n; b++) if(mask & (1 << b)) cnt++;
+    if(cnt !== domCount) continue;
+    var ok = true;
+    distinct.forEach(function(f){
+      var has = false;
+      for(var k = 0; k < n; k++) if((mask & (1 << k)) && focuses[k] === f) has = true;
+      if(!has) ok = false;
+    });
+    if(!ok) continue;
+    var cost = 0;
+    if(HIGH_NEURAL.indexOf(dom) !== -1){
+      for(var i = 0; i < n; i++) for(var j = i + 1; j < n; j++){
+        if((mask & (1 << i)) && (mask & (1 << j))){
+          var gap = avail[j] - avail[i]; gap = Math.min(gap, 7 - gap);
+          if(gap === 1) cost += 10;
+        }
+      }
+    }
+    for(b = 0; b < n; b++) if(mask & (1 << b)) cost += b * 0.01;
+    if(cost < bestCost){ bestCost = cost; best = mask; }
+  }
+  if(best === null) best = (1 << n) - 1;
+  var mi = 0;
+  avail.forEach(function(d, i){
+    var isDom = (best & (1 << i)) !== 0;
+    rows[d] = { focus: focuses[i], session: isDom ? dom : maint[(mi++) % maint.length] };
+  });
+  return rows;
 }
 
-var tplMesoId = null, tplN = 3, tplDays = ["","","","","","",""];
+var tplMesoId = null, tplAvail = [0,2,4], tplStructId = null, tplRows = [], tplZone = "";
+function usableAvail(){ return tplAvail.slice().sort(function(a,b){ return a - b; }).slice(0, 6); }
+function templateMeso(){
+  return getSelectedPatient().periodization.mesocycles.find(function(x){ return x.id === tplMesoId; });
+}
 function openWeekTemplate(patient, mesoId){
   tplMesoId = mesoId;
   var m = patient.periodization.mesocycles.find(function(x){ return x.id === mesoId; });
-  document.getElementById("weekTemplateTitle").textContent = "Semaine type — " + QUALITY_LABELS[m.dominante];
-  if(m.semaineType && m.semaineType.days){ tplN = m.semaineType.n; tplDays = m.semaineType.days.slice(); }
-  else { tplN = 3; tplDays = suggestWeekTemplate(m, tplN).days; }
+  document.getElementById("weekTemplateTitle").textContent = "Planificateur — " + QUALITY_LABELS[m.dominante];
+  var st = m.semaineType, restored = false;
+  if(st && st.v === 2 && st.jours && st.rows){
+    tplAvail = st.jours.slice(); tplStructId = st.structure || null; tplZone = st.zone || "";
+    tplRows = st.rows.map(function(r){ return r ? { focus: r.focus || "", session: r.session || "" } : null; });
+    restored = true;
+  } else if(st && st.days){
+    tplAvail = []; tplRows = [null,null,null,null,null,null,null]; tplStructId = null; tplZone = "";
+    st.days.forEach(function(x, i){
+      var sess = (x && typeof x === "object") ? x.session : x;
+      if(sess){ tplAvail.push(i); tplRows[i] = { focus: (x && x.focus) || "", session: sess }; }
+    });
+    restored = tplAvail.length > 0;
+  }
+  if(!restored){ tplAvail = [0,2,4]; tplStructId = null; tplZone = ""; recomputeTemplate(m); }
   document.getElementById("weekTemplateStatus").textContent = "";
-  renderWeekTemplate(m);
+  renderTemplate(m);
   document.getElementById("weekTemplateOverlay").hidden = false;
 }
-function renderWeekTemplate(m){
-  var nGrid = document.getElementById("weekTemplateN");
-  nGrid.innerHTML = [2,3,4,5,6].map(function(n){ return '<div class="quality-chip' + (tplN===n?' selected single':'') + '" data-tpln="' + n + '">' + n + '</div>'; }).join("");
-  nGrid.querySelectorAll(".quality-chip").forEach(function(c){
-    c.addEventListener("click", function(){
-      tplN = parseInt(c.dataset.tpln);
-      tplDays = suggestWeekTemplate(m, tplN).days;
-      renderWeekTemplate(m);
-    });
-  });
-  var opts = '<option value="">— repos —</option><optgroup label="Muscu / physique">' +
-    MUSCU_SESSION_KEYS.map(function(k){ return '<option value="' + k + '">' + SESSION_LABELS[k] + '</option>'; }).join("") +
-    '</optgroup><optgroup label="Course">' +
-    RUN_SESSION_KEYS.map(function(k){ return '<option value="' + k + '">' + SESSION_LABELS[k] + '</option>'; }).join("") + '</optgroup>';
-  var daysEl = document.getElementById("weekTemplateDays");
-  daysEl.innerHTML = DAY_LABELS.map(function(d,i){ return '<div class="tpl-day"><b>' + d + '</b><select data-tpldayidx="' + i + '">' + opts + '</select></div>'; }).join("");
-  daysEl.querySelectorAll("select").forEach(function(sel){
-    sel.value = tplDays[parseInt(sel.dataset.tpldayidx)] || "";
-    sel.addEventListener("change", function(){
-      tplDays[parseInt(sel.dataset.tpldayidx)] = sel.value;
-      updateWeekTemplateInfo(m);
-    });
-  });
-  updateWeekTemplateInfo(m);
+function recomputeTemplate(m){
+  var avail = usableAvail();
+  var structs = getStructures(m, avail.length);
+  if(!structs.some(function(x){ return x.id === tplStructId; })) tplStructId = structs.length ? structs[0].id : null;
+  var cur = structs.find(function(x){ return x.id === tplStructId; });
+  tplRows = buildRows(m, cur, avail);
 }
-function updateWeekTemplateInfo(m){
-  var info = document.getElementById("weekTemplateInfo");
-  var msgs = [];
-  if(!QUALITY_TO_SESSION[m.dominante]) msgs.push("Pas de correspondance automatique pour « " + QUALITY_LABELS[m.dominante] + " » : place les séances toi-même.");
-  var warn = adjacentHighWarnings(tplDays);
-  if(warn.length) msgs.push("Séances à fort coût neural sur jours consécutifs : " + warn.join(" ; ") + ". Repère courant : leur laisser de la récupération entre elles — à toi de juger selon le patient.");
-  var count = tplDays.filter(function(x){ return x; }).length;
-  if(count) msgs.push(count + " séance(s) par semaine. Les expositions (ex. RFD, sprint) sont à glisser en petite dose dans ces séances plutôt qu'à planifier chacune à part.");
+function focusOptions(sel){
+  return '<option value="">—</option>' + Object.keys(FOCUS_LABELS).map(function(k){ return '<option value="' + k + '"' + (k === sel ? ' selected' : '') + '>' + FOCUS_LABELS[k] + '</option>'; }).join("");
+}
+function sessionOptions(sel){
+  return '<option value="">— séance —</option><optgroup label="Muscu / physique">' +
+    MUSCU_SESSION_KEYS.map(function(k){ return '<option value="' + k + '"' + (k === sel ? ' selected' : '') + '>' + SESSION_LABELS[k] + '</option>'; }).join("") +
+    '</optgroup><optgroup label="Course">' +
+    RUN_SESSION_KEYS.map(function(k){ return '<option value="' + k + '"' + (k === sel ? ' selected' : '') + '>' + SESSION_LABELS[k] + '</option>'; }).join("") + '</optgroup>';
+}
+function renderTemplate(m){
+  var avail = usableAvail();
+  // jours disponibles
+  document.getElementById("weekTemplateN").innerHTML = DAY_LABELS.map(function(d, i){
+    var on = tplAvail.indexOf(i) !== -1;
+    return '<div class="quality-chip' + (on ? ' selected single' : '') + '" data-tpld="' + i + '">' + d + '</div>';
+  }).join("");
+  document.querySelectorAll("#weekTemplateN [data-tpld]").forEach(function(c){
+    c.addEventListener("click", function(){
+      var i = parseInt(c.dataset.tpld), k = tplAvail.indexOf(i);
+      if(k === -1) tplAvail.push(i); else tplAvail.splice(k, 1);
+      recomputeTemplate(templateMeso());
+      renderTemplate(templateMeso());
+    });
+  });
+  var note = document.getElementById("weekTemplateDaysNote");
+  note.textContent = tplAvail.length >= 7 ? "7 jours cochés : au moins un jour de repos est conseillé, la structure est calculée sur 6 jours."
+    : (tplAvail.length < 2 ? "Coche au moins 2 jours." : tplAvail.length + " jours choisis.");
+  // structures
+  var structs = getStructures(m, avail.length);
+  document.getElementById("weekTemplateStructures").innerHTML = structs.length ? structs.map(function(sx){
+    return '<div class="struct-card' + (sx.id === tplStructId ? ' selected' : '') + '" data-struct="' + sx.id + '"><b>' + sx.name + '</b><div class="sf">' + sx.freq + '</div>' +
+      '<div class="sw">Pourquoi : ' + sx.why + '</div><div class="sw">Compromis : ' + sx.cons + '</div></div>';
+  }).join("") : '<div class="tc-sub">Aucune structure à proposer pour l\'instant.</div>';
+  document.querySelectorAll("#weekTemplateStructures [data-struct]").forEach(function(c){
+    c.addEventListener("click", function(){
+      tplStructId = c.dataset.struct;
+      tplRows = buildRows(templateMeso(), getStructures(templateMeso(), usableAvail().length).find(function(x){ return x.id === tplStructId; }), usableAvail());
+      renderTemplate(templateMeso());
+    });
+  });
+  // semaine
+  document.getElementById("weekTemplateDays").innerHTML = DAY_LABELS.map(function(d, i){
+    if(avail.indexOf(i) === -1) return '<div class="tpl-day off"><b>' + d + '</b><span>repos</span></div>';
+    var r = tplRows[i] || { focus:"", session:"" };
+    return '<div class="tpl-day"><b>' + d + '</b><select data-tplfocus="' + i + '" aria-label="Focus ' + d + '">' + focusOptions(r.focus) + '</select>' +
+      '<select data-tplsess="' + i + '" aria-label="Type de séance ' + d + '">' + sessionOptions(r.session) + '</select></div>';
+  }).join("");
+  document.querySelectorAll("#weekTemplateDays [data-tplfocus]").forEach(function(sel){
+    sel.addEventListener("change", function(){ var i = parseInt(sel.dataset.tplfocus); tplRows[i] = tplRows[i] || { focus:"", session:"" }; tplRows[i].focus = sel.value; updateTemplateInfo(m); });
+  });
+  document.querySelectorAll("#weekTemplateDays [data-tplsess]").forEach(function(sel){
+    sel.addEventListener("change", function(){ var i = parseInt(sel.dataset.tplsess); tplRows[i] = tplRows[i] || { focus:"", session:"" }; tplRows[i].session = sel.value; updateTemplateInfo(m); });
+  });
+  var z = document.getElementById("weekTemplateZone");
+  z.innerHTML = Object.keys(ZONES).map(function(k){ return '<option value="' + k + '"' + (k === tplZone ? ' selected' : '') + '>' + ZONES[k] + '</option>'; }).join("");
+  z.onchange = function(){ tplZone = z.value; updateTemplateInfo(m); };
+  updateTemplateInfo(m);
+}
+function updateTemplateInfo(m){
+  var info = document.getElementById("weekTemplateInfo"), msgs = [], avail = usableAvail();
+  if(avail.length >= 2 && STRENGTH_DOMINANTES.indexOf(m.dominante) !== -1 && !QUALITY_TO_SESSION[m.dominante])
+    msgs.push("Pas de correspondance automatique pour « " + QUALITY_LABELS[m.dominante] + " » : le type « Hypertrophie » est mis par défaut, change-le au besoin.");
+  var sameRegion = [], neural = [], zoneDays = [];
+  for(var i=0;i<7;i++){
+    var a = tplRows[i], b = tplRows[(i + 1) % 7];
+    if(a && b && a.session && b.session){
+      if(overlapCount(a.focus, b.focus) > 0) sameRegion.push(DAY_LABELS[i] + "–" + DAY_LABELS[(i + 1) % 7] + " (" + (FOCUS_LABELS[a.focus] || "?") + " puis " + (FOCUS_LABELS[b.focus] || "?") + ")");
+      if(HIGH_NEURAL.indexOf(a.session) !== -1 && HIGH_NEURAL.indexOf(b.session) !== -1) neural.push(DAY_LABELS[i] + "–" + DAY_LABELS[(i + 1) % 7]);
+    }
+    if(a && a.session && tplZone && ZONE_REGIONS[tplZone]){
+      var regs = FOCUS_REGIONS[a.focus] || [];
+      if(regs.some(function(r){ return ZONE_REGIONS[tplZone].indexOf(r) !== -1; })) zoneDays.push(DAY_LABELS[i] + " (" + (FOCUS_LABELS[a.focus] || "") + ")");
+    }
+  }
+  if(sameRegion.length) msgs.push("Jours consécutifs qui sollicitent les mêmes régions : " + sameRegion.join(" ; ") + ". Repère courant : laisser environ 48 h entre deux séances du même groupe, quand tes jours le permettent.");
+  if(neural.length) msgs.push("Séances à fort coût neural sur jours consécutifs : " + neural.join(" ; ") + ".");
+  if(zoneDays.length) msgs.push("Zone à protéger (" + ZONES[tplZone] + ") : ces séances la sollicitent probablement — " + zoneDays.join(", ") + ". Correspondance approximative : vérifie la dose et les exercices.");
+  var count = tplRows.filter(function(r){ return r && r.session; }).length;
+  if(count) msgs.push(count + " séance(s) par semaine. Les expositions (RFD, sprint…) se glissent en petite dose dans ces séances.");
   info.style.display = msgs.length ? "block" : "none";
   info.innerHTML = msgs.map(function(t){ return '<p style="margin:2px 0;">' + t + '</p>'; }).join("");
 }
 document.getElementById("closeWeekTemplateBtn").addEventListener("click", function(){
   document.getElementById("weekTemplateOverlay").hidden = true;
 });
-document.getElementById("weekTemplateSuggestBtn").addEventListener("click", function(){
-  var patient = getSelectedPatient();
-  var m = patient.periodization.mesocycles.find(function(x){ return x.id === tplMesoId; });
-  tplDays = suggestWeekTemplate(m, tplN).days;
-  renderWeekTemplate(m);
-});
-document.getElementById("weekTemplateApplyBtn").addEventListener("click", function(){
-  var patient = getSelectedPatient();
-  var m = patient.periodization.mesocycles.find(function(x){ return x.id === tplMesoId; });
-  var plan = getPlan(patient);
-  var end = mesoEndDate(m);
+function applyPlannerRows(patient, m, rows, structId, avail, zone){
+  var plan = getPlan(patient), end = mesoEndDate(m);
   var placed = 0, cursor = m.dateDebut, guard = 0;
   while(cursor <= end && guard++ < 400){
     var idx = (new Date(cursor + "T00:00:00").getDay() + 6) % 7;
-    if(tplDays[idx]){ plan[cursor] = { session: tplDays[idx], mesoId: m.id }; placed++; }
+    var r = rows[idx];
+    if(r && r.session){ plan[cursor] = { session: r.session, focus: r.focus || "", mesoId: m.id }; placed++; }
     else if(plan[cursor] && plan[cursor].mesoId === m.id){ delete plan[cursor]; }
     cursor = addDaysToDate(cursor, 1);
   }
-  m.semaineType = { n: tplDays.filter(function(x){ return x; }).length, days: tplDays.slice() };
-  addAudit(patient, "Semaine type appliquée au mésocycle " + QUALITY_LABELS[m.dominante] + " : " + placed + " séance(s) prévue(s) du " + fmtDate(m.dateDebut) + " au " + fmtDate(end) + ".");
+  m.semaineType = { v:2, jours: avail.slice(), structure: structId, zone: zone || "", rows: rows.map(function(r){ return r ? { focus: r.focus, session: r.session } : null; }) };
+  addAudit(patient, "Planificateur appliqué au mésocycle " + QUALITY_LABELS[m.dominante] + " : " + placed + " séance(s) prévue(s) du " + fmtDate(m.dateDebut) + " au " + fmtDate(end) + ".");
+  return { placed: placed, end: end };
+}
+document.getElementById("weekTemplateApplyBtn").addEventListener("click", function(){
+  var patient = getSelectedPatient();
+  var m = templateMeso();
+  var res = applyPlannerRows(patient, m, tplRows, tplStructId, usableAvail(), tplZone);
   saveData();
-  document.getElementById("weekTemplateStatus").textContent = "✓ " + placed + " séance(s) prévue(s) placée(s) dans le calendrier, du " + fmtDate(m.dateDebut) + " au " + fmtDate(end) + ".";
-  renderPeriodisationView();
+  document.getElementById("weekTemplateStatus").textContent = "✓ " + res.placed + " séance(s) prévue(s) placée(s) dans le calendrier, du " + fmtDate(m.dateDebut) + " au " + fmtDate(res.end) + ".";
+  renderAll();
 });
 
 function microSessionText(patient, m, mc){
@@ -3596,8 +3918,8 @@ function microSessionText(patient, m, mc){
   return " · Séances : " + done + " faite(s)" + (planned ? " / " + planned + " prévue(s)" : "");
 }
 
-function renderWeekStrip(patient){
-  var el = document.getElementById("weekStrip");
+function renderWeekStrip(patient, targetId){
+  var el = document.getElementById(targetId || "weekStrip");
   var plan = getPlan(patient), todayKey = todayISO(), wk = currentWeekRange();
   ensurePeriodization(patient);
   var ctx = getMicrocycleContext(patient, todayKey);
@@ -3612,7 +3934,8 @@ function renderWeekStrip(patient){
     var isFutureEntry = d > todayKey && entries.length > 0;
     if(pl || isFutureEntry) planned++;
     if(isDone) done++;
-    var label = pl ? SESSION_LABELS[pl.session] : (entries.length ? SESSION_LABELS[entries[0].session] : "");
+    var label = pl ? ((pl.focus ? FOCUS_LABELS[pl.focus] : SESSION_LABELS[pl.session])) : (entries.length ? SESSION_LABELS[entries[0].session] : "");
+    var subLabel = (pl && pl.focus) ? SESSION_LABELS[pl.session] : "";
     var color = pl ? (SESSION_COLORS[pl.session] || "var(--muted)") : (entries.length ? (SESSION_COLORS[entries[0].session] || "var(--muted)") : "var(--muted-2)");
     var status;
     if(isDone) status = "✓ fait";
@@ -3620,7 +3943,7 @@ function renderWeekStrip(patient){
     else if(pl || isFutureEntry) status = "prévu";
     else status = "repos";
     return '<div class="wk-cell' + (d === todayKey ? ' today' : '') + '" data-wkdate="' + d + '"><div class="wk-day">' + DAY_LABELS[i] + ' ' + d.slice(8) + '</div>' +
-      '<div class="wk-plan" style="color:' + color + ';">' + (label || "—") + '</div><div class="wk-status">' + status + '</div></div>';
+      '<div class="wk-plan" style="color:' + color + ';">' + (label || "—") + '</div>' + (subLabel ? '<div class="wk-status">' + subLabel + '</div>' : '') + '<div class="wk-status">' + status + '</div></div>';
   }).join("");
   el.innerHTML = '<div class="week-strip"><div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px;"><b style="font-size:13px;">Cette semaine' +
     (ctx ? ' — ' + QUALITY_LABELS[ctx.meso.dominante] + ' · S' + ctx.micro.numero + (ctx.micro.type ? ' (' + MICRO_TYPE_LABELS[ctx.micro.type] + ')' : '') : '') +
@@ -3694,7 +4017,7 @@ function renderCalendarGrid(patient){
     var dayTon = entries.reduce(function(s,e){ return s + entryTonnage(e); }, 0);
     var pl = getPlan(patient)[key];
     var hasDone = key <= todayKey && entries.length > 0;
-    var planHtml = pl ? '<div class="cal-plan" style="color:' + (SESSION_COLORS[pl.session]||'var(--muted)') + ';" title="Séance prévue : ' + SESSION_LABELS[pl.session] + '">' + (hasDone ? '✓ ' : '◌ ') + SESSION_LABELS[pl.session] + '</div>' : '';
+    var planHtml = pl ? '<div class="cal-plan" style="color:' + (SESSION_COLORS[pl.session]||'var(--muted)') + ';" title="Séance prévue : ' + (pl.focus ? FOCUS_LABELS[pl.focus] + ' · ' : '') + SESSION_LABELS[pl.session] + '">' + (hasDone ? '✓ ' : '◌ ') + (pl.focus ? FOCUS_LABELS[pl.focus] : SESSION_LABELS[pl.session]) + '</div>' : '';
     var dotsHtml = entries.map(function(e){ return '<span class="cal-dot" style="background:' + (SESSION_COLORS[e.session]||'#ccc') + ';"></span>'; }).join("");
     cell.innerHTML = '<div class="cal-daynum">' + day + '</div><div class="cal-dots">' + dotsHtml + '</div>' + planHtml +
       (totalLoad > 0 ? '<div class="cal-load" title="Tonnage : ' + Math.round(dayTon) + ' kg">' + Math.round(totalLoad) + ' UA</div>'
@@ -3741,6 +4064,8 @@ function renderAcwl(patient){
   document.getElementById("acwlNote").textContent = "Charge = RPE de séance × durée (UA), muscu et course sur la même échelle. Le tonnage est un indicateur séparé." +
     (cov.missing ? " " + cov.missing + " jour(s) sur 28 sans RPE de séance ou durée : non compté(s)." : "");
   if(!document.getElementById("muscleTrackWrap").hidden) renderMuscleTrack(patient);
+  if(!document.getElementById("recoPanelWrap").hidden) renderRecoPanel(patient);
+  if(!document.getElementById("targetPanelWrap").hidden) renderTargetPanel(patient);
   var ratioEl = document.getElementById("acwlRatio");
   if(r.ratio === null){ ratioEl.textContent = "—"; ratioEl.className = "value"; }
   else {
@@ -3801,7 +4126,7 @@ function openDayModal(key){
   document.getElementById("runFields").hidden = true;
   document.getElementById("stretchFields").hidden = true;
   document.getElementById("isometricFields").hidden = true;
-  ["exName","exSets","exReps","exLoad","exRpe","runDistance","runDuration","runRpe","stretchName","stretchSeries","stretchDuree","stretchRpe","isoName","isoSeries","isoReps","isoDuree","isoRpe","exGroup","isoGroup"].forEach(function(id){ document.getElementById(id).value = ""; });
+  ["exName","exSets","exReps","exLoad","exRpe","runDistance","runDuration","runRpe","stretchName","stretchSeries","stretchDuree","stretchRpe","isoName","isoSeries","isoReps","isoDuree","isoRpe","exGroup","isoGroup","isoPct"].forEach(function(id){ document.getElementById(id).value = ""; });
   document.getElementById("exTonnagePreview").innerHTML = "";
   document.getElementById("runLoadPreview").innerHTML = "";
   document.getElementById("stretchTotalPreview").innerHTML = "";
@@ -3842,7 +4167,7 @@ function openDayModal(key){
   var hintEl = document.getElementById("dayPlanHint");
   var hintParts = [];
   if(__ctx) hintParts.push(QUALITY_LABELS[__ctx.meso.dominante] + " · S" + __ctx.micro.numero);
-  if(plannedToday) hintParts.push('<span class="dot" style="background:' + (SESSION_COLORS[plannedToday.session] || '#999') + ';"></span>Prévu : ' + SESSION_LABELS[plannedToday.session]);
+  if(plannedToday) hintParts.push('<span class="dot" style="background:' + (SESSION_COLORS[plannedToday.session] || '#999') + ';"></span>Prévu : ' + (plannedToday.focus ? FOCUS_LABELS[plannedToday.focus] + ' · ' : '') + SESSION_LABELS[plannedToday.session]);
   hintEl.innerHTML = hintParts.join(' <span>·</span> ');
   if(plannedToday){
     var isRun = RUN_SESSION_KEYS.indexOf(plannedToday.session) !== -1;
@@ -3886,6 +4211,11 @@ var LAST_TIME_FIELD_MAP = {
   stretching: { name:'stretchName', reminder:'stretchLastTimeReminder' },
   isometric: { name:'isoName', reminder:'isoLastTimeReminder' }
 };
+function intensityTxt(en){
+  if(en.rir !== undefined && en.rir !== null) return ' · RIR ' + en.rir;
+  if(en.rpe) return ' · RPE ' + en.rpe;
+  return '';
+}
 function lastDesc(kind, en){
   if(kind === 'stretching') return en.series + " × " + en.dureeSec + " s";
   if(kind === 'isometric') return en.series + " × " + en.reps + " × " + en.dureeSec + " s · " + (en.isoType==='yielding'?'Yielding':'Overcoming');
@@ -3902,7 +4232,7 @@ function updateLastTimeReminder(kind){
   if(!last){ reminderEl.innerHTML = ""; return; }
   var hist = exerciseHistoryValues(patient, kind, name);
   var spark = hist.length >= 2 ? '<div class="lt-spark">' + sparklineSvg([{ values: hist, color: '#2f6fed' }]) + '</div>' : "";
-  reminderEl.innerHTML = '<div class="lt-text"><div class="lt-sub">Dernière fois · ' + fmtDate(last.date) + (last.entry.rpe ? ' · RPE ' + last.entry.rpe : '') + '</div><div class="lt-main">' + lastDesc(kind, last.entry) + '</div></div>' + spark +
+  reminderEl.innerHTML = '<div class="lt-text"><div class="lt-sub">Dernière fois · ' + fmtDate(last.date) + intensityTxt(last.entry) + '</div><div class="lt-main">' + lastDesc(kind, last.entry) + '</div></div>' + spark +
     '<button type="button" class="lt-btn" data-reprendre="' + kind + '">Reprendre</button>';
 }
 document.getElementById("exName").addEventListener("input", function(){ updateLastTimeReminder('exercise'); });
@@ -3929,7 +4259,15 @@ var TRAIN_GROUPS = ["Quadriceps","Ischio-jambiers","Fessiers","Mollets / triceps
 });
 function autoFillGroup(nameId, groupId){
   var p = getSelectedPatient();
-  var g = ((p && p.program.exerciseGroups) || {})[document.getElementById(nameId).value.trim()];
+  var name = document.getElementById(nameId).value.trim();
+  if(!p || !name) return;
+  var g = (p.program.exerciseGroups || {})[name];
+  if(!g){   // à défaut : groupe de la dernière séance enregistrée avec ce nom
+    var bestDate = "";
+    Object.keys(p.program.entries).forEach(function(k){
+      (p.program.entries[k] || []).forEach(function(e){ if(e.name === name && e.group && k >= bestDate){ bestDate = k; g = e.group; } });
+    });
+  }
   if(g) document.getElementById(groupId).value = g;
 }
 document.getElementById("exName").addEventListener("input", function(){ autoFillGroup("exName", "exGroup"); });
@@ -3945,7 +4283,8 @@ function groupOf(patient, e){ return e.group || (patient.program.exerciseGroups 
 
 function renderMuscleTrack(patient){
   var el = document.getElementById("muscleTrackWrap");
-  var thr = state.settings.hardRpe;
+  var thr = state.settings.hardRir;
+  var thrRpe = state.settings.hardRpe;
   var cur = currentWeekRange().start;
   var weeks = [];
   for(var i=5;i>=0;i--) weeks.push(addDaysToDate(cur, -7*i));
@@ -3963,8 +4302,9 @@ function renderMuscleTrack(patient){
         var c = data[g][ws] = data[g][ws] || { hard:0, total:0, ton:0 };
         c.total += s;
         c.ton += entryTonnage(e);
-        if(e.rpe === undefined || e.rpe === null) noRpeTotal += s;
-        else if(e.rpe >= thr) c.hard += s;
+        if(e.kind === 'exercise' && e.rir !== undefined && e.rir !== null){ if(e.rir <= thr) c.hard += s; }
+        else if(e.rpe !== undefined && e.rpe !== null){ if(e.rpe >= thrRpe) c.hard += s; }
+        else noRpeTotal += s;
       }
       if(e.kind === 'exercise' && e.load > 0){
         var x = exo[e.name] = exo[e.name] || { group: groupOf(patient, e), days: {} };
@@ -3983,12 +4323,12 @@ function renderMuscleTrack(patient){
 
   var html = '<div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px;">' +
     '<b style="font-size:13px;">Séries par groupe musculaire (6 dernières semaines)</b>' +
-    '<span class="tc-sub">Série difficile = RPE de l\'exercice ≥</span>' +
-    '<input id="hardRpeInput" type="number" min="1" max="10" step="1" value="' + thr + '" style="width:60px; padding:5px 8px; border:1px solid var(--border); border-radius:8px;">' +
+    '<span class="tc-sub">Série difficile = RIR ≤</span>' +
+    '<input id="hardRpeInput" type="number" min="0" max="5" step="1" value="' + thr + '" style="width:60px; padding:5px 8px; border:1px solid var(--border); border-radius:8px;">' +
     '</div>';
 
   if(!groups.length){
-    html += '<div class="w-callout">Aucune série enregistrée sur 6 semaines. Renseigne le groupe musculaire (et le RPE) sur tes exercices.</div>';
+    html += '<div class="w-callout">Aucune série enregistrée sur 6 semaines. Renseigne le groupe musculaire (et le RIR) sur tes exercices.</div>';
   } else {
     html += '<table class="norm-table"><thead><tr><th>Groupe</th>' +
       weeks.map(function(w){ return '<th>' + fmtDate(w).slice(0,5) + '</th>'; }).join("") + '</tr></thead><tbody>';
@@ -4001,7 +4341,7 @@ function renderMuscleTrack(patient){
     });
     html += '</tbody></table>' +
       '<div class="tc-sub" style="margin-top:6px;">Cellule = séries difficiles / séries totales, puis tonnage. Colonnes = début de semaine (lundi).' +
-      (noRpeTotal ? ' ' + noRpeTotal + ' série(s) sans RPE : comptées dans le total mais pas dans les séries difficiles.' : '') + '</div>';
+      (noRpeTotal ? ' ' + noRpeTotal + ' série(s) sans RIR ni RPE : comptées dans le total mais pas dans les séries difficiles.' : '') + '</div>';
   }
 
   var names = Object.keys(exo).sort();
@@ -4026,7 +4366,7 @@ function renderMuscleTrack(patient){
   el.innerHTML = html;
   document.getElementById("hardRpeInput").addEventListener("change", function(e){
     var v = parseFloat(e.target.value);
-    if(!isNaN(v) && v >= 1 && v <= 10){ state.settings.hardRpe = v; saveData(); }
+    if(!isNaN(v) && v >= 0 && v <= 5){ state.settings.hardRir = v; saveData(); }
     renderMuscleTrack(patient);
   });
 }
@@ -4059,7 +4399,7 @@ function startEditEntry(entry){
     document.getElementById("exSets").value = entry.sets || "";
     document.getElementById("exReps").value = entry.reps || "";
     document.getElementById("exLoad").value = entry.load || "";
-    document.getElementById("exRpe").value = (entry.rpe !== undefined && entry.rpe !== null) ? entry.rpe : "";
+    document.getElementById("exRpe").value = (entry.rir !== undefined && entry.rir !== null) ? entry.rir : "";
     document.getElementById("exGroup").value = entry.group || "";
     updateExPreview(); updateLastTimeReminder('exercise');
   } else if(entry.kind === 'stretching'){
@@ -4076,6 +4416,7 @@ function startEditEntry(entry){
     document.getElementById("isoReps").value = entry.reps || "";
     document.getElementById("isoDuree").value = entry.dureeSec || "";
     document.getElementById("isoRpe").value = (entry.rpe !== undefined && entry.rpe !== null) ? entry.rpe : "";
+    document.getElementById("isoPct").value = (entry.pctFmax !== undefined && entry.pctFmax !== null) ? entry.pctFmax : "";
     document.getElementById("isoGroup").value = entry.group || "";
     updateIsoPreview(); updateLastTimeReminder('isometric');
   } else { // run
@@ -4141,6 +4482,7 @@ function saveDayMeta(){
 });
 
 function renderDayEntriesList(){
+  renderPlanExercises();
   var patient = getSelectedPatient();
   var entries = patient.program.entries[dayModalDate] || [];
   var el = document.getElementById("dayEntriesList");
@@ -4153,7 +4495,11 @@ function renderDayEntriesList(){
   }
   el.innerHTML = entries.map(function(e, i){
     var color = SESSION_COLORS[e.session] || "#9aa3b2";
-    var hasRpe = e.rpe !== undefined && e.rpe !== null && e.rpe !== "";
+    var isEx = e.kind === 'exercise';
+    var hasRir = isEx && e.rir !== undefined && e.rir !== null;
+    var hasLegacy = isEx && !hasRir && e.rpe !== undefined && e.rpe !== null && e.rpe !== "";
+    var hasRpe = isEx ? (hasRir || hasLegacy) : (e.rpe !== undefined && e.rpe !== null && e.rpe !== "");
+    var pillTxt = isEx ? (hasRir ? 'RIR ' + e.rir : (hasLegacy ? 'RPE ' + e.rpe : '+ RIR')) : (hasRpe ? 'RPE ' + e.rpe : '+ RPE');
     var name, detail, sub;
     if(e.kind === 'exercise'){
       name = e.name; detail = '<b>' + e.sets + ' × ' + e.reps + '</b> · <b>' + e.load + ' kg</b>';
@@ -4163,14 +4509,14 @@ function renderDayEntriesList(){
       sub = 'Étirement · tension ' + fmtNum(stretchSeconds(e)) + ' s';
     } else if(e.kind === 'isometric'){
       name = e.name; detail = '<b>' + e.series + ' × ' + e.reps + ' × ' + e.dureeSec + ' s</b>';
-      sub = (e.isoType === 'yielding' ? 'Yielding' : 'Overcoming') + (e.group ? ' · ' + e.group : '') + ' · tension ' + fmtNum(stretchSeconds(e)) + ' s';
+      sub = (e.isoType === 'yielding' ? 'Yielding' : 'Overcoming') + (e.pctFmax ? ' · ' + e.pctFmax + ' % Fmax' : '') + (e.group ? ' · ' + e.group : '') + ' · tension ' + fmtNum(stretchSeconds(e)) + ' s';
     } else {
       name = "Course"; detail = '<b>' + e.distanceKm + ' km</b> · <b>' + e.durationMin + ' min</b>';
       sub = hasRpe ? 'Charge ' + fmtNum(entryLoad(e)) + ' UA' : 'RPE manquant pour la charge';
     }
     var right = future
       ? '<span class="planned-tag">prévu</span>'
-      : '<button type="button" class="rpe-pill' + (hasRpe ? '' : ' missing') + '" data-rpeentry="' + e.id + '" aria-label="' + (hasRpe ? 'Modifier le RPE' : 'Ajouter le RPE') + '">' + (hasRpe ? 'RPE ' + e.rpe : '+ RPE') + '</button>';
+      : '<button type="button" class="rpe-pill' + (hasRpe ? '' : ' missing') + '" data-rpeentry="' + e.id + '" aria-label="' + (hasRpe ? 'Modifier ' : 'Ajouter ') + (isEx ? 'le RIR' : 'le RPE') + '">' + pillTxt + '</button>';
     return '<div class="ex-card' + (future ? ' planned' : '') + '" role="button" tabindex="0" data-editentry="' + e.id + '">' +
       '<div class="ex-tile" style="background:' + color + ';color:' + (future ? color : textOn(color)) + ';">' + (i + 1) + '</div>' +
       '<div class="ex-main"><div class="ex-name">' + escHtml(name) + '</div><div class="ex-detail">' + detail + '</div><div class="ex-sub">' + sub + '</div></div>' + right + '</div>';
@@ -4194,8 +4540,10 @@ document.getElementById("dayKindGrid").addEventListener("click", function(e){
   document.getElementById("isometricFields").hidden = dayKind !== 'isometric';
   document.getElementById("sessionChipGrid").hidden = dayKind === 'run';
   document.getElementById("runSessionChipGrid").hidden = dayKind !== 'run';
+  renderGroupChips('exercise'); renderGroupChips('isometric');
   renderNameChips(dayKind);
   refreshSessionLabel();
+  renderIsoTarget();
 });
 function sessionChipClick(e){
   var chip = e.target.closest(".session-chip");
@@ -4243,7 +4591,11 @@ function saveDayEntry(keepOpen){
     entry.reps = parseFloat(document.getElementById("exReps").value) || 0;
     entry.load = parseFloat(document.getElementById("exLoad").value) || 0;
     var exRpeVal = document.getElementById("exRpe").value;
-    entry.rpe = exRpeVal === "" ? undefined : parseFloat(exRpeVal);
+    entry.rir = exRpeVal === "" ? undefined : parseFloat(exRpeVal);
+    if(editingEntryId){
+      var oldE = (patient.program.entries[dayModalDate] || []).find(function(x){ return x.id === editingEntryId; });
+      if(oldE && oldE.rpe !== undefined) entry.rpe = oldE.rpe;   // ancien RPE conservé
+    }
   } else if(dayKind === 'stretching'){
     var sname = document.getElementById("stretchName").value.trim();
     if(!sname){ alert("Nom de l'étirement manquant."); return; }
@@ -4264,6 +4616,8 @@ function saveDayEntry(keepOpen){
     entry.dureeSec = parseFloat(document.getElementById("isoDuree").value) || 0;
     var isoRpeVal = document.getElementById("isoRpe").value;
     entry.rpe = isoRpeVal === "" ? undefined : parseFloat(isoRpeVal);
+    var isoPctVal = document.getElementById("isoPct").value;
+    entry.pctFmax = (isoPctVal === "" || isoType === 'overcoming') ? undefined : parseFloat(isoPctVal);
   } else { // run
     entry.distanceKm = parseFloat(document.getElementById("runDistance").value) || 0;
     entry.durationMin = parseFloat(document.getElementById("runDuration").value) || 0;
@@ -4291,7 +4645,7 @@ function saveDayEntry(keepOpen){
   resetEntryForm();
   clearEntryFields();
   renderDayEntriesList();
-  if(keepOpen){ renderNameChips(dayKind); refreshSessionLabel(); }
+  if(keepOpen){ renderGroupChips('exercise'); renderGroupChips('isometric'); renderNameChips(dayKind); refreshSessionLabel(); }
   else { document.getElementById("exSheet").hidden = true; }
 }
 document.getElementById("addDayEntryBtn").addEventListener("click", function(){ saveDayEntry(false); });
@@ -4299,7 +4653,7 @@ document.getElementById("addNextEntryBtn").addEventListener("click", function(){
 document.getElementById("closeDayBtn").addEventListener("click", function(){
   ["exSheet","feelSheet","closeSheet","rpeSheet"].forEach(function(id){ document.getElementById(id).hidden = true; });
   document.getElementById("dayOverlay").hidden = true;
-  renderCalendarGrid(getSelectedPatient());
+  if(appMode === 'today') renderToday(); else renderCalendarGrid(getSelectedPatient());
 });
 
 /* ============================================================
@@ -4342,13 +4696,46 @@ function recentNames(patient, kind){
   });
   return Object.keys(last).sort(function(a,b){ return last[b].localeCompare(last[a]) || a.localeCompare(b); }).slice(0, 8);
 }
+var GROUP_UI = { exercise:{ select:"exGroup", chips:"exGroupChips" }, isometric:{ select:"isoGroup", chips:"isoGroupChips" } };
+function entryGroup(patient, e){ return e.group || (patient.program.exerciseGroups || {})[e.name] || ""; }
+function namesForGroup(patient, kind, g){
+  var last = {};
+  Object.keys(patient.program.entries).forEach(function(k){
+    (patient.program.entries[k] || []).forEach(function(e){
+      if(e.kind === kind && e.name && entryGroup(patient, e) === g && (!last[e.name] || k > last[e.name])) last[e.name] = k;
+    });
+  });
+  return Object.keys(last).sort(function(a, b){ return last[b].localeCompare(last[a]) || a.localeCompare(b); });
+}
+function renderGroupChips(kind){
+  var ui = GROUP_UI[kind];
+  if(!ui) return;
+  var patient = getSelectedPatient(), cur = document.getElementById(ui.select).value;
+  var counts = {}, seen = {};
+  Object.keys(patient.program.entries).forEach(function(k){
+    (patient.program.entries[k] || []).forEach(function(e){
+      if(e.kind !== kind || !e.name) return;
+      var g = entryGroup(patient, e), key = g + "|" + e.name;
+      if(g && !seen[key]){ seen[key] = true; counts[g] = (counts[g] || 0) + 1; }
+    });
+  });
+  document.getElementById(ui.chips).innerHTML = TRAIN_GROUPS.map(function(g){
+    return '<button type="button" class="chip-btn' + (g === cur ? ' on' : '') + '" data-pickgroup="' + kind + '" data-group="' + escHtml(g) + '" aria-pressed="' + (g === cur) + '">' + escHtml(g) + (counts[g] ? '<span class="cnt">' + counts[g] + '</span>' : '') + '</button>';
+  }).join("");
+}
 function renderNameChips(kind){
   var m = NAME_MAP[kind];
   if(!m) return;
-  var cur = document.getElementById(m.input).value.trim();
-  document.getElementById(m.chips).innerHTML = recentNames(getSelectedPatient(), kind).map(function(n){
+  var patient = getSelectedPatient(), cur = document.getElementById(m.input).value.trim();
+  var ui = GROUP_UI[kind], g = ui ? document.getElementById(ui.select).value : "";
+  var names = g ? namesForGroup(patient, kind, g) : recentNames(patient, kind);
+  var html = "";
+  if(ui) html += '<div class="chip-label">' + (g ? 'Tes exercices · ' + escHtml(g) : 'Récents (touche un groupe ci-dessus pour filtrer)') + '</div>';
+  if(g && !names.length) html += '<div class="tc-sub" style="flex-basis:100%;">Aucun exercice enregistré pour ce groupe : tape un nouveau nom.</div>';
+  html += names.map(function(n){
     return '<button type="button" class="chip-btn' + (n === cur ? ' on' : '') + '" data-pickname="' + kind + '" data-name="' + escHtml(n) + '">' + escHtml(n) + '</button>';
   }).join("");
+  document.getElementById(m.chips).innerHTML = html;
 }
 function setVal(id, v){
   var el = document.getElementById(id);
@@ -4386,6 +4773,15 @@ document.addEventListener("click", function(e){
     inp.dispatchEvent(new Event("input", { bubbles:true }));
     return;
   }
+  var pg = e.target.closest("[data-pickgroup]");
+  if(pg){
+    var gk = pg.dataset.pickgroup, sel = document.getElementById(GROUP_UI[gk].select);
+    sel.value = (sel.value === pg.dataset.group) ? "" : pg.dataset.group;
+    sel.dispatchEvent(new Event("change", { bubbles:true }));
+    renderGroupChips(gk);
+    renderNameChips(gk);
+    return;
+  }
   var rep = e.target.closest("[data-reprendre]");
   if(rep){
     var k2 = rep.dataset.reprendre;
@@ -4415,8 +4811,8 @@ document.addEventListener("click", function(e){
 
 /* ----- tiroir exercice ----- */
 function clearEntryFields(){
-  ["exName","exSets","exReps","exLoad","exRpe","runDistance","runDuration","runRpe","stretchName","stretchSeries","stretchDuree","stretchRpe","isoName","isoSeries","isoReps","isoDuree","isoRpe","exGroup","isoGroup"].forEach(function(id){ document.getElementById(id).value = ""; });
-  ["exTonnagePreview","runLoadPreview","stretchTotalPreview","isoTotalPreview","exLastTimeReminder","stretchLastTimeReminder","isoLastTimeReminder"].forEach(function(id){ document.getElementById(id).innerHTML = ""; });
+  ["exName","exSets","exReps","exLoad","exRpe","runDistance","runDuration","runRpe","stretchName","stretchSeries","stretchDuree","stretchRpe","isoName","isoSeries","isoReps","isoDuree","isoRpe","exGroup","isoGroup","isoPct"].forEach(function(id){ document.getElementById(id).value = ""; });
+  ["exTonnagePreview","runLoadPreview","stretchTotalPreview","isoTotalPreview","exLastTimeReminder","stretchLastTimeReminder","isoLastTimeReminder","exRecoCard","isoTargetCard"].forEach(function(id){ document.getElementById(id).innerHTML = ""; });
   isoType = null;
   document.querySelectorAll("#isoTypeGrid .quality-chip").forEach(function(c){ c.classList.remove("selected","single"); });
 }
@@ -4425,8 +4821,10 @@ function openExSheet(editing){
   document.getElementById("addDayEntryBtn").textContent = editing ? "Enregistrer les modifications" : "Enregistrer";
   document.getElementById("addNextEntryBtn").hidden = !!editing;
   document.getElementById("deleteEntryBtn").hidden = !editing;
+  renderGroupChips('exercise'); renderGroupChips('isometric');
   renderNameChips(dayKind);
   refreshSessionLabel();
+  renderIsoTarget();
   document.getElementById("exSheet").hidden = false;
 }
 function closeExSheet(){
@@ -4472,16 +4870,24 @@ var rpeTargetId = null;
 function openRpeSheet(entryId){
   rpeTargetId = entryId;
   var entry = (getSelectedPatient().program.entries[dayModalDate] || []).find(function(x){ return x.id === entryId; });
-  document.getElementById("rpeSheetTitle").textContent = "RPE — " + (entry && entry.name ? entry.name : "Course");
-  var cur = entry && entry.rpe !== undefined ? entry.rpe : null;
+  var isEx = !!entry && entry.kind === 'exercise';
+  document.getElementById("rpeSheetTitle").textContent = (isEx ? "RIR — " : "RPE — ") + (entry && entry.name ? entry.name : "Course");
+  document.getElementById("rpeHelp").hidden = !isEx;
+  document.getElementById("rpeLegend").innerHTML = isEx ? '<span>0 : à l\'échec</span><span>5 : 5 ou plus en réserve</span>' : '<span>Très facile</span><span>Maximal</span>';
+  document.getElementById("clearRpeBtn").textContent = isEx ? "Effacer le RIR" : "Effacer le RPE";
+  var cur = entry ? (isEx ? entry.rir : entry.rpe) : undefined;
+  var lo = isEx ? 0 : 1, hi = isEx ? 5 : 10;
   var html = '<div class="scale">';
-  for(var i=1;i<=10;i++) html += '<button type="button" data-rpeval="' + i + '"' + (cur === i ? ' class="on"' : '') + ' aria-pressed="' + (cur === i) + '">' + i + '</button>';
+  for(var i=lo;i<=hi;i++) html += '<button type="button" data-rpeval="' + i + '"' + (cur === i ? ' class="on"' : '') + ' aria-pressed="' + (cur === i) + '">' + i + (isEx && i === 5 ? '+' : '') + '</button>';
   document.getElementById("rpeSheetRow").innerHTML = html + '</div>';
   document.getElementById("rpeSheet").hidden = false;
 }
 function setEntryRpe(val){
   var entry = (getSelectedPatient().program.entries[dayModalDate] || []).find(function(x){ return x.id === rpeTargetId; });
-  if(entry){ entry.rpe = val; saveData(); }
+  if(entry){
+    if(entry.kind === 'exercise') entry.rir = val; else entry.rpe = val;
+    saveData();
+  }
   document.getElementById("rpeSheet").hidden = true;
   renderDayEntriesList();
 }
@@ -4573,7 +4979,7 @@ function isDayClosed(m){ return m.sessionRpe > 0 && m.sessionDuree > 0; }
 function updateCloseFooter(){
   var m = currentMeta(), closed = isDayClosed(m);
   document.getElementById("closeHint").textContent = closed
-    ? "Séance clôturée · RPE " + m.sessionRpe + " · " + m.sessionDuree + " min · " + fmtNum(m.sessionRpe * m.sessionDuree) + " UA"
+    ? "Séance clôturée · RPE " + m.sessionRpe + " · " + m.sessionDuree + " min" + (isAutonomous() ? "" : " · " + fmtNum(m.sessionRpe * m.sessionDuree) + " UA")
     : "Pour finir : RPE de séance et durée";
   var btn = document.getElementById("openCloseBtn");
   btn.textContent = closed ? "Modifier la clôture" : "Clôturer la séance";
@@ -4604,6 +5010,1047 @@ document.getElementById("confirmCloseBtn").addEventListener("click", function(){
   }
   document.getElementById("closeSheet").hidden = true;
   updateCloseFooter();
+});
+
+/* ============================================================
+   LECTURE DES NOTES LIBRES (symptômes) : repérage de mots, pas une vraie compréhension
+   ============================================================ */
+var SYM_LEVELS = ["info","vigilance","attention"];
+var SYM_LEVEL_LABEL = { info:"à noter", vigilance:"vigilance", attention:"attention" };
+var SYM_LEX = [
+  { key:"courbatures", label:"Courbatures", base:0, re:/courbatur|\bdoms\b|muscles? (?:lourds?|tendus?)|jambes? lourdes?/ },
+  { key:"douleur", label:"Douleur", base:1, re:/douleur|\bmal\b|fait mal|\bgene\b|\bgenant|\bgenante|tiraill|\bpince|\btire\b|lancin|elanc|brulure|inconfort/ },
+  { key:"gonflement", label:"Gonflement / chaleur", base:2, re:/gonfl|oedem|epanch|enfl|rougeur|(?:genou|cheville|epaule|coude|poignet|hanche|articulation) (?:chaud|chaude)/ },
+  { key:"instabilite", label:"Blocage / instabilité", base:2, re:/blocage|\bbloque|verrouill|derob|\blache\b|\bcede\b|instabil|fait defaut/ },
+  { key:"neuro", label:"Engourdissement / irradiation", base:2, re:/engourd|fourmill|picot|irradi|decharge|insensib/ },
+  { key:"traumatisme", label:"Événement aigu", base:2, re:/claquage|dechirure|rupture|entorse|luxation|fracture|craquement douloureux/ },
+  { key:"raideur", label:"Raideur", base:0, re:/raide|raideur|rigid|derouill/ },
+  { key:"fatigue", label:"Fatigue", base:0, re:/fatig|epuis|\bcrev|\bko\b|a plat|\bvide\b/ },
+  { key:"sommeil", label:"Mauvais sommeil", base:0, re:/mal dormi|dormi mal|dormir mal|insomni|nuit courte|nuit blanche|sommeil (?:mauvais|hache|court)/, noClean:true }
+];
+var SYM_STRONG = /\b(?:fort|forte|forts|fortes|vive|vifs|aigue|aigu|intense|intenses|important|importante|importants|importantes|enorme|insupportable|terrible|tres|vraiment|beaucoup|pire|bloquant|bloquante)\b|\+\+/;
+var SYM_MILD = /\b(?:leger|legere|legers|legeres|petit|petite|un peu|discret|discrete|faible|minime|moins|diminu\w*|attenu\w*)\b/;
+var SYM_NEG = /(?:^|\s)(pas|plus|aucun|aucune|sans|ni|jamais|rien|nul|nulle|zero)(?:\s+\S+){0,3}\s*$/;
+function symNorm(t){
+  return String(t || "").toLowerCase().replace(/œ/g, "oe").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[’]/g, "'");
+}
+function readSymptoms(text){
+  var found = {};
+  if(!text || !String(text).trim()) return [];
+  symNorm(text).split(/[.;,!?\n]|\bmais\b|\bsauf\b|\bsinon\b|\bpar contre\b|\bcependant\b|\bpuis\b/).forEach(function(raw){
+    var clause = raw.trim();
+    if(!clause) return;
+    if(/\b(?:ras|rien a signaler|aucun symptome|aucune gene|tout va bien|tout est ok)\b/.test(clause)) return;
+    var clean = clause.replace(/\b(?:mal dormi|dormi mal|dormir mal)\b/g, " ");
+    SYM_LEX.forEach(function(lex){
+      var src = lex.noClean ? clause : clean;
+      var m = lex.re.exec(src);
+      if(!m) return;
+      var before = src.slice(0, m.index), after = src.slice(m.index + m[0].length);
+      var neg = SYM_NEG.exec(before), comparative = false;
+      if(neg && neg[1] === "plus" && /\b(?:que|qu)\b/.test(after)){ neg = null; comparative = true; }
+      if(neg) return;
+      if(/^\s*[:=]?\s*(?:0|zero|nulle?)\b/.test(after)) return;
+      if(/\b(?:disparu\w*|passe\w*|parti\w*|termine\w*|fini\w*|envole\w*|resolu\w*|gueri\w*)\b/.test(after.split(/\s+/).slice(0, 6).join(" "))) return;
+      var lvl = lex.base, strong = SYM_STRONG.test(src) || comparative, mild = SYM_MILD.test(src);
+      if(strong && !mild) lvl++; else if(mild && !strong) lvl--;
+      lvl = Math.max(0, Math.min(2, lvl));
+      if(!found[lex.key] || lvl > found[lex.key].lvl) found[lex.key] = { key:lex.key, label:lex.label, lvl:lvl, snippet:clause };
+    });
+  });
+  return Object.keys(found).map(function(k){ return found[k]; });
+}
+function readNotes(meta){
+  var res = [], ignored = meta.ignoredFlags || [];
+  [["j1","J+1"],["j2","J+2"],["commentaire","Note"]].forEach(function(f){
+    readSymptoms(meta[f[0]]).forEach(function(x){
+      var id = f[0] + ":" + x.key;
+      res.push({ id:id, field:f[1], key:x.key, label:x.label, lvl:x.lvl, snippet:x.snippet, ignored: ignored.indexOf(id) !== -1 });
+    });
+  });
+  return res;
+}
+// niveau effectif (les courbatures dépendent d'un réglage)
+function symLevel(n){
+  if(n.key === "courbatures"){
+    var mode = progSettings().courbaturesBlock;
+    if(mode === "never") return 0;
+    if(mode === "always") return Math.max(n.lvl, 1);
+  }
+  return n.lvl;
+}
+function renderSymptomChips(patient, dateKey){
+  var el = document.getElementById("symptomChips");
+  if(!el) return;
+  var meta = (patient.program.dayMeta || {})[dateKey] || {};
+  var hasText = ["j1","j2","commentaire"].some(function(k){ return meta[k] && String(meta[k]).trim(); });
+  if(!hasText){ el.innerHTML = ""; return; }
+  var notes = readNotes(meta);
+  var chips = notes.map(function(n){
+    var sev = SYM_LEVELS[symLevel(n)];
+    return '<button type="button" class="sym-chip sev-' + sev + (n.ignored ? ' ign' : '') + '" data-symid="' + n.id + '" title="Lu dans : « ' + escHtml(n.snippet) + ' » — touche pour ' + (n.ignored ? 'reprendre en compte' : 'ignorer') + '">' + n.field + ' · ' + n.label + ' · ' + SYM_LEVEL_LABEL[sev] + '</button>';
+  }).join("");
+  el.innerHTML = '<div class="sym-wrap"><div class="tc-sub"><b>Lu dans tes notes</b> — repérage de mots, pas de la compréhension : touche une étiquette pour l\'ignorer si la lecture est fausse.</div>' +
+    (chips ? '<div class="sym-chips">' + chips + '</div>' : '<div class="tc-sub" style="margin-top:4px;">Rien de particulier repéré.</div>') + '</div>';
+}
+document.addEventListener("click", function(e){
+  var chip = e.target.closest("[data-symid]");
+  if(!chip) return;
+  var patient = getSelectedPatient();
+  var lastDate = lastProgramDate(patient);
+  if(!lastDate) return;
+  var meta = patient.program.dayMeta[lastDate] = patient.program.dayMeta[lastDate] || {};
+  var id = chip.dataset.symid, list = meta.ignoredFlags = meta.ignoredFlags || [], k = list.indexOf(id);
+  if(k === -1) list.push(id); else list.splice(k, 1);
+  saveData();
+  renderSymptomChips(patient, lastDate);
+  renderDashboard(patient);
+});
+
+/* ============================================================
+   SUGGESTIONS DE CHARGE (RIR) : des recommandations, jamais une vérité
+   ============================================================ */
+var PROG_DEFAULTS = {
+  rir: { montee_charge:[3,4], accumulation:[2,3], intensification:[1,2], consolidation:[3,4], deload:[4,5], exposition:[3,4], libre:[2,3] },
+  incUpper: 2.5, incLower: 5, painMax: 3, deloadLoadPct: 10, deloadVolPct: 30, readinessDrop: 2,
+  volMin: 10, volMax: 20, volJumpPct: 30, courbaturesBlock: "important", volBlocks: true, needTwoSessions: false,
+  goalReps: { hypertrophie:[8,12], force:[3,6], endurance_force:[12,20] }, coldMargin: 15, isoDefaultPct: 70
+};
+var LOWER_GROUPS = ["Quadriceps","Ischio-jambiers","Fessiers","Mollets / triceps sural","Adducteurs","Abducteurs","Tibial / fibulaires"];
+function progSettings(){
+  var saved = (state.settings && state.settings.prog) || {};
+  var cfg = JSON.parse(JSON.stringify(PROG_DEFAULTS));
+  Object.keys(saved).forEach(function(k){
+    if(k === "rir" || k === "goalReps"){ Object.keys(saved[k] || {}).forEach(function(t){ if(saved[k][t]) cfg[k][t] = saved[k][t]; }); }
+    else if(saved[k] !== undefined && saved[k] !== null) cfg[k] = saved[k];
+  });
+  if(saved.needTwoSessions === undefined || saved.needTwoSessions === null) cfg.needTwoSessions = isAutonomous();
+  return cfg;
+}
+function roundHalf(x){ return Math.round(x * 2) / 2; }
+function meanOf(a){ return a.reduce(function(x, y){ return x + y; }, 0) / a.length; }
+function exerciseSessions(patient, name){
+  var today = todayISO(), byDay = {};
+  Object.keys(patient.program.entries).forEach(function(k){
+    if(k > today) return;
+    (patient.program.entries[k] || []).forEach(function(e){
+      if(e.kind !== 'exercise' || e.name !== name) return;
+      var cur = byDay[k];
+      if(!cur || (e.load || 0) > (cur.load || 0)) byDay[k] = { date:k, load:e.load || 0, reps:e.reps || 0, sets:e.sets || 0, rir:(e.rir !== undefined && e.rir !== null) ? e.rir : undefined, group:e.group };
+    });
+  });
+  return Object.keys(byDay).sort().reverse().map(function(k){ return byDay[k]; });
+}
+function directionFor(rir, target){ return rir > target[1] ? 'up' : (rir < target[0] ? 'down' : 'hold'); }
+
+function isHardSet(e){
+  if(e.kind === 'exercise' && e.rir !== undefined && e.rir !== null) return e.rir <= state.settings.hardRir;
+  if(e.rpe !== undefined && e.rpe !== null) return e.rpe >= state.settings.hardRpe;
+  return false;
+}
+function volumeWindow(patient, endKey, days){
+  var startKey = addDaysToDate(endKey, -(days - 1)), byGroup = {}, total = 0, hard = 0;
+  Object.keys(patient.program.entries).forEach(function(k){
+    if(k < startKey || k > endKey) return;
+    (patient.program.entries[k] || []).forEach(function(e){
+      var n = setsOf(e);
+      if(!n) return;
+      var g = groupOf(patient, e);
+      var c = byGroup[g] = byGroup[g] || { total:0, hard:0 };
+      c.total += n; total += n;
+      if(isHardSet(e)){ c.hard += n; hard += n; }
+    });
+  });
+  return { byGroup:byGroup, total:total, hard:hard };
+}
+// Volume sur 7 jours glissants + comparaison avec les 3 fenêtres précédentes (si l'historique est assez long).
+function volumeContext(patient, group){
+  var today = todayISO(), w0 = volumeWindow(patient, today, 7);
+  var keys = Object.keys(patient.program.entries).filter(function(k){ return (patient.program.entries[k] || []).length > 0; }).sort();
+  var first = keys.length ? keys[0] : null, totals = [];
+  [1,2,3].forEach(function(i){
+    var end = addDaysToDate(today, -7 * i);
+    if(first && addDaysToDate(end, -6) >= first) totals.push(volumeWindow(patient, end, 7).total);
+  });
+  var prevAvg = totals.length >= 2 ? meanOf(totals) : null;
+  var g = group && w0.byGroup[group] ? w0.byGroup[group] : { total:0, hard:0 };
+  return { total7:w0.total, hard7:w0.hard, groupTotal7:g.total, groupHard7:g.hard, prevAvg:prevAvg,
+    jumpPct: (prevAvg && prevAvg > 0) ? Math.round((w0.total / prevAvg - 1) * 100) : null };
+}
+function computeReco(patient, name){
+  var cfg = progSettings();
+  var all = exerciseSessions(patient, name);
+  var res = { name:name, action:'none', reasons:[], warnings:[], confidence:'', last:null };
+  if(!all.length){ res.reasons.push("Aucune séance enregistrée pour cet exercice."); return res; }
+  res.last = all[0];
+  var today = todayISO();
+  var ctx = getMicrocycleContext(patient, today);
+  var mtype = (ctx && ctx.micro.type) ? ctx.micro.type : 'libre';
+  var mLabel = mtype === 'libre' ? "sans type de microcycle" : MICRO_TYPE_LABELS[mtype];
+  res.mtype = mtype;
+  if(mtype === 'reevaluation'){ res.reasons.push("Semaine de réévaluation : pas de progression à viser, ce sont des tests."); return res; }
+  var withRir = all.filter(function(x){ return x.rir !== undefined; });
+  if(!withRir.length){ res.reasons.push("Pas encore de RIR enregistré pour cet exercice : renseigne-le depuis la carte pour obtenir une suggestion."); return res; }
+  var latest = withRir[0], base = latest.load;
+  res.base = base; res.rirLast = latest.rir;
+  var group = latest.group || (patient.program.exerciseGroups || {})[name] || "";
+  var inc = LOWER_GROUPS.indexOf(group) !== -1 ? cfg.incLower : cfg.incUpper;
+  if(inc > 0.1 * base) inc = Math.max(0.5, roundHalf(0.1 * base));
+  if(base <= 0) inc = 0;
+
+  if(mtype === 'deload'){
+    res.action = 'deload';
+    res.confidence = "règle du bloc";
+    if(base > 0){ res.suggestedLoad = roundHalf(base * (1 - cfg.deloadLoadPct / 100)); res.delta = round1(res.suggestedLoad - base); }
+    res.reasons.push("Microcycle de deload : charge ≈ −" + cfg.deloadLoadPct + " % et volume ≈ −" + cfg.deloadVolPct + " % (réglages modifiables).");
+    return res;
+  }
+
+  var target = cfg.rir[mtype] || cfg.rir.libre;
+  res.target = target;
+  var dirLatest = directionFor(latest.rir, target);
+  var dirPrev = withRir[1] ? directionFor(withRir[1].rir, target) : null;
+  var action = dirLatest;
+  var steps = (dirLatest === 'up' && latest.rir - target[1] >= 3) ? 2 : 1;
+  if(dirPrev){
+    if(dirPrev === dirLatest) res.confidence = "plus solide (2 séances concordantes)";
+    else if((dirLatest === 'up' && dirPrev === 'down') || (dirLatest === 'down' && dirPrev === 'up')){
+      action = 'hold'; res.confidence = "signaux divergents";
+      res.warnings.push("Les deux dernières séances disent l'inverse (RIR " + withRir[1].rir + " puis " + latest.rir + ") : on maintient le temps d'y voir clair.");
+    } else res.confidence = "indicatif (2 séances, une seule va dans ce sens)";
+  } else res.confidence = "indicatif (1 séance)";
+  if(dirLatest === 'down' && dirPrev !== 'down' && action === 'down'){ action = 'hold'; res.warnings.push("RIR sous la cible : si cela se confirme à la prochaine séance, réduis d'un cran."); }
+  if(action === 'down') action = 'decrease';
+
+  // signaux de prudence (symptômes, récupération)
+  var SAFE = isAutonomous() ? " Si cela persiste, consulte un professionnel de santé." : "";
+  if(action === 'up' && !dirPrev && cfg.needTwoSessions){
+    action = 'hold';
+    res.warnings.push("Une seule séance avec RIR : on attend une deuxième séance qui confirme avant d'augmenter (réglage « Exiger 2 séances »).");
+  }
+  var dm = patient.program.dayMeta || {};
+  var meta = dm[latest.date] || {};
+  var blockUp = false;
+  if(meta.pain !== undefined && meta.pain >= cfg.painMax){ blockUp = true; res.warnings.push("Douleur " + meta.pain + "/10 le jour de la séance (seuil réglé à " + cfg.painMax + ") : pas d'augmentation ; réduis d'un cran si elle persiste." + SAFE); }
+  if(meta.retourBaseline === 'non'){ blockUp = true; res.warnings.push("Retour à la baseline : non après cette séance."); }
+  else if(meta.retourBaseline === 'partiel' || meta.performance === 'diminuee'){ blockUp = true; res.warnings.push("Retour partiel ou performance diminuée après cette séance : prudence."); }
+  var noteList = readNotes(meta).filter(function(n){ return !n.ignored; }), worstNote = -1;
+  noteList.forEach(function(n){ worstNote = Math.max(worstNote, symLevel(n)); });
+  if(noteList.length){
+    var noteDesc = noteList.map(function(n){ return n.field + " : " + n.label.toLowerCase(); }).join(" · ");
+    if(worstNote >= 1){
+      blockUp = true;
+      res.warnings.push("Lu dans tes notes (" + noteDesc + ") : pas d'augmentation" + (worstNote === 2 ? " ; à évaluer avant de charger cette zone." : ".") + SAFE);
+    } else res.reasons.push("Notes : " + noteDesc + ".");
+  }
+  var rdates = Object.keys(dm).filter(function(k){ return k <= today && dm[k].readiness !== undefined; }).sort();
+  if(rdates.length >= 4){
+    var latestR = dm[rdates[rdates.length - 1]].readiness;
+    var prevVals = rdates.slice(-15, -1).map(function(k){ return dm[k].readiness; });
+    if(prevVals.length >= 3 && latestR <= meanOf(prevVals) - cfg.readinessDrop){
+      blockUp = true; res.warnings.push("Readiness récente (" + latestR + ") nettement sous ta moyenne (" + round1(meanOf(prevVals)) + ").");
+    }
+  }
+  var vol = volumeContext(patient, group);
+  res.volume = vol;
+  if(group){
+    if(vol.groupHard7 > cfg.volMax){
+      res.warnings.push("Volume du groupe déjà élevé : " + vol.groupHard7 + " séries difficiles sur 7 jours (repère haut réglé à " + cfg.volMax + ")" + (cfg.volBlocks ? " : pas d'augmentation de charge pour l'instant, et évite d'ajouter du volume." : " : évite d'ajouter du volume."));
+      if(cfg.volBlocks) blockUp = true;
+    } else if(vol.groupHard7 < cfg.volMin && !blockUp && dirLatest !== 'down' && (mtype === 'accumulation' || mtype === 'montee_charge' || mtype === 'libre')){
+      res.reasons.push("Marge de volume : " + vol.groupHard7 + " séries difficiles sur 7 jours pour ce groupe (repère " + cfg.volMin + "–" + cfg.volMax + ") : tu peux ajouter une série.");
+    } else {
+      res.reasons.push("Volume du groupe : " + vol.groupHard7 + " séries difficiles sur 7 jours (repère " + cfg.volMin + "–" + cfg.volMax + ").");
+    }
+  }
+  if(vol.jumpPct !== null && vol.jumpPct >= cfg.volJumpPct){
+    res.warnings.push("Volume total en hausse de +" + vol.jumpPct + " % sur 7 jours par rapport à ta moyenne des semaines précédentes" + (cfg.volBlocks ? " : pas d'augmentation de charge pour l'instant, surveille la récupération." : " : surveille la récupération."));
+    if(cfg.volBlocks) blockUp = true;
+  }
+  if(blockUp && action === 'up') action = 'hold';
+  res.action = action;
+  if(base > 0){
+    if(action === 'up') res.suggestedLoad = roundHalf(base + steps * inc);
+    else if(action === 'decrease') res.suggestedLoad = roundHalf(Math.max(0, base - inc));
+    else res.suggestedLoad = base;
+    res.delta = round1(res.suggestedLoad - base);
+  }
+  res.reasons.push("Dernière séance (" + fmtDate(latest.date) + ") : RIR " + latest.rir + " pour une cible de " + target[0] + (target[1] !== target[0] ? "–" + target[1] : "") + " (" + mLabel + ").");
+  if(meta.pain !== undefined) res.reasons.push("Douleur ce jour-là : " + meta.pain + "/10.");
+  return res;
+}
+var RECO_LABELS = { up:"Augmenter", hold:"Maintenir", decrease:"Réduire", deload:"Deload", none:"—" };
+function fmtDelta(d){ return (d > 0 ? "+" : (d < 0 ? "−" : "")) + frDec(Math.abs(d)); }
+
+var currentReco = null;
+function renderRecoCard(){
+  var el = document.getElementById("exRecoCard");
+  var name = document.getElementById("exName").value.trim();
+  currentReco = null;
+  if(!name || editingEntryId){ el.innerHTML = ""; return; }
+  var patientNow = getSelectedPatient();
+  var r = computeReco(patientNow, name);
+  if(!r.last){ el.innerHTML = coldStartHtml(patientNow, name); return; }
+  currentReco = r;
+  var ti = targetInfo(patientNow, name);
+  var zoneLine = (ti && ti.zone) ? '<div class="reco-why">Zone ' + zoneText(ti.zone) + ' · 1RM estimé ' + fmtKg(ti.ee.e1rm) + ' (fiabilité ' + ti.ee.rel + ').</div>' : '';
+  if(r.action === 'none'){
+    el.innerHTML = '<div class="reco-card none"><div class="reco-head"><span class="reco-tag">Suggestion</span></div><div class="reco-why">' + r.reasons.join(" ") + '</div>' + zoneLine + '</div>';
+    return;
+  }
+  var main;
+  if(r.suggestedLoad === undefined) main = RECO_LABELS[r.action] + " (charge nulle : ajuste les répétitions)";
+  else if(r.action === 'hold') main = "Maintenir " + frDec(r.base) + " kg";
+  else main = RECO_LABELS[r.action] + " : " + frDec(r.suggestedLoad) + " kg" + '<span class="reco-delta ' + (r.delta >= 0 ? 'up' : 'down') + '">' + fmtDelta(r.delta) + '</span>';
+  el.innerHTML = '<div class="reco-card"><div class="reco-head"><span class="reco-tag">Suggestion</span><span>' + r.confidence + '</span></div>' +
+    '<div class="reco-main">' + main + '</div>' +
+    '<div class="reco-why">' + r.reasons.join(" ") + '</div>' + zoneLine +
+    r.warnings.map(function(w){ return '<div class="reco-warn">' + w + '</div>'; }).join("") +
+    '<div class="reco-actions">' + (r.suggestedLoad !== undefined ? '<button type="button" class="lt-btn" data-reco-apply>Appliquer</button>' : '') + '<button type="button" class="lt-btn muted" data-reco-ignore>Ignorer</button></div></div>';
+}
+function logReco(outcome){
+  if(!currentReco) return;
+  var patient = getSelectedPatient();
+  ensurePeriodization(patient);
+  var r = currentReco;
+  addAudit(patient, "Suggestion de charge « " + r.name + " » : " + RECO_LABELS[r.action].toLowerCase() + (r.suggestedLoad !== undefined ? " " + frDec(r.suggestedLoad) + " kg" : "") + " — " + outcome + ".");
+  saveData();
+}
+document.getElementById("exName").addEventListener("input", renderRecoCard);
+document.getElementById("exName").addEventListener("input", function(){ renderGroupChips('exercise'); });
+document.getElementById("exGroup").addEventListener("change", renderRecoCard);
+document.getElementById("isoName").addEventListener("input", function(){ renderGroupChips('isometric'); });
+document.addEventListener("click", function(e){
+  if(e.target.closest("[data-reco-apply]") && currentReco && currentReco.suggestedLoad !== undefined){
+    setVal("exLoad", currentReco.suggestedLoad);
+    logReco("appliquée");
+    document.getElementById("exRecoCard").innerHTML = '<div class="reco-card none"><div class="reco-why">Suggestion appliquée : ' + frDec(currentReco.suggestedLoad) + ' kg dans la charge. Tu peux encore la modifier.</div></div>';
+  } else if(e.target.closest("[data-reco-ignore]") && currentReco){
+    logReco("ignorée");
+    document.getElementById("exRecoCard").innerHTML = '<div class="reco-card none"><div class="reco-why">Suggestion ignorée.</div></div>';
+  }
+});
+
+/* ----- panneau « Suggestions de charge » (Programme) ----- */
+function renderRecoPanel(patient){
+  var el = document.getElementById("recoPanelWrap");
+  var since = addDaysToDate(todayISO(), -42), names = {};
+  Object.keys(patient.program.entries).forEach(function(k){
+    if(k < since || k > todayISO()) return;
+    (patient.program.entries[k] || []).forEach(function(e){ if(e.kind === 'exercise' && e.name) names[e.name] = true; });
+  });
+  var list = Object.keys(names).map(function(n){ return computeReco(patient, n); }).filter(function(r){ return r.last; })
+    .sort(function(a, b){ return b.last.date.localeCompare(a.last.date); });
+  var vctx = volumeContext(patient, "");
+  var volLine = '<div class="tc-sub" style="margin-bottom:8px;">Volume total sur 7 jours : <b>' + vctx.total7 + ' séries</b> (dont ' + vctx.hard7 + ' difficiles)' +
+    (vctx.jumpPct !== null ? ' · ' + (vctx.jumpPct >= 0 ? '+' : '') + vctx.jumpPct + ' % vs ta moyenne des semaines précédentes' : '') + '.</div>';
+  var head = '<div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px;"><b style="font-size:13px;">Suggestions de charge</b><button type="button" class="btn-ghost" id="openProgSettingsBtn">Réglages</button></div>' + volLine +
+    '<div class="tc-sub" style="margin-bottom:10px;">Des recommandations, pas des vérités : elles comparent le RIR de ta dernière séance à la cible du microcycle en cours et se méfient de la douleur, de la récupération et du retour à la baseline. Elles ne savent pas si les répétitions prévues ont été toutes réalisées.</div>';
+  if(!list.length){ el.innerHTML = head + '<div class="w-callout">Aucun exercice enregistré ces 6 dernières semaines.</div>'; bindProgSettingsBtn(); return; }
+  var rows = list.map(function(r){
+    var sug;
+    if(r.action === 'none') sug = '<span class="tc-sub">—</span>';
+    else if(r.suggestedLoad === undefined) sug = '<b>' + RECO_LABELS[r.action] + '</b>';
+    else sug = '<b>' + RECO_LABELS[r.action] + ' ' + frDec(r.suggestedLoad) + ' kg</b>' + (r.action === 'hold' ? '' : ' <span class="reco-delta ' + (r.delta >= 0 ? 'up' : 'down') + '">' + fmtDelta(r.delta) + '</span>');
+    return '<tr><td><b>' + escHtml(r.name) + '</b></td>' +
+      '<td>' + r.last.sets + ' × ' + r.last.reps + ' @ ' + frDec(r.last.load) + ' kg' + (r.last.rir !== undefined ? ' · RIR ' + r.last.rir : '') + '<div class="tc-sub">' + fmtDate(r.last.date) + '</div></td>' +
+      '<td>' + sug + '</td><td class="tc-sub">' + (r.confidence || "") + '</td>' +
+      '<td class="tc-sub">' + r.reasons.join(" ") + r.warnings.map(function(w){ return '<div style="color:#8a5200;">' + w + '</div>'; }).join("") + '</td></tr>';
+  }).join("");
+  el.innerHTML = head + '<table class="norm-table"><thead><tr><th>Exercice</th><th>Dernière séance</th><th>Suggestion</th><th>Confiance</th><th>Pourquoi</th></tr></thead><tbody>' + rows + '</tbody></table>';
+  bindProgSettingsBtn();
+}
+function bindProgSettingsBtn(){
+  var b = document.getElementById("openProgSettingsBtn");
+  if(b) b.addEventListener("click", openProgSettings);
+}
+document.getElementById("toggleRecoBtn").addEventListener("click", function(){
+  var wrap = document.getElementById("recoPanelWrap");
+  wrap.hidden = !wrap.hidden;
+  this.textContent = wrap.hidden ? "🎯 Suggestions de charge" : "🎯 Masquer les suggestions";
+  if(!wrap.hidden) renderRecoPanel(getSelectedPatient());
+});
+
+/* ----- réglages des suggestions ----- */
+function setProgSetting(path, val){
+  if(!state.settings.prog) state.settings.prog = {};
+  var parts = path.split(".");
+  if(parts.length === 3){
+    var grp = parts[0], key = parts[1], idx = parseInt(parts[2]);
+    var cur = ((progSettings()[grp] || {})[key] || [0, 0]).slice();
+    cur[idx] = val;
+    if(cur[0] > cur[1]){ if(idx === 0) cur[1] = cur[0]; else cur[0] = cur[1]; }
+    if(!state.settings.prog[grp]) state.settings.prog[grp] = {};
+    state.settings.prog[grp][key] = cur;
+  } else state.settings.prog[path] = val;
+  saveData();
+}
+function openProgSettings(){
+  var cfg = progSettings();
+  var types = ["montee_charge","accumulation","intensification","consolidation","deload","exposition"];
+  var html = '<p class="tc-sub">Valeurs de départ, à ajuster pour chaque patient. Le RIR cible est le nombre de répétitions en réserve que tu veux viser dans chaque type de microcycle.</p>' +
+    '<div class="prog-row"><b>Type de microcycle</b><span class="pr-in"><b>RIR min</b><b style="margin-left:34px;">RIR max</b></span></div>';
+  types.forEach(function(t){
+    html += '<div class="prog-row"><span>' + MICRO_TYPE_LABELS[t] + '</span><span class="pr-in"><input class="prog-input" type="number" min="0" max="5" step="1" data-progkey="rir.' + t + '.0" value="' + cfg.rir[t][0] + '"><input class="prog-input" type="number" min="0" max="5" step="1" data-progkey="rir.' + t + '.1" value="' + cfg.rir[t][1] + '"></span></div>';
+  });
+  html += '<div class="prog-row"><span>Sans type de microcycle</span><span class="pr-in"><input class="prog-input" type="number" min="0" max="5" step="1" data-progkey="rir.libre.0" value="' + cfg.rir.libre[0] + '"><input class="prog-input" type="number" min="0" max="5" step="1" data-progkey="rir.libre.1" value="' + cfg.rir.libre[1] + '"></span></div>';
+  [["hypertrophie","Hypertrophie"],["force","Force"],["endurance_force","Endurance de force"]].forEach(function(g){
+    html += '<div class="prog-row"><span>Répétitions visées · ' + g[1] + '</span><span class="pr-in"><input class="prog-input" type="number" min="1" max="30" step="1" data-progkey="goalReps.' + g[0] + '.0" value="' + cfg.goalReps[g[0]][0] + '"><input class="prog-input" type="number" min="1" max="30" step="1" data-progkey="goalReps.' + g[0] + '.1" value="' + cfg.goalReps[g[0]][1] + '"></span></div>';
+  });
+  [["incUpper","Pas d'augmentation, haut du corps (kg)",0.5,0.5],["incLower","Pas d'augmentation, bas du corps (kg)",0.5,0.5],["painMax","Douleur à partir de laquelle on n'augmente pas (EVA 0-10)",1,1],["deloadLoadPct","Deload : baisse de charge (%)",1,1],["deloadVolPct","Deload : baisse de volume (%)",1,1],["readinessDrop","Baisse de readiness jugée notable (points)",0.5,0.5],["volMin","Volume : séries difficiles par groupe et par semaine, repère bas",1,1],["volMax","Volume : séries difficiles par groupe et par semaine, repère haut",1,1],["volJumpPct","Hausse du volume total jugée notable (%)",5,5],["coldMargin","Marge d'incertitude pour une charge estimée sans historique (%)",5,5],["isoDefaultPct","Intensité isométrique proposée par défaut (% de Fmax)",5,5]].forEach(function(f){
+    html += '<div class="prog-row"><span>' + f[1] + '</span><span class="pr-in"><input class="prog-input" type="number" min="0" step="' + f[3] + '" data-progkey="' + f[0] + '" value="' + cfg[f[0]] + '"></span></div>';
+  });
+  [["volBlocks","Les avertissements de volume bloquent l\'augmentation de charge"],["needTwoSessions","Exiger 2 séances concordantes avant d\'augmenter"]].forEach(function(f){
+    html += '<div class="prog-row"><span>' + f[1] + '</span><span class="pr-in"><select class="prog-input" style="width:90px !important;" data-bool="1" data-progkey="' + f[0] + '"><option value="1"' + (cfg[f[0]] ? ' selected' : '') + '>Oui</option><option value="0"' + (!cfg[f[0]] ? ' selected' : '') + '>Non</option></select></span></div>';
+  });
+  html += '<div class="prog-row"><span>Les courbatures notées bloquent l\'augmentation</span><span class="pr-in"><select class="prog-input" style="width:170px !important;" data-progkey="courbaturesBlock">' +
+    [["important","Seulement si importantes"],["always","Toujours"],["never","Jamais"]].map(function(o){ return '<option value="' + o[0] + '"' + (cfg.courbaturesBlock === o[0] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join("") + '</select></span></div>' +
+    '<p class="tc-sub" style="margin-top:10px;">Les repères de volume sont des valeurs courantes de départ, non validées pour la rééducation : règle-les selon le patient.</p>';
+  document.getElementById("progSettingsBody").innerHTML = html;
+  document.getElementById("progSettingsOverlay").hidden = false;
+}
+document.getElementById("progSettingsBody").addEventListener("change", function(e){
+  var inp = e.target.closest("[data-progkey]");
+  if(!inp) return;
+  var v = inp.tagName === "SELECT" ? inp.value : parseFloat(inp.value);
+  if(inp.dataset.bool) v = (inp.value === "1");
+  if(inp.tagName !== "SELECT" && (isNaN(v) || v < 0)) return;
+  if(inp.dataset.progkey.indexOf("rir.") === 0) v = Math.min(5, Math.round(v));
+  else if(inp.dataset.progkey.indexOf("goalReps.") === 0) v = Math.max(1, Math.min(30, Math.round(v)));
+  setProgSetting(inp.dataset.progkey, v);
+  openProgSettings();
+  var wrap = document.getElementById("recoPanelWrap");
+  if(!wrap.hidden) renderRecoPanel(getSelectedPatient());
+});
+document.getElementById("resetProgSettingsBtn").addEventListener("click", function(){
+  if(!confirm("Rétablir toutes les valeurs par défaut des suggestions ?")) return;
+  state.settings.prog = {};
+  saveData();
+  openProgSettings();
+  var wrap = document.getElementById("recoPanelWrap");
+  if(!wrap.hidden) renderRecoPanel(getSelectedPatient());
+});
+document.getElementById("closeProgSettingsBtn").addEventListener("click", function(){ document.getElementById("progSettingsOverlay").hidden = true; });
+
+/* ===== Séance du jour : tes exercices habituels pour le focus prévu ===== */
+var FOCUS_GROUPS = {
+  push:["Pectoraux","Épaules","Triceps"], pull:["Dorsaux","Biceps"],
+  legs:LOWER_GROUPS, lower:LOWER_GROUPS, jambes:LOWER_GROUPS,
+  upper:["Pectoraux","Épaules","Triceps","Dorsaux","Biceps"],
+  full:TRAIN_GROUPS.filter(function(g){ return g !== "Autre"; }), complement:TRAIN_GROUPS.filter(function(g){ return g !== "Autre"; }),
+  poitrine:["Pectoraux"], dos:["Dorsaux"], epaules:["Épaules"], bras:["Biceps","Triceps"]
+};
+function renderPlanExercises(){
+  var el = document.getElementById("planExercises");
+  if(!el) return;
+  var patient = getSelectedPatient(), pl = getPlan(patient)[dayModalDate];
+  if(!pl || !pl.focus || !FOCUS_GROUPS[pl.focus]){ el.innerHTML = ""; return; }
+  var doneToday = {};
+  (patient.program.entries[dayModalDate] || []).forEach(function(e){ if(e.name) doneToday[e.name] = true; });
+  var lastDate = {};
+  Object.keys(patient.program.entries).forEach(function(k){
+    (patient.program.entries[k] || []).forEach(function(e){
+      if(e.kind === 'exercise' && e.name && FOCUS_GROUPS[pl.focus].indexOf(entryGroup(patient, e)) !== -1 && k !== dayModalDate && (!lastDate[e.name] || k > lastDate[e.name])) lastDate[e.name] = k;
+    });
+  });
+  var names = Object.keys(lastDate).filter(function(n){ return !doneToday[n]; })
+    .sort(function(a, b){ return lastDate[b].localeCompare(lastDate[a]); }).slice(0, 8);
+  if(!names.length){ el.innerHTML = ""; return; }
+  el.innerHTML = '<div class="plan-ex"><div class="plan-head"><b>Tes exercices habituels · ' + FOCUS_LABELS[pl.focus] + '</b><span class="tc-sub">touche pour ajouter</span></div>' +
+    names.map(function(n){
+      var r = computeReco(patient, n), l = r.last;
+      var sug = (r.action !== 'none' && r.suggestedLoad !== undefined) ? '→ ' + frDec(r.suggestedLoad) + ' kg' : '';
+      return '<button type="button" class="plan-item" data-planex="' + escHtml(n) + '"><span><b>' + escHtml(n) + '</b><span class="tc-sub">' + (l ? l.sets + ' × ' + l.reps + ' @ ' + frDec(l.load) + ' kg' + (l.rir !== undefined ? ' · RIR ' + l.rir : '') : '') + '</span></span><span class="plan-sug">' + sug + '</span></button>';
+    }).join("") + '</div>';
+}
+document.addEventListener("click", function(e){
+  var it = e.target.closest("[data-planex]");
+  if(!it) return;
+  document.querySelector('#dayKindGrid [data-kind="exercise"]').click();
+  resetEntryForm();
+  clearEntryFields();
+  openExSheet(false);
+  var inp = document.getElementById("exName");
+  inp.value = it.dataset.planex;
+  inp.dispatchEvent(new Event("input", { bubbles:true }));
+});
+
+/* ============================================================
+   MODE AUTONOME (optionnel) : démarrage guidé, « Aujourd'hui », bilan de semaine
+   ============================================================ */
+(function injectAutoNav(){
+  var nav = document.getElementById("appNav");
+  function ic(path){ return '<svg class="nav-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + path + '</svg>'; }
+  var today = document.createElement("button");
+  today.setAttribute("data-appmode", "today"); today.className = "auto-only";
+  today.innerHTML = ic('<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/>') + '<span>Aujourd\'hui</span>';
+  nav.insertBefore(today, nav.firstChild);
+  var reg = document.createElement("button");
+  reg.setAttribute("data-appmode", "reglages"); reg.className = "auto-only";
+  reg.innerHTML = ic('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>') + '<span>Réglages</span>';
+  nav.appendChild(reg);
+  ["leaderboard","periodisation"].forEach(function(m){ var b = nav.querySelector('[data-appmode="' + m + '"]'); if(b) b.classList.add("adv-nav"); });
+})();
+
+/* ----- réglages de l'application / mode ----- */
+function setMode(mode){
+  state.settings.mode = mode;
+  saveData();
+  appMode = (mode === 'autonome') ? 'today' : 'profils';
+  profilsSubview = 'list';
+  renderAll();
+  renderModeModal();
+}
+function renderModeModal(){
+  var cur = isAutonomous() ? 'autonome' : 'accompagne';
+  document.getElementById("modeCards").innerHTML = [
+    ['accompagne', "Accompagné", "Pour un kiné ou un préparateur physique : plusieurs patients, tests, périodisation complète, journal des décisions."],
+    ['autonome', "Autonome", "Pour t'entraîner seul : écran « Aujourd'hui », plan préparé à partir de tes jours disponibles, bilan de semaine, vocabulaire simplifié et valeurs plus prudentes."]
+  ].map(function(o){
+    return '<div class="struct-card' + (cur === o[0] ? ' selected' : '') + '" data-modechoice="' + o[0] + '"><b>' + o[1] + '</b><div class="sw">' + o[2] + '</div></div>';
+  }).join("");
+  var extra = "";
+  if(cur === 'autonome'){
+    extra = '<div class="today-actions" style="margin:8px 0 12px;">' +
+      '<button type="button" class="btn-ghost" id="modeOnboardBtn">' + (state.settings.onboarded ? 'Refaire le démarrage guidé' : 'Lancer le démarrage guidé') + '</button>' +
+      '<button type="button" class="btn-ghost" id="modeDaysBtn">Modifier mes jours d\'entraînement</button>' +
+      '<button type="button" class="btn-ghost" id="modeSuggBtn">Réglages des suggestions de charge</button></div>';
+  }
+  document.getElementById("modeExtra").innerHTML = extra;
+  document.getElementById("modeExportLabel").textContent = document.getElementById("lastExportLabel") ? document.getElementById("lastExportLabel").textContent : "";
+}
+function openModeModal(){ renderModeModal(); document.getElementById("modeOverlay").hidden = false; }
+document.getElementById("openModeBtn").addEventListener("click", openModeModal);
+document.getElementById("closeModeBtn").addEventListener("click", function(){ document.getElementById("modeOverlay").hidden = true; });
+document.getElementById("modeExportBtn").addEventListener("click", doExport);
+document.getElementById("modeImportBtn").addEventListener("click", function(){ document.getElementById("importFile").click(); });
+document.getElementById("modeOverlay").addEventListener("click", function(e){
+  var card = e.target.closest("[data-modechoice]");
+  if(card){
+    var mode = card.dataset.modechoice;
+    if((mode === 'autonome') === isAutonomous()) return;
+    setMode(mode);
+    if(mode === 'autonome' && !state.settings.onboarded){ document.getElementById("modeOverlay").hidden = true; openOnboarding(); }
+    return;
+  }
+  if(e.target.closest("#modeOnboardBtn")){ document.getElementById("modeOverlay").hidden = true; openOnboarding(); return; }
+  if(e.target.closest("#modeDaysBtn")){
+    var p = getSelectedPatient(), m = p && currentActiveMeso(p);
+    if(m){ document.getElementById("modeOverlay").hidden = true; openWeekTemplate(p, m.id); }
+    else alert("Aucun plan en cours : lance d'abord le démarrage guidé.");
+    return;
+  }
+  if(e.target.closest("#modeSuggBtn")){ document.getElementById("modeOverlay").hidden = true; openProgSettings(); return; }
+});
+
+/* ----- démarrage guidé ----- */
+var OB_GOALS = {
+  force:{ label:"Prendre de la force", dom:"force", macro:"performance" },
+  muscle:{ label:"Prendre du muscle", dom:"hypertrophie", macro:"performance" },
+  blessure:{ label:"Reprendre après une blessure", dom:"hypertrophie", macro:"retour_entrainement", note:"Point de départ prudent (charges modérées, volume progressif) : à valider avec ton professionnel de santé." },
+  forme:{ label:"Rester en forme", dom:"endurance_force", macro:"prevention" }
+};
+var ob = { step:1, patientId:"new", name:"", sex:"", weight:"", dob:"", goal:null, avail:[0,2,4], zone:"", consent:false };
+function openOnboarding(){
+  var cur = getSelectedPatient();
+  ob = { step:1, patientId: cur ? cur.id : "new", name: cur ? cur.name : "", sex: cur && cur.sex ? cur.sex : "", weight: cur && cur.weightKg ? String(cur.weightKg) : "", dob: cur && cur.dob ? cur.dob : "", goal:null, avail:[0,2,4], zone:"", consent:false };
+  renderOnboard();
+  document.getElementById("onboardOverlay").hidden = false;
+}
+function obCollect(){
+  var g = function(id){ var e = document.getElementById(id); return e ? e.value : null; };
+  if(ob.step === 1){
+    var pid = g("obProfile"); if(pid !== null) ob.patientId = pid;
+    var nm = g("obName"); if(nm !== null) ob.name = nm;
+    var w = g("obWeight"); if(w !== null) ob.weight = w;
+    var d = g("obDob"); if(d !== null) ob.dob = d;
+  }
+  if(ob.step === 3){ var z = g("obZone"); if(z !== null) ob.zone = z; }
+  if(ob.step === 4){ var c = document.getElementById("obConsent"); if(c) ob.consent = c.checked; }
+}
+function renderOnboard(){
+  var body = document.getElementById("onboardBody"), step = ob.step;
+  document.getElementById("onboardStepLabel").textContent = "Étape " + step + " sur 4";
+  document.getElementById("onboardBackBtn").hidden = step === 1;
+  document.getElementById("onboardNextBtn").textContent = step === 4 ? "Créer mon plan" : "Suivant";
+  if(step === 1){
+    var prof = state.patients.length ? '<label>Profil à utiliser</label><select id="obProfile">' + state.patients.map(function(p){ return '<option value="' + p.id + '"' + (ob.patientId === p.id ? ' selected' : '') + '>' + escHtml(p.name) + '</option>'; }).join("") + '<option value="new"' + (ob.patientId === "new" ? ' selected' : '') + '>Nouveau profil</option></select>' : '';
+    body.innerHTML = prof + '<label>Prénom</label><input id="obName" value="' + escHtml(ob.name) + '" placeholder="Ex. Camille">' +
+      '<label>Sexe (facultatif)</label><div class="quality-chip-grid" id="obSex">' + [["H","Homme"],["F","Femme"]].map(function(o){ return '<div class="quality-chip' + (ob.sex === o[0] ? ' selected single' : '') + '" data-obsex="' + o[0] + '">' + o[1] + '</div>'; }).join("") + '</div>' +
+      '<label>Poids en kg (facultatif)</label><input id="obWeight" type="number" inputmode="decimal" value="' + escHtml(ob.weight) + '">' +
+      '<label>Date de naissance (facultatif)</label><input id="obDob" type="date" value="' + escHtml(ob.dob) + '">';
+  } else if(step === 2){
+    body.innerHTML = '<label>Ton objectif principal</label>' + Object.keys(OB_GOALS).map(function(k){
+      return '<div class="struct-card ob-goal' + (ob.goal === k ? ' selected' : '') + '" data-obgoal="' + k + '"><b>' + OB_GOALS[k].label + '</b>' + (OB_GOALS[k].note ? '<div class="sw">' + OB_GOALS[k].note + '</div>' : '') + '</div>';
+    }).join("");
+  } else if(step === 3){
+    var n = Math.min(ob.avail.length, 6);
+    var fake = { dominante: OB_GOALS[ob.goal].dom };
+    var structs = getStructures(fake, n);
+    body.innerHTML = '<label>Les jours où tu peux t\'entraîner</label><div class="quality-chip-grid" id="obDays">' + DAY_LABELS.map(function(d, i){ return '<div class="quality-chip' + (ob.avail.indexOf(i) !== -1 ? ' selected single' : '') + '" data-obday="' + i + '">' + d + '</div>'; }).join("") + '</div>' +
+      '<div class="tc-sub" style="margin-top:8px;">' + (n < 2 ? "Coche au moins 2 jours." : "Structure proposée pour " + n + " jours : <b>" + (structs[0] ? structs[0].name : "—") + "</b>. " + (structs[0] ? structs[0].why : "")) + '</div>' +
+      '<label>Zone à protéger (facultatif)</label><select id="obZone">' + Object.keys(ZONES).map(function(k){ return '<option value="' + k + '"' + (ob.zone === k ? ' selected' : '') + '>' + ZONES[k] + '</option>'; }).join("") + '</select>';
+  } else {
+    var goal = OB_GOALS[ob.goal], preset = MESO_PRESETS[goal.dom], n4 = Math.min(ob.avail.length, 6);
+    var st4 = getStructures({ dominante: goal.dom }, n4)[0];
+    body.innerHTML = '<div class="today-card"><b>' + goal.label + '</b><div class="rv-row"><span>Bloc de départ</span><span class="rv-v">' + QUALITY_LABELS[goal.dom] + ' · ' + (preset ? preset.dureeSuggeree : 6) + ' semaines</span></div>' +
+      '<div class="rv-row"><span>Jours</span><span class="rv-v">' + ob.avail.slice().sort().map(function(i){ return DAY_LABELS[i]; }).join(" · ") + '</span></div>' +
+      '<div class="rv-row"><span>Structure</span><span class="rv-v">' + (st4 ? st4.name : "—") + '</span></div></div>' +
+      '<p class="tc-sub">Tu pourras tout modifier ensuite (jours, structure, suggestions). L\'appli te fait des recommandations : c\'est toi qui décides.</p>' +
+      '<label style="display:flex; gap:8px; align-items:flex-start; font-size:13px; color:var(--text);"><input type="checkbox" id="obConsent"' + (ob.consent ? ' checked' : '') + ' style="margin-top:3px;"><span>Je comprends que ces recommandations sont indicatives et ne remplacent pas l\'avis d\'un professionnel de santé ou d\'un préparateur physique.</span></label>';
+  }
+}
+document.getElementById("onboardBody").addEventListener("click", function(e){
+  var sx = e.target.closest("[data-obsex]");
+  if(sx){ ob.sex = (ob.sex === sx.dataset.obsex) ? "" : sx.dataset.obsex; document.querySelectorAll("#obSex .quality-chip").forEach(function(c){ var on = c.dataset.obsex === ob.sex; c.classList.toggle("selected", on); c.classList.toggle("single", on); }); return; }
+  var gl = e.target.closest("[data-obgoal]");
+  if(gl){ ob.goal = gl.dataset.obgoal; renderOnboard(); return; }
+  var dy = e.target.closest("[data-obday]");
+  if(dy){
+    obCollect();
+    var i = parseInt(dy.dataset.obday), k = ob.avail.indexOf(i);
+    if(k === -1) ob.avail.push(i); else ob.avail.splice(k, 1);
+    renderOnboard();
+  }
+});
+document.getElementById("onboardBackBtn").addEventListener("click", function(){ obCollect(); if(ob.step > 1) ob.step--; renderOnboard(); });
+document.getElementById("onboardNextBtn").addEventListener("click", function(){
+  obCollect();
+  if(ob.step === 1){
+    if(ob.patientId === "new" && !ob.name.trim()){ alert("Indique au moins un prénom."); return; }
+  } else if(ob.step === 2){
+    if(!ob.goal){ alert("Choisis un objectif."); return; }
+  } else if(ob.step === 3){
+    if(Math.min(ob.avail.length, 7) < 2){ alert("Coche au moins 2 jours."); return; }
+  } else if(ob.step === 4){
+    if(!ob.consent){ alert("Coche la case pour continuer."); return; }
+    createAutonomousPlan();
+    document.getElementById("onboardOverlay").hidden = true;
+    return;
+  }
+  ob.step++;
+  renderOnboard();
+});
+document.getElementById("closeOnboardBtn").addEventListener("click", function(){ document.getElementById("onboardOverlay").hidden = true; });
+
+function createAutonomousPlan(){
+  var goal = OB_GOALS[ob.goal], patient = null;
+  if(ob.patientId && ob.patientId !== "new") patient = state.patients.find(function(p){ return p.id === ob.patientId; });
+  if(!patient){
+    patient = { id: uid(), name: ob.name.trim() || "Moi", createdAt: todayISO(), dob:null, sex:null, weightKg:null, measurements:{}, leverArms:{},
+      periodization:{ macrocycles:[], mesocycles:[] }, program:{ entries:{}, exerciseLibrary:[], plan:{} }, tests:[] };
+    state.patients.push(patient);
+  }
+  if(ob.name.trim()) patient.name = ob.name.trim();
+  if(ob.sex) patient.sex = ob.sex;
+  if(ob.weight && parseFloat(ob.weight) > 0) patient.weightKg = parseFloat(ob.weight);
+  if(ob.dob) patient.dob = ob.dob;
+  state.selectedPatientId = patient.id;
+  ensurePeriodization(patient);
+
+  var preset = MESO_PRESETS[goal.dom] || null, dur = preset ? preset.dureeSuggeree : 6;
+  var lastEnd = null;
+  patient.periodization.mesocycles.forEach(function(m){ var e = mesoEndDate(m); if(!lastEnd || e > lastEnd) lastEnd = e; });
+  var start = todayISO();
+  if(lastEnd && addDaysToDate(lastEnd, 1) > start) start = addDaysToDate(lastEnd, 1);
+
+  var macro = { id: uid(), objectif: goal.macro, sport: "", demandes: [goal.dom], dateDebut: start, dateCible: null, floor: [], ceiling: [goal.dom], statut: 'en_cours' };
+  patient.periodization.macrocycles.push(macro);
+  var micros = [];
+  for(var w = 1; w <= dur; w++){
+    micros.push({ id: uid(), numero: w, type: suggestMicroType(w - 1, dur), dateDebut: addDaysToDate(start, (w - 1) * 7), dateFin: addDaysToDate(start, w * 7 - 1), chargeCible: null });
+  }
+  var meso = {
+    id: uid(), macrocycleId: macro.id, dominante: goal.dom, dureeSemaines: dur,
+    objectifs: preset ? [preset.objectifs[0]] : [], maintenance: preset ? preset.maintenance.slice(0, 2) : [], expositions: [],
+    prochaineContrainte: null, criteresEntree: [], criteresSortie: (SUGGESTED_SORTIE[goal.dom] || SUGGESTED_SORTIE["default"]).slice(), criteresSortieCoches: [],
+    dateReeval: micros[micros.length - 1].dateDebut, statut: 'en_cours', dateDebut: start,
+    dureeHistorique: [{ semaines: dur, date: todayISO() }], microcycles: micros
+  };
+  patient.periodization.mesocycles.push(meso);
+
+  var avail = ob.avail.slice().sort(function(a, b){ return a - b; }).slice(0, 6);
+  var structs = getStructures(meso, avail.length), struct = structs[0] || null;
+  var rows = buildRows(meso, struct, avail);
+  applyPlannerRows(patient, meso, rows, struct ? struct.id : null, avail, ob.zone);
+  addAudit(patient, "Plan créé via le démarrage guidé : " + goal.label + " (" + QUALITY_LABELS[goal.dom] + ", " + dur + " semaines).");
+  state.settings.onboarded = true;
+  state.settings.mode = 'autonome';
+  saveData();
+  appMode = 'today';
+  renderAll();
+}
+
+/* ----- bilan de la semaine (7 jours glissants) ----- */
+function weeklyReview(patient){
+  var today = todayISO(), start = addDaysToDate(today, -6), prevStart = addDaysToDate(today, -13), prevEnd = addDaysToDate(today, -7);
+  var cfg = progSettings(), plan = getPlan(patient), dm = patient.program.dayMeta || {}, E = patient.program.entries;
+  var r = { planned:0, done:0, missed:0, groups:[], total:0, hard:0, jumpPct:null, ups:[], wellNow:null, wellPrev:null, painMax:null, painDays:0, flags:[], attention:false, recs:[] };
+  for(var i = 0; i < 7; i++){
+    var k = addDaysToDate(start, i), has = (E[k] || []).length > 0;
+    if(plan[k]) r.planned++;
+    if(has) r.done++;
+    if(plan[k] && !has && k < today) r.missed++;
+    var meta = dm[k] || {};
+    if(meta.pain !== undefined){ r.painMax = Math.max(r.painMax === null ? 0 : r.painMax, meta.pain); if(meta.pain >= cfg.painMax) r.painDays++; }
+    readNotes(meta).filter(function(n){ return !n.ignored && symLevel(n) >= 1; }).forEach(function(n){
+      if(r.flags.indexOf(n.label) === -1) r.flags.push(n.label);
+      if(symLevel(n) === 2) r.attention = true;
+    });
+  }
+  var wins = [[start, today], [prevStart, prevEnd]], wv = [[], []];
+  Object.keys(dm).forEach(function(k){ if(dm[k].wellness === undefined) return; wins.forEach(function(w, idx){ if(k >= w[0] && k <= w[1]) wv[idx].push(dm[k].wellness); }); });
+  if(wv[0].length) r.wellNow = round1(meanOf(wv[0]));
+  if(wv[1].length) r.wellPrev = round1(meanOf(wv[1]));
+  var vw = volumeWindow(patient, today, 7), vc = volumeContext(patient, "");
+  r.total = vw.total; r.hard = vw.hard; r.jumpPct = vc.jumpPct;
+  r.groups = Object.keys(vw.byGroup).map(function(g){ return { name:g, hard:vw.byGroup[g].hard, total:vw.byGroup[g].total }; }).sort(function(a, b){ return b.hard - a.hard || b.total - a.total; });
+  var names = {};
+  for(var j = 0; j < 7; j++){ (E[addDaysToDate(start, j)] || []).forEach(function(e){ if(e.kind === 'exercise' && e.name) names[e.name] = true; }); }
+  Object.keys(names).forEach(function(n){
+    var ss = exerciseSessions(patient, n);
+    if(ss.length >= 2 && ss[0].date >= start && ss[0].load > ss[1].load) r.ups.push({ name:n, from:ss[1].load, to:ss[0].load });
+  });
+  // recommandations
+  if(r.missed > 0) r.recs.push("Tu as manqué " + r.missed + " séance(s) prévue(s). Reprends au prochain jour prévu plutôt que de cumuler deux séances d'un coup.");
+  var low = r.groups.filter(function(g){ return g.hard < cfg.volMin; }).map(function(g){ return g.name; });
+  var high = r.groups.filter(function(g){ return g.hard > cfg.volMax; }).map(function(g){ return g.name; });
+  if(high.length) r.recs.push("Volume déjà élevé pour : " + high.join(", ") + ". Évite d'en ajouter cette semaine.");
+  if(r.jumpPct !== null && r.jumpPct >= cfg.volJumpPct) r.recs.push("Ton volume total a augmenté de +" + r.jumpPct + " % : surveille la récupération.");
+  if(r.painDays >= 2 || r.attention) r.recs.push("Douleur ou symptôme à surveiller cette semaine.");
+  if(!r.recs.length && r.total > 0) r.recs.push("Semaine dans tes repères : continue comme prévu.");
+  if(r.total === 0 && r.planned === 0) r.recs.push("Aucune séance enregistrée sur 7 jours.");
+  r.safety = (r.painDays >= 2 || r.attention);
+  r.low = low;
+  return r;
+}
+
+function renderToday(){
+  var el = document.getElementById("todayContent");
+  var patient = getSelectedPatient() || state.patients[0] || null;
+  if(patient && state.selectedPatientId !== patient.id) state.selectedPatientId = patient.id;
+  var meso = patient ? currentActiveMeso(patient) : null;
+  if(!patient || !meso){
+    el.innerHTML = '<div class="today-card"><div class="today-title">Bienvenue</div><p class="today-ctx">En 4 questions, l\'appli te prépare un plan : ton objectif, tes jours disponibles et une structure de séances adaptée. Tu pourras tout modifier ensuite.</p>' +
+      '<button type="button" class="btn-primary btn-lg" id="todayStartBtn">Démarrer</button></div>';
+    document.getElementById("todayStartBtn").addEventListener("click", openOnboarding);
+    return;
+  }
+  ensurePeriodization(patient);
+  var today = todayISO(), plan = getPlan(patient), pl = plan[today], entries = patient.program.entries[today] || [];
+  var ctx = getMicrocycleContext(patient, today), meta = (patient.program.dayMeta || {})[today] || {};
+  var first = (patient.name || "").split(" ")[0];
+  var dtxt = dayLongTitle(today);
+  var ctxTxt = ctx ? (QUALITY_LABELS[ctx.meso.dominante] + ' · semaine ' + ctx.micro.numero + ' sur ' + ctx.meso.microcycles.length + (ctx.micro.type ? ' · ' + MICRO_TYPE_LABELS[ctx.micro.type] : '')) : "Pas de bloc en cours aujourd'hui";
+  var sessionHtml, startLabel;
+  if(entries.length){
+    var ton = entries.reduce(function(a, e){ return a + entryTonnage(e); }, 0);
+    sessionHtml = '<div class="today-session"><span class="dot" style="background:' + (pl ? (SESSION_COLORS[pl.session] || '#999') : '#1fa971') + ';width:14px;height:14px;"></span><div><b>' + (isDayClosed(meta) ? "Séance terminée" : "Séance en cours") + '</b><div class="tc-sub">' + entries.length + ' exercice(s)' + (ton > 0 ? ' · tonnage ' + fmtNum(ton) + ' kg' : '') + '</div></div></div>';
+    startLabel = isDayClosed(meta) ? "Voir la séance" : "Reprendre la séance";
+  } else if(pl){
+    sessionHtml = '<div class="today-session"><span class="dot" style="background:' + (SESSION_COLORS[pl.session] || '#999') + ';width:14px;height:14px;"></span><div><b>' + (pl.focus ? FOCUS_LABELS[pl.focus] : SESSION_LABELS[pl.session]) + '</b><div class="tc-sub">' + SESSION_LABELS[pl.session] + ' · séance prévue aujourd\'hui</div></div></div>';
+    startLabel = "Commencer la séance";
+  } else {
+    var nextK = null;
+    for(var i = 1; i <= 7 && !nextK; i++){ var k = addDaysToDate(today, i); if(plan[k]) nextK = k; }
+    sessionHtml = '<div class="today-session"><div><b>Jour de repos</b><div class="tc-sub">' + (nextK ? 'Prochaine séance : ' + dayLongTitle(nextK) + ' — ' + (plan[nextK].focus ? FOCUS_LABELS[plan[nextK].focus] : SESSION_LABELS[plan[nextK].session]) : 'Aucune séance prévue cette semaine.') + '</div></div></div>';
+    startLabel = "Ajouter une séance quand même";
+  }
+  var rv = weeklyReview(patient);
+  var cfg = progSettings();
+  var banner = rv.safety ? '<div class="safety-banner"><b>À surveiller.</b> Douleur ou symptôme repéré cette semaine' + (rv.flags.length ? ' (' + rv.flags.join(", ").toLowerCase() + ')' : '') + '. Si cela persiste ou s\'aggrave, consulte un professionnel de santé : cette application ne remplace pas un avis médical.</div>' : '';
+  var rvRows = '<div class="rv-row"><span>Séances</span><span class="rv-v">' + rv.done + ' faite(s)' + (rv.planned ? ' · ' + rv.planned + ' prévue(s)' : '') + '</span></div>' +
+    '<div class="rv-row"><span>Volume</span><span class="rv-v">' + rv.total + ' séries (dont ' + rv.hard + ' difficiles)' + (rv.jumpPct !== null ? ' · ' + (rv.jumpPct >= 0 ? '+' : '') + rv.jumpPct + ' %' : '') + '</span></div>' +
+    rv.groups.slice(0, 5).map(function(g){
+      var tag = g.hard < cfg.volMin ? '<span class="rv-tag low">marge</span>' : (g.hard > cfg.volMax ? '<span class="rv-tag high">élevé</span>' : '<span class="rv-tag ok">dans le repère</span>');
+      return '<div class="rv-row"><span>' + escHtml(g.name) + '</span><span class="rv-v">' + g.hard + ' difficiles / ' + g.total + tag + '</span></div>';
+    }).join("") +
+    (rv.ups.length ? '<div class="rv-row"><span>Charges en hausse</span><span class="rv-v">' + rv.ups.slice(0, 3).map(function(u){ return escHtml(u.name) + ' ' + frDec(u.from) + '→' + frDec(u.to); }).join('<br>') + '</span></div>' : '') +
+    (rv.wellNow !== null ? '<div class="rv-row"><span>Bien-être moyen</span><span class="rv-v">' + frDec(rv.wellNow) + (rv.wellPrev !== null ? ' (semaine précédente : ' + frDec(rv.wellPrev) + ')' : '') + '</span></div>' : '') +
+    (rv.painMax !== null ? '<div class="rv-row"><span>Douleur maximale</span><span class="rv-v">' + rv.painMax + ' / 10</span></div>' : '');
+  // suggestions de charge
+  var since = addDaysToDate(today, -28), nm = {};
+  Object.keys(patient.program.entries).forEach(function(k){ if(k < since || k > today) return; (patient.program.entries[k] || []).forEach(function(e){ if(e.kind === 'exercise' && e.name) nm[e.name] = true; }); });
+  var sugg = Object.keys(nm).map(function(n){ return computeReco(patient, n); }).filter(function(r){ return r.last && r.action !== 'none' && r.suggestedLoad !== undefined; })
+    .sort(function(a, b){ return b.last.date.localeCompare(a.last.date); }).slice(0, 4);
+  var suggHtml = sugg.length ? '<div class="today-card"><div class="today-h">Pour tes prochaines séances</div>' + sugg.map(function(r){
+    return '<div class="rv-row"><span>' + escHtml(r.name) + '<div class="tc-sub">' + RECO_LABELS[r.action] + ' · ' + r.confidence + '</div></span><span class="rv-v">' + frDec(r.suggestedLoad) + ' kg' + (r.action === 'hold' ? '' : ' <span class="reco-delta ' + (r.delta >= 0 ? 'up' : 'down') + '">' + fmtDelta(r.delta) + '</span>') + '</span></div>';
+  }).join("") + '<div class="tc-sub" style="margin-top:6px;">Des recommandations, pas des obligations : tu restes juge.</div></div>' : '';
+  el.innerHTML = banner +
+    '<div class="today-card"><div class="tc-sub">' + dtxt + '</div><div class="today-title">Bonjour' + (first ? ' ' + escHtml(first) : '') + '</div><div class="today-ctx">' + ctxTxt + '</div>' + sessionHtml +
+      '<div class="today-actions"><button type="button" class="btn-primary btn-lg" id="todayGoBtn">' + startLabel + '</button><button type="button" class="btn-ghost" id="todayFeelBtn" style="min-height:48px;">Noter mon ressenti du jour</button></div></div>' +
+    '<div id="todayWeek"></div>' +
+    '<div class="today-card"><div class="today-h">Bilan des 7 derniers jours</div>' + rvRows + '<ul class="rec-list">' + rv.recs.map(function(t){ return '<li>' + t + '</li>'; }).join("") + '</ul></div>' +
+    suggHtml +
+    '<div class="today-card"><div class="today-h">Mon plan</div><div class="rv-row"><span>Bloc en cours</span><span class="rv-v">' + QUALITY_LABELS[meso.dominante] + ' · fin le ' + fmtDate(mesoEndDate(meso)) + '</span></div>' +
+      '<div class="today-actions" style="margin-top:8px;"><button type="button" class="btn-ghost" id="todayDaysBtn" style="min-height:44px;">Modifier mes jours d\'entraînement</button><button type="button" class="btn-ghost" id="todayNewPlanBtn" style="min-height:44px;">Créer un nouveau plan</button></div></div>';
+  renderWeekStrip(patient, "todayWeek");
+  document.getElementById("todayGoBtn").addEventListener("click", function(){ openDayModal(today); });
+  document.getElementById("todayFeelBtn").addEventListener("click", function(){ openDayModal(today); document.getElementById("openFeelBtn").click(); });
+  document.getElementById("todayDaysBtn").addEventListener("click", function(){ openWeekTemplate(patient, meso.id); });
+  document.getElementById("todayNewPlanBtn").addEventListener("click", openOnboarding);
+}
+
+/* ============================================================
+   CHARGES CIBLES : relier les tests de force isométrique aux charges
+   - 1RM estimé = à partir des séries du patient (répétitions + RIR, formule d'Epley)
+   - % de Fmax = valable pour les exercices isométriques
+   - lien dynamique/isométrique = rapport propre à chaque exercice, appris sur les données
+   ============================================================ */
+var GROUP_TEST_MUSCLES = {
+  "Quadriceps":["vmo","vl","rf"], "Ischio-jambiers":["bf","st","sm"], "Fessiers":["gmax"], "Abducteurs":["gmed"], "Adducteurs":["add"],
+  "Mollets / triceps sural":["gcm","gcl","sol"], "Tibial / fibulaires":["ta","pl","pb","tp"],
+  "Dorsaux":["lat_dorsi","teres_major"], "Pectoraux":["pect_major"],
+  "Épaules":["delt_ant","delt_mid","delt_post","trap_sup","infraspinatus","supraspinatus","teres_minor","subscap"],
+  "Biceps":["biceps_b"], "Triceps":["triceps_b"]
+};
+var GOAL_ZONES = { hypertrophie:"Hypertrophie", force:"Force", endurance_force:"Endurance de force" };
+
+function e1rmFrom(load, reps, rir){ return load * (1 + (reps + rir) / 30); }       // Epley, répétitions à l'échec = reps + RIR
+function loadFor(e1rm, reps, rir){ return e1rm / (1 + (reps + rir) / 30); }
+function medianOf(a){ var b = a.slice().sort(function(x, y){ return x - y; }), m = Math.floor(b.length / 2); return b.length % 2 ? b[m] : (b[m - 1] + b[m]) / 2; }
+function fmtKg(x){ return frDec(roundHalf(x)) + " kg"; }
+
+function sessionE1rms(patient, name, uptoKey){
+  return exerciseSessions(patient, name).filter(function(x){
+    return x.rir !== undefined && x.load > 0 && x.reps > 0 && (!uptoKey || x.date <= uptoKey);
+  }).map(function(x){ return { date:x.date, e1rm:e1rmFrom(x.load, x.reps, x.rir), span:x.reps + x.rir, group:x.group }; });
+}
+function exerciseE1rm(patient, name, uptoKey){
+  var ss = sessionE1rms(patient, name, uptoKey);
+  if(!ss.length) return null;
+  var recent = ss.slice(0, 3), prev = ss.slice(3, 6);
+  var span = Math.max.apply(null, recent.map(function(x){ return x.span; }));
+  return {
+    e1rm: medianOf(recent.map(function(x){ return x.e1rm; })), date: ss[0].date, n: recent.length,
+    trendPct: prev.length >= 2 ? Math.round((medianOf(recent.map(function(x){ return x.e1rm; })) / medianOf(prev.map(function(x){ return x.e1rm; })) - 1) * 100) : null,
+    rel: span <= 10 ? "bonne" : (span <= 15 ? "moyenne" : "faible")
+  };
+}
+function groupOfExercise(patient, name){
+  var ss = exerciseSessions(patient, name);
+  for(var i = 0; i < ss.length; i++) if(ss[i].group) return ss[i].group;
+  return (patient.program.exerciseGroups || {})[name] || "";
+}
+function sideMean(vals){ var v = vals.filter(function(x){ return x !== null && x !== undefined; }); return v.length ? meanOf(v) : null; }
+function entryKgf(e, unit){
+  var D = (e.valueD !== undefined && e.valueD !== null) ? toKgF(e.valueD, unit) : null;
+  var G = (e.valueG !== undefined && e.valueG !== null) ? toKgF(e.valueG, unit) : null;
+  var S = (e.value !== undefined && e.value !== null) ? toKgF(e.value, unit) : null;
+  return { D:D, G:G, mean: S !== null ? S : sideMean([D, G]) };
+}
+// Fmax isométrique du groupe : dernier test relié à ce groupe (en kg-force)
+function groupFmax(patient, group){
+  var ids = GROUP_TEST_MUSCLES[group];
+  if(!ids) return null;
+  var best = null;
+  patient.tests.forEach(function(t){
+    if(t.type !== 'iso' || ids.indexOf(t.muscleId) === -1 || !t.entries || !t.entries.length) return;
+    var es = t.entries.slice().sort(function(a, b){ return a.date.localeCompare(b.date); });
+    var last = es[es.length - 1], v = entryKgf(last, t.unit);
+    if(v.mean === null) return;
+    var cand = { date:last.date, D:v.D, G:v.G, mean:v.mean, name:t.name, prevDate:null, prevMean:null };
+    for(var i = es.length - 2; i >= 0; i--){
+      var pv = entryKgf(es[i], t.unit);
+      if(pv.mean !== null && es[i].date < last.date){ cand.prevDate = es[i].date; cand.prevMean = pv.mean; break; }
+    }
+    if(!best || cand.date > best.date || (cand.date === best.date && cand.mean > best.mean)) best = cand;
+  });
+  if(best && best.D !== null && best.G !== null){
+    best.asymPct = Math.round(Math.abs(best.D - best.G) / Math.max(best.D, best.G) * 100);
+    best.weak = best.D < best.G ? "D" : "G";
+    best.weakRatio = Math.round(Math.min(best.D, best.G) / Math.max(best.D, best.G) * 100);
+  }
+  return best;
+}
+function activeGoal(patient){
+  var sel = (state.settings && state.settings.targetGoal) || "auto";
+  if(sel !== "auto" && GOAL_ZONES[sel]) return sel;
+  var m = currentActiveMeso(patient);
+  return (m && GOAL_ZONES[m.dominante]) ? m.dominante : null;
+}
+function rirRangeNow(patient){
+  var cfg = progSettings(), ctx = getMicrocycleContext(patient, todayISO());
+  var t = (ctx && ctx.micro.type) ? ctx.micro.type : "libre";
+  if(t === "reevaluation") return null;
+  return { range: cfg.rir[t] || cfg.rir.libre, label: t === "libre" ? "sans type de microcycle" : MICRO_TYPE_LABELS[t] };
+}
+// zone de charge : reps visées du but, RIR visé du microcycle en cours
+function targetZone(patient, e1rm, goalKey){
+  var cfg = progSettings(), rr = rirRangeNow(patient);
+  if(!goalKey || !rr) return null;
+  var reps = cfg.goalReps[goalKey], rir = rr.range;
+  var hi = loadFor(e1rm, reps[0], rir[0]), lo = loadFor(e1rm, reps[1], rir[1]);
+  return { low:lo, high:hi, pctLow:Math.round(lo / e1rm * 100), pctHigh:Math.round(hi / e1rm * 100), reps:reps, rir:rir, rirLabel:rr.label, goal:goalKey };
+}
+function zoneText(z){
+  return GOAL_ZONES[z.goal] + " (" + z.reps[0] + "–" + z.reps[1] + " répétitions, RIR " + z.rir[0] + (z.rir[1] !== z.rir[0] ? "–" + z.rir[1] : "") + ") : <b>" + fmtKg(z.low) + " à " + fmtKg(z.high) + "</b> (≈ " + z.pctLow + "–" + z.pctHigh + " % du 1RM estimé)";
+}
+function exKey(n){ return String(n).trim().toLowerCase(); }
+function patientRatios(patient){
+  var out = {}, names = {};
+  Object.keys(patient.program.entries).forEach(function(k){ (patient.program.entries[k] || []).forEach(function(e){ if(e.kind === 'exercise' && e.name) names[e.name] = true; }); });
+  Object.keys(names).forEach(function(n){
+    var g = groupOfExercise(patient, n), fm = g ? groupFmax(patient, g) : null, ee = exerciseE1rm(patient, n);
+    if(fm && ee && fm.mean > 0) out[exKey(n)] = { name:n, ratio: ee.e1rm / fm.mean };
+  });
+  return out;
+}
+function clinicRatios(excludeId){
+  var agg = {};
+  state.patients.forEach(function(p){
+    if(p.id === excludeId) return;
+    var r = patientRatios(p);
+    Object.keys(r).forEach(function(k){ (agg[k] = agg[k] || { name:r[k].name, values:[] }).values.push(r[k].ratio); });
+  });
+  Object.keys(agg).forEach(function(k){
+    var v = agg[k].values, med = medianOf(v), sd = Math.sqrt(meanOf(v.map(function(x){ return Math.pow(x - meanOf(v), 2); })));
+    agg[k].n = v.length; agg[k].median = med; agg[k].min = Math.min.apply(null, v); agg[k].max = Math.max.apply(null, v); agg[k].cv = Math.round(sd / meanOf(v) * 100);
+  });
+  return agg;
+}
+// charge de départ pour un exercice sans historique (estimation, jamais une vérité)
+function coldStart(patient, name, group){
+  var fm = group ? groupFmax(patient, group) : null;
+  if(!fm || !(fm.mean > 0)) return { reason: group ? "Aucun test isométrique relié à ce groupe." : "Choisis d'abord un groupe musculaire." };
+  var manual = ((state.settings.convCoef || {})[exKey(name)]);
+  var k = null, source = "";
+  if(manual > 0){ k = manual; source = "ton coefficient"; }
+  else {
+    var cr = clinicRatios(patient.id)[exKey(name)];
+    if(cr && cr.n >= 3){ k = cr.median; source = "médiane de " + cr.n + " patients de ton suivi (dispersion " + cr.cv + " %)"; }
+  }
+  if(!k) return { reason: "Pas de rapport 1RM/Fmax connu pour cet exercice.", fm:fm };
+  var goal = activeGoal(patient), e = k * fm.mean, z = goal ? targetZone(patient, e, goal) : null;
+  return { fm:fm, k:k, source:source, e1rm:e, zone:z, margin:progSettings().coldMargin };
+}
+function targetInfo(patient, name){
+  var ee = exerciseE1rm(patient, name);
+  if(!ee) return null;
+  var goal = activeGoal(patient);
+  return { ee:ee, goal:goal, zone: goal ? targetZone(patient, ee.e1rm, goal) : null };
+}
+
+/* ----- carte dans le tiroir d'exercice ----- */
+function coldStartHtml(patient, name){
+  if(name.length < 4) return "";
+  var group = document.getElementById("exGroup").value;
+  if(!group) return "";
+  var cs = coldStart(patient, name, group);
+  if(cs.zone){
+    var m = 1 - cs.margin / 100;
+    return '<div class="reco-card"><div class="reco-head"><span class="reco-tag">Point de départ estimé</span><span>estimation à ± ' + cs.margin + ' %</span></div>' +
+      '<div class="reco-main">' + fmtKg(cs.zone.low * m) + ' à ' + fmtKg(cs.zone.high * m) + '</div>' +
+      '<div class="reco-why">Fmax isométrique du groupe : ' + frDec(round1(cs.fm.mean)) + ' kg (test du ' + fmtDate(cs.fm.date) + ') × rapport ' + frDec(round1(cs.k)) + ' (' + cs.source + ') → 1RM estimé ≈ ' + fmtKg(cs.e1rm) + '. Zone ' + GOAL_ZONES[cs.zone.goal].toLowerCase() + ' réduite de ' + cs.margin + ' % par prudence.</div>' +
+      '<div class="reco-why">Fais une première série de contrôle et note le RIR : dès la 1re séance, l\'appli passera sur tes propres données.</div></div>';
+  }
+  return '<div class="reco-card none"><div class="reco-why">Nouvel exercice sans historique. ' + (cs.reason || "") + ' Fais une série de calibrage (≈ 10 répétitions, 3 en réserve) et note le RIR : l\'appli calculera ton 1RM estimé.</div></div>';
+}
+
+/* ----- isométrie : cible en % de Fmax ----- */
+function renderIsoTarget(){
+  var el = document.getElementById("isoTargetCard");
+  if(!el) return;
+  var g = document.getElementById("isoGroup").value;
+  if(dayKind !== 'isometric' || !g || !GROUP_TEST_MUSCLES[g]){ el.innerHTML = ""; return; }
+  var patient = getSelectedPatient(), fm = groupFmax(patient, g);
+  if(!fm){ el.innerHTML = '<div class="reco-card none"><div class="reco-why">Aucun test isométrique relié à « ' + escHtml(g) + ' » : fais un test pour viser un % de Fmax.</div></div>'; return; }
+  if(isoType === 'overcoming'){
+    el.innerHTML = '<div class="reco-card none"><div class="reco-why">Overcoming = intention maximale : pas de pourcentage cible. Fmax de référence : ' + frDec(round1(fm.mean)) + ' kg (test du ' + fmtDate(fm.date) + ').</div></div>';
+    return;
+  }
+  var cur = parseFloat(document.getElementById("isoPct").value);
+  if(isNaN(cur)){ cur = progSettings().isoDefaultPct; document.getElementById("isoPct").value = cur; }
+  var side = function(label, v){ return v !== null && v !== undefined ? '<b>' + label + ' ' + frDec(round1(v * cur / 100)) + ' kg</b>' : ''; };
+  var tgt = [side("Droite", fm.D), side("Gauche", fm.G)].filter(Boolean);
+  if(!tgt.length) tgt = ['<b>' + frDec(round1(fm.mean * cur / 100)) + ' kg</b>'];
+  el.innerHTML = '<div class="reco-card"><div class="reco-head"><span class="reco-tag">Cible en % de Fmax</span><span>test du ' + fmtDate(fm.date) + '</span></div>' +
+    '<div class="pct-row">' + [50,60,70,80,90].map(function(p){ return '<button type="button" class="chip-btn' + (p === cur ? ' on' : '') + '" data-isopct="' + p + '">' + p + ' %</button>'; }).join("") + '</div>' +
+    '<div class="reco-main" style="font-size:17px;">À ' + cur + ' % : ' + tgt.join(" · ") + '</div>' +
+    '<div class="reco-why">Fmax : ' + [fm.D !== null ? 'D ' + frDec(round1(fm.D)) : '', fm.G !== null ? 'G ' + frDec(round1(fm.G)) : ''].filter(Boolean).join(" · ") + ' kg. Repères (revue systématique d\'Oranchuk, 2019) : ≥ 70 % pour agir sur le tendon ; pour l\'hypertrophie et la force, des gains ont été observés quelle que soit l\'intensité, avec un avantage aux longueurs musculaires longues.</div></div>';
+}
+document.addEventListener("click", function(e){
+  var pb = e.target.closest("[data-isopct]");
+  if(!pb) return;
+  document.getElementById("isoPct").value = pb.dataset.isopct;
+  renderIsoTarget();
+});
+document.getElementById("isoGroup").addEventListener("change", renderIsoTarget);
+document.getElementById("isoTypeGrid").addEventListener("click", renderIsoTarget);
+
+/* ----- panneau « Charges cibles » ----- */
+function renderTargetPanel(patient){
+  var el = document.getElementById("targetPanelWrap");
+  var cfg = progSettings(), goal = activeGoal(patient), sel = (state.settings.targetGoal || "auto");
+  var rr = rirRangeNow(patient);
+  var head = '<div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px;"><b style="font-size:13px;">Charges cibles à partir de tes tests</b><button type="button" class="btn-ghost" id="openProgSettingsBtn2">Réglages</button></div>' +
+    '<label class="fl">Objectif de charge</label><select id="targetGoalSel" class="sel" style="margin-bottom:8px;"><option value="auto"' + (sel === "auto" ? " selected" : "") + '>Automatique (selon le bloc en cours' + (goal ? " : " + GOAL_ZONES[goal] : "") + ')</option>' +
+    Object.keys(GOAL_ZONES).map(function(g){ return '<option value="' + g + '"' + (sel === g ? " selected" : "") + '>' + GOAL_ZONES[g] + '</option>'; }).join("") + '</select>' +
+    '<div class="tc-sub" style="margin-bottom:10px;">Le <b>1RM estimé</b> vient de tes séries (répétitions + RIR, formule d\'Epley) : fiable jusqu\'à environ 10 répétitions. La force isométrique est reliée à la charge dynamique par un <b>rapport propre à chaque exercice</b> : la littérature montre des corrélations de l\'ordre de 0,6 à 0,9 mais des erreurs de prédiction d\'environ 13 % ou plus (études sur l\'extension de genou). L\'appli ne convertit donc jamais directement des kg d\'isométrie en kg de barre : elle apprend le rapport sur tes données.</div>';
+  var since = addDaysToDate(todayISO(), -90), names = {};
+  Object.keys(patient.program.entries).forEach(function(k){ if(k < since || k > todayISO()) return; (patient.program.entries[k] || []).forEach(function(e){ if(e.kind === 'exercise' && e.name) names[e.name] = true; }); });
+  var cards = Object.keys(names).map(function(n){
+    var ti = targetInfo(patient, n);
+    return ti ? { name:n, ti:ti, group:groupOfExercise(patient, n) } : null;
+  }).filter(Boolean).sort(function(a, b){ return b.ti.ee.date.localeCompare(a.ti.ee.date); });
+  var body = "";
+  if(!cards.length) body = '<div class="w-callout">Aucun exercice avec RIR sur 90 jours : note le RIR de tes séries pour obtenir un 1RM estimé.</div>';
+  cards.forEach(function(c){
+    var ee = c.ti.ee, fm = c.group ? groupFmax(patient, c.group) : null;
+    var l = '<div class="tgt-card"><h4>' + escHtml(c.name) + (c.group ? ' <span class="tc-sub">· ' + escHtml(c.group) + '</span>' : '') + '</h4>' +
+      '<div class="tgt-line"><b>1RM estimé : ' + fmtKg(ee.e1rm) + '</b> <span class="tc-sub">(' + ee.n + ' séance(s) · fiabilité ' + ee.rel + (ee.trendPct !== null ? ' · ' + (ee.trendPct >= 0 ? '+' : '') + ee.trendPct + ' % vs les séances précédentes' : '') + ')</span></div>';
+    if(c.ti.zone) l += '<div class="tgt-line">Zone ' + zoneText(c.ti.zone) + '. <span class="tc-sub">RIR du microcycle : ' + c.ti.zone.rirLabel + '.</span></div>';
+    else if(!rr) l += '<div class="tgt-line muted">Semaine de réévaluation : pas de zone de charge.</div>';
+    else l += '<div class="tgt-line muted">Pas de zone pour ce type de bloc : choisis un objectif de charge ci-dessus.</div>';
+    if(ee.rel === "faible") l += '<div class="tgt-line warn">Séries longues : le 1RM estimé est peu fiable, vise des séries plus lourdes pour le préciser.</div>';
+    if(fm){
+      l += '<div class="tgt-line">Fmax isométrique : ' + [fm.D !== null ? 'D ' + frDec(round1(fm.D)) : '', fm.G !== null ? 'G ' + frDec(round1(fm.G)) : '', (fm.D === null && fm.G === null) ? frDec(round1(fm.mean)) : ''].filter(Boolean).join(" · ") + ' kg <span class="tc-sub">(' + fmtDate(fm.date) + ')</span> — rapport 1RM / Fmax : <b>' + frDec(round1(ee.e1rm / fm.mean)) + '</b></div>';
+      if(fm.prevMean && fm.prevMean > 0){
+        var dF = Math.round((fm.mean / fm.prevMean - 1) * 100), prevE = exerciseE1rm(patient, c.name, fm.prevDate);
+        l += '<div class="tgt-line">Depuis le test du ' + fmtDate(fm.prevDate) + ' : Fmax <b>' + (dF >= 0 ? '+' : '') + dF + ' %</b>' + (prevE ? ' · 1RM estimé <b>' + (ee.e1rm >= prevE.e1rm ? '+' : '') + Math.round((ee.e1rm / prevE.e1rm - 1) * 100) + ' %</b>' : ' <span class="tc-sub">(pas assez de séances avant ce test pour comparer le 1RM)</span>') + '</div>';
+      }
+      if(fm.asymPct !== undefined && fm.asymPct >= 10)
+        l += '<div class="tgt-line warn">Asymétrie de Fmax : le côté ' + (fm.weak === "D" ? "droit" : "gauche") + ' est à ' + fm.weakRatio + ' % de l\'autre. En unilatéral, vise environ ' + fm.weakRatio + ' % de la charge du côté fort (estimation à vérifier).</div>';
+    } else if(c.group && GROUP_TEST_MUSCLES[c.group]) l += '<div class="tgt-line muted">Aucun test isométrique relié à ce groupe.</div>';
+    body += l + '</div>';
+  });
+  // rapports 1RM/Fmax appris sur les patients
+  var cr = clinicRatios(null), keys = Object.keys(cr).filter(function(k){ return cr[k].n >= 1; });
+  var conv = state.settings.convCoef || {};
+  var coef = '<div class="today-h" style="margin-top:14px;">Rapports 1RM / Fmax</div><div class="tc-sub" style="margin-bottom:6px;">Appris sur les patients qui ont à la fois un test et des séries avec RIR. Utilisés pour estimer un point de départ <b>uniquement</b> à partir de 3 patients, ou si tu saisis ton propre coefficient.</div>';
+  if(!keys.length && !Object.keys(conv).length) coef += '<div class="tc-sub">Pas encore assez de données.</div>';
+  keys.forEach(function(k){
+    var c = cr[k];
+    coef += '<div class="coef-row"><span><b>' + escHtml(c.name) + '</b><div class="tc-sub">' + c.n + ' patient(s) · médiane ' + frDec(round1(c.median)) + ' (de ' + frDec(round1(c.min)) + ' à ' + frDec(round1(c.max)) + ')' + (c.n >= 3 ? ' · dispersion ' + c.cv + ' %' : ' · trop peu pour être utilisé') + '</div></span><span class="pr-in"><input class="prog-input" type="number" step="0.1" min="0" placeholder="ton k" data-coef="' + escHtml(k) + '" value="' + (conv[k] || "") + '"></span></div>';
+  });
+  coef += '<div class="coef-row"><span>Ajouter un coefficient</span><span class="pr-in"><input class="prog-input" style="width:120px !important;" id="coefNewName" placeholder="Exercice"><input class="prog-input" type="number" step="0.1" min="0" id="coefNewVal" placeholder="k"><button type="button" class="btn-ghost" id="coefNewBtn" style="min-height:40px;">OK</button></span></div>';
+  el.innerHTML = head + body + coef;
+  document.getElementById("openProgSettingsBtn2").addEventListener("click", openProgSettings);
+}
+document.getElementById("targetPanelWrap").addEventListener("change", function(e){
+  if(e.target.id === "targetGoalSel"){ state.settings.targetGoal = e.target.value; saveData(); renderTargetPanel(getSelectedPatient()); return; }
+  var ci = e.target.closest("[data-coef]");
+  if(ci){
+    if(!state.settings.convCoef) state.settings.convCoef = {};
+    var v = parseFloat(ci.value);
+    if(isNaN(v) || v <= 0) delete state.settings.convCoef[ci.dataset.coef]; else state.settings.convCoef[ci.dataset.coef] = v;
+    saveData();
+  }
+});
+document.getElementById("targetPanelWrap").addEventListener("click", function(e){
+  if(!e.target.closest("#coefNewBtn")) return;
+  var n = document.getElementById("coefNewName").value.trim(), v = parseFloat(document.getElementById("coefNewVal").value);
+  if(!n || isNaN(v) || v <= 0){ alert("Indique un exercice et un coefficient positif."); return; }
+  if(!state.settings.convCoef) state.settings.convCoef = {};
+  state.settings.convCoef[exKey(n)] = v;
+  saveData();
+  renderTargetPanel(getSelectedPatient());
+});
+document.getElementById("toggleTargetBtn").addEventListener("click", function(){
+  var wrap = document.getElementById("targetPanelWrap");
+  wrap.hidden = !wrap.hidden;
+  this.textContent = wrap.hidden ? "🧪 Charges cibles (tests)" : "🧪 Masquer les charges cibles";
+  if(!wrap.hidden) renderTargetPanel(getSelectedPatient());
 });
 
 /* ============================================================
@@ -4946,31 +6393,53 @@ function updateBackupUi(){
     banner.textContent = "Dernier export il y a " + d + " jours : pense à sauvegarder tes données.";
   }
 }
-function doExport(){
-  var json = JSON.stringify(state, null, 2);
-  var name = "suivi-tests-sauvegarde-" + todayISO() + ".json";
+function shareJson(obj, filename, title, onDone){
+  var json = JSON.stringify(obj, null, 2);
   function fallbackDownload(){
     var blob = new Blob([json], { type: "application/json" });
     var url = URL.createObjectURL(blob);
     var a = document.createElement("a");
-    a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
     setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
-    markExported();
+    if(onDone) onDone();
   }
   if(navigator.canShare && navigator.share && typeof File === "function"){
-    var attempts = [ new File([json], name, { type: "application/json" }), new File([json], name, { type: "text/plain" }) ];
+    var attempts = [ new File([json], filename, { type: "application/json" }), new File([json], filename, { type: "text/plain" }) ];
     var usable = attempts.filter(function(f){ try { return navigator.canShare({ files: [f] }); } catch(e){ return false; } })[0];
     if(usable){
-      navigator.share({ files: [usable], title: "Sauvegarde Suivi Tests" })
-        .then(markExported)
+      navigator.share({ files: [usable], title: title })
+        .then(function(){ if(onDone) onDone(); })
         .catch(function(err){ if(!err || err.name !== "AbortError") fallbackDownload(); });
       return;
     }
   }
   fallbackDownload();
 }
+function doExport(){
+  shareJson(state, "suivi-tests-sauvegarde-" + todayISO() + ".json", "Sauvegarde Suivi Tests", markExported);
+}
+function exportPatient(){
+  var patient = getSelectedPatient();
+  if(!patient) return;
+  var slug = patient.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "patient";
+  shareJson({ app:"suivi-tests", type:"patient", v:1, exportedAt:new Date().toISOString(), patient:patient }, "patient-" + slug + "-" + todayISO() + ".json", "Patient " + patient.name);
+}
+function importPatientObject(p){
+  if(!p || !p.name || !p.program) throw new Error("patient invalide");
+  if(!Array.isArray(p.tests)) p.tests = [];
+  var renamed = false;
+  if(!p.id || state.patients.some(function(x){ return x.id === p.id; })){ p.id = uid(); p.name = p.name + " (import)"; renamed = true; }
+  state.patients.push(p);
+  state.selectedPatientId = p.id;
+  migratePeriodizationData();
+  saveData();
+  profilsSubview = 'list'; appMode = 'profils';
+  renderAll();
+  alert("Patient importé : « " + p.name + " »." + (renamed ? " Il existait déjà : il a été ajouté comme nouveau patient." : ""));
+}
 document.getElementById("exportBtn").addEventListener("click", doExport);
 document.getElementById("dataExportBtn").addEventListener("click", doExport);
+document.getElementById("sharePatientBtn").addEventListener("click", exportPatient);
 document.getElementById("dataImportBtn").addEventListener("click", function(){ document.getElementById("importFile").click(); });
 document.getElementById("importBtn").addEventListener("click", function(){
   document.getElementById("importFile").click();
@@ -4982,6 +6451,7 @@ document.getElementById("importFile").addEventListener("change", function(e){
   reader.onload = function(evt){
     try{
       var imported = JSON.parse(evt.target.result);
+      if(imported.type === "patient" && imported.patient){ importPatientObject(imported.patient); return; }
       if(!imported.patients) throw new Error("format invalide");
       if(state.patients.length > 0 && !confirm("Remplacer les données actuelles par cette sauvegarde ?")) return;
       state = imported;
@@ -4993,6 +6463,7 @@ document.getElementById("importFile").addEventListener("change", function(e){
   e.target.value = "";
 });
 
+if(isAutonomous()) appMode = 'today';
 renderAll();
 updateBackupUi();
 if(navigator.storage && navigator.storage.persist){ navigator.storage.persist().catch(function(){}); }
