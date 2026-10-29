@@ -588,6 +588,40 @@
 
   .header-actions{ display:flex; flex-wrap:wrap; gap:8px; }
   .header-actions .btn-ghost{ white-space:nowrap; }
+
+  /* ---------- anamnèse ---------- */
+  .anam-screen{ max-width:780px; }
+  .anam-tabs{ display:flex; gap:8px; padding:0 20px 8px; }
+  .anam-tabs button{ flex:1; min-height:44px; border:1px solid var(--border); background:#fff; border-radius:12px; font-weight:600; color:var(--muted); font-size:15px; }
+  .anam-tabs button.on{ background:var(--text); color:#fff; border-color:var(--text); }
+  .as{ background:#fff; border:1px solid var(--border); border-radius:16px; padding:14px; margin-bottom:12px; }
+  .as-h{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px; gap:8px; }
+  .as-h b{ font-size:16px; }
+  .af{ margin-bottom:16px; }
+  .af:last-child{ margin-bottom:0; }
+  .af-l{ display:block; font-size:13px; font-weight:600; color:var(--muted); margin-bottom:6px; }
+  .af-l .flag{ color:#b3261e; font-weight:700; }
+  .af textarea, .af input[type=text], .af input[type=date]{ width:100%; border:1.5px solid var(--border); border-radius:12px; padding:10px 12px; font-size:17px; font-family:var(--sans); background:#fff; color:var(--text); box-sizing:border-box; }
+  .af textarea{ min-height:84px; line-height:1.4; resize:none; overflow:hidden; }
+  .af textarea:focus, .af input:focus{ outline:none; border-color:var(--blue); }
+  .af .chip-row{ gap:8px; }
+  .af .chip-btn.flagon{ background:#b3261e; border-color:#b3261e; color:#fff; }
+  .af-prefill{ font-size:12.5px; color:#8a5200; background:#fff8e8; border:1px solid #f4d9b8; border-radius:10px; padding:8px 12px; margin-bottom:12px; }
+  .synth-narr{ width:100%; min-height:180px; border:1.5px solid var(--border); border-radius:12px; padding:12px; font-size:16px; line-height:1.5; font-family:var(--sans); box-sizing:border-box; background:#fff; color:var(--text); }
+  .flag-box{ background:#fdf0ef; border:1px solid #f3c4bf; color:#8a1f17; border-radius:14px; padding:10px 14px; font-size:14px; margin-bottom:12px; }
+  .yel-box{ background:#fff8e8; border:1px solid #f4d9b8; color:#8a5200; border-radius:14px; padding:10px 14px; font-size:14px; margin-bottom:12px; }
+  .kp-list{ margin:6px 0 0; padding-left:18px; font-size:14.5px; line-height:1.6; }
+  .tpl-sec{ border:1px solid var(--border); border-radius:14px; padding:10px; margin-bottom:12px; background:#fff; }
+  .tpl-f{ border-top:1px solid #eef0f3; padding:10px 0 4px; display:grid; gap:6px; }
+  .tpl-f .row2{ display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+  .tpl-f label.cb{ display:flex; align-items:center; gap:8px; font-size:13.5px; color:var(--text); text-transform:none; letter-spacing:0; font-weight:500; min-height:36px; }
+  .tpl-f label.cb input{ width:20px; height:20px; }
+  .tpl-acts{ display:flex; gap:6px; flex-wrap:wrap; }
+  .tpl-acts .btn-ghost{ min-height:40px; padding:0 12px; }
+  .anam-item{ display:flex; justify-content:space-between; align-items:flex-start; gap:8px; padding:8px 0; border-bottom:1px solid #eef0f3; cursor:pointer; }
+  .anam-item:last-child{ border-bottom:0; }
+  .anam-item .t{ font-weight:600; font-size:14.5px; }
+  .anam-item .s{ font-size:12.5px; color:var(--muted); margin-top:2px; line-height:1.4; }
 </style>
 </head>
 <body>
@@ -1122,6 +1156,54 @@
   </div>
 </div>
 
+<!-- Anamnèse -->
+<div id="anamOverlay" class="modal-overlay day-overlay" hidden>
+  <div class="day-screen anam-screen">
+    <div class="day-head">
+      <button type="button" class="icon-btn" id="anamCloseBtn" aria-label="Fermer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <div style="flex:1; min-width:0;">
+        <div class="day-title" id="anamTitle">Anamnèse</div>
+        <div class="day-sub" id="anamSub"></div>
+      </div>
+      <span class="tc-sub" id="anamSaved" style="padding-right:12px;"></span>
+    </div>
+    <div class="anam-tabs">
+      <button type="button" data-anamtab="form" class="on">Anamnèse</button>
+      <button type="button" data-anamtab="synth">Synthèse</button>
+    </div>
+    <div class="day-body" id="anamBody"></div>
+  </div>
+</div>
+
+<!-- Choix d'un modèle d'anamnèse -->
+<div id="anamPickOverlay" class="modal-overlay" hidden>
+  <div class="modal-box">
+    <div class="modal-header"><h2>Nouvelle anamnèse</h2><button class="btn-ghost" id="closeAnamPickBtn">Fermer</button></div>
+    <p class="tc-sub">Choisis un modèle. Tu peux écrire au stylet directement dans les champs (Scribble) ou dicter avec le micro du clavier.</p>
+    <div id="anamPickList"></div>
+    <div class="modal-actions"><button class="btn-ghost" id="anamPickTplBtn">Gérer mes modèles</button></div>
+  </div>
+</div>
+
+<!-- Modèles d'anamnèse -->
+<div id="tplOverlay" class="modal-overlay" hidden>
+  <div class="modal-box wide">
+    <div class="modal-header"><h2 id="tplTitle">Mes modèles</h2><button class="btn-ghost" id="closeTplBtn">Fermer</button></div>
+    <div id="tplBody"></div>
+    <div class="modal-actions" id="tplActions"></div>
+  </div>
+</div>
+
+<!-- Reporter l'anamnèse dans la fiche clinique -->
+<div id="anamPushOverlay" class="modal-overlay" hidden>
+  <div class="modal-box">
+    <div class="modal-header"><h2>Reporter dans la fiche clinique</h2><button class="btn-ghost" id="closeAnamPushBtn">Fermer</button></div>
+    <p class="tc-sub">Coche ce que tu veux copier. Rien n'est écrasé sans ton accord.</p>
+    <div id="anamPushList"></div>
+    <div class="modal-actions"><button class="btn-primary" id="anamPushApplyBtn">Reporter</button></div>
+  </div>
+</div>
+
 <!-- Fiche clinique -->
 <div id="clinicalOverlay" class="modal-overlay" hidden>
   <div class="modal-box wide">
@@ -1190,6 +1272,9 @@
       <label><input type="checkbox" id="rptRts" checked><span>Critères de retour au sport</span></label>
       <label><input type="checkbox" id="rptTraining" checked><span>Entraînement (bloc, séances, volume)</span></label>
       <label><input type="checkbox" id="rptNotes" checked><span>Notes cliniques</span></label>
+      <label><input type="checkbox" id="rptAnam" checked><span>Anamnèse (synthèse)</span></label>
+      <label><input type="checkbox" id="rptAnamDetail"><span>Anamnèse : détail des réponses</span></label>
+      <select id="rptAnamSel" style="margin:4px 0 8px;"></select>
     </div>
     <label for="rptPractitioner">Praticien / cabinet (facultatif)</label>
     <input id="rptPractitioner" placeholder="Ex. Cabinet de kinésithérapie…">
@@ -1936,6 +2021,7 @@ function renderCardsGrid(patient){
 
   ensurePeriodization(patient);
   grid.appendChild(renderClinicalCard(patient));
+  grid.appendChild(renderAnamCard(patient));
   grid.appendChild(renderRtsCard(patient));
   var periodCard = renderPeriodOverviewCard(patient);
   if(periodCard) grid.appendChild(periodCard);
@@ -6269,6 +6355,8 @@ function normalizePatient(p){
   if(!p || typeof p !== "object" || typeof p.name !== "string" || !p.name.trim()) throw new Error("patient invalide");
   if(typeof p.id !== "string" || !p.id) p.id = uid();
   if(!Array.isArray(p.tests)) p.tests = [];
+  if(!Array.isArray(p.anamneses)) p.anamneses = [];
+  p.anamneses = p.anamneses.filter(function(a){ return a && typeof a === "object" && a.answers && typeof a.answers === "object" && Array.isArray(a.snapshot); });
   p.tests = p.tests.filter(function(t){ return t && typeof t === "object" && Array.isArray(t.entries); });
   if(!p.program || typeof p.program !== "object") p.program = {};
   if(!p.program.entries || typeof p.program.entries !== "object") p.program.entries = {};
@@ -6288,6 +6376,7 @@ function normalizeState(o){
   o.patients = o.patients.map(normalizePatient);
   if(!Array.isArray(o.functionalMovements)) o.functionalMovements = [];
   if(!Array.isArray(o.presetsPerso)) o.presetsPerso = [];
+  if(!Array.isArray(o.anamTemplates)) o.anamTemplates = [];
   if(!o.settings || typeof o.settings !== "object") o.settings = {};
   if(o.settings.hardRpe === undefined) o.settings.hardRpe = 7;
   if(o.settings.hardRir === undefined) o.settings.hardRir = 2;
@@ -6672,6 +6761,19 @@ function buildReportPdf(patient, o){
     if(c.prec){ y += 1; font(10, "normal"); var pl = doc.splitTextToSize(pdfSafe("Précautions : " + c.prec), CW - 8), ph = pl.length * 5 + 5; need(ph); doc.setFillColor(255,248,232); doc.rect(M, y - 4, CW, ph, "F"); pl.forEach(function(l, i){ txt(l, M + 4, y + i * 5, 10, "normal", AMBER); }); y += ph; }
   }
 
+  // ---- anamnèse
+  if(o.anam && o.anamObj){
+    var an = o.anamObj, sm2 = buildAnamSummary(patient, an);
+    heading("Anamnèse du " + fmtDate(an.date) + " (" + an.templateName + ")");
+    para(anamSummaryText(patient, an), M, CW, 10, "normal", BLACK, 5);
+    if(sm2.flags.length){ y += 2; font(10, "bold"); var fl = doc.splitTextToSize(pdfSafe("Drapeaux rouges : " + sm2.flags.join(" ; ")), CW - 8), fh = fl.length * 5 + 5; need(fh); doc.setFillColor(253,240,239); doc.rect(M, y - 4, CW, fh, "F"); fl.forEach(function(l, i){ txt(l, M + 4, y + i * 5, 10, "bold", RED); }); y += fh; }
+    if(sm2.keyPoints.length){ y += 2; txt("Points clés", M, y, 10, "bold"); y += 5; sm2.keyPoints.forEach(function(k){ para("- " + k, M + 2, CW - 2, 9.5, "normal", BLACK, 4.6); }); }
+    if(o.anamDetail){
+      y += 3; txt("Réponses détaillées", M, y, 10, "bold"); y += 5;
+      sm2.structured.forEach(function(sec){ need(10); txt(sec.title, M, y, 9.5, "bold", BLUE); y += 4.6; sec.lines.forEach(function(l){ para(l, M + 2, CW - 2, 9, "normal", BLACK, 4.3); }); y += 1.5; });
+    }
+  }
+
   // ---- tests
   if(o.tests){
     heading("Tests et évolution");
@@ -6830,6 +6932,11 @@ function openReportModal(){
   document.getElementById("rptPractitioner").value = (state.settings && state.settings.practitioner) || "";
   document.getElementById("rptSummary").value = "";
   document.getElementById("rptStatus").textContent = "";
+  var al = anamList(patient), sel = document.getElementById("rptAnamSel");
+  sel.innerHTML = al.map(function(a){ return '<option value="' + escHtml(a.id) + '">Anamnèse du ' + fmtDate(a.date) + ' - ' + escHtml(a.templateName) + '</option>'; }).join("");
+  sel.hidden = !al.length;
+  document.getElementById("rptAnam").disabled = !al.length; document.getElementById("rptAnam").checked = al.length > 0;
+  document.getElementById("rptAnamDetail").disabled = !al.length;
   document.getElementById("reportOverlay").hidden = false;
 }
 document.getElementById("openReportBtn").addEventListener("click", openReportModal);
@@ -6839,6 +6946,8 @@ document.getElementById("rptGenerateBtn").addEventListener("click", function(){
   var o = {
     clinical: document.getElementById("rptClinical").checked, tests: document.getElementById("rptTests").checked, rts: document.getElementById("rptRts").checked,
     training: document.getElementById("rptTraining").checked, notes: document.getElementById("rptNotes").checked,
+    anam: document.getElementById("rptAnam").checked, anamDetail: document.getElementById("rptAnamDetail").checked,
+    anamObj: (patient.anamneses || []).find(function(a){ return a.id === document.getElementById("rptAnamSel").value; }) || null,
     practitioner: document.getElementById("rptPractitioner").value.trim().slice(0, 120), summary: document.getElementById("rptSummary").value.trim().slice(0, 1200)
   };
   state.settings.practitioner = o.practitioner; saveData();
@@ -6850,6 +6959,487 @@ document.getElementById("rptGenerateBtn").addEventListener("click", function(){
       sharePdfBlob(blob, "bilan-" + slug + "-" + todayISO() + ".pdf", "Bilan " + patient.name, function(){ st.textContent = "PDF généré."; btn.disabled = false; });
     }catch(err){ console.error(err); st.textContent = "Échec de la génération : " + (err && err.message ? err.message : "erreur inconnue"); btn.disabled = false; }
   }, function(msg){ st.textContent = msg; btn.disabled = false; });
+});
+
+/* ============================================================
+   ANAMNÈSE MODULAIRE + SYNTHÈSE (règles locales, sans IA)
+   ============================================================ */
+var ANAM_TYPES = { text:"Texte long", short:"Texte court", scale:"Échelle 0 à 10", choice:"Choix unique", multi:"Choix multiples", yesno:"Oui / Non", side:"Côté", date:"Date" };
+var ANAM_ROLES = { "":"(aucun)", motif:"Motif de consultation", cote:"Côté concerné", debut:"Date de début", mecanisme:"Circonstances / mécanisme", evolution:"Évolution", siege:"Siège de la douleur", eva:"EVA actuelle", eva_pire:"EVA maximale", nature:"Nature de la douleur", aggravants:"Facteurs aggravants", soulageants:"Facteurs soulageants", associes:"Symptômes associés", antecedents:"Antécédents", traitements:"Traitements, imagerie, avis", profession:"Profession et postures", sport:"Sport / activité", objectifs:"Objectifs / attentes", precautions:"Précautions", drapeaux:"Drapeaux rouges", jaunes:"Drapeaux jaunes" };
+var ANAM_REPRIS = ["antecedents", "profession", "sport"];
+var RED_FLAGS = ["Traumatisme important récent", "Fièvre ou altération de l'état général", "Perte de poids inexpliquée", "Douleur nocturne constante, non mécanique", "Antécédent de cancer", "Déficit neurologique"];
+var YELLOW_FLAGS = ["Peur du mouvement", "Croyances limitantes sur la douleur", "Arrêt de travail en cours", "Anxiété ou baisse de moral"];
+
+function builtinTemplates(){
+  function build(id, name, assoc, extraFlags){
+    var n = 0;
+    function F(label, type, role, o){ var f = { id: id + "_" + (++n), label: label, type: type, role: role || "" }; if(o) Object.keys(o).forEach(function(k){ f[k] = o[k]; }); return f; }
+    return { id: id, name: name, sections: [
+      { id: id + "_s1", title: "Motif et histoire", fields: [
+        F("Motif de consultation", "text", "motif", { hint: "Pourquoi le patient consulte, avec ses mots" }), F("Date de début", "date", "debut"), F("Côté concerné", "side", "cote"),
+        F("Circonstances / mécanisme", "text", "mecanisme"), F("Évolution depuis le début", "choice", "evolution", { options: ["En amélioration", "Stable", "En aggravation", "Fluctuante"] }) ] },
+      { id: id + "_s2", title: "Douleur", fields: [
+        F("Siège", "text", "siege"), F("EVA actuelle", "scale", "eva"), F("EVA la plus forte sur la semaine", "scale", "eva_pire"),
+        F("Nature", "multi", "nature", { options: ["Mécanique", "Inflammatoire", "Brûlure / décharge", "Sourde", "Aiguë / lancinante"] }),
+        F("Facteurs aggravants", "text", "aggravants"), F("Facteurs soulageants", "text", "soulageants"),
+        F("Horaire", "choice", "", { options: ["Matin", "Fin de journée", "Nocturne", "Pas d'horaire particulier"] }) ] },
+      { id: id + "_s3", title: "Symptômes associés", fields: [ F("Symptômes", "multi", "associes", { options: assoc }) ] },
+      { id: id + "_s4", title: "Antécédents et suivi", fields: [
+        F("Antécédents (même zone et généraux)", "text", "antecedents"), F("Traitements en cours", "text", "traitements"), F("Imagerie, avis médicaux", "text", "traitements") ] },
+      { id: id + "_s5", title: "Contexte et objectifs", fields: [
+        F("Profession et postures", "text", "profession"), F("Sport / activité", "text", "sport"), F("Objectifs et attentes", "text", "objectifs") ] },
+      { id: id + "_s6", title: "Drapeaux", fields: [
+        F("Drapeaux rouges repérés", "multi", "drapeaux", { options: RED_FLAGS.concat(extraFlags || []), flag: true }),
+        F("Drapeaux jaunes", "multi", "jaunes", { options: YELLOW_FLAGS }) ] }
+    ] };
+  }
+  return [
+    build("b_general", "Anamnèse générale", ["Gonflement", "Raideur", "Faiblesse", "Paresthésies", "Instabilité", "Craquements"]),
+    build("b_genou", "Genou", ["Gonflement", "Blocage", "Dérobement", "Craquements", "Raideur matinale", "Paresthésies"]),
+    build("b_epaule", "Épaule", ["Raideur", "Faiblesse", "Craquements", "Douleur nocturne", "Paresthésies du bras", "Instabilité"]),
+    build("b_cheville", "Cheville / pied", ["Gonflement", "Instabilité", "Raideur matinale", "Douleur au premier pas", "Paresthésies", "Craquements"]),
+    build("b_lombaire", "Lombaire / rachis", ["Irradiation dans la jambe", "Paresthésies", "Faiblesse d'un membre", "Raideur matinale", "Douleur à la toux"], ["Troubles urinaires ou anesthésie en selle"]),
+    build("b_hanche", "Hanche", ["Blocage", "Craquements", "Boiterie", "Raideur", "Irradiation cuisse / aine"])
+  ];
+}
+function ensureTemplates(){
+  if(!Array.isArray(state.anamTemplates) || !state.anamTemplates.length){ state.anamTemplates = builtinTemplates(); saveData(); }
+  return state.anamTemplates;
+}
+function anamList(patient){ if(!Array.isArray(patient.anamneses)) patient.anamneses = []; return patient.anamneses; }
+function sortedAnams(patient){ return anamList(patient).slice().sort(function(a, b){ return (b.date || "").localeCompare(a.date || "") || (b.createdAt || "").localeCompare(a.createdAt || ""); }); }
+
+/* ----- valeurs et synthèse ----- */
+function fieldsOfAnam(anam){
+  var out = [];
+  (anam.snapshot || []).forEach(function(sec){ (sec.fields || []).forEach(function(f){ out.push({ sec: sec, f: f }); }); });
+  return out;
+}
+function isFilled(f, v){
+  if(f.type === "multi") return Array.isArray(v) && v.length > 0;
+  if(f.type === "scale") return typeof v === "number";
+  return typeof v === "string" && v.trim() !== "";
+}
+function ansText(f, v){
+  if(!isFilled(f, v)) return "";
+  if(f.type === "multi") return v.join(", ");
+  if(f.type === "scale") return v + "/10";
+  if(f.type === "side") return COTE_LABELS[v] || v;
+  if(f.type === "date") return DATE_RE.test(v) ? fmtDate(v) : v;
+  if(f.type === "yesno") return v === "oui" ? "oui" : (v === "non" ? "non" : "");
+  return v.trim().replace(/\s+/g, " ");
+}
+function roleItems(anam, role){
+  return fieldsOfAnam(anam).filter(function(x){ return x.f.role === role; }).map(function(x){ return { f: x.f, v: anam.answers[x.f.id] }; }).filter(function(x){ return isFilled(x.f, x.v); });
+}
+function roleText(anam, role, lc){
+  return roleItems(anam, role).map(function(x){
+    var t = (lc && x.f.type === "multi") ? x.v.map(lowerFirst).join(", ") : ansText(x.f, x.v);
+    return t.replace(/[.\s]+$/, "");
+  }).join(" ; ");
+}
+function lowerFirst(t){ return /^[A-ZÉÈÀÂÊÎÔÛÇ][a-zéèàâêîôûç]/.test(t) ? t.charAt(0).toLowerCase() + t.slice(1) : t; }
+function durText(d){ return d < 14 ? d + " jour" + (d > 1 ? "s" : "") : (d < 84 ? Math.round(d / 7) + " semaines" : Math.round(d / 30.4) + " mois"); }
+function flagsOfAnam(anam){
+  var out = [];
+  fieldsOfAnam(anam).forEach(function(x){
+    if(!x.f.flag) return;
+    var v = anam.answers[x.f.id];
+    if(x.f.type === "multi" && Array.isArray(v)) v.forEach(function(o){ out.push(o); });
+    else if(x.f.type === "yesno" && v === "oui") out.push(x.f.label);
+    else if((x.f.type === "text" || x.f.type === "short") && isFilled(x.f, v)) out.push(x.f.label + " : " + ansText(x.f, v));
+  });
+  return out;
+}
+function buildAnamSummary(patient, anam){
+  var who = patient.sex === "F" ? "Patiente" : (patient.sex === "H" ? "Patient" : "Patient(e)");
+  var age = patient.dob ? computeAge(patient.dob) : null, parts = [];
+  var motif = roleText(anam, "motif", true), cote = roleItems(anam, "cote")[0], debut = roleItems(anam, "debut")[0];
+  var coteTxt = cote ? ({ D: "côté droit", G: "côté gauche", B: "des deux côtés" }[cote.v] || "") : "", since = "";
+  if(debut && DATE_RE.test(debut.v)){
+    var dd = daysBetween(debut.v, anam.date || todayISO());
+    since = ", depuis le " + fmtDate(debut.v) + (dd >= 0 ? " (" + durText(dd) + ")" : "");
+  }
+  parts.push(who + (age !== null ? " de " + age + " ans" : "") + (motif ? " qui consulte pour " + lowerFirst(motif) : " qui consulte (motif non renseigné)") + (coteTxt ? " (" + coteTxt + ")" : "") + since + ".");
+  var t;
+  if((t = roleText(anam, "mecanisme"))) parts.push("Circonstances : " + lowerFirst(t) + ".");
+  if((t = roleText(anam, "evolution"))) parts.push("Évolution : " + lowerFirst(t) + ".");
+  var siege = roleText(anam, "siege", true), nature = roleText(anam, "nature", true), eva = roleItems(anam, "eva")[0], pire = roleItems(anam, "eva_pire")[0];
+  var d1 = [];
+  if(siege) d1.push("Douleur " + lowerFirst(siege) + (nature ? ", de nature " + lowerFirst(nature) : ""));
+  else if(nature) d1.push("Douleur de nature " + lowerFirst(nature));
+  if(eva) d1.push("EVA actuelle " + eva.v + "/10" + (pire ? ", maximale " + pire.v + "/10" : ""));
+  else if(pire) d1.push("EVA maximale " + pire.v + "/10");
+  if(d1.length) parts.push(d1.join(". ") + ".");
+  var ag = roleText(anam, "aggravants"), so = roleText(anam, "soulageants");
+  if(ag || so) parts.push((ag ? "Aggravée par " + lowerFirst(ag) : "") + (ag && so ? " ; " : "") + (so ? (ag ? "soulagée" : "Soulagée") + " par " + lowerFirst(so) : "") + ".");
+  if((t = roleText(anam, "associes", true))) parts.push("Symptômes associés : " + lowerFirst(t) + ".");
+  if((t = roleText(anam, "antecedents"))) parts.push("Antécédents : " + lowerFirst(t) + ".");
+  if((t = roleText(anam, "traitements"))) parts.push("Traitements et examens : " + lowerFirst(t) + ".");
+  var prof = roleText(anam, "profession"), sport = roleText(anam, "sport");
+  if(prof && sport) parts.push("Contexte : " + lowerFirst(prof) + " ; sport / activité : " + lowerFirst(sport) + ".");
+  else if(prof) parts.push("Profession et postures : " + lowerFirst(prof) + ".");
+  else if(sport) parts.push("Sport / activité : " + lowerFirst(sport) + ".");
+  if((t = roleText(anam, "objectifs"))) parts.push("Objectifs : " + lowerFirst(t) + ".");
+  var flags = flagsOfAnam(anam), hasFlagField = fieldsOfAnam(anam).some(function(x){ return x.f.flag; });
+  if(flags.length) parts.push("Drapeaux rouges repérés : " + flags.map(lowerFirst).join(", ") + ".");
+  else if(hasFlagField) parts.push("Aucun drapeau rouge coché.");
+  var yel = roleText(anam, "jaunes", true);
+  if(yel) parts.push("Drapeaux jaunes : " + lowerFirst(yel) + ".");
+  var kp = [];
+  fieldsOfAnam(anam).forEach(function(x){
+    var v = anam.answers[x.f.id];
+    if(x.f.type === "scale" && typeof v === "number") kp.push(x.f.label + " : " + v + "/10");
+    if(x.f.type === "yesno" && v === "oui" && !x.f.flag) kp.push(x.f.label + " : oui");
+  });
+  var missing = [];
+  ["motif", "debut", "siege", "eva"].forEach(function(r){
+    var has = fieldsOfAnam(anam).some(function(x){ return x.f.role === r; });
+    if(has && !roleItems(anam, r).length) missing.push(ANAM_ROLES[r]);
+  });
+  var structured = [];
+  (anam.snapshot || []).forEach(function(sec){
+    var lines = [];
+    (sec.fields || []).forEach(function(f){ var tx = ansText(f, anam.answers[f.id]); if(tx) lines.push(f.label + " : " + tx); });
+    if(lines.length) structured.push({ title: sec.title, lines: lines });
+  });
+  return { narrative: parts.join(" "), keyPoints: kp, flags: flags, yellow: yel, missing: missing, structured: structured };
+}
+function anamSummaryText(patient, anam){
+  return (typeof anam.summaryText === "string" && anam.summaryText.trim()) ? anam.summaryText : buildAnamSummary(patient, anam).narrative;
+}
+
+/* ----- carte dans l'overview ----- */
+function renderAnamCard(patient){
+  var card = document.createElement("div");
+  card.className = "test-card adv-only";
+  card.style.gridColumn = "1 / -1";
+  var list = sortedAnams(patient), last = list[0];
+  var preview = "", flagsHtml = "";
+  if(last){
+    var sm = buildAnamSummary(patient, last), txt0 = anamSummaryText(patient, last);
+    preview = '<div class="tc-sub" style="margin-top:8px; font-size:13.5px; color:var(--text); line-height:1.5;">' + escHtml(txt0.length > 260 ? txt0.slice(0, 260) + "…" : txt0) + '</div>';
+    if(sm.flags.length) flagsHtml = '<div class="flag-box" style="margin:8px 0 0;"><b>Drapeaux rouges :</b> ' + escHtml(sm.flags.join(", ")) + '</div>';
+  }
+  card.innerHTML =
+    '<div class="rts-head"><div class="tc-top" style="margin:0;"><div class="tc-icon" style="background:#fff8e8; color:#8a5200;">📝</div><div class="tc-title-wrap"><div class="tc-title">Anamnèse</div><div class="tc-sub">' + (last ? list.length + ' consultation(s) · dernière le ' + fmtDate(last.date) : 'Aucune anamnèse') + '</div></div></div>' +
+    '<div class="tpl-acts"><button type="button" class="btn-primary" data-anamnew style="min-height:40px;">Nouvelle</button></div></div>' +
+    preview + flagsHtml +
+    (list.length ? '<div style="margin-top:8px;">' + list.slice(0, 5).map(function(a){
+      var s2 = buildAnamSummary(patient, a), eva = roleItems(a, "eva")[0];
+      return '<div class="anam-item" data-anamopen="' + escHtml(a.id) + '"><div><div class="t">' + fmtDate(a.date) + ' · ' + escHtml(a.templateName) + '</div><div class="s">' + (eva ? 'EVA ' + eva.v + '/10 · ' : '') + (s2.flags.length ? s2.flags.length + ' drapeau(x) rouge(s) · ' : '') + (roleText(a, "motif") ? escHtml(roleText(a, "motif").slice(0, 80)) : 'motif non renseigné') + '</div></div>' +
+        '<button type="button" class="del-x" data-anamdel="' + escHtml(a.id) + '" aria-label="Supprimer cette anamnèse">✕</button></div>';
+    }).join("") + '</div>' : '');
+  card.querySelector("[data-anamnew]").addEventListener("click", function(){ openAnamPick(patient); });
+  card.querySelectorAll("[data-anamopen]").forEach(function(el){
+    el.addEventListener("click", function(e){ if(e.target.closest("[data-anamdel]")) return; openAnam(el.dataset.anamopen); });
+  });
+  card.querySelectorAll("[data-anamdel]").forEach(function(b){
+    b.addEventListener("click", function(e){
+      e.stopPropagation();
+      if(!confirm("Supprimer cette anamnèse ? Cette action est définitive.")) return;
+      patient.anamneses = anamList(patient).filter(function(a){ return a.id !== b.dataset.anamdel; });
+      saveData(); renderCardsGrid(patient);
+    });
+  });
+  return card;
+}
+
+/* ----- choix du modèle ----- */
+function openAnamPick(patient){
+  var tpls = ensureTemplates(), lastUsed = (sortedAnams(patient)[0] || {}).templateId;
+  var ordered = tpls.slice().sort(function(a, b){ return (b.id === lastUsed) - (a.id === lastUsed); });
+  document.getElementById("anamPickList").innerHTML = ordered.map(function(t){
+    var n = t.sections.reduce(function(a, s2){ return a + s2.fields.length; }, 0);
+    return '<div class="struct-card" data-anampick="' + escHtml(t.id) + '"><b>' + escHtml(t.name) + '</b><div class="sw">' + t.sections.length + ' section(s), ' + n + ' champs' + (t.id === lastUsed ? ' · dernier utilisé' : '') + '</div></div>';
+  }).join("");
+  document.getElementById("anamPickOverlay").hidden = false;
+}
+document.getElementById("closeAnamPickBtn").addEventListener("click", function(){ document.getElementById("anamPickOverlay").hidden = true; });
+document.getElementById("anamPickTplBtn").addEventListener("click", function(){ document.getElementById("anamPickOverlay").hidden = true; openTplList(); });
+document.getElementById("anamPickList").addEventListener("click", function(e){
+  var c = e.target.closest("[data-anampick]");
+  if(!c) return;
+  document.getElementById("anamPickOverlay").hidden = true;
+  startAnam(c.dataset.anampick);
+});
+function startAnam(tplId){
+  var patient = getSelectedPatient(), t = ensureTemplates().find(function(x){ return x.id === tplId; });
+  if(!t) return;
+  var a = { id: uid(), date: todayISO(), templateId: t.id, templateName: t.name, snapshot: JSON.parse(JSON.stringify(t.sections)), answers: {}, createdAt: new Date().toISOString() };
+  var prev = sortedAnams(patient)[0];
+  if(prev){
+    var copied = 0;
+    fieldsOfAnam(a).forEach(function(x){
+      if(ANAM_REPRIS.indexOf(x.f.role) === -1) return;
+      var pf = fieldsOfAnam(prev).find(function(y){ return y.f.role === x.f.role && y.f.type === x.f.type; });
+      if(pf && isFilled(pf.f, prev.answers[pf.f.id])){ a.answers[x.f.id] = prev.answers[pf.f.id]; copied++; }
+    });
+    if(copied) a.reprisDe = prev.date;
+  }
+  anamList(patient).unshift(a);
+  saveData();
+  openAnam(a.id);
+}
+
+/* ----- écran d'anamnèse ----- */
+var anamCurId = null, anamTab = "form", anamTimer = null;
+function curAnam(){ var p = getSelectedPatient(); return p ? anamList(p).find(function(a){ return a.id === anamCurId; }) : null; }
+function openAnam(id){
+  anamCurId = id; anamTab = "form";
+  document.querySelectorAll("#anamOverlay [data-anamtab]").forEach(function(b){ b.classList.toggle("on", b.dataset.anamtab === "form"); });
+  renderAnam();
+  document.getElementById("anamOverlay").hidden = false;
+}
+function anamFilledCount(a){
+  var n = 0, t = 0;
+  fieldsOfAnam(a).forEach(function(x){ t++; if(isFilled(x.f, a.answers[x.f.id])) n++; });
+  return { n: n, t: t };
+}
+function anamSaveSoon(){
+  clearTimeout(anamTimer);
+  document.getElementById("anamSaved").textContent = "…";
+  anamTimer = setTimeout(function(){
+    saveData();
+    var d = new Date();
+    document.getElementById("anamSaved").textContent = "Enregistré " + String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+  }, 400);
+}
+function fieldHtml(f, a, idx){
+  var v = a.answers[f.id], lab = '<label class="af-l" for="af_' + idx + '">' + escHtml(f.label) + (f.flag ? ' <span class="flag">⚑</span>' : '') + '</label>', fid = escHtml(f.id), h = "";
+  if(f.type === "text") h = lab + '<textarea id="af_' + idx + '" data-af="' + fid + '" rows="3" placeholder="' + escHtml(f.hint || "") + '">' + escHtml(typeof v === "string" ? v : "") + '</textarea>';
+  else if(f.type === "short") h = lab + '<input type="text" id="af_' + idx + '" data-af="' + fid + '" value="' + escHtml(typeof v === "string" ? v : "") + '" placeholder="' + escHtml(f.hint || "") + '" autocomplete="off">';
+  else if(f.type === "date") h = lab + '<input type="date" id="af_' + idx + '" data-af="' + fid + '" value="' + escHtml(typeof v === "string" ? v : "") + '">';
+  else if(f.type === "scale"){
+    var b = ""; for(var i = 0; i <= 10; i++) b += '<button type="button" data-ascale="' + fid + '" data-val="' + i + '"' + (v === i ? ' class="on"' : '') + ' aria-pressed="' + (v === i) + '">' + i + '</button>';
+    h = lab + '<div class="scale">' + b + '</div>';
+  } else if(f.type === "choice") h = lab + '<div class="chip-row">' + (f.options || []).map(function(o){ return '<button type="button" class="chip-btn' + (v === o ? ' on' : '') + '" data-achoice="' + fid + '" data-opt="' + escHtml(o) + '">' + escHtml(o) + '</button>'; }).join("") + '</div>';
+  else if(f.type === "multi") h = lab + '<div class="chip-row">' + (f.options || []).map(function(o){ var on = Array.isArray(v) && v.indexOf(o) !== -1; return '<button type="button" class="chip-btn' + (on ? (f.flag ? ' flagon' : ' on') : '') + '" data-amulti="' + fid + '" data-opt="' + escHtml(o) + '" aria-pressed="' + on + '">' + escHtml(o) + '</button>'; }).join("") + '</div>';
+  else if(f.type === "yesno") h = lab + '<div class="chip-row">' + [["oui", "Oui"], ["non", "Non"]].map(function(o){ return '<button type="button" class="chip-btn' + (v === o[0] ? (f.flag && o[0] === "oui" ? ' flagon' : ' on') : '') + '" data-ayn="' + fid + '" data-v="' + o[0] + '">' + o[1] + '</button>'; }).join("") + '</div>';
+  else if(f.type === "side") h = lab + '<div class="chip-row">' + ["D", "G", "B"].map(function(o){ return '<button type="button" class="chip-btn' + (v === o ? ' on' : '') + '" data-aside="' + fid + '" data-v="' + o + '">' + COTE_LABELS[o] + '</button>'; }).join("") + '</div>';
+  return '<div class="af">' + h + '</div>';
+}
+function renderAnam(){
+  var patient = getSelectedPatient(), a = curAnam();
+  if(!a){ document.getElementById("anamOverlay").hidden = true; return; }
+  var body = document.getElementById("anamBody"), top = body.scrollTop, c = anamFilledCount(a);
+  document.getElementById("anamTitle").textContent = a.templateName;
+  document.getElementById("anamSub").textContent = patient.name + " · " + c.n + " / " + c.t + " champs renseignés";
+  if(anamTab === "synth"){ renderAnamSynth(patient, a); body.scrollTop = 0; return; }
+  var idx = 0;
+  body.innerHTML =
+    (a.reprisDe ? '<div class="af-prefill">Antécédents, profession et sport repris de l\'anamnèse du ' + fmtDate(a.reprisDe) + ' : à vérifier.</div>' : '') +
+    '<div class="as"><div class="af"><label class="af-l" for="anamDate">Date de la consultation</label><input type="date" id="anamDate" value="' + escHtml(a.date) + '"></div></div>' +
+    (a.snapshot || []).map(function(sec){
+      var n = (sec.fields || []).filter(function(f){ return isFilled(f, a.answers[f.id]); }).length;
+      return '<div class="as"><div class="as-h"><b>' + escHtml(sec.title) + '</b><span class="tc-sub">' + n + ' / ' + (sec.fields || []).length + '</span></div>' + (sec.fields || []).map(function(f){ return fieldHtml(f, a, idx++); }).join("") + '</div>';
+    }).join("") +
+    '<div class="tc-sub" style="text-align:center; padding:4px 0 14px;">Écris au stylet directement dans les champs, ou dicte avec le micro du clavier.</div>';
+  body.scrollTop = top;
+  body.querySelectorAll("textarea").forEach(autoGrow);
+}
+function autoGrow(t){ t.style.height = "auto"; t.style.height = Math.max(84, t.scrollHeight + 2) + "px"; }
+
+document.getElementById("anamBody").addEventListener("input", function(e){
+  var a = curAnam(), el = e.target;
+  if(!a) return;
+  if(el.id === "anamDate"){ if(DATE_RE.test(el.value)){ a.date = el.value; anamSaveSoon(); } return; }
+  var fid = el.getAttribute("data-af");
+  if(fid){
+    a.answers[fid] = el.value;
+    if(el.tagName === "TEXTAREA") autoGrow(el);
+    anamSaveSoon();
+    var c = anamFilledCount(a); document.getElementById("anamSub").textContent = getSelectedPatient().name + " · " + c.n + " / " + c.t + " champs renseignés";
+  }
+});
+document.getElementById("anamBody").addEventListener("change", function(e){
+  var el = e.target;
+  if(el.id === "anamDate"){ var a0 = curAnam(); if(a0 && DATE_RE.test(el.value)){ a0.date = el.value; anamSaveSoon(); } }
+});
+document.getElementById("anamBody").addEventListener("click", function(e){
+  var a = curAnam();
+  if(!a || anamTab !== "form") return;
+  var t;
+  if((t = e.target.closest("[data-ascale]"))){ var n = parseInt(t.dataset.val); a.answers[t.dataset.ascale] = (a.answers[t.dataset.ascale] === n) ? null : n; }
+  else if((t = e.target.closest("[data-achoice]"))){ a.answers[t.dataset.achoice] = (a.answers[t.dataset.achoice] === t.dataset.opt) ? "" : t.dataset.opt; }
+  else if((t = e.target.closest("[data-amulti]"))){ var arr = Array.isArray(a.answers[t.dataset.amulti]) ? a.answers[t.dataset.amulti].slice() : [], k = arr.indexOf(t.dataset.opt); if(k === -1) arr.push(t.dataset.opt); else arr.splice(k, 1); a.answers[t.dataset.amulti] = arr; }
+  else if((t = e.target.closest("[data-ayn]"))){ a.answers[t.dataset.ayn] = (a.answers[t.dataset.ayn] === t.dataset.v) ? "" : t.dataset.v; }
+  else if((t = e.target.closest("[data-aside]"))){ a.answers[t.dataset.aside] = (a.answers[t.dataset.aside] === t.dataset.v) ? "" : t.dataset.v; }
+  else return;
+  anamSaveSoon();
+  renderAnam();
+});
+document.querySelectorAll("#anamOverlay [data-anamtab]").forEach(function(b){
+  b.addEventListener("click", function(){
+    anamTab = b.dataset.anamtab;
+    document.querySelectorAll("#anamOverlay [data-anamtab]").forEach(function(x){ x.classList.toggle("on", x === b); });
+    renderAnam();
+  });
+});
+document.getElementById("anamCloseBtn").addEventListener("click", function(){
+  clearTimeout(anamTimer); saveData();
+  document.getElementById("anamOverlay").hidden = true;
+  anamCurId = null;
+  renderCardsGrid(getSelectedPatient());
+});
+
+/* ----- synthèse ----- */
+function renderAnamSynth(patient, a){
+  var sm = buildAnamSummary(patient, a), txtv = anamSummaryText(patient, a), edited = (typeof a.summaryText === "string" && a.summaryText.trim() !== "");
+  document.getElementById("anamBody").innerHTML =
+    (sm.flags.length ? '<div class="flag-box"><b>⚑ Drapeaux rouges repérés :</b> ' + escHtml(sm.flags.join(", ")) + '</div>' : '') +
+    (sm.yellow ? '<div class="yel-box"><b>Drapeaux jaunes :</b> ' + escHtml(sm.yellow) + '</div>' : '') +
+    '<div class="as"><div class="as-h"><b>Synthèse</b><span class="tc-sub">' + (edited ? 'modifiée à la main' : 'générée automatiquement') + '</span></div>' +
+      '<textarea class="synth-narr" id="synthText">' + escHtml(txtv) + '</textarea>' +
+      '<div class="tpl-acts" style="margin-top:8px;"><button type="button" class="btn-ghost" data-synth="regen">Régénérer</button><button type="button" class="btn-ghost" data-synth="copy">Copier</button><button type="button" class="btn-primary" data-synth="push" style="min-height:40px;">Reporter dans la fiche clinique</button></div>' +
+      '<div class="tc-sub" style="margin-top:8px;">Synthèse rédigée par des règles à partir de tes réponses, sans intelligence artificielle : relis-la, elle ne remplace pas ton jugement.</div></div>' +
+    (sm.keyPoints.length ? '<div class="as"><div class="as-h"><b>Points clés</b></div><ul class="kp-list">' + sm.keyPoints.map(function(k){ return '<li>' + escHtml(k) + '</li>'; }).join("") + '</ul></div>' : '') +
+    (sm.missing.length ? '<div class="yel-box"><b>À compléter :</b> ' + escHtml(sm.missing.join(", ")) + '</div>' : '') +
+    '<div class="as"><div class="as-h"><b>Toutes les réponses</b></div>' + (sm.structured.length ? sm.structured.map(function(s2){ return '<div style="margin-bottom:8px;"><b style="font-size:14px;">' + escHtml(s2.title) + '</b><ul class="kp-list">' + s2.lines.map(function(l){ return '<li>' + escHtml(l) + '</li>'; }).join("") + '</ul></div>'; }).join("") : '<div class="tc-sub">Rien n\'est encore renseigné.</div>') + '</div>';
+  autoGrow(document.getElementById("synthText"));
+}
+document.getElementById("anamBody").addEventListener("input", function(e){
+  if(e.target.id !== "synthText") return;
+  var a = curAnam(); if(!a) return;
+  a.summaryText = e.target.value; autoGrow(e.target); anamSaveSoon();
+});
+document.getElementById("anamBody").addEventListener("click", function(e){
+  var b = e.target.closest("[data-synth]");
+  if(!b) return;
+  var a = curAnam(), patient = getSelectedPatient();
+  if(b.dataset.synth === "regen"){ delete a.summaryText; saveData(); renderAnam(); }
+  else if(b.dataset.synth === "copy"){
+    var txt1 = document.getElementById("synthText").value;
+    if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt1).then(function(){ b.textContent = "Copié ✓"; }).catch(function(){ document.getElementById("synthText").select(); });
+    else { document.getElementById("synthText").select(); try{ document.execCommand("copy"); b.textContent = "Copié ✓"; }catch(err){} }
+  } else if(b.dataset.synth === "push") openAnamPush(patient, a);
+});
+
+/* ----- report dans la fiche clinique ----- */
+var pushRows = [];
+function openAnamPush(patient, a){
+  var c = clin(patient), rows = [];
+  var cote = roleItems(a, "cote")[0], debut = roleItems(a, "debut")[0];
+  function add(key, label, val, cur, show){ if(val) rows.push({ key: key, label: label, val: val, cur: cur || "", show: show || val }); }
+  add("patho", "Pathologie", roleText(a, "motif"), c.patho);
+  if(cote) add("cote", "Côté atteint", cote.v, c.cote, COTE_LABELS[cote.v]);
+  if(debut && DATE_RE.test(debut.v)) add("date", "Date de départ", debut.v, c.date, fmtDate(debut.v));
+  add("ant", "Antécédents", roleText(a, "antecedents"), c.ant);
+  add("sport", "Sport", roleText(a, "sport"), c.sport);
+  add("objectif", "Objectif", roleText(a, "objectifs"), c.objectif);
+  var pr = roleText(a, "precautions"), fl = flagsOfAnam(a);
+  var precNew = [pr, fl.length ? "Drapeaux rouges : " + fl.join(", ") : ""].filter(Boolean).join(" — ");
+  add("prec", "Précautions", precNew, c.prec);
+  pushRows = rows;
+  document.getElementById("anamPushList").innerHTML = rows.length ? rows.map(function(r, i){
+    var same = (r.cur === r.val);
+    return '<label class="rts-row" style="cursor:pointer;"><input type="checkbox" class="rts-check" data-pushrow="' + i + '"' + (same ? '' : ' checked') + '><div class="rts-main"><div class="l">' + escHtml(r.label) + '</div><div class="s">Nouveau : ' + escHtml(String(r.show).slice(0, 160)) + '</div>' + (r.cur && !same ? '<div class="s">Actuel : ' + escHtml(r.cur === r.val ? "" : (r.key === "cote" ? (COTE_LABELS[r.cur] || r.cur) : (r.key === "date" ? fmtDate(r.cur) : String(r.cur))).slice(0, 160)) + '</div>' : '') + (same ? '<div class="s">Déjà identique</div>' : '') + '</div></label>';
+  }).join("") : '<div class="tc-sub">Aucune rubrique de l\'anamnèse n\'est reliée à la fiche clinique (rôles à définir dans le modèle).</div>';
+  document.getElementById("anamPushOverlay").hidden = false;
+}
+document.getElementById("closeAnamPushBtn").addEventListener("click", function(){ document.getElementById("anamPushOverlay").hidden = true; });
+document.getElementById("anamPushApplyBtn").addEventListener("click", function(){
+  var patient = getSelectedPatient(), c = clin(patient), n = 0;
+  document.querySelectorAll("#anamPushList [data-pushrow]").forEach(function(cb){
+    if(!cb.checked) return;
+    var r = pushRows[parseInt(cb.dataset.pushrow)];
+    if(!r) return;
+    c[r.key] = r.val; n++;
+    if(r.key === "date" && !c.dateType) c.dateType = "symptomes";
+  });
+  if(n){ saveData(); renderCardsGrid(patient); }
+  document.getElementById("anamPushOverlay").hidden = true;
+});
+
+/* ----- gestion des modèles ----- */
+var tplEdit = null, tplView = "list";
+function openTplList(){ tplView = "list"; tplEdit = null; renderTpl(); document.getElementById("tplOverlay").hidden = false; }
+function renderTpl(){
+  var body = document.getElementById("tplBody"), acts = document.getElementById("tplActions"), top = body.scrollTop;
+  if(tplView === "list"){
+    document.getElementById("tplTitle").textContent = "Mes modèles d'anamnèse";
+    body.innerHTML = '<p class="tc-sub">Tu composes tes propres modèles : sections, champs, types de réponse. Les modèles déjà faits sont modifiables.</p>' +
+      ensureTemplates().map(function(t){
+        var n = t.sections.reduce(function(a, s2){ return a + s2.fields.length; }, 0);
+        return '<div class="anam-item" style="cursor:default;"><div><div class="t">' + escHtml(t.name) + '</div><div class="s">' + t.sections.length + ' section(s), ' + n + ' champs</div></div><div class="tpl-acts"><button type="button" class="btn-ghost" data-tpledit="' + escHtml(t.id) + '">Modifier</button><button type="button" class="btn-ghost" data-tpldup="' + escHtml(t.id) + '">Dupliquer</button><button type="button" class="btn-ghost btn-danger" data-tpldel="' + escHtml(t.id) + '">Supprimer</button></div></div>';
+      }).join("");
+    acts.innerHTML = '<button type="button" class="btn-ghost" id="tplResetBtn">Rétablir les modèles d\'origine</button><button type="button" class="btn-primary" id="tplNewBtn">+ Nouveau modèle</button>';
+  } else {
+    document.getElementById("tplTitle").textContent = "Modifier le modèle";
+    var h = '<label for="tplName">Nom du modèle</label><input id="tplName" data-tplname value="' + escHtml(tplEdit.name) + '">';
+    tplEdit.sections.forEach(function(sec, si){
+      h += '<div class="tpl-sec"><div class="tpl-f" style="border-top:0; padding-top:0;"><label>Section</label><input data-sectitle="' + si + '" value="' + escHtml(sec.title) + '"><div class="tpl-acts"><button type="button" class="btn-ghost" data-secup="' + si + '">↑</button><button type="button" class="btn-ghost" data-secdown="' + si + '">↓</button><button type="button" class="btn-ghost btn-danger" data-secdel="' + si + '">Supprimer la section</button></div></div>';
+      sec.fields.forEach(function(f, fi){
+        var k = si + ":" + fi;
+        h += '<div class="tpl-f"><input data-flabel="' + k + '" value="' + escHtml(f.label) + '" placeholder="Intitulé du champ">' +
+          '<div class="row2"><select data-ftype="' + k + '">' + Object.keys(ANAM_TYPES).map(function(t){ return '<option value="' + t + '"' + (f.type === t ? " selected" : "") + '>' + ANAM_TYPES[t] + '</option>'; }).join("") + '</select>' +
+          '<select data-frole="' + k + '">' + Object.keys(ANAM_ROLES).map(function(r){ return '<option value="' + r + '"' + (f.role === r ? " selected" : "") + '>' + ANAM_ROLES[r] + '</option>'; }).join("") + '</select></div>' +
+          ((f.type === "choice" || f.type === "multi") ? '<input data-fopts="' + k + '" value="' + escHtml((f.options || []).join(", ")) + '" placeholder="Choix séparés par des virgules">' : '') +
+          '<label class="cb"><input type="checkbox" data-fflag="' + k + '"' + (f.flag ? " checked" : "") + '> Drapeau rouge (mis en évidence dans la synthèse)</label>' +
+          '<div class="tpl-acts"><button type="button" class="btn-ghost" data-fup="' + k + '">↑</button><button type="button" class="btn-ghost" data-fdown="' + k + '">↓</button><button type="button" class="btn-ghost btn-danger" data-fdel="' + k + '">Supprimer</button></div></div>';
+      });
+      h += '<button type="button" class="btn-ghost" data-addfield="' + si + '" style="margin-top:6px;">+ Ajouter un champ</button></div>';
+    });
+    h += '<button type="button" class="btn-ghost" id="tplAddSecBtn">+ Ajouter une section</button>';
+    body.innerHTML = h;
+    acts.innerHTML = '<button type="button" class="btn-ghost" id="tplBackBtn">Annuler</button><button type="button" class="btn-primary" id="tplSaveBtn">Enregistrer le modèle</button>';
+  }
+  body.scrollTop = top;
+}
+function moveIn(arr, i, d){ var j = i + d; if(j < 0 || j >= arr.length) return; var t = arr[i]; arr[i] = arr[j]; arr[j] = t; }
+document.getElementById("closeTplBtn").addEventListener("click", function(){ document.getElementById("tplOverlay").hidden = true; });
+document.getElementById("tplOverlay").addEventListener("input", function(e){
+  if(tplView !== "edit" || !tplEdit) return;
+  var el = e.target, a;
+  if(el.hasAttribute("data-tplname")) tplEdit.name = el.value;
+  else if((a = el.getAttribute("data-sectitle")) !== null) tplEdit.sections[+a].title = el.value;
+  else if((a = el.getAttribute("data-flabel")) !== null){ var p = a.split(":"); tplEdit.sections[+p[0]].fields[+p[1]].label = el.value; }
+  else if((a = el.getAttribute("data-fopts")) !== null){ var q = a.split(":"); tplEdit.sections[+q[0]].fields[+q[1]].options = el.value.split(",").map(function(x){ return x.trim(); }).filter(Boolean); }
+});
+document.getElementById("tplOverlay").addEventListener("change", function(e){
+  if(tplView !== "edit" || !tplEdit) return;
+  var el = e.target, a;
+  if((a = el.getAttribute("data-ftype")) !== null){ var p = a.split(":"), f = tplEdit.sections[+p[0]].fields[+p[1]]; f.type = el.value; if((f.type === "choice" || f.type === "multi") && !f.options) f.options = []; renderTpl(); }
+  else if((a = el.getAttribute("data-frole")) !== null){ var q = a.split(":"); tplEdit.sections[+q[0]].fields[+q[1]].role = el.value; }
+  else if((a = el.getAttribute("data-fflag")) !== null){ var r = a.split(":"); tplEdit.sections[+r[0]].fields[+r[1]].flag = el.checked; }
+});
+document.getElementById("tplOverlay").addEventListener("click", function(e){
+  var t, a;
+  if(tplView === "list"){
+    var tpls = ensureTemplates();
+    if((t = e.target.closest("[data-tpledit]"))){ tplEdit = JSON.parse(JSON.stringify(tpls.find(function(x){ return x.id === t.dataset.tpledit; }))); tplView = "edit"; renderTpl(); return; }
+    if((t = e.target.closest("[data-tpldup]"))){ var src = tpls.find(function(x){ return x.id === t.dataset.tpldup; }), cp = JSON.parse(JSON.stringify(src)); cp.id = uid(); cp.name = src.name + " (copie)"; cp.sections.forEach(function(s2){ s2.id = uid(); s2.fields.forEach(function(f){ f.id = uid(); }); }); tpls.push(cp); saveData(); renderTpl(); return; }
+    if((t = e.target.closest("[data-tpldel]"))){
+      if(tpls.length <= 1){ alert("Garde au moins un modèle."); return; }
+      if(!confirm("Supprimer ce modèle ? Les anamnèses déjà saisies restent intactes.")) return;
+      state.anamTemplates = tpls.filter(function(x){ return x.id !== t.dataset.tpldel; }); saveData(); renderTpl(); return;
+    }
+    if(e.target.closest("#tplNewBtn")){ tplEdit = { id: uid(), name: "Nouveau modèle", sections: [{ id: uid(), title: "Section 1", fields: [{ id: uid(), label: "Motif de consultation", type: "text", role: "motif" }] }] }; tplView = "edit"; renderTpl(); return; }
+    if(e.target.closest("#tplResetBtn")){
+      if(!confirm("Ajouter les modèles d'origine manquants ? Tes modèles actuels ne sont pas modifiés.")) return;
+      builtinTemplates().forEach(function(b){ if(!tpls.some(function(x){ return x.id === b.id; })) tpls.push(b); });
+      saveData(); renderTpl(); return;
+    }
+    return;
+  }
+  if(!tplEdit) return;
+  if((t = e.target.closest("[data-secup]"))) moveIn(tplEdit.sections, +t.dataset.secup, -1);
+  else if((t = e.target.closest("[data-secdown]"))) moveIn(tplEdit.sections, +t.dataset.secdown, 1);
+  else if((t = e.target.closest("[data-secdel]"))){ if(tplEdit.sections.length <= 1){ alert("Garde au moins une section."); return; } tplEdit.sections.splice(+t.dataset.secdel, 1); }
+  else if((t = e.target.closest("[data-fup]"))){ a = t.dataset.fup.split(":"); moveIn(tplEdit.sections[+a[0]].fields, +a[1], -1); }
+  else if((t = e.target.closest("[data-fdown]"))){ a = t.dataset.fdown.split(":"); moveIn(tplEdit.sections[+a[0]].fields, +a[1], 1); }
+  else if((t = e.target.closest("[data-fdel]"))){ a = t.dataset.fdel.split(":"); tplEdit.sections[+a[0]].fields.splice(+a[1], 1); }
+  else if((t = e.target.closest("[data-addfield]"))){ tplEdit.sections[+t.dataset.addfield].fields.push({ id: uid(), label: "Nouveau champ", type: "text", role: "" }); }
+  else if(e.target.closest("#tplAddSecBtn")){ tplEdit.sections.push({ id: uid(), title: "Nouvelle section", fields: [{ id: uid(), label: "Nouveau champ", type: "text", role: "" }] }); }
+  else if(e.target.closest("#tplBackBtn")){ tplView = "list"; tplEdit = null; }
+  else if(e.target.closest("#tplSaveBtn")){
+    tplEdit.name = (tplEdit.name || "").trim() || "Modèle sans nom";
+    tplEdit.sections.forEach(function(s2){ s2.title = (s2.title || "").trim() || "Section"; s2.fields.forEach(function(f){ f.label = (f.label || "").trim() || "Champ"; if(f.type !== "choice" && f.type !== "multi") delete f.options; }); });
+    var tpls2 = ensureTemplates(), i = tpls2.findIndex(function(x){ return x.id === tplEdit.id; });
+    if(i === -1) tpls2.push(tplEdit); else tpls2[i] = tplEdit;
+    saveData(); tplView = "list"; tplEdit = null;
+  } else return;
+  renderTpl();
 });
 
 /* ============================================================
