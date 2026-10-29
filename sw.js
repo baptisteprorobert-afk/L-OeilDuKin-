@@ -1,7 +1,7 @@
 // Service worker : l'app fonctionne hors connexion après la première ouverture.
 // Pour forcer une mise à jour chez tous les appareils, change CACHE_VERSION.
-const CACHE_VERSION = "suivi-tests-v7";
-const SHELL = ["./", "index.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png", "icons/apple-touch-icon.png", "vendor/jspdf.umd.min.js"];
+const CACHE_VERSION = "horus-v8";
+const SHELL = ["./", "index.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png", "icons/apple-touch-icon.png", "icons/horus-icon.png", "vendor/jspdf.umd.min.js"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE_VERSION).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
