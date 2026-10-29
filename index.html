@@ -551,6 +551,43 @@
   .pct-row{ display:flex; gap:6px; flex-wrap:wrap; margin:6px 0; }
   .coef-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:8px 0; border-bottom:1px solid #eef0f3; font-size:13.5px; }
   @media (max-width: 760px){ #toggleTargetBtn{ display:block; width:100%; margin-left:0 !important; min-height:44px; text-align:left; font-size:14px; } }
+
+  .save-warn{ position:fixed; top:0; left:0; right:0; z-index:200; background:#8a1f17; color:#fff; padding:calc(10px + env(safe-area-inset-top)) 14px 10px; font-size:13.5px; line-height:1.4; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .save-warn .btn-ghost{ background:#fff; color:#8a1f17; border-color:#fff; min-height:40px; }
+
+  /* ---------- fiche clinique, critères RTS, bilan ---------- */
+  .modal-box textarea{ width:100%; border:1px solid var(--border); border-radius:10px; padding:10px 12px; font-size:15px; font-family:var(--sans); background:#fff; color:var(--text); resize:vertical; box-sizing:border-box; }
+  .modal-box select{ width:100%; min-height:44px; }
+  .clin-grid{ display:grid; grid-template-columns:1fr 1fr; gap:6px 14px; margin-top:8px; }
+  .clin-item{ font-size:12px; color:var(--muted); }
+  .clin-item b{ display:block; font-size:14.5px; color:var(--text); font-weight:600; margin-top:1px; overflow-wrap:anywhere; }
+  .clin-prec{ background:#fff8e8; border:1px solid #f4d9b8; color:#8a5200; border-radius:10px; padding:8px 12px; font-size:13.5px; margin-top:10px; }
+  .clin-notes{ margin-top:10px; border-top:1px solid #eef0f3; padding-top:8px; font-size:13.5px; }
+  .clin-note{ display:flex; justify-content:space-between; gap:8px; padding:3px 0; }
+  .clin-note .d{ color:var(--muted); white-space:nowrap; }
+  .clin-addnote{ display:flex; gap:8px; margin-top:8px; }
+  .clin-addnote input{ flex:1; min-height:44px; border:1px solid var(--border); border-radius:10px; padding:0 12px; font-size:15px; font-family:var(--sans); }
+  .rts-head{ display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; }
+  .rts-chip{ font-size:12px; font-weight:700; padding:3px 10px; border-radius:12px; background:#eef2ff; color:#1f4fc0; }
+  .rts-chip.ok{ background:#e6f6ee; color:#157a4f; }
+  .rts-row{ display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid #eef0f3; font-size:14px; }
+  .rts-row:last-child{ border-bottom:0; }
+  .rts-dot{ width:22px; height:22px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:#fff; background:#b6bdc9; }
+  .rts-dot.ok{ background:#1fa971; } .rts-dot.ko{ background:#e0483e; }
+  .rts-main{ flex:1; min-width:0; }
+  .rts-main .l{ font-weight:600; overflow-wrap:anywhere; }
+  .rts-main .s{ font-size:12px; color:var(--muted); margin-top:1px; }
+  .rts-val{ text-align:right; font-weight:700; white-space:nowrap; }
+  .rts-val .t{ display:block; font-size:11.5px; color:var(--muted); font-weight:500; }
+  .rts-check{ width:24px; height:24px; flex-shrink:0; }
+  .rts-spark{ width:70px; flex-shrink:0; }
+  .rpt-checks{ display:flex; flex-direction:column; gap:2px; margin-bottom:6px; }
+  .rpt-checks label{ display:flex; align-items:center; gap:10px; min-height:40px; font-size:15px; color:var(--text); font-weight:400; text-transform:none; letter-spacing:0; }
+  .rpt-checks input{ width:20px; height:20px; }
+  .del-x{ border:0; background:transparent; color:var(--muted); min-width:36px; min-height:36px; font-size:16px; }
+
+  .header-actions{ display:flex; flex-wrap:wrap; gap:8px; }
+  .header-actions .btn-ghost{ white-space:nowrap; }
 </style>
 </head>
 <body>
@@ -573,6 +610,7 @@
   <main>
     <div id="emptyState">Sélectionne ou crée un patient pour commencer.</div>
 
+    <div id="saveWarn" class="save-warn" hidden><b>Sauvegarde impossible.</b> Le stockage de l'appareil est plein ou bloqué : tes dernières modifications ne sont pas enregistrées. <button type="button" class="btn-ghost" id="saveWarnExportBtn">Exporter maintenant</button></div>
     <div id="todayView" hidden>
       <div id="todayContent"></div>
     </div>
@@ -661,7 +699,7 @@
       <div id="backupBanner" class="backup-banner" hidden></div>
       <div id="patientCardsGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:14px;"></div>
       <div class="data-card">
-        <div><b>Sauvegarde des données</b><div class="tc-sub" id="lastExportLabel">Jamais exportée</div><div class="tc-sub">« Importer » accepte une sauvegarde complète ou un patient partagé.</div></div>
+        <div><b>Sauvegarde des données</b><div class="tc-sub" id="lastExportLabel">Jamais exportée</div><div class="tc-sub">« Importer » accepte une sauvegarde complète ou un patient partagé.</div><div class="tc-sub" id="storageLabel"></div></div>
         <div class="data-actions">
           <button type="button" class="btn-ghost" id="dataExportBtn">Exporter</button>
           <button type="button" class="btn-ghost" id="dataImportBtn">Importer</button>
@@ -679,6 +717,7 @@
           <div class="sub" id="patientSub"></div>
         </div>
         <div class="header-actions">
+          <button class="btn-ghost" id="openReportBtn" title="Générer un bilan PDF">📄 Bilan PDF</button>
           <button class="btn-ghost" id="sharePatientBtn" title="Envoyer ce patient en fichier">Partager</button>
           <button class="btn-ghost" id="openRefBtn" title="Positions de test & normes">📖 Référence</button>
           <button class="btn-ghost btn-danger" id="deletePatientBtn">Supprimer</button>
@@ -1083,6 +1122,84 @@
   </div>
 </div>
 
+<!-- Fiche clinique -->
+<div id="clinicalOverlay" class="modal-overlay" hidden>
+  <div class="modal-box wide">
+    <div class="modal-header">
+      <h2>Fiche clinique</h2>
+      <button class="btn-ghost" id="closeClinicalBtn">Fermer</button>
+    </div>
+    <label for="cliPatho">Pathologie / motif</label>
+    <input id="cliPatho" placeholder="Ex. rupture du LCA, tendinopathie rotulienne…">
+    <label>Côté atteint</label>
+    <div class="quality-chip-grid" id="cliCote"></div>
+    <label for="cliDate">Date de départ</label>
+    <div class="sides-entry">
+      <div><select id="cliDateType"></select></div>
+      <div><input type="date" id="cliDate"></div>
+    </div>
+    <label for="cliPhase">Phase</label>
+    <select id="cliPhase"></select>
+    <label for="cliSport">Sport / activité et niveau</label>
+    <div class="sides-entry">
+      <div><input id="cliSport" placeholder="Ex. football"></div>
+      <div><select id="cliNiveau"></select></div>
+    </div>
+    <label>Membre dominant</label>
+    <div class="quality-chip-grid" id="cliDom"></div>
+    <label for="cliObjectif">Objectif du patient</label>
+    <textarea id="cliObjectif" rows="2"></textarea>
+    <label for="cliPrec">Précautions / contre-indications</label>
+    <textarea id="cliPrec" rows="2"></textarea>
+    <label for="cliAnt">Antécédents</label>
+    <textarea id="cliAnt" rows="2"></textarea>
+    <div class="modal-actions"><button class="btn-primary" id="saveClinicalBtn">Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- Critères de retour au sport -->
+<div id="rtsOverlay" class="modal-overlay" hidden>
+  <div class="modal-box wide">
+    <div class="modal-header">
+      <h2>Critères de retour au sport</h2>
+      <button class="btn-ghost" id="closeRtsBtn">Fermer</button>
+    </div>
+    <p class="tc-sub">Aide à la décision : tu fixes les critères et les seuils, l'appli les évalue sur tes mesures. Elle ne remplace pas ton jugement clinique.</p>
+    <div id="rtsList"></div>
+    <label for="rtsType">Ajouter un critère</label>
+    <select id="rtsType"></select>
+    <div id="rtsFields"></div>
+    <div class="modal-actions">
+      <button class="btn-ghost" id="rtsExampleBtn">Insérer un exemple</button>
+      <button class="btn-primary" id="rtsAddBtn">Ajouter</button>
+    </div>
+  </div>
+</div>
+
+<!-- Bilan PDF -->
+<div id="reportOverlay" class="modal-overlay" hidden>
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Bilan PDF</h2>
+      <button class="btn-ghost" id="closeReportBtn">Fermer</button>
+    </div>
+    <label>Contenu du bilan</label>
+    <div class="rpt-checks">
+      <label><input type="checkbox" id="rptClinical" checked><span>Fiche clinique</span></label>
+      <label><input type="checkbox" id="rptTests" checked><span>Tests et évolution</span></label>
+      <label><input type="checkbox" id="rptRts" checked><span>Critères de retour au sport</span></label>
+      <label><input type="checkbox" id="rptTraining" checked><span>Entraînement (bloc, séances, volume)</span></label>
+      <label><input type="checkbox" id="rptNotes" checked><span>Notes cliniques</span></label>
+    </div>
+    <label for="rptPractitioner">Praticien / cabinet (facultatif)</label>
+    <input id="rptPractitioner" placeholder="Ex. Cabinet de kinésithérapie…">
+    <label for="rptSummary">Synthèse (facultatif)</label>
+    <textarea id="rptSummary" rows="4" placeholder="Quelques lignes en introduction du bilan"></textarea>
+    <div class="tc-sub" id="rptStatus" style="margin-top:8px;"></div>
+    <div class="modal-actions"><button class="btn-primary" id="rptGenerateBtn">Générer et partager le PDF</button></div>
+  </div>
+</div>
+
 <!-- Réglages de l'application / mode d'utilisation -->
 <div id="modeOverlay" class="modal-overlay" hidden>
   <div class="modal-box wide">
@@ -1378,7 +1495,10 @@ function getMuscle(id){ return MUSCLE_DB.find(function(m){ return m.id === id; }
    ============================================================ */
 var STORAGE_KEY = "valdStyleTests_v1";
 function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
-function todayISO(){ return new Date().toISOString().slice(0,10); }
+function todayISO(){
+  var d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+}
 function fmtDate(iso){
   var d = new Date(iso + "T00:00:00");
   return d.toLocaleDateString("fr-FR", { day:"2-digit", month:"2-digit", year:"numeric" });
@@ -1436,9 +1556,66 @@ function loadData(){
     var parsed = JSON.parse(raw);
     if(!parsed.patients) parsed.patients = [];
     return parsed;
-  }catch(e){ console.error("Lecture impossible", e); return { patients: [], selectedPatientId: null }; }
+  }catch(e){
+    console.error("Lecture impossible", e);
+    try{ var raw0 = localStorage.getItem(STORAGE_KEY); if(raw0) localStorage.setItem(STORAGE_KEY + "_corrompu", raw0); loadCorrupted = true; }catch(e2){}
+    return { patients: [], selectedPatientId: null };
+  }
 }
-function saveData(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+var loadCorrupted = false;
+var saveFailed = false;
+function setSaveWarning(on){
+  saveFailed = on;
+  var el = document.getElementById("saveWarn");
+  if(el) el.hidden = !on;
+}
+function saveData(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    if(saveFailed) setSaveWarning(false);
+  }catch(e){
+    console.error("Sauvegarde impossible", e);
+    setSaveWarning(true);
+  }
+  scheduleIdbBackup();
+}
+/* copie de secours dans IndexedDB (autre quota que localStorage) */
+var IDB_NAME = "suivi-tests-backup", IDB_STORE = "kv", idbTimer = null;
+function idbOpen(cb){
+  if(typeof indexedDB === "undefined" || !indexedDB){ cb(null); return; }
+  var r;
+  try{ r = indexedDB.open(IDB_NAME, 1); }catch(e){ cb(null); return; }
+  r.onupgradeneeded = function(){ try{ r.result.createObjectStore(IDB_STORE); }catch(e){} };
+  r.onsuccess = function(){ cb(r.result); };
+  r.onerror = function(){ cb(null); };
+}
+function idbPut(key, val){
+  idbOpen(function(db){
+    if(!db) return;
+    try{ var tx = db.transaction(IDB_STORE, "readwrite"); tx.objectStore(IDB_STORE).put(val, key); tx.oncomplete = function(){ db.close(); }; tx.onerror = function(){ db.close(); }; }catch(e){ try{ db.close(); }catch(e2){} }
+  });
+}
+function idbGet(key, cb){
+  idbOpen(function(db){
+    if(!db){ cb(null); return; }
+    try{
+      var rq = db.transaction(IDB_STORE, "readonly").objectStore(IDB_STORE).get(key);
+      rq.onsuccess = function(){ cb(rq.result || null); db.close(); };
+      rq.onerror = function(){ cb(null); db.close(); };
+    }catch(e){ cb(null); }
+  });
+}
+function scheduleIdbBackup(){
+  clearTimeout(idbTimer);
+  idbTimer = setTimeout(function(){
+    try{ idbPut("latest", { at: new Date().toISOString(), json: JSON.stringify(state) }); }catch(e){}
+  }, 800);
+}
+function storageUsage(){
+  var chars = 0;
+  try{ chars = JSON.stringify(state).length; }catch(e){}
+  return { kb: Math.round(chars / 1024), pct: Math.round(chars / 5000000 * 100) };
+}
 
 var state = loadData();
 if(!state.functionalMovements) state.functionalMovements = [];
@@ -1513,8 +1690,8 @@ function renderProfilsListCards(){
     var lastDate = lastTestDate(p);
     card.innerHTML =
       '<div class="tc-top">' +
-        '<div class="avatar-lg" style="width:38px; height:38px; font-size:13px;">' + initials(p.name) + '</div>' +
-        '<div class="tc-title-wrap"><div class="tc-title">' + p.name + '</div>' +
+        '<div class="avatar-lg" style="width:38px; height:38px; font-size:13px;">' + escHtml(initials(p.name)) + '</div>' +
+        '<div class="tc-title-wrap"><div class="tc-title">' + escHtml(p.name) + '</div>' +
         '<div class="tc-sub">' + (age !== null ? "Âge " + age : "DDN non renseignée") + '</div></div>' +
       '</div>' +
       '<div class="tc-sub" style="margin-top:6px;">' + p.tests.length + ' test(s) · Dernier : ' + (lastDate ? fmtDate(lastDate) : "aucun") + '</div>';
@@ -1758,6 +1935,8 @@ function renderCardsGrid(patient){
   grid.innerHTML = "";
 
   ensurePeriodization(patient);
+  grid.appendChild(renderClinicalCard(patient));
+  grid.appendChild(renderRtsCard(patient));
   var periodCard = renderPeriodOverviewCard(patient);
   if(periodCard) grid.appendChild(periodCard);
 
@@ -1769,7 +1948,7 @@ function renderCardsGrid(patient){
     var topHtml =
       '<div class="tc-top">' +
         '<div class="tc-icon ' + TYPE_ICON[test.type] + '">' + typeIconText(test.type) + '</div>' +
-        '<div class="tc-title-wrap"><div class="tc-title" data-open="' + test.id + '">' + test.name + '</div>' +
+        '<div class="tc-title-wrap"><div class="tc-title" data-open="' + escHtml(test.id) + '">' + escHtml(test.name) + '</div>' +
         '<div class="tc-sub">' + TYPE_LABELS[test.type] + '</div></div>' +
       '</div>';
 
@@ -2414,7 +2593,7 @@ function renderDashboard(patient){
   var quotidiennes = patient.periodization.decisions.filter(function(d){ return d.type === 'quotidienne'; });
   var lastDecision = quotidiennes.length ? quotidiennes[quotidiennes.length-1] : null;
   var meta = lastDate ? ((patient.program.dayMeta || {})[lastDate] || {}) : {};
-  var reponseTxt = lastDate ? ("J+1 : " + (meta.j1 ? escHtml(meta.j1) : "—") + " · J+2 : " + (meta.j2 ? escHtml(meta.j2) : "—") + " · Baseline : " + (meta.retourBaseline || "—")) : "—";
+  var reponseTxt = lastDate ? ("J+1 : " + (meta.j1 ? escHtml(meta.j1) : "—") + " · J+2 : " + (meta.j2 ? escHtml(meta.j2) : "—") + " · Baseline : " + escHtml(meta.retourBaseline || "—")) : "—";
   if(lastDate){
     var flagged = readNotes(meta).filter(function(n){ return !n.ignored && symLevel(n) >= 1; });
     if(flagged.length) reponseTxt += '<div style="color:#8a5200; margin-top:4px;">Lu : ' + flagged.map(function(n){ return n.label.toLowerCase(); }).join(", ") + '</div>';
@@ -2470,7 +2649,7 @@ function renderAlerts(patient){
   if(alerts.length === 0){ el.innerHTML = ""; return; }
   var html = "";
   alerts.forEach(function(a){
-    html += '<div class="alert-item" data-alertkey="' + a.key + '"><div><span>⚠️ ' + a.text + '</span>' +
+    html += '<div class="alert-item" data-alertkey="' + a.key + '"><div><span>⚠️ ' + escHtml(a.text) + '</span>' +
       '<div class="reasons" id="reasons-' + a.key + '" hidden>' +
       ["Bonne tolérance","Contexte sportif","Objectif spécifique","Décision clinique","Autre"].map(function(r){ return '<button data-alertreason="' + a.key + '|' + r + '">' + r + '</button>'; }).join("") +
       '</div></div>' +
@@ -2630,7 +2809,7 @@ function renderJournal(patient){
   patient.periodization.audit.forEach(function(a){ items.push({ date: a.date, text: a.text }); });
   items.sort(function(a,b){ return b.date.localeCompare(a.date); });
   if(items.length === 0){ el.innerHTML = '<div class="w-callout">Aucun événement pour l\'instant.</div>'; return; }
-  el.innerHTML = items.map(function(i){ return '<div class="journal-item">' + fmtDate(i.date) + ' — ' + i.text + '</div>'; }).join("");
+  el.innerHTML = items.map(function(i){ return '<div class="journal-item">' + fmtDate(i.date) + ' — ' + escHtml(i.text) + '</div>'; }).join("");
 }
 
 function renderPeriodisationView(){
@@ -2680,7 +2859,7 @@ function renderMacroSummary(patient){
   }
   el.innerHTML =
     '<div class="macro-card"><div class="tc-sub" style="margin-bottom:2px;">MACROCYCLE</div>' +
-    '<h4 style="margin:0; font-size:16px;">' + MACRO_OBJECTIFS_LABELS[macro.objectif] + (macro.sport ? " — " + macro.sport : "") + '</h4>' +
+    '<h4 style="margin:0; font-size:16px;">' + MACRO_OBJECTIFS_LABELS[macro.objectif] + (macro.sport ? " — " + escHtml(macro.sport) : "") + '</h4>' +
     '<div class="row">' +
       '<div class="item">Demandes du sport<br><b>' + (macro.demandes.length ? macro.demandes.map(function(d){ return QUALITY_LABELS[d]; }).join(", ") : "—") + '</b></div>' +
       (macro.dateCible ? '<div class="item">Date cible<br><b>' + fmtDate(macro.dateCible) + '</b></div>' : '') +
@@ -3142,7 +3321,7 @@ function renderMesoStage(){
     var presetsHtml = "";
     if(state.presetsPerso.length){
       presetsHtml = '<label class="w-field-label">Mes presets</label><div class="quality-chip-grid" id="presetPersoGrid">' +
-        state.presetsPerso.map(function(p){ return '<div class="quality-chip" data-presetid="' + p.id + '" style="padding:10px 16px;">⭐ ' + p.nom + '</div>'; }).join("") +
+        state.presetsPerso.map(function(p){ return '<div class="quality-chip" data-presetid="' + p.id + '" style="padding:10px 16px;">⭐ ' + escHtml(p.nom) + '</div>'; }).join("") +
         '</div><label class="w-field-label" style="margin-top:16px;">Ou repars d\'une qualité</label>';
     }
     body.innerHTML = measureHintsHtml(getSelectedPatient()) + presetsHtml + '<div class="quality-chip-grid" id="dominanteGrid">' +
@@ -3408,7 +3587,7 @@ function renderFonctionnelTab(){
     var known = lookupMovementMvc(fm.movement, fm.muscleId);
     var pctCell = known ? (known.pct + '% MVC <span class="src">(' + known.source + ')</span>') : '<span class="tc-norm-badge na">Pas de valeur vérifiée trouvée</span>';
     rows += '<tr>' +
-      '<td>' + fm.movement + '</td>' +
+      '<td>' + escHtml(fm.movement) + '</td>' +
       '<td>' + (muscle ? muscle.name : '—') + '</td>' +
       '<td class="val">' + pctCell + '</td>' +
       '<td>' + (known ? '<input type="number" step="any" class="fm-mvc-input" data-fm="' + fm.id + '" placeholder="Pic MVC mesuré" style="width:110px;"><span class="val fm-result" data-fmresult="' + fm.id + '" style="margin-left:6px;"></span>' : '—') + '</td>' +
@@ -4503,13 +4682,13 @@ function renderDayEntriesList(){
     var name, detail, sub;
     if(e.kind === 'exercise'){
       name = e.name; detail = '<b>' + e.sets + ' × ' + e.reps + '</b> · <b>' + e.load + ' kg</b>';
-      sub = (e.group ? e.group + ' · ' : '') + fmtNum(entryTonnage(e)) + ' kg';
+      sub = (e.group ? escHtml(e.group) + ' · ' : '') + fmtNum(entryTonnage(e)) + ' kg';
     } else if(e.kind === 'stretching'){
       name = e.name; detail = '<b>' + e.series + ' × ' + e.dureeSec + ' s</b>';
       sub = 'Étirement · tension ' + fmtNum(stretchSeconds(e)) + ' s';
     } else if(e.kind === 'isometric'){
       name = e.name; detail = '<b>' + e.series + ' × ' + e.reps + ' × ' + e.dureeSec + ' s</b>';
-      sub = (e.isoType === 'yielding' ? 'Yielding' : 'Overcoming') + (e.pctFmax ? ' · ' + e.pctFmax + ' % Fmax' : '') + (e.group ? ' · ' + e.group : '') + ' · tension ' + fmtNum(stretchSeconds(e)) + ' s';
+      sub = (e.isoType === 'yielding' ? 'Yielding' : 'Overcoming') + (e.pctFmax ? ' · ' + e.pctFmax + ' % Fmax' : '') + (e.group ? ' · ' + escHtml(e.group) : '') + ' · tension ' + fmtNum(stretchSeconds(e)) + ' s';
     } else {
       name = "Course"; detail = '<b>' + e.distanceKm + ' km</b> · <b>' + e.durationMin + ' min</b>';
       sub = hasRpe ? 'Charge ' + fmtNum(entryLoad(e)) + ' UA' : 'RPE manquant pour la charge';
@@ -5091,7 +5270,7 @@ function renderSymptomChips(patient, dateKey){
     return '<button type="button" class="sym-chip sev-' + sev + (n.ignored ? ' ign' : '') + '" data-symid="' + n.id + '" title="Lu dans : « ' + escHtml(n.snippet) + ' » — touche pour ' + (n.ignored ? 'reprendre en compte' : 'ignorer') + '">' + n.field + ' · ' + n.label + ' · ' + SYM_LEVEL_LABEL[sev] + '</button>';
   }).join("");
   el.innerHTML = '<div class="sym-wrap"><div class="tc-sub"><b>Lu dans tes notes</b> — repérage de mots, pas de la compréhension : touche une étiquette pour l\'ignorer si la lecture est fausse.</div>' +
-    (chips ? '<div class="sym-chips">' + chips + '</div>' : '<div class="tc-sub" style="margin-top:4px;">Rien de particulier repéré.</div>') + '</div>';
+    (chips ? '<div class="sym-chips">' + chips + '</div>' : '<div class="tc-sub" style="margin-top:4px;">Aucun mot-clé reconnu : la lecture est limitée, ce n\'est pas une validation. Relis tes notes.</div>') + '</div>';
 }
 document.addEventListener("click", function(e){
   var chip = e.target.closest("[data-symid]");
@@ -6054,6 +6233,626 @@ document.getElementById("toggleTargetBtn").addEventListener("click", function(){
 });
 
 /* ============================================================
+   IMPORT SÉCURISÉ : nettoyage des fichiers reçus
+   ============================================================ */
+var DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+var ID_KEYS = { id:1, mesoId:1, macrocycleId:1 };
+function cleanImported(v, key, parentKey, depth){
+  if(depth > 14) return undefined;
+  if(typeof v === "string"){
+    if(ID_KEYS[key]) return v.replace(/[^\w-]/g, "_").slice(0, 64);
+    return v.replace(/</g, "‹").replace(/>/g, "›").slice(0, 5000);
+  }
+  if(typeof v === "number") return isFinite(v) ? v : undefined;
+  if(typeof v === "boolean" || v === null) return v;
+  if(Array.isArray(v)) return v.slice(0, 30000).map(function(x){ return cleanImported(x, "", key, depth + 1); }).filter(function(x){ return x !== undefined; });
+  if(typeof v === "object"){
+    var out = {};
+    Object.keys(v).forEach(function(k){
+      if(k === "__proto__" || k === "constructor" || k === "prototype") return;
+      if(key === "program" && (k === "entries" || k === "dayMeta" || k === "plan")){
+        var m = {}, src = v[k];
+        if(src && typeof src === "object" && !Array.isArray(src)){
+          Object.keys(src).forEach(function(dk){ if(DATE_RE.test(dk)){ var cv = cleanImported(src[dk], "", k, depth + 2); if(cv !== undefined) m[dk] = cv; } });
+        }
+        out[k] = m;
+        return;
+      }
+      var c = cleanImported(v[k], k, key, depth + 1);
+      if(c !== undefined) out[k] = c;
+    });
+    return out;
+  }
+  return undefined;
+}
+function normalizePatient(p){
+  if(!p || typeof p !== "object" || typeof p.name !== "string" || !p.name.trim()) throw new Error("patient invalide");
+  if(typeof p.id !== "string" || !p.id) p.id = uid();
+  if(!Array.isArray(p.tests)) p.tests = [];
+  p.tests = p.tests.filter(function(t){ return t && typeof t === "object" && Array.isArray(t.entries); });
+  if(!p.program || typeof p.program !== "object") p.program = {};
+  if(!p.program.entries || typeof p.program.entries !== "object") p.program.entries = {};
+  if(!Array.isArray(p.program.exerciseLibrary)) p.program.exerciseLibrary = [];
+  if(!p.program.dayMeta || typeof p.program.dayMeta !== "object") p.program.dayMeta = {};
+  if(!p.program.plan || typeof p.program.plan !== "object") p.program.plan = {};
+  if(!p.measurements || typeof p.measurements !== "object") p.measurements = {};
+  if(!p.leverArms || typeof p.leverArms !== "object") p.leverArms = {};
+  Object.keys(p.program.entries).forEach(function(k){
+    if(!Array.isArray(p.program.entries[k])) delete p.program.entries[k];
+    else p.program.entries[k] = p.program.entries[k].filter(function(e){ return e && typeof e === "object"; });
+  });
+  return p;
+}
+function normalizeState(o){
+  if(!o || typeof o !== "object" || !Array.isArray(o.patients)) throw new Error("format invalide");
+  o.patients = o.patients.map(normalizePatient);
+  if(!Array.isArray(o.functionalMovements)) o.functionalMovements = [];
+  if(!Array.isArray(o.presetsPerso)) o.presetsPerso = [];
+  if(!o.settings || typeof o.settings !== "object") o.settings = {};
+  if(o.settings.hardRpe === undefined) o.settings.hardRpe = 7;
+  if(o.settings.hardRir === undefined) o.settings.hardRir = 2;
+  if(!o.settings.prog) o.settings.prog = {};
+  if(o.selectedPatientId && !o.patients.some(function(p){ return p.id === o.selectedPatientId; })) o.selectedPatientId = o.patients.length ? o.patients[0].id : null;
+  return o;
+}
+function replaceState(o){
+  state = normalizeState(o);
+  migratePeriodizationData();
+  saveData();
+  renderAll();
+  updateBackupUi();
+}
+function checkBackupRestore(){
+  if(state.patients.length > 0) return;
+  idbGet("latest", function(b){
+    if(!b || !b.json) return;
+    try{
+      var o = JSON.parse(b.json);
+      if(o && o.patients && o.patients.length && confirm("Aucune donnée sur cet appareil, mais une copie de secours du " + fmtDate(String(b.at).slice(0, 10)) + " contient " + o.patients.length + " patient(s). La restaurer ?")){
+        replaceState(cleanImported(o, "", "", 0));
+      }
+    }catch(e){}
+  });
+}
+
+/* ============================================================
+   FICHE CLINIQUE, CRITÈRES DE RETOUR AU SPORT, BILAN PDF
+   ============================================================ */
+var COTE_LABELS = { D:"Droit", G:"Gauche", B:"Bilatéral", N:"Aucun" };
+var DATE_TYPES = { chirurgie:"Chirurgie", blessure:"Blessure", symptomes:"Début des symptômes" };
+var PHASES = ["Protection / phase aiguë", "Mobilité et contrôle", "Renforcement", "Reprise de la course", "Retour au sport", "Prévention"];
+var NIVEAUX = ["Loisir", "Amateur", "Compétition", "Élite"];
+function clin(patient){
+  if(!patient.clinical || typeof patient.clinical !== "object") patient.clinical = {};
+  if(!Array.isArray(patient.clinical.notes)) patient.clinical.notes = [];
+  return patient.clinical;
+}
+function daysBetween(a, b){ return Math.round((new Date(b + "T00:00:00") - new Date(a + "T00:00:00")) / 86400000); }
+function sinceText(c){
+  if(!c.date) return "";
+  var d = daysBetween(c.date, todayISO());
+  if(d < 0) return "dans " + (-d) + " jour(s)";
+  var lab = c.dateType === "chirurgie" ? "post-op" : (c.dateType === "blessure" ? "depuis la blessure" : "depuis le début des symptômes");
+  return "S" + Math.floor(d / 7) + " (J+" + d + ") " + lab;
+}
+function affectedSide(patient){ var c = patient.clinical; return (c && (c.cote === "D" || c.cote === "G")) ? c.cote : null; }
+var showAllNotes = false;
+
+function renderClinicalCard(patient){
+  var c = clin(patient);
+  var card = document.createElement("div");
+  card.className = "test-card";
+  card.style.gridColumn = "1 / -1";
+  var empty = !(c.patho || c.cote || c.date || c.phase || c.sport || c.objectif || c.prec || c.ant);
+  var items = [];
+  function it(label, val){ if(val) items.push('<div class="clin-item">' + label + '<b>' + escHtml(val) + '</b></div>'); }
+  it("Pathologie", c.patho);
+  it("Côté atteint", c.cote ? COTE_LABELS[c.cote] : "");
+  it(c.dateType ? DATE_TYPES[c.dateType] : "Date de départ", c.date ? fmtDate(c.date) + (sinceText(c) ? " · " + sinceText(c) : "") : "");
+  it("Phase", c.phase);
+  it("Sport", [c.sport, c.niveau].filter(Boolean).join(" · "));
+  it("Membre dominant", c.dom ? COTE_LABELS[c.dom] : "");
+  it("Objectif", c.objectif);
+  it("Antécédents", c.ant);
+  var notes = c.notes.slice().sort(function(a, b){ return b.date.localeCompare(a.date); }), shown = showAllNotes ? notes : notes.slice(0, 3);
+  card.innerHTML =
+    '<div class="rts-head"><div class="tc-top" style="margin:0;"><div class="tc-icon" style="background:#eef2ff; color:var(--blue);">🩺</div><div class="tc-title-wrap"><div class="tc-title">Fiche clinique</div></div></div>' +
+    '<button type="button" class="btn-ghost" data-cliedit style="min-height:40px;">' + (empty ? "Renseigner" : "Modifier") + '</button></div>' +
+    (empty ? '<div class="tc-sub" style="margin-top:8px;">Pathologie, côté atteint, date de départ, phase, sport, objectifs et précautions : ces informations alimentent les critères de retour au sport et le bilan PDF.</div>' : '<div class="clin-grid">' + items.join("") + '</div>') +
+    (c.prec ? '<div class="clin-prec"><b>Précautions :</b> ' + escHtml(c.prec) + '</div>' : '') +
+    '<div class="clin-notes"><b style="font-size:13px;">Notes cliniques</b>' +
+      (shown.length ? shown.map(function(n){ return '<div class="clin-note"><span>' + escHtml(n.text) + '</span><span class="d">' + fmtDate(n.date) + ' <button type="button" class="del-x" data-delnote="' + escHtml(n.id) + '" aria-label="Supprimer la note">✕</button></span></div>'; }).join("") : '<div class="tc-sub">Aucune note.</div>') +
+      (notes.length > 3 ? '<button type="button" class="btn-ghost" data-allnotes style="min-height:36px; margin-top:4px;">' + (showAllNotes ? "Réduire" : "Tout afficher (" + notes.length + ")") + '</button>' : '') +
+      '<div class="clin-addnote"><input id="cliNoteInput" placeholder="Ajouter une note clinique…" autocomplete="off"><button type="button" class="btn-primary" data-addnote style="min-height:44px;">Ajouter</button></div></div>';
+  card.querySelector("[data-cliedit]").addEventListener("click", function(){ openClinicalModal(patient); });
+  card.querySelector("[data-addnote]").addEventListener("click", function(){
+    var inp = card.querySelector("#cliNoteInput"), tx = inp.value.trim();
+    if(!tx) return;
+    c.notes.unshift({ id: uid(), date: todayISO(), text: tx.slice(0, 1000) });
+    if(c.notes.length > 300) c.notes.length = 300;
+    saveData(); renderCardsGrid(patient);
+  });
+  card.querySelectorAll("[data-delnote]").forEach(function(b){
+    b.addEventListener("click", function(){
+      if(!confirm("Supprimer cette note ?")) return;
+      c.notes = c.notes.filter(function(n){ return n.id !== b.dataset.delnote; });
+      saveData(); renderCardsGrid(patient);
+    });
+  });
+  var allBtn = card.querySelector("[data-allnotes]");
+  if(allBtn) allBtn.addEventListener("click", function(){ showAllNotes = !showAllNotes; renderCardsGrid(patient); });
+  return card;
+}
+
+var cliDraft = { cote:"", dom:"" };
+function openClinicalModal(patient){
+  var c = clin(patient);
+  cliDraft = { cote: c.cote || "", dom: c.dom || "" };
+  document.getElementById("cliPatho").value = c.patho || "";
+  document.getElementById("cliDate").value = c.date || "";
+  document.getElementById("cliDateType").innerHTML = Object.keys(DATE_TYPES).map(function(k){ return '<option value="' + k + '"' + ((c.dateType || "chirurgie") === k ? " selected" : "") + '>' + DATE_TYPES[k] + '</option>'; }).join("");
+  document.getElementById("cliPhase").innerHTML = '<option value="">—</option>' + PHASES.map(function(x){ return '<option value="' + escHtml(x) + '"' + (c.phase === x ? " selected" : "") + '>' + escHtml(x) + '</option>'; }).join("");
+  document.getElementById("cliSport").value = c.sport || "";
+  document.getElementById("cliNiveau").innerHTML = '<option value="">Niveau</option>' + NIVEAUX.map(function(x){ return '<option value="' + x + '"' + (c.niveau === x ? " selected" : "") + '>' + x + '</option>'; }).join("");
+  document.getElementById("cliObjectif").value = c.objectif || "";
+  document.getElementById("cliPrec").value = c.prec || "";
+  document.getElementById("cliAnt").value = c.ant || "";
+  renderCliChips();
+  document.getElementById("clinicalOverlay").hidden = false;
+}
+function renderCliChips(){
+  document.getElementById("cliCote").innerHTML = Object.keys(COTE_LABELS).map(function(k){ return '<div class="quality-chip' + (cliDraft.cote === k ? ' selected single' : '') + '" data-clicote="' + k + '">' + COTE_LABELS[k] + '</div>'; }).join("");
+  document.getElementById("cliDom").innerHTML = ["D", "G"].map(function(k){ return '<div class="quality-chip' + (cliDraft.dom === k ? ' selected single' : '') + '" data-clidom="' + k + '">' + COTE_LABELS[k] + '</div>'; }).join("");
+}
+document.getElementById("clinicalOverlay").addEventListener("click", function(e){
+  var a = e.target.closest("[data-clicote]"), b = e.target.closest("[data-clidom]");
+  if(a){ cliDraft.cote = (cliDraft.cote === a.dataset.clicote) ? "" : a.dataset.clicote; renderCliChips(); }
+  if(b){ cliDraft.dom = (cliDraft.dom === b.dataset.clidom) ? "" : b.dataset.clidom; renderCliChips(); }
+});
+document.getElementById("closeClinicalBtn").addEventListener("click", function(){ document.getElementById("clinicalOverlay").hidden = true; });
+document.getElementById("saveClinicalBtn").addEventListener("click", function(){
+  var patient = getSelectedPatient(), c = clin(patient), v = function(id){ return document.getElementById(id).value.trim(); };
+  c.patho = v("cliPatho").slice(0, 300); c.cote = cliDraft.cote; c.dom = cliDraft.dom;
+  c.date = document.getElementById("cliDate").value; c.dateType = document.getElementById("cliDateType").value;
+  c.phase = document.getElementById("cliPhase").value; c.sport = v("cliSport").slice(0, 120); c.niveau = document.getElementById("cliNiveau").value;
+  c.objectif = v("cliObjectif").slice(0, 600); c.prec = v("cliPrec").slice(0, 600); c.ant = v("cliAnt").slice(0, 600);
+  saveData();
+  document.getElementById("clinicalOverlay").hidden = true;
+  renderCardsGrid(patient);
+});
+
+/* ----- critères de retour au sport ----- */
+function rtsList(patient){ if(!patient.rts || !Array.isArray(patient.rts.criteria)) patient.rts = { criteria: [] }; return patient.rts.criteria; }
+function sortedEntries(test){ return test.entries.slice().sort(function(a, b){ return a.date.localeCompare(b.date); }); }
+function hasV(x){ return x !== undefined && x !== null; }
+function lastBoth(test){
+  var es = sortedEntries(test);
+  for(var i = es.length - 1; i >= 0; i--) if(hasV(es[i].valueD) && hasV(es[i].valueG)) return es[i];
+  return null;
+}
+function lsiPair(D, G, aff){
+  if(!(D > 0) || !(G > 0)) return null;
+  var af = aff === "D" ? D : (aff === "G" ? G : Math.min(D, G)), un = aff === "D" ? G : (aff === "G" ? D : Math.max(D, G));
+  return Math.round(af / un * 100);
+}
+function nodata(msg){ return { status:"nodata", valueText:"—", target:"", detail:msg }; }
+function evalCriterion(patient, c){
+  var aff = affectedSide(patient), test = c.testId ? patient.tests.find(function(t){ return t.id === c.testId; }) : null;
+  var sideTxt = aff ? "côté atteint : " + (aff === "D" ? "droit" : "gauche") : "côté atteint non renseigné : faible ÷ fort";
+  if(c.type === "manual") return { status: c.done ? "ok" : "ko", valueText: c.done ? "validé" : "à valider", target: c.done && c.doneDate ? fmtDate(c.doneDate) : "", manual:true, detail:"" };
+  if(c.type === "pain"){
+    var from = addDaysToDate(todayISO(), -(c.days - 1)), mx = null;
+    Object.keys(patient.program.dayMeta || {}).forEach(function(k){
+      var m = patient.program.dayMeta[k];
+      if(k >= from && k <= todayISO() && hasV(m.pain)) mx = mx === null ? m.pain : Math.max(mx, m.pain);
+    });
+    if(mx === null) return nodata("Aucune douleur saisie sur " + c.days + " jours");
+    return { status: mx <= c.threshold ? "ok" : "ko", valueText: mx + " / 10", target: "≤ " + c.threshold + " sur " + c.days + " j", detail:"douleur maximale saisie" };
+  }
+  if(!test) return nodata("Test introuvable");
+  if(c.type === "lsi"){
+    var e = lastBoth(test);
+    if(!e) return nodata("Mesure des deux côtés manquante");
+    var v = lsiPair(e.valueD, e.valueG, aff);
+    if(v === null) return nodata("Valeurs nulles");
+    var series = sortedEntries(test).filter(function(x){ return hasV(x.valueD) && hasV(x.valueG); }).map(function(x){ return lsiPair(x.valueD, x.valueG, aff); }).filter(function(x){ return x !== null; });
+    return { status: v >= c.threshold ? "ok" : "ko", valueText: v + " %", target: "≥ " + c.threshold + " %", detail: sideTxt + " · " + fmtDate(e.date), series: series, value: v };
+  }
+  if(c.type === "norm"){
+    var muscle = test.muscleId ? getMuscle(test.muscleId) : null, e2 = lastBoth(test);
+    if(!muscle || !muscle.forceNorm) return nodata("Pas de norme pour ce test");
+    if(!e2) return nodata("Mesure des deux côtés manquante");
+    var side = aff || (e2.valueD < e2.valueG ? "D" : "G"), val = side === "D" ? e2.valueD : e2.valueG;
+    var ev = evaluateForceNorm(muscle, patient, val, test.unit, ((patient.leverArms[test.muscleId] || {})[side] || {}).cm);
+    if(!ev || ev.status !== "ok") return nodata("Profil incomplet (" + ((ev && ev.need) ? ev.need.join(", ") : "norme") + ")");
+    return { status: ev.ratio >= c.threshold ? "ok" : "ko", valueText: ev.ratio + " %", target: "≥ " + c.threshold + " % de la norme", detail: "côté " + (side === "D" ? "droit" : "gauche") + (aff ? " (atteint)" : " (le plus faible)") + " · " + fmtDate(e2.date) };
+  }
+  if(c.type === "ratio"){
+    var t2 = patient.tests.find(function(t){ return t.id === c.testId2; });
+    if(!t2) return nodata("Second test introuvable");
+    var a = lastBoth(test), b = lastBoth(t2);
+    if(!a || !b) return nodata("Mesures des deux côtés manquantes");
+    var rD = toKgF(a.valueD, test.unit) / toKgF(b.valueD, t2.unit), rG = toKgF(a.valueG, test.unit) / toKgF(b.valueG, t2.unit);
+    var r = aff === "D" ? rD : (aff === "G" ? rG : Math.min(rD, rG));
+    if(!isFinite(r)) return nodata("Valeurs nulles");
+    return { status: r >= c.threshold ? "ok" : "ko", valueText: frDec(Math.round(r * 100) / 100), target: "≥ " + frDec(c.threshold), detail: sideTxt };
+  }
+  return nodata("Type inconnu");
+}
+function rtsSummary(patient){
+  var list = rtsList(patient), res = list.map(function(c){ return { c:c, r:evalCriterion(patient, c) }; });
+  return { items:res, ok:res.filter(function(x){ return x.r.status === "ok"; }).length, total:res.length, nodata:res.filter(function(x){ return x.r.status === "nodata"; }).length };
+}
+function renderRtsCard(patient){
+  var sm = rtsSummary(patient), card = document.createElement("div");
+  card.className = "test-card";
+  card.style.gridColumn = "1 / -1";
+  var chip = sm.total ? '<span class="rts-chip' + (sm.ok === sm.total ? ' ok' : '') + '">' + sm.ok + ' / ' + sm.total + ' validés</span>' : '';
+  var rows = sm.items.map(function(x){
+    var r = x.r, c = x.c;
+    var left = c.type === "manual"
+      ? '<input type="checkbox" class="rts-check" data-rtsdone="' + escHtml(c.id) + '"' + (c.done ? ' checked' : '') + ' aria-label="Valider : ' + escHtml(c.label) + '">'
+      : '<div class="rts-dot ' + (r.status === "ok" ? "ok" : (r.status === "ko" ? "ko" : "")) + '">' + (r.status === "ok" ? "✓" : (r.status === "ko" ? "✕" : "–")) + '</div>';
+    var spark = (r.series && r.series.length >= 2) ? '<div class="rts-spark">' + sparklineSvg([{ values: r.series, color: "#2f6fed" }]) + '</div>' : '';
+    return '<div class="rts-row">' + left + '<div class="rts-main"><div class="l">' + escHtml(c.label) + '</div><div class="s">' + escHtml(r.detail || "") + '</div></div>' + spark +
+      '<div class="rts-val">' + escHtml(r.valueText) + (r.target ? '<span class="t">' + escHtml(r.target) + '</span>' : '') + '</div></div>';
+  }).join("");
+  card.innerHTML =
+    '<div class="rts-head"><div class="tc-top" style="margin:0;"><div class="tc-icon" style="background:#e6f6ee; color:#157a4f;">🏁</div><div class="tc-title-wrap"><div class="tc-title">Retour au sport</div><div class="tc-sub">Critères évalués sur tes mesures</div></div></div>' + chip +
+    '<button type="button" class="btn-ghost" data-rtsedit style="min-height:40px;">' + (sm.total ? "Modifier" : "Définir les critères") + '</button></div>' +
+    (sm.total ? '<div style="margin-top:6px;">' + rows + '</div>' + (sm.nodata ? '<div class="tc-sub" style="margin-top:6px;">' + sm.nodata + ' critère(s) sans donnée : ils ne comptent pas comme validés.</div>' : '') : '<div class="tc-sub" style="margin-top:8px;">Définis des critères (symétrie de force, % de la norme, ratio entre muscles, douleur, validations cliniques) : l\'appli les suit à chaque nouveau test.</div>') +
+    '<div class="tc-sub" style="margin-top:8px;">Aide à la décision : ne remplace pas le jugement clinique.</div>';
+  card.querySelector("[data-rtsedit]").addEventListener("click", function(){ openRtsModal(patient); });
+  card.querySelectorAll("[data-rtsdone]").forEach(function(cb){
+    cb.addEventListener("change", function(){
+      var c = rtsList(patient).find(function(x){ return x.id === cb.dataset.rtsdone; });
+      if(c){ c.done = cb.checked; c.doneDate = cb.checked ? todayISO() : ""; saveData(); renderCardsGrid(patient); }
+    });
+  });
+  return card;
+}
+
+var RTS_TYPES = { lsi:"Symétrie de force (LSI)", norm:"% de la norme (force isométrique)", ratio:"Ratio entre deux tests", pain:"Douleur maximale", manual:"Validation clinique (case à cocher)" };
+function sideTests(patient, types){ return patient.tests.filter(function(t){ return t.tracksSides && types.indexOf(t.type) !== -1; }); }
+function testOptions(list, sel){ return list.map(function(t){ return '<option value="' + escHtml(t.id) + '"' + (t.id === sel ? " selected" : "") + '>' + escHtml(t.name) + '</option>'; }).join(""); }
+function openRtsModal(patient){
+  document.getElementById("rtsType").innerHTML = Object.keys(RTS_TYPES).map(function(k){ return '<option value="' + k + '">' + RTS_TYPES[k] + '</option>'; }).join("");
+  renderRtsFields(patient);
+  renderRtsList(patient);
+  document.getElementById("rtsOverlay").hidden = false;
+}
+function renderRtsFields(patient){
+  var t = document.getElementById("rtsType").value, el = document.getElementById("rtsFields"), h = "";
+  var iso = sideTests(patient, ["iso"]), all = sideTests(patient, ["iso", "jump", "other"]);
+  if(t === "lsi") h = '<label for="rtsTest">Test</label><select id="rtsTest">' + (all.length ? testOptions(all) : '<option value="">Aucun test avec côtés</option>') + '</select><label for="rtsThr">LSI minimal (%)</label><input id="rtsThr" type="number" inputmode="decimal" value="90">';
+  else if(t === "norm") h = '<label for="rtsTest">Test isométrique</label><select id="rtsTest">' + (iso.length ? testOptions(iso) : '<option value="">Aucun test isométrique</option>') + '</select><label for="rtsThr">% de la norme minimal</label><input id="rtsThr" type="number" inputmode="decimal" value="100">';
+  else if(t === "ratio") h = '<label for="rtsTest">Test 1 (numérateur)</label><select id="rtsTest">' + (iso.length ? testOptions(iso) : '<option value="">Aucun test isométrique</option>') + '</select><label for="rtsTest2">Test 2 (dénominateur)</label><select id="rtsTest2">' + (iso.length ? testOptions(iso) : '<option value="">—</option>') + '</select><label for="rtsThr">Ratio minimal (test 1 ÷ test 2)</label><input id="rtsThr" type="number" inputmode="decimal" step="0.01" placeholder="Ex. 0,5">';
+  else if(t === "pain") h = '<label for="rtsThr">Douleur maximale acceptée (0-10)</label><input id="rtsThr" type="number" inputmode="decimal" value="2"><label for="rtsDays">Sur les derniers (jours)</label><input id="rtsDays" type="number" inputmode="numeric" value="7">';
+  else h = '<label for="rtsLabel">Intitulé</label><input id="rtsLabel" placeholder="Ex. absence de gonflement, course à 10 km/h sans douleur">';
+  if(t !== "manual") h += '<label for="rtsLabel">Intitulé (facultatif)</label><input id="rtsLabel" placeholder="Rédigé automatiquement si vide">';
+  el.innerHTML = h;
+}
+function criterionLabel(patient, c){
+  var tn = function(id){ var t = patient.tests.find(function(x){ return x.id === id; }); return t ? t.name : "?"; };
+  if(c.type === "lsi") return "LSI " + tn(c.testId) + " ≥ " + c.threshold + " %";
+  if(c.type === "norm") return tn(c.testId) + " ≥ " + c.threshold + " % de la norme";
+  if(c.type === "ratio") return "Ratio " + tn(c.testId) + " ÷ " + tn(c.testId2) + " ≥ " + frDec(c.threshold);
+  if(c.type === "pain") return "Douleur max ≤ " + c.threshold + "/10 sur " + c.days + " jours";
+  return c.label || "Validation clinique";
+}
+function renderRtsList(patient){
+  var list = rtsList(patient);
+  document.getElementById("rtsList").innerHTML = list.length ? list.map(function(c){
+    return '<div class="rts-row"><div class="rts-main"><div class="l">' + escHtml(c.label) + '</div><div class="s">' + escHtml(RTS_TYPES[c.type] || "") + '</div></div>' +
+      (c.type !== "manual" ? '<input class="prog-input" type="number" step="any" data-rtsthr="' + escHtml(c.id) + '" value="' + c.threshold + '" aria-label="Seuil">' : '') +
+      '<button type="button" class="del-x" data-rtsdel="' + escHtml(c.id) + '" aria-label="Supprimer">✕</button></div>';
+  }).join("") : '<div class="tc-sub" style="margin-bottom:8px;">Aucun critère pour l\'instant.</div>';
+}
+document.getElementById("rtsType").addEventListener("change", function(){ renderRtsFields(getSelectedPatient()); });
+document.getElementById("closeRtsBtn").addEventListener("click", function(){ document.getElementById("rtsOverlay").hidden = true; renderCardsGrid(getSelectedPatient()); });
+document.getElementById("rtsAddBtn").addEventListener("click", function(){
+  var patient = getSelectedPatient(), type = document.getElementById("rtsType").value, g = function(id){ var e = document.getElementById(id); return e ? e.value : ""; };
+  var c = { id: uid(), type: type };
+  if(type === "manual"){ c.label = g("rtsLabel").trim().slice(0, 200); if(!c.label){ alert("Indique un intitulé."); return; } c.done = false; c.doneDate = ""; }
+  else {
+    c.threshold = parseFloat(g("rtsThr").replace(",", "."));
+    if(isNaN(c.threshold) || c.threshold < 0){ alert("Indique un seuil valide."); return; }
+    if(type === "pain") c.days = Math.max(1, Math.min(60, parseInt(g("rtsDays")) || 7));
+    else {
+      c.testId = g("rtsTest"); if(!c.testId){ alert("Choisis un test."); return; }
+      if(type === "ratio"){ c.testId2 = g("rtsTest2"); if(!c.testId2 || c.testId2 === c.testId){ alert("Choisis deux tests différents."); return; } }
+    }
+    c.label = (g("rtsLabel").trim().slice(0, 200)) || criterionLabel(patient, c);
+  }
+  rtsList(patient).push(c);
+  saveData(); renderRtsList(patient); renderRtsFields(patient);
+});
+document.getElementById("rtsOverlay").addEventListener("click", function(e){
+  var patient = getSelectedPatient(), d = e.target.closest("[data-rtsdel]");
+  if(d){ patient.rts.criteria = rtsList(patient).filter(function(c){ return c.id !== d.dataset.rtsdel; }); saveData(); renderRtsList(patient); }
+});
+document.getElementById("rtsOverlay").addEventListener("change", function(e){
+  var i = e.target.closest("[data-rtsthr]");
+  if(!i) return;
+  var c = rtsList(getSelectedPatient()).find(function(x){ return x.id === i.dataset.rtsthr; }), v = parseFloat(i.value);
+  if(c && !isNaN(v) && v >= 0){ c.threshold = v; c.label = criterionLabel(getSelectedPatient(), c); saveData(); renderRtsList(getSelectedPatient()); }
+});
+document.getElementById("rtsExampleBtn").addEventListener("click", function(){
+  var patient = getSelectedPatient(), list = rtsList(patient);
+  if(list.length && !confirm("Ajouter les critères d'exemple à la liste existante ?")) return;
+  sideTests(patient, ["iso", "jump"]).slice(0, 6).forEach(function(t){
+    var c = { id: uid(), type: "lsi", testId: t.id, threshold: 90 }; c.label = criterionLabel(patient, c); list.push(c);
+  });
+  var pn = { id: uid(), type: "pain", threshold: 2, days: 7 }; pn.label = criterionLabel(patient, pn); list.push(pn);
+  ["Absence de gonflement", "Course sans douleur", "Validation fonctionnelle (sauts, changements de direction)"].forEach(function(l){ list.push({ id: uid(), type: "manual", label: l, done: false, doneDate: "" }); });
+  saveData(); renderRtsList(patient);
+});
+
+/* ----- bilan PDF ----- */
+function pdfSafe(t){
+  return String(t == null ? "" : t)
+    .replace(/[‹]/g, "<").replace(/[›]/g, ">").replace(/≥/g, ">=").replace(/≤/g, "<=").replace(/≈/g, "~").replace(/→/g, "->")
+    .replace(/[−–—]/g, "-").replace(/[’‘]/g, "'").replace(/[“”«»]/g, '"').replace(/…/g, "...").replace(/[·•]/g, "-").replace(/[\u202F\u00A0]/g, " ")
+    .replace(/[^\u0020-\u007E\u00A1-\u00FF]/g, "");
+}
+function loadJsPdf(ok, fail){
+  if(window.jspdf && window.jspdf.jsPDF){ ok(); return; }
+  var sc = document.createElement("script");
+  sc.src = "vendor/jspdf.umd.min.js";
+  sc.onload = function(){ (window.jspdf && window.jspdf.jsPDF) ? ok() : fail("Bibliothèque PDF illisible."); };
+  sc.onerror = function(){ fail("Bibliothèque PDF introuvable (vendor/jspdf.umd.min.js). Vérifie que le dossier « vendor » est bien déployé."); };
+  document.head.appendChild(sc);
+}
+function downloadBlob(blob, filename){
+  var url = URL.createObjectURL(blob), a = document.createElement("a");
+  a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 8000);
+}
+function sharePdfBlob(blob, filename, title, done){
+  var file = (typeof File === "function") ? new File([blob], filename, { type: "application/pdf" }) : null;
+  if(file && navigator.canShare && navigator.share){
+    try{
+      if(navigator.canShare({ files: [file] })){
+        navigator.share({ files: [file], title: title }).then(function(){ if(done) done(); }).catch(function(err){ if(!err || err.name !== "AbortError") downloadBlob(blob, filename); if(done) done(); });
+        return;
+      }
+    }catch(e){}
+  }
+  downloadBlob(blob, filename);
+  if(done) done();
+}
+
+function buildReportPdf(patient, o){
+  var J = window.jspdf.jsPDF, doc = new J({ unit: "mm", format: "a4" });
+  var W = 210, H = 297, M = 15, CW = W - 2 * M, y = M + 8;
+  var BLACK = [31,36,48], GREY = [110,118,132], BLUE = [47,111,237], LINEC = [220,224,230], RED = [179,38,30], GREEN = [21,122,79], AMBER = [138,82,0], FILL = [243,245,248];
+  function col(c){ doc.setTextColor(c[0], c[1], c[2]); }
+  function font(size, style){ doc.setFont("helvetica", style || "normal"); doc.setFontSize(size); }
+  function txt(t, x, yy, size, style, c, opts){ font(size, style); col(c || BLACK); doc.text(pdfSafe(t), x, yy, opts); }
+  function need(h){ if(y + h > H - 20){ doc.addPage(); y = M + 8; } }
+  function fit(t, w, size, style){ font(size, style); t = pdfSafe(t); if(doc.getTextWidth(t) <= w) return t; while(t.length > 1 && doc.getTextWidth(t + "...") > w) t = t.slice(0, -1); return t + "..."; }
+  function para(t, x, w, size, style, c, lh){
+    font(size, style);
+    doc.splitTextToSize(pdfSafe(t), w).forEach(function(l){ need(lh); txt(l, x, y, size, style, c); y += lh; });
+  }
+  function heading(t){ need(16); y += 4; txt(t, M, y, 13, "bold"); y += 2; doc.setDrawColor(LINEC[0], LINEC[1], LINEC[2]); doc.line(M, y, W - M, y); y += 6; }
+  function kv(label, value){
+    if(!value) return;
+    font(10, "normal");
+    var lines = doc.splitTextToSize(pdfSafe(value), CW - 42);
+    need(lines.length * 5 + 1);
+    txt(label, M, y, 8.5, "normal", GREY);
+    lines.forEach(function(l, i){ txt(l, M + 42, y + i * 5, 10, "normal"); });
+    y += Math.max(1, lines.length) * 5 + 1;
+  }
+  var today = todayISO(), aff = affectedSide(patient), c = clin(patient);
+
+  // ---- titre
+  txt("Bilan de suivi", M, y, 21, "bold"); y += 9;
+  txt(patient.name, M, y, 14, "bold", BLUE); y += 6;
+  var age = patient.dob ? computeAge(patient.dob) : null;
+  txt([age !== null ? age + " ans" : "", patient.sex === "F" ? "Femme" : (patient.sex === "H" ? "Homme" : ""), patient.weightKg ? patient.weightKg + " kg" : ""].filter(Boolean).join(" - ") + (o.practitioner ? "   |   " + o.practitioner : ""), M, y, 9.5, "normal", GREY); y += 5;
+  txt("Établi le " + fmtDate(today), M, y, 9.5, "normal", GREY); y += 4;
+  if(o.summary){
+    y += 3; font(10, "normal");
+    var sl = doc.splitTextToSize(pdfSafe(o.summary), CW - 8), bh = sl.length * 5 + 6;
+    need(bh); doc.setFillColor(FILL[0], FILL[1], FILL[2]); doc.rect(M, y - 4, CW, bh, "F");
+    sl.forEach(function(l, i){ txt(l, M + 4, y + i * 5, 10, "normal"); }); y += bh;
+  }
+
+  // ---- fiche clinique
+  if(o.clinical){
+    heading("Fiche clinique");
+    var any = c.patho || c.cote || c.date || c.phase || c.sport || c.objectif || c.prec || c.ant;
+    if(!any) para("Non renseignée.", M, CW, 10, "normal", GREY, 5);
+    kv("Pathologie", c.patho); kv("Côté atteint", c.cote ? COTE_LABELS[c.cote] : "");
+    kv(c.dateType ? DATE_TYPES[c.dateType] : "Date de départ", c.date ? fmtDate(c.date) + (sinceText(c) ? " - " + sinceText(c) : "") : "");
+    kv("Phase", c.phase); kv("Sport", [c.sport, c.niveau].filter(Boolean).join(" - ")); kv("Membre dominant", c.dom ? COTE_LABELS[c.dom] : "");
+    kv("Objectif", c.objectif); kv("Antécédents", c.ant);
+    if(c.prec){ y += 1; font(10, "normal"); var pl = doc.splitTextToSize(pdfSafe("Précautions : " + c.prec), CW - 8), ph = pl.length * 5 + 5; need(ph); doc.setFillColor(255,248,232); doc.rect(M, y - 4, CW, ph, "F"); pl.forEach(function(l, i){ txt(l, M + 4, y + i * 5, 10, "normal", AMBER); }); y += ph; }
+  }
+
+  // ---- tests
+  if(o.tests){
+    heading("Tests et évolution");
+    var tests = patient.tests.filter(function(t){ return t.entries && t.entries.length; });
+    if(!tests.length) para("Aucun test enregistré.", M, CW, 10, "normal", GREY, 5);
+    else {
+      var cols = [["Test", 54], ["Droite", 24], ["Gauche", 24], ["Symétrie", 26], ["Norme D / G", 30], ["Date", 22]], x0 = M;
+      need(14); doc.setFillColor(FILL[0], FILL[1], FILL[2]); doc.rect(M, y - 4.5, CW, 7, "F");
+      cols.forEach(function(cl){ txt(cl[0], x0 + 1.5, y, 8.5, "bold", GREY); x0 += cl[1]; }); y += 5;
+      tests.forEach(function(t){
+        var es = sortedEntries(t), last = es[es.length - 1], prev = es.length > 1 ? es[es.length - 2] : null;
+        need(14);
+        var D = hasV(last.valueD) ? last.valueD : null, G = hasV(last.valueG) ? last.valueG : null, S = hasV(last.value) ? last.value : null;
+        var sym = "-", nrm = "-";
+        if(t.tracksSides && D !== null && G !== null){
+          var l = lsiPair(D, G, aff); sym = (l !== null ? "LSI " + l + " %" : "-");
+          if(t.type === "iso" && t.muscleId){
+            var mu = getMuscle(t.muscleId);
+            if(mu && mu.forceNorm){
+              var ed = evaluateForceNorm(mu, patient, D, t.unit, ((patient.leverArms[t.muscleId] || {}).D || {}).cm), eg = evaluateForceNorm(mu, patient, G, t.unit, ((patient.leverArms[t.muscleId] || {}).G || {}).cm);
+              nrm = (ed && ed.status === "ok" ? ed.ratio + " %" : "?") + " / " + (eg && eg.status === "ok" ? eg.ratio + " %" : "?");
+            }
+          }
+        }
+        var xx = M;
+        txt(fit(t.name, cols[0][1] - 3, 9.5, "bold"), xx + 1.5, y, 9.5, "bold"); xx += cols[0][1];
+        txt(t.tracksSides ? (D !== null ? D + " " + t.unit : "-") : (S !== null ? S + " " + t.unit : "-"), xx + 1.5, y, 9.5); xx += cols[1][1];
+        txt(t.tracksSides ? (G !== null ? G + " " + t.unit : "-") : "", xx + 1.5, y, 9.5); xx += cols[2][1];
+        txt(sym, xx + 1.5, y, 9.5); xx += cols[3][1];
+        txt(nrm, xx + 1.5, y, 9.5); xx += cols[4][1];
+        txt(fmtDate(last.date).slice(0, 5) + "/" + fmtDate(last.date).slice(8), xx + 1.5, y, 9.5);
+        var evo = "";
+        if(prev){
+          var dd = function(a, b){ return (hasV(a) && hasV(b) && b !== 0) ? Math.round((a / b - 1) * 100) : null; };
+          var ed2 = dd(last.valueD, prev.valueD), eg2 = dd(last.valueG, prev.valueG), es2 = dd(last.value, prev.value);
+          var parts = [];
+          if(ed2 !== null) parts.push("D " + (ed2 >= 0 ? "+" : "") + ed2 + " %"); if(eg2 !== null) parts.push("G " + (eg2 >= 0 ? "+" : "") + eg2 + " %"); if(es2 !== null) parts.push((es2 >= 0 ? "+" : "") + es2 + " %");
+          if(parts.length) evo = "depuis le " + fmtDate(prev.date) + " : " + parts.join(", ");
+        }
+        y += 4.5; if(evo){ txt(evo, M + 1.5, y, 8, "normal", GREY); }
+        y += 5.5; doc.setDrawColor(LINEC[0], LINEC[1], LINEC[2]); doc.line(M, y - 3.4, W - M, y - 3.4);
+      });
+      y += 2; para("LSI = côté atteint / côté sain (ou côté faible / côté fort si le côté atteint n'est pas renseigné). Norme : % de la valeur de référence en force isométrique, selon poids et sexe.", M, CW, 8, "normal", GREY, 4);
+      // courbes
+      var chartTests = tests.filter(function(t){ return t.tracksSides && sortedEntries(t).filter(function(e){ return hasV(e.valueD) || hasV(e.valueG); }).length >= 2; }).slice(0, 8);
+      if(chartTests.length){
+        y += 4; need(52); txt("Évolution droite / gauche", M, y, 11, "bold"); y += 4;
+        chartTests.forEach(function(t, i){
+          var cx = M + (i % 2) * (CW / 2 + 2), cw = CW / 2 - 4, chh = 34;
+          if(i % 2 === 0) need(chh + 14);
+          var top = y;
+          var es = sortedEntries(t), vals = [];
+          es.forEach(function(e){ if(hasV(e.valueD)) vals.push(e.valueD); if(hasV(e.valueG)) vals.push(e.valueG); });
+          var mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals); if(mn === mx){ mn -= 1; mx += 1; }
+          var pad = (mx - mn) * 0.1; mn -= pad; mx += pad;
+          var d0 = new Date(es[0].date + "T00:00:00").getTime(), d1 = new Date(es[es.length - 1].date + "T00:00:00").getTime(); if(d1 === d0) d1 = d0 + 86400000;
+          var px = function(dt){ return cx + 10 + (new Date(dt + "T00:00:00").getTime() - d0) / (d1 - d0) * (cw - 14); };
+          var py = function(v){ return top + 5 + chh - 10 - (v - mn) / (mx - mn) * (chh - 12); };
+          txt(fit(t.name + " (" + t.unit + ")", cw, 9, "bold"), cx, top + 1, 9, "bold");
+          doc.setDrawColor(LINEC[0], LINEC[1], LINEC[2]); doc.rect(cx + 10, top + 4, cw - 14, chh - 9);
+          txt(String(Math.round(mx * 10) / 10), cx + 9, top + 7, 7, "normal", GREY, { align: "right" });
+          txt(String(Math.round(mn * 10) / 10), cx + 9, top + chh - 5, 7, "normal", GREY, { align: "right" });
+          [["valueD", BLACK], ["valueG", BLUE]].forEach(function(sd){
+            var pts = es.filter(function(e){ return hasV(e[sd[0]]); });
+            doc.setDrawColor(sd[1][0], sd[1][1], sd[1][2]); doc.setLineWidth(0.5);
+            for(var k = 1; k < pts.length; k++) doc.line(px(pts[k - 1].date), py(pts[k - 1][sd[0]]), px(pts[k].date), py(pts[k][sd[0]]));
+            doc.setFillColor(sd[1][0], sd[1][1], sd[1][2]);
+            pts.forEach(function(e){ doc.circle(px(e.date), py(e[sd[0]]), 0.7, "F"); });
+          });
+          doc.setLineWidth(0.2);
+          txt(fmtDate(es[0].date).slice(0, 5), cx + 10, top + chh - 1, 7, "normal", GREY);
+          txt(fmtDate(es[es.length - 1].date).slice(0, 5), cx + cw - 4, top + chh - 1, 7, "normal", GREY, { align: "right" });
+          txt("D", cx + cw - 12, top + 1, 8, "bold", BLACK); txt("G", cx + cw - 7, top + 1, 8, "bold", BLUE);
+          if(i % 2 === 1 || i === chartTests.length - 1) y += chh + 6;
+        });
+      }
+    }
+  }
+
+  // ---- retour au sport
+  if(o.rts){
+    heading("Critères de retour au sport");
+    var sm = rtsSummary(patient);
+    if(!sm.total) para("Aucun critère défini.", M, CW, 10, "normal", GREY, 5);
+    else {
+      txt(sm.ok + " critère(s) validé(s) sur " + sm.total + (sm.nodata ? " (" + sm.nodata + " sans donnée)" : ""), M, y, 10, "bold"); y += 6;
+      sm.items.forEach(function(x){
+        need(10);
+        var st = x.r.status, colr = st === "ok" ? GREEN : (st === "ko" ? RED : GREY);
+        doc.setFillColor(colr[0], colr[1], colr[2]); doc.circle(M + 2, y - 1.2, 1.6, "F");
+        txt(fit(x.c.label, CW - 70, 9.5, "normal"), M + 7, y, 9.5);
+        txt(x.r.valueText + (x.r.target ? "  (" + x.r.target + ")" : ""), W - M, y, 9.5, "bold", colr, { align: "right" });
+        y += 4; if(x.r.detail) txt(x.r.detail, M + 7, y, 8, "normal", GREY); y += 4;
+      });
+      y += 1; para("Aide à la décision : les critères et les seuils sont fixés par le praticien ; ils ne remplacent pas le jugement clinique.", M, CW, 8, "normal", GREY, 4);
+    }
+  }
+
+  // ---- entraînement
+  if(o.training){
+    heading("Entraînement");
+    var meso = currentActiveMeso(patient), ctx = getMicrocycleContext(patient, today);
+    if(meso) kv("Bloc en cours", QUALITY_LABELS[meso.dominante] + (ctx && ctx.micro ? " - semaine " + ctx.micro.numero + " sur " + ctx.meso.microcycles.length + (ctx.micro.type ? " (" + MICRO_TYPE_LABELS[ctx.micro.type] + ")" : "") : "") + " - fin le " + fmtDate(mesoEndDate(meso)));
+    else para("Aucun bloc de périodisation en cours.", M, CW, 10, "normal", GREY, 5);
+    var wk = [];
+    for(var w = 3; w >= 0; w--){
+      var end = addDaysToDate(today, -7 * w), start = addDaysToDate(end, -6), n = 0, pl2 = 0;
+      for(var i2 = 0; i2 < 7; i2++){ var k = addDaysToDate(start, i2); if((patient.program.entries[k] || []).length) n++; if(getPlan(patient)[k]) pl2++; }
+      wk.push(fmtDate(start).slice(0, 5) + ": " + n + (pl2 ? "/" + pl2 : ""));
+    }
+    kv("Séances (4 semaines)", wk.join("   ") + "   (faites/prévues)");
+    var vw = volumeWindow(patient, today, 28), gs = Object.keys(vw.byGroup).filter(function(g){ return g; }).map(function(g){ return { g:g, n:vw.byGroup[g].total }; }).sort(function(a, b){ return b.n - a.n; }).slice(0, 8);
+    if(gs.length){
+      y += 2; need(8 + gs.length * 5.5); txt("Volume par groupe sur 28 jours (séries)", M, y, 10, "bold"); y += 5;
+      var mxn = gs[0].n || 1;
+      gs.forEach(function(r){ txt(fit(r.g, 50, 9, "normal"), M, y, 9); doc.setFillColor(BLUE[0], BLUE[1], BLUE[2]); doc.rect(M + 52, y - 3, (CW - 70) * r.n / mxn, 3.6, "F"); txt(String(r.n), M + 54 + (CW - 70) * r.n / mxn, y, 9, "bold"); y += 5.5; });
+    }
+    var names = {}, last28 = addDaysToDate(today, -56);
+    Object.keys(patient.program.entries).forEach(function(k){ if(k < last28 || k > today) return; patient.program.entries[k].forEach(function(e){ if(e.kind === "exercise" && e.name) names[e.name] = true; }); });
+    var exs = Object.keys(names).map(function(n){ var ss = exerciseSessions(patient, n); return ss.length ? { n:n, s:ss[0] } : null; }).filter(Boolean).sort(function(a, b){ return b.s.date.localeCompare(a.s.date); }).slice(0, 8);
+    if(exs.length){
+      y += 3; need(8 + exs.length * 5.5); txt("Dernières charges", M, y, 10, "bold"); y += 5;
+      exs.forEach(function(r){
+        txt(fit(r.n, 70, 9.5, "normal"), M, y, 9.5);
+        txt(r.s.sets + " x " + r.s.reps + " @ " + r.s.load + " kg" + (r.s.rir !== undefined ? "  (RIR " + r.s.rir + ")" : ""), M + 74, y, 9.5);
+        txt(fmtDate(r.s.date), W - M, y, 9, "normal", GREY, { align: "right" }); y += 5.5;
+      });
+    }
+  }
+
+  // ---- notes
+  if(o.notes){
+    heading("Notes cliniques");
+    if(!c.notes.length) para("Aucune note.", M, CW, 10, "normal", GREY, 5);
+    c.notes.slice().sort(function(a, b){ return b.date.localeCompare(a.date); }).slice(0, 10).forEach(function(n){
+      font(9.5, "normal"); var nl = doc.splitTextToSize(pdfSafe(n.text), CW - 28); need(nl.length * 4.6 + 2);
+      txt(fmtDate(n.date), M, y, 9, "normal", GREY); nl.forEach(function(l, i){ txt(l, M + 26, y + i * 4.6, 9.5); }); y += nl.length * 4.6 + 2;
+    });
+  }
+
+  // ---- en-têtes / pieds de page
+  var total = doc.internal.getNumberOfPages();
+  for(var pg = 1; pg <= total; pg++){
+    doc.setPage(pg);
+    if(pg > 1) txt(patient.name + " - Bilan de suivi", M, 10, 8.5, "normal", GREY);
+    doc.setDrawColor(LINEC[0], LINEC[1], LINEC[2]); doc.line(M, H - 14, W - M, H - 14);
+    txt("Document d'aide au suivi : il ne remplace pas l'examen clinique.", M, H - 9, 7.5, "normal", GREY);
+    txt("Page " + pg + " / " + total, W - M, H - 9, 7.5, "normal", GREY, { align: "right" });
+  }
+  return doc.output("blob");
+}
+
+function openReportModal(){
+  var patient = getSelectedPatient();
+  if(!patient) return;
+  document.getElementById("rptPractitioner").value = (state.settings && state.settings.practitioner) || "";
+  document.getElementById("rptSummary").value = "";
+  document.getElementById("rptStatus").textContent = "";
+  document.getElementById("reportOverlay").hidden = false;
+}
+document.getElementById("openReportBtn").addEventListener("click", openReportModal);
+document.getElementById("closeReportBtn").addEventListener("click", function(){ document.getElementById("reportOverlay").hidden = true; });
+document.getElementById("rptGenerateBtn").addEventListener("click", function(){
+  var patient = getSelectedPatient(), st = document.getElementById("rptStatus"), btn = this;
+  var o = {
+    clinical: document.getElementById("rptClinical").checked, tests: document.getElementById("rptTests").checked, rts: document.getElementById("rptRts").checked,
+    training: document.getElementById("rptTraining").checked, notes: document.getElementById("rptNotes").checked,
+    practitioner: document.getElementById("rptPractitioner").value.trim().slice(0, 120), summary: document.getElementById("rptSummary").value.trim().slice(0, 1200)
+  };
+  state.settings.practitioner = o.practitioner; saveData();
+  st.textContent = "Préparation du PDF…"; btn.disabled = true;
+  loadJsPdf(function(){
+    try{
+      var blob = buildReportPdf(patient, o);
+      var slug = patient.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "patient";
+      sharePdfBlob(blob, "bilan-" + slug + "-" + todayISO() + ".pdf", "Bilan " + patient.name, function(){ st.textContent = "PDF généré."; btn.disabled = false; });
+    }catch(err){ console.error(err); st.textContent = "Échec de la génération : " + (err && err.message ? err.message : "erreur inconnue"); btn.disabled = false; }
+  }, function(msg){ st.textContent = msg; btn.disabled = false; });
+});
+
+/* ============================================================
    MUSCLE WIZARD (EMG / ISO)
    ============================================================ */
 var wizard = { stepIndex:0, steps:[], mode:null, limb:null, muscleId:null, side:null, recalMeasure:false, recalLever:false, isoUnit:'kg' };
@@ -6392,6 +7191,13 @@ function updateBackupUi(){
     banner.hidden = !(has && d >= 14);
     banner.textContent = "Dernier export il y a " + d + " jours : pense à sauvegarder tes données.";
   }
+  var su = storageUsage();
+  var sl = document.getElementById("storageLabel");
+  if(sl) sl.textContent = "Stockage de l'appareil : " + su.kb + " Ko utilisés (≈ " + su.pct + " % de la limite habituelle de 5 Mo)";
+  if(su.pct >= 70 && state.patients.length){
+    banner.hidden = false;
+    banner.textContent = "Stockage presque plein (≈ " + su.pct + " %) : exporte tes données, puis supprime ou archive les patients anciens.";
+  }
 }
 function shareJson(obj, filename, title, onDone){
   var json = JSON.stringify(obj, null, 2);
@@ -6425,8 +7231,7 @@ function exportPatient(){
   shareJson({ app:"suivi-tests", type:"patient", v:1, exportedAt:new Date().toISOString(), patient:patient }, "patient-" + slug + "-" + todayISO() + ".json", "Patient " + patient.name);
 }
 function importPatientObject(p){
-  if(!p || !p.name || !p.program) throw new Error("patient invalide");
-  if(!Array.isArray(p.tests)) p.tests = [];
+  p = normalizePatient(p);
   var renamed = false;
   if(!p.id || state.patients.some(function(x){ return x.id === p.id; })){ p.id = uid(); p.name = p.name + " (import)"; renamed = true; }
   state.patients.push(p);
@@ -6447,17 +7252,16 @@ document.getElementById("importBtn").addEventListener("click", function(){
 document.getElementById("importFile").addEventListener("change", function(e){
   var file = e.target.files[0];
   if(!file) return;
+  if(file.size > 15 * 1024 * 1024){ alert("Fichier trop volumineux pour une sauvegarde."); e.target.value = ""; return; }
   var reader = new FileReader();
   reader.onload = function(evt){
     try{
-      var imported = JSON.parse(evt.target.result);
-      if(imported.type === "patient" && imported.patient){ importPatientObject(imported.patient); return; }
-      if(!imported.patients) throw new Error("format invalide");
+      var imported = cleanImported(JSON.parse(evt.target.result), "", "", 0);
+      if(imported && imported.type === "patient" && imported.patient){ importPatientObject(imported.patient); return; }
+      if(!imported || !Array.isArray(imported.patients)) throw new Error("format invalide");
       if(state.patients.length > 0 && !confirm("Remplacer les données actuelles par cette sauvegarde ?")) return;
-      state = imported;
-      saveData();
-      renderAll();
-    }catch(err){ alert("Fichier de sauvegarde invalide."); }
+      replaceState(imported);
+    }catch(err){ alert("Fichier invalide : sauvegarde ou patient partagé non reconnu."); }
   };
   reader.readAsText(file);
   e.target.value = "";
@@ -6466,6 +7270,9 @@ document.getElementById("importFile").addEventListener("change", function(e){
 if(isAutonomous()) appMode = 'today';
 renderAll();
 updateBackupUi();
+document.getElementById("saveWarnExportBtn").addEventListener("click", doExport);
+if(loadCorrupted) setTimeout(function(){ alert("Les données enregistrées sur cet appareil étaient illisibles. Une copie brute a été conservée (clé « " + STORAGE_KEY + "_corrompu »). Si tu as une sauvegarde exportée, utilise « Importer »."); }, 300);
+checkBackupRestore();
 if(navigator.storage && navigator.storage.persist){ navigator.storage.persist().catch(function(){}); }
 if("serviceWorker" in navigator && /^https?:$/.test(location.protocol)){
   window.addEventListener("load", function(){ navigator.serviceWorker.register("sw.js").catch(function(){}); });
