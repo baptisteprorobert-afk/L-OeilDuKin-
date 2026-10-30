@@ -716,6 +716,8 @@
   .ag-grid{ display:grid; min-width:100%; }
   .ag-hcell{ position:sticky; top:0; z-index:6; background:#fff; border-bottom:1px solid var(--border); padding:8px 6px; text-align:center; font-size:12.5px; font-weight:600; text-transform:capitalize; color:var(--muted); }
   .ag-hcell.today{ color:var(--blue-text); }
+  .ag-hcell.clickable{ cursor:pointer; }
+  .ag-hcell.clickable:hover{ background:#f6f8fb; }
   .ag-hcell .n{ display:block; font-size:19px; font-weight:700; color:var(--text); }
   .ag-hcell.today .n{ color:var(--blue-text); }
   .ag-hcell .c{ display:block; font-size:11px; font-weight:500; text-transform:none; }
@@ -782,10 +784,7 @@
   .ag-off{ position:absolute; left:0; right:0; background:rgba(11,18,32,0.06); pointer-events:none; z-index:0; }
   .ag-pfill{ position:absolute; left:0; right:0; pointer-events:none; z-index:0; }
   .ag-closed{ position:absolute; left:0; right:0; pointer-events:none; z-index:1; background:repeating-linear-gradient(135deg, rgba(11,18,32,0.10) 0 7px, rgba(11,18,32,0.03) 7px 14px); }
-  .ag-pstrip{ position:absolute; left:0; width:20px; border:0; padding:0; z-index:4; cursor:pointer; overflow:hidden; border-radius:0 5px 5px 0; font-size:10px; font-weight:700; line-height:1; touch-action:manipulation; }
-  .ag-pstrip span{ display:block; writing-mode:vertical-rl; transform:rotate(180deg); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-height:100%; padding:4px 0; margin:0 auto; }
   .ag-aps{ position:absolute; top:0; bottom:0; right:0; }
-  .ag-plabel{ position:absolute; left:26px; right:4px; font-size:10.5px; font-weight:700; letter-spacing:0.02em; text-transform:uppercase; pointer-events:none; z-index:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .pm-day{ font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:var(--muted); margin:14px 0 4px; }
   .pm-row{ display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #eef0f3; }
   .pm-row .t{ font-weight:600; font-size:14.5px; flex:1; min-width:0; overflow-wrap:anywhere; }
@@ -837,7 +836,7 @@
       </div>
       <div class="ag-legend" id="agLegend"></div>
       <div class="ag-scroll" id="agScroll"><div class="ag-grid" id="agGrid"></div></div>
-      <div class="tc-sub" style="margin-top:8px;">Touche un rendez-vous pour ouvrir la séance du jour · appui long puis glisse pour le déplacer · ○ pour pointer le patient · ⋯ pour les autres actions.</div>
+      <div class="tc-sub" style="margin-top:8px;">Touche un rendez-vous pour ouvrir la séance du jour · appui long puis glisse pour le déplacer · ○ pour pointer le patient · ⋯ pour les autres actions · touche l'en-tête d'un jour pour modifier ou fermer ses plages.</div>
     </div>
 
     <div id="statsView" hidden>
@@ -8662,7 +8661,8 @@ function renderAgenda(){
   var h = '<div class="ag-hcell" style="left:0; z-index:7;"></div>';
   days.forEach(function(d){
     var dt = new Date(d + "T00:00:00"), cnt = agList().filter(function(a){ return a.date === d && a.status !== "annule"; }).length;
-    h += '<div class="ag-hcell' + (d === today ? ' today' : '') + '">' + dt.toLocaleDateString("fr-FR", { weekday: "short" }) + '<span class="n">' + dt.getDate() + '</span><span class="c">' + (cnt ? cnt + ' rdv' : '—') + '</span></div>';
+    var pinfo = agPlagesFor(d), closedTxt = pinfo.dayClosed ? "fermé" : (pinfo.ranges.length && pinfo.ranges.every(function(r){ return r.closure; }) ? "fermé" : (pinfo.ranges.some(function(r){ return r.closure; }) ? "plage fermée" : ""));
+    h += '<div class="ag-hcell clickable' + (d === today ? ' today' : '') + '" data-date="' + d + '" role="button" tabindex="0" aria-label="Plages du ' + escHtml(fmtDayLong(d)) + '">' + dt.toLocaleDateString("fr-FR", { weekday: "short" }) + '<span class="n">' + dt.getDate() + '</span><span class="c">' + (closedTxt ? '<b style="color:#6b7380;">' + closedTxt + '</b>' + (cnt ? ' · ' + cnt : '') : (cnt ? cnt + ' rdv' : '—')) + '</span></div>';
   });
   var times = '<div class="ag-times" style="height:' + H + 'px;">';
   for(var m = Math.ceil(rg.lo / 60) * 60; m <= rg.hi; m += 60) times += '<span style="top:' + ((m - rg.lo) * AG_PX + (m === rg.lo ? 8 : 0)) + 'px;">' + pad2(m / 60) + ':00</span>';
@@ -8722,7 +8722,7 @@ document.getElementById("agendaView").addEventListener("click", function(e){
   }
   if((t = e.target.closest("[data-agview]"))){ agendaView = t.dataset.agview; renderAgenda(); return; }
   if(e.target.closest("#agNewBtn")){ openApptModal({ date: agendaDate, start: minToHhmm(Math.max(agCfg().start * 60, 9 * 60)) }); return; }
-  if((t = e.target.closest(".ag-pstrip"))){ e.stopPropagation(); openPlageSheet({ plageId: t.dataset.plage || "", closureId: t.dataset.plclosure || "", date: t.dataset.pdate }); return; }
+  if((t = e.target.closest(".ag-hcell.clickable"))){ openDayPlageSheet(t.dataset.date); return; }
   if((t = e.target.closest("[data-appt]"))){ e.stopPropagation(); var a1 = agFind(t.dataset.appt); if(a1) agToggleCheck(a1); return; }
   if((t = e.target.closest("[data-apmore]"))){ e.stopPropagation(); openApptSheet(t.dataset.apmore); return; }
   if((t = e.target.closest(".ag-ap"))){ var a2 = agFind(t.dataset.apid); if(a2) openAgendaSession(a2); return; }
@@ -9086,15 +9086,7 @@ function agPlageAt(d, min){
 function agPlageLayers(d, rg){
   var info = agPlagesFor(d), lo = rg.lo, hi = rg.hi, h = "";
   function y(m){ return (Math.max(lo, Math.min(hi, m)) - lo) * AG_PX; }
-  function strip(top, bot, label, color, attrs, closed){
-    var ht = bot - top;
-    var bg = closed ? "rgba(11,18,32,0.16)" : hexToRgba(color || "#8A93A3", color ? 0.30 : 0.14), fg = closed ? "#4b5565" : (color ? color : "#6b7380");
-    return '<button type="button" class="ag-pstrip" style="top:' + top + 'px; height:' + ht + 'px; background:' + bg + '; color:' + fg + ';" ' + attrs + ' aria-label="Modifier : ' + escHtml(label) + '" title="' + escHtml(label) + ' — toucher pour modifier ou fermer"><span>' + (ht >= 60 ? "✎ " : "") + escHtml(label) + '</span></button>';
-  }
-  if(info.dayClosed){
-    var cl = info.dayClosed;
-    return { html: '<div class="ag-closed" style="top:0; height:' + y(hi) + 'px;"></div>' + strip(0, y(hi), "Fermé" + (cl.label ? " · " + cl.label : ""), "", 'data-plclosure="' + escHtml(cl.id) + '" data-pdate="' + d + '"', true), pad: 24 };
-  }
+  if(info.dayClosed) return { html: '<div class="ag-closed" style="top:0; height:' + y(hi) + 'px;"></div>', pad: 0 };
   if(!info.ranges.length) return { html: "", pad: 0 };
   var iv = info.ranges.map(function(r){ return [hhmmToMin(r.p.start), hhmmToMin(r.p.end)]; }).sort(function(a, b){ return a[0] - b[0]; }), cur = lo;
   iv.forEach(function(v){ if(v[0] > cur) h += '<div class="ag-off" style="top:' + y(cur) + 'px; height:' + (y(v[0]) - y(cur)) + 'px;"></div>'; cur = Math.max(cur, v[1]); });
@@ -9102,15 +9094,37 @@ function agPlageLayers(d, rg){
   info.ranges.forEach(function(r){
     var s0 = Math.max(lo, hhmmToMin(r.p.start)), e0 = Math.min(hi, hhmmToMin(r.p.end));
     if(e0 <= s0) return;
-    var top = y(s0), bot = y(e0), attrs = 'data-plage="' + escHtml(r.p.id) + '" data-pdate="' + d + '"';
-    if(r.closure){ h += '<div class="ag-closed" style="top:' + top + 'px; height:' + (bot - top) + 'px;"></div>' + strip(top, bot, "Fermé · " + r.p.label + (r.closure.label ? " (" + r.closure.label + ")" : ""), "", attrs, true); }
-    else {
-      if(r.p.color) h += '<div class="ag-pfill" style="top:' + top + 'px; height:' + (bot - top) + 'px; background:' + hexToRgba(r.p.color, 0.11) + ';"></div>';
-      if(bot - top >= 40) h += '<div class="ag-plabel" style="top:' + (top + 3) + 'px; color:' + (r.p.color || "#8a93a3") + ';">' + escHtml(r.p.label) + ' · ' + r.p.start + '–' + r.p.end + '</div>';
-      h += strip(top, bot, r.p.label, r.p.color, attrs, false);
-    }
+    var top = y(s0), bot = y(e0);
+    if(r.closure) h += '<div class="ag-closed" style="top:' + top + 'px; height:' + (bot - top) + 'px;"></div>';
+    else if(r.p.color) h += '<div class="ag-pfill" style="top:' + top + 'px; height:' + (bot - top) + 'px; background:' + hexToRgba(r.p.color, 0.13) + ';"></div>';
   });
-  return { html: h, pad: 24 };
+  return { html: h, pad: 0 };
+}
+
+/* ----- feuille d'un jour : plages du jour, fermer / rouvrir / modifier ----- */
+function openDayPlageSheet(d){
+  plsCtx = { plageId: "", closureId: "", date: d };
+  var info = agPlagesFor(d), h = '<div class="as-sub">' + fmtDayLong(d) + '</div>';
+  if(info.dayClosed){
+    h += '<div class="as-sub"><b>Journée fermée</b>' + (info.dayClosed.label ? ' (' + escHtml(info.dayClosed.label) + ')' : '') + '</div>' +
+      '<button type="button" class="as-item" data-plact="reopenday">Rouvrir cette journée</button>' +
+      '<button type="button" class="as-item" data-plact="editclosure" data-id="' + escHtml(info.dayClosed.id) + '">Modifier la fermeture (dates, motif)…</button>' +
+      '<button type="button" class="as-item danger" data-plact="delclosure" data-id="' + escHtml(info.dayClosed.id) + '">Supprimer la fermeture</button>';
+  } else {
+    if(!info.ranges.length) h += '<div class="as-sub">Aucune plage ce jour-là : tout est libre.</div>';
+    info.ranges.forEach(function(r){
+      var closed = !!r.closure, col = r.p.color ? '<span class="dot" style="display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;background:' + hexToRgba(r.p.color, 0.6) + ';"></span>' : '';
+      h += '<div class="as-sub" style="padding-top:8px;"><b>' + col + escHtml(r.p.label) + '</b> · ' + r.p.start + ' – ' + r.p.end + (closed ? ' · <b>fermée</b>' + (r.closure.label ? ' (' + escHtml(r.closure.label) + ')' : '') : '') + '</div>' +
+        '<div class="chip-row" style="padding:0 4px 8px;"><button type="button" class="chip-btn" data-plact="editp" data-id="' + escHtml(r.p.id) + '">Modifier…</button>' +
+        (closed ? '<button type="button" class="chip-btn on" data-plact="reopenp" data-id="' + escHtml(r.p.id) + '">Rouvrir ce jour</button>' : '<button type="button" class="chip-btn" data-plact="closep" data-id="' + escHtml(r.p.id) + '">Fermer ce jour</button>') + '</div>';
+    });
+    h += '<button type="button" class="as-item" data-plact="closeallday">Fermer toute la journée</button>' +
+      '<button type="button" class="as-item" data-plact="closeperiod">Fermer sur une période…</button>';
+  }
+  h += '<button type="button" class="as-item" data-plact="mgr">Toutes les plages et fermetures…</button>';
+  document.getElementById("plsTitle").textContent = "Plages du jour";
+  document.getElementById("plsBody").innerHTML = h;
+  document.getElementById("plageSheet").hidden = false;
 }
 
 /* ----- feuille d'actions d'une plage ----- */
@@ -9151,6 +9165,15 @@ document.getElementById("plageSheet").addEventListener("click", function(e){
   if(!b || !plsCtx) return;
   var act = b.dataset.plact, ctx = plsCtx, p = ctx.plageId ? plList().find(function(x){ return x.id === ctx.plageId; }) : null;
   if(act !== "color") document.getElementById("plageSheet").hidden = true;
+  if(act === "editp"){ openPlageModal(b.dataset.id); return; }
+  if(act === "closep"){ clList().push({ id: uid(), from: ctx.date, to: ctx.date, plageId: b.dataset.id, label: "" }); saveData(); renderAgenda(); return; }
+  if(act === "reopenp"){
+    var cp = agPlagesFor(ctx.date).ranges.find(function(r){ return r.p.id === b.dataset.id; });
+    if(cp && cp.closure){ reopenOn(cp.closure, ctx.date); saveData(); renderAgenda(); }
+    return;
+  }
+  if(act === "reopenday"){ var gd = agPlagesFor(ctx.date).dayClosed; if(gd){ reopenOn(gd, ctx.date); saveData(); renderAgenda(); } return; }
+  if(act === "mgr"){ renderPlagesMgr(); document.getElementById("plagesMgrOverlay").hidden = false; return; }
   if(act === "edit") openPlageModal(p.id);
   else if(act === "closeday"){ clList().push({ id: uid(), from: ctx.date, to: ctx.date, plageId: p.id, label: "" }); saveData(); renderAgenda(); }
   else if(act === "closeallday"){ clList().push({ id: uid(), from: ctx.date, to: ctx.date, plageId: "", label: "" }); saveData(); renderAgenda(); }
