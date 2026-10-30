@@ -842,6 +842,16 @@
     .rail-more .rm-ic{ display:block; line-height:0; }
     main{ padding:22px 28px; }
   }
+
+  /* ---------- synchronisation serveur ---------- */
+  .sync-box{ border:1px solid var(--border); border-radius:14px; padding:12px; background:#fff; margin-bottom:10px; }
+  .sync-box input:not([type=checkbox]){ width:100%; margin-bottom:8px; box-sizing:border-box; min-height:44px; }
+  .sync-status{ font-size:13.5px; font-weight:600; margin-bottom:8px; padding:8px 10px; border-radius:10px; background:#f1f3f6; color:#4b5565; }
+  .sync-status.ok{ background:#eaf7f0; color:#157a4f; } .sync-status.err{ background:#fdf0ef; color:#b3261e; } .sync-status.warn{ background:#fff8e8; color:#8a5200; } .sync-status.run{ background:#eaf3ff; color:#0062CC; }
+  .sync-msg{ font-size:13px; color:#b3261e; min-height:0; margin:0 0 8px; }
+  .sync-auto{ margin-top:8px; font-size:13px !important; }
+  .sync-dot{ position:absolute; right:-3px; top:-3px; width:9px; height:9px; border-radius:50%; border:2px solid #fff; display:none; }
+  .sync-dot.ok{ display:block; background:#1fa971; } .sync-dot.err{ display:block; background:#e0483e; } .sync-dot.warn{ display:block; background:#e58a00; } .sync-dot.run{ display:block; background:#007BFF; }
 </style>
 </head>
 <body>
@@ -862,7 +872,7 @@
       <button data-appmode="stats"><svg class="nav-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V11M12 20V4M19 20v-6"/></svg><span>Statistiques</span></button>
     </div>
     <div style="margin-top:auto; display:flex; flex-direction:column; gap:8px;">
-      <button class="rail-more" id="railMoreBtn" type="button" aria-label="Plus : exporter, importer, réglages"><i class="rm-ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></svg></i><span>Plus</span></button>
+      <button class="rail-more" id="railMoreBtn" type="button" aria-label="Plus : exporter, importer, réglages"><i class="rm-ic" aria-hidden="true" style="position:relative;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></svg><span id="railSyncDot" class="sync-dot"></span></i><span>Plus</span></button>
       <button class="btn-ghost" id="exportBtn">Exporter les données</button>
       <button class="btn-ghost" id="importBtn">Importer une sauvegarde</button>
       <input type="file" id="importFile" accept=".json,application/json,text/plain" hidden>
@@ -1637,6 +1647,8 @@
     <div class="sheet-head"><h3>Plus</h3><button type="button" class="icon-btn" id="moreCloseBtn" aria-label="Fermer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div class="sheet-body">
       <div class="as-sub" id="moreExportInfo"></div>
+      <div class="as-sub" id="moreSyncInfo"></div>
+      <button type="button" class="as-item" data-more="sync" id="moreSyncBtn" hidden>Synchroniser maintenant</button>
       <button type="button" class="as-item" data-more="export">Exporter les données</button>
       <button type="button" class="as-item" data-more="import">Importer une sauvegarde</button>
       <button type="button" class="as-item" data-more="mode">Mode et réglages</button>
@@ -1757,7 +1769,23 @@
     <label>Bibliothèque d'exercices</label>
     <p class="tc-sub" style="margin:0 0 8px;">Chaque exercice que tu saisis est gardé pour tous tes patients. Tu peux corriger son groupe ou le retirer ici.</p>
     <button type="button" class="btn-ghost" id="openExMgrBtn" style="min-height:40px; margin-bottom:6px;">Gérer mes exercices…</button>
-    <label>Synchroniser mes appareils</label>
+    <label>Serveur de synchronisation</label>
+    <div class="sync-box">
+      <div id="syncStatus" class="sync-status"></div>
+      <div id="syncForm">
+        <input id="syncUrl" type="url" inputmode="url" autocapitalize="off" autocomplete="off" placeholder="Adresse du serveur : https://…" aria-label="Adresse du serveur">
+        <input id="syncEmail" type="email" autocapitalize="off" autocomplete="username" placeholder="E-mail du compte" aria-label="E-mail du compte">
+        <input id="syncPass" type="password" autocomplete="current-password" placeholder="Mot de passe (12 caractères minimum à la création)" aria-label="Mot de passe">
+        <div id="syncSetupWrap" hidden><input id="syncSetup" autocapitalize="off" autocomplete="off" placeholder="Code d'installation (donné lors de la mise en place du serveur)" aria-label="Code d'installation"></div>
+        <div id="syncMsg" class="sync-msg" role="status"></div>
+        <div class="tpl-acts"><button type="button" class="btn-primary" id="syncLoginBtn" style="min-height:42px;">Se connecter</button><button type="button" class="btn-ghost" id="syncCreateBtn" style="min-height:42px;">Première fois : créer le compte</button></div>
+      </div>
+      <div id="syncConnected" hidden>
+        <div class="tpl-acts"><button type="button" class="btn-primary" id="syncNowBtn" style="min-height:42px;">Synchroniser maintenant</button><button type="button" class="btn-ghost btn-danger" id="syncLogoutBtn" style="min-height:42px;">Se déconnecter</button></div>
+        <label class="cb sync-auto"><input type="checkbox" id="syncAuto"> Synchronisation automatique (à l'ouverture, après chaque modification, toutes les minutes)</label>
+      </div>
+    </div>
+    <label>Sans serveur : échange de fichiers</label>
     <p class="tc-sub" style="margin:0 0 8px;">Sur le 1er appareil : « Exporter les données ». Sur l'autre : « Importer une sauvegarde », puis « Fusionner ». Le plus récent gagne, rien n'est perdu sans pouvoir annuler.</p>
     <button type="button" class="btn-ghost" id="undoMergeBtn" style="min-height:40px;" hidden>Annuler la dernière fusion</button>
     <label>Mode d'utilisation</label>
@@ -2179,6 +2207,7 @@ function saveData(){
     setSaveWarning(true);
   }
   scheduleIdbBackup();
+  try{ syncSoon(); }catch(e){}
 }
 /* copie de secours dans IndexedDB (autre quota que localStorage) */
 var IDB_NAME = "suivi-tests-backup", IDB_STORE = "kv", idbTimer = null;
@@ -6427,6 +6456,7 @@ function setMode(mode){
   renderModeModal();
 }
 function renderModeModal(){
+  renderSyncUi(true);
   document.getElementById("setFirstName").value = (state.settings && state.settings.firstName) || "";
   var ac = agCfg();
   document.getElementById("agStart").value = ac.start; document.getElementById("agEnd").value = ac.end;
@@ -9117,7 +9147,7 @@ document.getElementById("apSaveBtn").addEventListener("click", function(){
    FUSION DE DEUX APPAREILS (le plus récent gagne, rien n'est perdu sans pouvoir annuler)
    ============================================================ */
 function maxStamp(a, b){ return (a || "") >= (b || "") ? a : b; }
-function mergeStates(local, remote){
+function mergeStates(local, remote, opts){
   if(!Array.isArray(local.agenda)) local.agenda = [];
   var rep = { addedP: 0, updatedP: 0, removedP: 0, conflictsP: 0, addedA: 0, updatedA: 0, removedA: 0, addedO: 0, updatedO: 0, removedO: 0 };
   var tl = local.tombstones || {}, tr = remote.tombstones || {};
@@ -9138,7 +9168,7 @@ function mergeStates(local, remote){
     } else {
       var lu = lp.updatedAt || "";
       if(ru > lu){ local.patients[local.patients.indexOf(lp)] = rp; byId[rp.id] = rp; rep.updatedP++; }
-      else if(ru === lu && lp._sig !== rp._sig){
+      else if(ru === lu && lp._sig !== rp._sig && !(opts && opts.noCopies)){
         var tag = rp.id + ":" + rp._sig;
         if(!local.patients.some(function(x){ return x.conflictOf === tag; })){
           var copy = JSON.parse(JSON.stringify(rp)); copy.id = uid(); copy.name = rp.name + " (autre appareil)"; copy.conflictOf = tag; delete copy._sig;
@@ -9587,6 +9617,7 @@ document.getElementById("statsView").addEventListener("click", function(e){
 document.getElementById("railMoreBtn").addEventListener("click", function(){
   var lbl = document.getElementById("lastExportLabel");
   document.getElementById("moreExportInfo").textContent = lbl ? lbl.textContent : "";
+  renderSyncUi();
   document.getElementById("moreSheet").hidden = false;
 });
 document.getElementById("moreCloseBtn").addEventListener("click", function(){ document.getElementById("moreSheet").hidden = true; });
@@ -9598,6 +9629,7 @@ document.getElementById("moreSheet").addEventListener("click", function(e){
   if(b.dataset.more === "export") doExport();
   else if(b.dataset.more === "import") document.getElementById("importFile").click();
   else if(b.dataset.more === "mode") openModeModal();
+  else if(b.dataset.more === "sync") syncNow(true);
 });
 
 /* ============================================================
@@ -9659,6 +9691,203 @@ document.getElementById("exMgrBody").addEventListener("click", function(e){
   state.exerciseCatalog = exCatalog().filter(function(x){ return x.id !== it.id; });
   saveData(); renderExMgr();
 });
+
+/* ============================================================
+   SYNCHRONISATION AVEC LE SERVEUR (envoi + réception, le plus récent gagne)
+   ============================================================ */
+var SYNC_KEY = "horusSync_v1", syncRunning = false, syncTimer = null, syncRenderPending = false;
+var SYNC_LISTS = ["patients", "agenda", "plages", "closures", "exerciseCatalog"], SYNC_META = ["anamTemplates", "functionalMovements", "presetsPerso"];
+function syncCfg(){
+  try{ var c = JSON.parse(localStorage.getItem(SYNC_KEY) || "null"); if(c && typeof c === "object"){ c.pushed = c.pushed || {}; c.metaSig = c.metaSig || {}; return c; } }catch(e){}
+  return { url: "", email: "", token: "", auto: true, lastRev: 0, pushed: {}, metaSig: {}, lastOkAt: "", lastError: "" };
+}
+function syncSave(c){ try{ localStorage.setItem(SYNC_KEY, JSON.stringify(c)); }catch(e){} }
+function syncNormUrl(u){ u = String(u || "").trim().replace(/\/+$/, ""); if(u && !/^https?:\/\//i.test(u)) u = "https://" + u; return u; }
+function syncUrlOk(u){ try{ var x = new URL(u); return x.protocol === "https:" || x.hostname === "localhost" || x.hostname === "127.0.0.1"; }catch(e){ return false; } }
+async function syncFetch(c, path, method, body){
+  var ctrl = new AbortController(), t = setTimeout(function(){ ctrl.abort(); }, 25000);
+  try{
+    var headers = { "Content-Type": "application/json" };
+    if(c.token) headers.Authorization = "Bearer " + c.token;
+    var r = await fetch(c.url + path, { method: method || "GET", headers: headers, body: body === undefined ? undefined : JSON.stringify(body), signal: ctrl.signal, cache: "no-store" });
+    var j = null; try{ j = await r.json(); }catch(e){}
+    return { status: r.status, json: j };
+  }catch(e){ throw { network: true, message: "Serveur injoignable." }; }
+  finally{ clearTimeout(t); }
+}
+function syncBusyUi(){
+  var open = document.querySelectorAll(".modal-overlay:not([hidden]), .sheet-overlay:not([hidden])");
+  for(var i = 0; i < open.length; i++) if(open[i].id !== "modeOverlay" && open[i].id !== "moreSheet") return true;
+  return (typeof agDrag !== "undefined" && agDrag) ? true : false;
+}
+var syncAgain = false;
+function syncSoon(){
+  var c = syncCfg();
+  if(!c.token || !c.auto) return;
+  if(syncRunning){ syncAgain = true; return; }
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(function(){ syncNow(false); }, 3500);
+}
+async function syncPull(c){
+  var since = c.lastRev || 0, docs = [], maxRev = since, guard = 0;
+  while(guard++ < 400){
+    var r = await syncFetch(c, "/api/sync?since=" + since + "&limit=100");
+    if(r.status === 401) throw { auth: true };
+    if(r.status !== 200) throw new Error((r.json && r.json.message) || ("Erreur du serveur (" + r.status + ")"));
+    var d = (r.json && r.json.docs) || [];
+    docs = docs.concat(d);
+    if(d.length){ since = d[d.length - 1].rev; maxRev = Math.max(maxRev, since); }
+    if(!r.json.more) break;
+  }
+  return { docs: docs, maxRev: maxRev };
+}
+function syncApplyPulled(c, docs){
+  if(!docs.length) return false;
+  var have = {};
+  SYNC_LISTS.forEach(function(k){ (state[k] || []).forEach(function(x){ have[k + ":" + x.id] = x.updatedAt || ""; }); });
+  var news = docs.filter(function(d){
+    if(d.c === "meta") return SYNC_META.indexOf(d.id) !== -1;
+    if(SYNC_LISTS.indexOf(d.c) === -1) return false;
+    if(d.deleted){ var lt = state.tombstones && state.tombstones[d.c] && state.tombstones[d.c][d.id]; return !(lt && lt >= d.updatedAt); }
+    var lu = have[d.c + ":" + d.id];
+    return lu === undefined || d.updatedAt > lu;
+  });
+  if(!news.length) return false;
+  var remote = { patients: [], agenda: [], plages: [], closures: [], exerciseCatalog: [], anamTemplates: [], functionalMovements: [], presetsPerso: [], tombstones: { patients: {}, agenda: {}, plages: {}, closures: {}, exerciseCatalog: {} } };
+  news.forEach(function(d){
+    if(d.c === "meta"){ if(d.data && Array.isArray(d.data.items)) remote[d.id] = d.data.items; return; }
+    if(d.deleted) remote.tombstones[d.c][d.id] = d.updatedAt; else if(d.data) remote[d.c].push(d.data);
+  });
+  remote = normalizeState(cleanImported(remote, "", "", 0));
+  resigAll(remote);
+  snapshotBeforeMerge();
+  mergeStates(state, remote, { noCopies: true });
+  state = normalizeState(state); migratePeriodizationData(); resigAll(state);
+  var idx = {};
+  SYNC_LISTS.forEach(function(k){ (state[k] || []).forEach(function(x){ idx[k + ":" + x.id] = x; }); });
+  news.forEach(function(d){
+    if(d.c === "meta") return;
+    if(d.deleted){ c.pushed["t:" + d.c + ":" + d.id] = 1; return; }
+    var it = idx[d.c + ":" + d.id];
+    if(it && it.updatedAt === d.updatedAt) c.pushed[d.c + ":" + d.id] = it._sig;
+  });
+  syncRenderPending = true;
+  saveData();
+  return true;
+}
+async function syncPush(c){
+  var docs = [], tb = state.tombstones || {};
+  SYNC_LISTS.forEach(function(k){
+    (state[k] || []).forEach(function(it){
+      var sig = it._sig || fnvHash(JSON.stringify(it)), key = k + ":" + it.id;
+      if(c.pushed[key] !== sig) docs.push({ key: key, sig: sig, doc: { c: k, id: it.id, data: it, updatedAt: it.updatedAt || EPOCH } });
+    });
+    Object.keys(tb[k] || {}).forEach(function(id){
+      var key = "t:" + k + ":" + id;
+      if(c.pushed[key] !== 1) docs.push({ key: key, sig: 1, doc: { c: k, id: id, deleted: true, updatedAt: tb[k][id] } });
+    });
+  });
+  SYNC_META.forEach(function(n){
+    var arr = state[n] || [], sig = fnvHash(JSON.stringify(arr));
+    if(c.metaSig[n] !== sig) docs.push({ key: "m:" + n, sig: sig, meta: true, doc: { c: "meta", id: n, data: { items: arr }, updatedAt: new Date().toISOString() } });
+  });
+  var rejected = 0, i = 0;
+  while(i < docs.length){
+    var batch = [], size = 0;
+    while(i < docs.length && batch.length < 50 && size < 6000000){ size += JSON.stringify(docs[i].doc).length; batch.push(docs[i++]); }
+    var r = await syncFetch(c, "/api/sync", "POST", { docs: batch.map(function(b){ return b.doc; }) });
+    if(r.status === 401) throw { auth: true };
+    if(r.status !== 200) throw new Error((r.json && r.json.message) || ("Erreur du serveur (" + r.status + ")"));
+    batch.forEach(function(b){ if(b.meta) c.metaSig[b.doc.id] = b.sig; else c.pushed[b.key] = b.sig; });
+    rejected += ((r.json && r.json.rejected) || []).length;
+    syncSave(c);
+  }
+  return { rejected: rejected, sent: docs.length };
+}
+async function syncNow(manual){
+  var c = syncCfg();
+  if(!c.url || !c.token || syncRunning) return;
+  if(!manual && !c.auto) return;
+  if(navigator.onLine === false){ renderSyncUi(); return; }
+  if(syncBusyUi()){ clearTimeout(syncTimer); syncTimer = setTimeout(function(){ syncNow(false); }, 4000); return; }
+  syncRunning = true; renderSyncUi();
+  try{
+    for(var pass = 0; pass < 2; pass++){
+      var pulled = await syncPull(c);
+      syncApplyPulled(c, pulled.docs);
+      c.lastRev = pulled.maxRev;
+      var res = await syncPush(c);
+      if(!res.rejected) break;
+    }
+    c.lastOkAt = new Date().toISOString(); c.lastError = "";
+  }catch(e){
+    if(e && e.auth){ c.token = ""; c.lastError = "Reconnexion nécessaire : ton accès a expiré."; }
+    else if(e && e.network) c.lastError = "Serveur injoignable : les changements seront envoyés dès que possible.";
+    else c.lastError = (e && e.message) || "Erreur de synchronisation.";
+  }finally{
+    syncSave(c); syncRunning = false; renderSyncUi();
+    if(syncRenderPending && !syncBusyUi()){ syncRenderPending = false; renderAll(); }
+    if(syncAgain){ syncAgain = false; syncSoon(); }
+  }
+}
+function syncStatus(){
+  var c = syncCfg();
+  if(!c.url) return { cls: "", text: "Pas de serveur connecté." };
+  if(!c.token) return { cls: "err", text: c.lastError || "Déconnecté : connecte-toi de nouveau." };
+  if(syncRunning) return { cls: "run", text: "Synchronisation en cours…" };
+  if(navigator.onLine === false) return { cls: "warn", text: "Hors ligne : les changements seront envoyés au retour du réseau." };
+  if(c.lastError) return { cls: "err", text: c.lastError };
+  if(c.lastOkAt){
+    var d = new Date(c.lastOkAt), hm = String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+    return { cls: "ok", text: "Synchronisé " + (isoLocalDay(d) === todayISO() ? "à " + hm : "le " + fmtDate(isoLocalDay(d)) + " à " + hm) + "." };
+  }
+  return { cls: "run", text: "En attente de la première synchronisation…" };
+}
+function isoLocalDay(d){ return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+function renderSyncUi(fillForm){
+  var c = syncCfg(), st = syncStatus(), el = document.getElementById("syncStatus");
+  if(el){
+    el.className = "sync-status " + st.cls; el.textContent = st.text;
+    var on = !!c.token;
+    document.getElementById("syncForm").hidden = on; document.getElementById("syncConnected").hidden = !on;
+    document.getElementById("syncAuto").checked = c.auto !== false;
+    if(fillForm){ document.getElementById("syncUrl").value = c.url || ""; document.getElementById("syncEmail").value = c.email || ""; document.getElementById("syncPass").value = ""; document.getElementById("syncMsg").textContent = ""; document.getElementById("syncSetupWrap").hidden = true; }
+  }
+  var dot = document.getElementById("railSyncDot"); if(dot) dot.className = "sync-dot " + (c.url ? st.cls : "");
+  var mi = document.getElementById("moreSyncInfo"); if(mi) mi.textContent = c.url ? "Synchronisation : " + st.text : "";
+  var mb = document.getElementById("moreSyncBtn"); if(mb) mb.hidden = !c.token;
+}
+async function syncLogin(create){
+  var msg = document.getElementById("syncMsg"), url = syncNormUrl(document.getElementById("syncUrl").value), email = document.getElementById("syncEmail").value.trim(), pass = document.getElementById("syncPass").value;
+  msg.textContent = "";
+  if(!url || !syncUrlOk(url)){ msg.textContent = "Adresse invalide : elle doit commencer par https://."; return; }
+  if(!email || !pass){ msg.textContent = "Indique l'e-mail et le mot de passe."; return; }
+  var setupWrap = document.getElementById("syncSetupWrap");
+  if(create && setupWrap.hidden){ setupWrap.hidden = false; msg.textContent = "Saisis le code d'installation, puis appuie de nouveau sur « Créer le compte »."; return; }
+  try{
+    var r = await syncFetch({ url: url, token: "" }, create ? "/api/setup" : "/api/login", "POST", create ? { setupCode: document.getElementById("syncSetup").value.trim(), email: email, password: pass } : { email: email, password: pass });
+    if(r.status === 200 && r.json && r.json.token){
+      syncSave({ url: url, email: r.json.email || email, token: r.json.token, auto: true, lastRev: 0, pushed: {}, metaSig: {}, lastOkAt: "", lastError: "" });
+      document.getElementById("syncPass").value = "";
+      renderSyncUi(true);
+      syncNow(true);
+    } else msg.textContent = (r.json && r.json.message) || ("Connexion impossible (code " + r.status + ").");
+  }catch(e){ msg.textContent = "Serveur injoignable : vérifie l'adresse et ta connexion."; }
+}
+document.getElementById("syncLoginBtn").addEventListener("click", function(){ syncLogin(false); });
+document.getElementById("syncCreateBtn").addEventListener("click", function(){ syncLogin(true); });
+document.getElementById("syncNowBtn").addEventListener("click", function(){ syncNow(true); });
+document.getElementById("syncAuto").addEventListener("change", function(){ var c = syncCfg(); c.auto = this.checked; syncSave(c); if(c.auto) syncSoon(); });
+document.getElementById("syncLogoutBtn").addEventListener("click", function(){
+  if(!confirm("Se déconnecter du serveur ? Tes données restent sur cet appareil ; elles ne seront plus synchronisées.")) return;
+  var c = syncCfg(); c.token = ""; c.pushed = {}; c.metaSig = {}; c.lastRev = 0; c.lastError = ""; c.lastOkAt = ""; syncSave(c);
+  renderSyncUi(true);
+});
+document.addEventListener("visibilitychange", function(){ if(!document.hidden) syncSoon(); });
+window.addEventListener("online", function(){ renderSyncUi(); syncSoon(); });
+window.addEventListener("offline", function(){ renderSyncUi(); });
+setInterval(function(){ if(!document.hidden) syncNow(false); }, 60000);
+setTimeout(function(){ renderSyncUi(); syncSoon(); }, 1200);
 
 /* ============================================================
    MUSCLE WIZARD (EMG / ISO)
