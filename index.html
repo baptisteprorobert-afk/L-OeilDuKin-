@@ -726,12 +726,17 @@
   .ag-col{ position:relative; border-left:1px solid #eef0f3; background-image:linear-gradient(to bottom, #dfe2e8 1px, transparent 1px), linear-gradient(to bottom, #f0f1f4 1px, transparent 1px); }
   .ag-now{ position:absolute; left:0; right:0; height:2px; background:#e0483e; z-index:3; pointer-events:none; }
   .ag-now::before{ content:""; position:absolute; left:-4px; top:-3px; width:8px; height:8px; border-radius:50%; background:#e0483e; }
-  .ag-ap{ position:absolute; box-sizing:border-box; border-radius:8px; padding:3px 24px 3px 38px; background:#e8f2ff; border-left:4px solid #007BFF; color:var(--text); overflow:hidden; cursor:pointer; touch-action:manipulation; -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; font-size:12.5px; line-height:1.3; z-index:2; }
+  .ag-ap{ position:absolute; box-sizing:border-box; border-radius:8px; padding:3px 24px 3px 7px; background:#e8f2ff; border-left:4px solid #007BFF; color:var(--text); overflow:hidden; cursor:pointer; touch-action:manipulation; -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; font-size:12.5px; line-height:1.3; z-index:2; }
   .ag-ap.st-annule{ color:#6b7380; }
   .ag-ap.st-annule .nm{ text-decoration:line-through; }
   .ag-ap.dragging{ opacity:0.3; }
   .ag-ap.short > div{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .ag-ap.multi{ padding:2px 22px 2px 30px; font-size:12px; }
+  .ag-ap.multi{ padding:2px 15px 2px 6px; font-size:12px; }
+  .ag-ap.multi .tm{ display:none; }
+  .ag-ap.multi .ag-more{ width:16px; font-size:15px; }
+  .ag-st{ font-weight:800; margin-right:4px; font-size:13px; }
+  .ag-st.ok{ color:#157a4f; }
+  .ag-st.ko{ color:#b3261e; }
   .ag-ap.multi > div{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .ag-ap.multi .ag-pt{ width:22px; height:22px; left:4px; top:3px; font-size:12px; }
   .ag-ap.multi .ag-more{ width:22px; }
@@ -803,6 +808,9 @@
   .search-bar input::-webkit-search-cancel-button{ display:none; }
   .search-bar button{ position:absolute; right:6px; width:36px; height:36px; border:0; background:transparent; color:var(--muted); font-size:16px; }
   .ap-slot{ display:grid; grid-template-columns:1fr 1fr 40px; gap:8px; align-items:center; margin-bottom:8px; }
+  .ap-time{ display:flex; align-items:center; gap:4px; }
+  .ap-time select{ flex:1; min-width:0; min-height:44px; }
+  .ap-time span{ font-weight:700; }
   .ap-slot input{ min-height:44px; width:100%; box-sizing:border-box; }
   .ap-preview{ font-size:13px; color:var(--muted); margin:6px 0 4px; line-height:1.45; }
   .ap-preview b{ color:var(--text); }
@@ -881,7 +889,7 @@
       </div>
       <div class="ag-legend" id="agLegend"></div>
       <div class="ag-scroll" id="agScroll"><div class="ag-grid" id="agGrid"></div></div>
-      <div class="tc-sub" style="margin-top:8px;">Touche un rendez-vous pour ouvrir la séance du jour · appui long puis glisse pour le déplacer · ○ pour pointer le patient · ⋯ pour les autres actions · touche l'en-tête d'un jour pour modifier ou fermer ses plages.</div>
+      <div class="tc-sub" style="margin-top:8px;">Touche un rendez-vous pour ouvrir la séance du jour · appui long puis glisse pour le déplacer · ⋯ pour pointer (✓ présent, ✕ absent), modifier ou supprimer · touche l'en-tête d'un jour pour modifier ou fermer ses plages.</div>
     </div>
 
     <div id="statsView" hidden>
@@ -1613,6 +1621,15 @@
   </div>
 </div>
 
+<!-- Bibliothèque d'exercices -->
+<div id="exMgrOverlay" class="modal-overlay" hidden>
+  <div class="modal-box wide">
+    <div class="modal-header"><h2>Mes exercices (tous patients)</h2><button class="btn-ghost" id="exMgrCloseBtn">Fermer</button></div>
+    <input type="search" id="exMgrSearch" placeholder="Rechercher un exercice…" autocomplete="off" style="margin-bottom:6px;">
+    <div id="exMgrBody"></div>
+  </div>
+</div>
+
 <!-- Menu « Plus » du rail -->
 <div id="moreSheet" class="sheet-overlay" hidden>
   <div class="sheet" role="dialog" aria-label="Plus">
@@ -1732,11 +1749,14 @@
     <div class="vp-grid">
       <div><label for="agStart" style="font-weight:500;">Première heure</label><input type="number" id="agStart" min="0" max="23" step="1"></div>
       <div><label for="agEnd" style="font-weight:500;">Dernière heure</label><input type="number" id="agEnd" min="1" max="24" step="1"></div>
-      <div><label for="agStep" style="font-weight:500;">Pas de déplacement (min)</label><select id="agStep"><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="30">30</option></select></div>
+      <div><label for="agStep" style="font-weight:500;">Pas de déplacement (min)</label><select id="agStep"><option value="15">15</option><option value="30">30</option></select></div>
     </div>
     <label>Types de rendez-vous (couleur et durée automatique)</label>
     <div id="agTypesList"></div>
     <button type="button" class="btn-ghost" id="agTypeAddBtn" style="min-height:40px; margin-bottom:6px;">+ Ajouter un type</button>
+    <label>Bibliothèque d'exercices</label>
+    <p class="tc-sub" style="margin:0 0 8px;">Chaque exercice que tu saisis est gardé pour tous tes patients. Tu peux corriger son groupe ou le retirer ici.</p>
+    <button type="button" class="btn-ghost" id="openExMgrBtn" style="min-height:40px; margin-bottom:6px;">Gérer mes exercices…</button>
     <label>Synchroniser mes appareils</label>
     <p class="tc-sub" style="margin:0 0 8px;">Sur le 1er appareil : « Exporter les données ». Sur l'autre : « Importer une sauvegarde », puis « Fusionner ». Le plus récent gagne, rien n'est perdu sans pouvoir annuler.</p>
     <button type="button" class="btn-ghost" id="undoMergeBtn" style="min-height:40px;" hidden>Annuler la dernière fusion</button>
@@ -2112,7 +2132,7 @@ function setSaveWarning(on){
   var el = document.getElementById("saveWarn");
   if(el) el.hidden = !on;
 }
-var TOMB_KINDS = ["patients", "agenda", "plages", "closures"], STAMPED_LISTS = ["agenda", "plages", "closures"], EPOCH = "1970-01-01T00:00:00.000Z";
+var TOMB_KINDS = ["patients", "agenda", "plages", "closures", "exerciseCatalog"], STAMPED_LISTS = ["agenda", "plages", "closures", "exerciseCatalog"], EPOCH = "1970-01-01T00:00:00.000Z";
 function fnvHash(str){ var h = 0x811c9dc5; for(var i = 0; i < str.length; i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(36); }
 function guessUpdatedAt(p){
   var best = p.createdAt || "", t0 = new Date(), today = t0.getFullYear() + "-" + String(t0.getMonth() + 1).padStart(2, "0") + "-" + String(t0.getDate()).padStart(2, "0");
@@ -4449,6 +4469,20 @@ function sumStretchSecondsInRange(patient, startDate, endDate){
   });
   return sum;
 }
+function sumTensionByKind(patient, startDate, endDate, kind){
+  var sum = 0, today = todayISO();
+  Object.keys(patient.program.entries).forEach(function(k){
+    if(k >= startDate && k <= endDate && k <= today) (patient.program.entries[k] || []).forEach(function(e){ if(e.kind === kind) sum += stretchSeconds(e); });
+  });
+  return sum;
+}
+function updateTensionReminder(){
+  var patient = getSelectedPatient(), el = document.getElementById("stretchWeekReminder");
+  if(!patient || !dayModalDate || !el) return;
+  var start = weekStartOf(dayModalDate), end = addDaysToDate(start, 6), cur = weekStartOf(todayISO()) === start;
+  var st = sumTensionByKind(patient, start, end, "stretching"), iso = sumTensionByKind(patient, start, end, "isometric");
+  el.textContent = "Étirements — " + (cur ? "semaine en cours" : "semaine du " + fmtDate(start)) + " : " + st + " s / 1200 s de temps sous tension" + (iso ? " · Isométrie : " + iso + " s" : "");
+}
 function currentWeekRange(){
   var d = new Date();
   var offset = (d.getDay() + 6) % 7; // lundi = 0
@@ -5012,8 +5046,10 @@ function openDayModal(key){
 
   var patient = getSelectedPatient();
   if(!patient.program.exerciseLibrary) patient.program.exerciseLibrary = [];
-  var datalist = document.getElementById("exerciseNamesDatalist");
-  datalist.innerHTML = patient.program.exerciseLibrary.map(function(n){ return '<option value="' + n + '">'; }).join("");
+  catalogMigrate();
+  var datalist = document.getElementById("exerciseNamesDatalist"), dseen = {}, dnames = [];
+  patient.program.exerciseLibrary.concat(exCatalog().map(function(x){ return x.name; })).forEach(function(n){ var k = normTxt(n); if(!dseen[k]){ dseen[k] = 1; dnames.push(n); } });
+  datalist.innerHTML = dnames.sort(function(a, b){ return a.localeCompare(b); }).map(function(n){ return '<option value="' + escHtml(n) + '">'; }).join("");
 
   ensurePeriodization(patient);
   var __ctx = getMicrocycleContext(patient, key);
@@ -5030,9 +5066,7 @@ function openDayModal(key){
   document.getElementById("daySessionNote").value = meta.commentaire !== undefined ? meta.commentaire : "";
   durOtherOpen = false;
 
-  var wk = currentWeekRange();
-  var stretchTotal = sumStretchSecondsInRange(patient, wk.start, wk.end);
-  document.getElementById("stretchWeekReminder").textContent = "Étirements — semaine en cours : " + stretchTotal + "s / 1200s de temps sous tension";
+  updateTensionReminder();
 
   resetEntryForm();
   renderDayEntriesList();
@@ -5134,7 +5168,7 @@ function autoFillGroup(nameId, groupId){
   var p = getSelectedPatient();
   var name = document.getElementById(nameId).value.trim();
   if(!p || !name) return;
-  var g = (p.program.exerciseGroups || {})[name];
+  var g = (p.program.exerciseGroups || {})[name] || catalogGroupOf(name);
   if(!g){   // à défaut : groupe de la dernière séance enregistrée avec ce nom
     var bestDate = "";
     Object.keys(p.program.entries).forEach(function(k){
@@ -5355,6 +5389,7 @@ function saveDayMeta(){
 });
 
 function renderDayEntriesList(){
+  updateTensionReminder();
   renderPlanExercises();
   var patient = getSelectedPatient();
   var entries = patient.program.entries[dayModalDate] || [];
@@ -5501,6 +5536,8 @@ function saveDayEntry(keepOpen){
   if(libName){
     if(!patient.program.exerciseLibrary) patient.program.exerciseLibrary = [];
     if(patient.program.exerciseLibrary.indexOf(libName) === -1) patient.program.exerciseLibrary.push(libName);
+    catalogMigrate();
+    catalogAdd(entry.kind, libName, entry.group || "");
   }
   if(libName && entry.group){
     if(!patient.program.exerciseGroups) patient.program.exerciseGroups = {};
@@ -5569,10 +5606,13 @@ function recentNames(patient, kind){
       if(e.kind === kind && e.name && (!last[e.name] || k > last[e.name])) last[e.name] = k;
     });
   });
-  return Object.keys(last).sort(function(a,b){ return last[b].localeCompare(last[a]) || a.localeCompare(b); }).slice(0, 8);
+  var own = Object.keys(last).sort(function(a,b){ return last[b].localeCompare(last[a]) || a.localeCompare(b); }).slice(0, 8), seen = {};
+  own.forEach(function(n){ seen[normTxt(n)] = 1; });
+  exCatalog().filter(function(x){ return x.kind === kind && !seen[normTxt(x.name)]; }).map(function(x){ return x.name; }).sort(function(a, b){ return a.localeCompare(b); }).forEach(function(n){ if(own.length < 14){ own.push(n); seen[normTxt(n)] = 1; } });
+  return own;
 }
 var GROUP_UI = { exercise:{ select:"exGroup", chips:"exGroupChips" }, isometric:{ select:"isoGroup", chips:"isoGroupChips" } };
-function entryGroup(patient, e){ return e.group || (patient.program.exerciseGroups || {})[e.name] || ""; }
+function entryGroup(patient, e){ return e.group || (patient.program.exerciseGroups || {})[e.name] || catalogGroupOf(e.name) || ""; }
 function namesForGroup(patient, kind, g){
   var last = {};
   Object.keys(patient.program.entries).forEach(function(k){
@@ -5580,7 +5620,10 @@ function namesForGroup(patient, kind, g){
       if(e.kind === kind && e.name && entryGroup(patient, e) === g && (!last[e.name] || k > last[e.name])) last[e.name] = k;
     });
   });
-  return Object.keys(last).sort(function(a, b){ return last[b].localeCompare(last[a]) || a.localeCompare(b); });
+  var own = Object.keys(last).sort(function(a, b){ return last[b].localeCompare(last[a]) || a.localeCompare(b); }), seen = {};
+  own.forEach(function(n){ seen[normTxt(n)] = 1; });
+  exCatalog().filter(function(x){ return x.kind === kind && x.group === g && !seen[normTxt(x.name)]; }).map(function(x){ return x.name; }).sort(function(a, b){ return a.localeCompare(b); }).forEach(function(n){ own.push(n); });
+  return own;
 }
 function renderGroupChips(kind){
   var ui = GROUP_UI[kind];
@@ -5594,6 +5637,7 @@ function renderGroupChips(kind){
       if(g && !seen[key]){ seen[key] = true; counts[g] = (counts[g] || 0) + 1; }
     });
   });
+  exCatalog().forEach(function(x){ var key = x.group + "|" + x.name; if(x.kind === kind && x.group && !seen[key] && !Object.keys(seen).some(function(k2){ return k2.split("|")[0] === x.group && normTxt(k2.slice(k2.indexOf("|") + 1)) === normTxt(x.name); })){ seen[key] = true; counts[x.group] = (counts[x.group] || 0) + 1; } });
   document.getElementById(ui.chips).innerHTML = TRAIN_GROUPS.map(function(g){
     return '<button type="button" class="chip-btn' + (g === cur ? ' on' : '') + '" data-pickgroup="' + kind + '" data-group="' + escHtml(g) + '" aria-pressed="' + (g === cur) + '">' + escHtml(g) + (counts[g] ? '<span class="cnt">' + counts[g] + '</span>' : '') + '</button>';
   }).join("");
@@ -7030,6 +7074,14 @@ function normalizeState(o){
         updatedAt: typeof x.updatedAt === "string" ? x.updatedAt : undefined, _sig: typeof x._sig === "string" ? x._sig : undefined };
     }).filter(function(x){ return x.days.length; });
   }
+  if(o.exerciseCatalog !== undefined){
+    if(!Array.isArray(o.exerciseCatalog)) o.exerciseCatalog = [];
+    var okK = { exercise: 1, stretching: 1, isometric: 1 };
+    o.exerciseCatalog = o.exerciseCatalog.filter(function(x){ return x && typeof x === "object" && typeof x.name === "string" && x.name.trim() && okK[x.kind]; }).map(function(x){
+      return { id: (typeof x.id === "string" && x.id) ? x.id : "x" + fnvHash(x.kind + "|" + normTxt(x.name)), kind: x.kind, name: x.name.trim().slice(0, 80), group: typeof x.group === "string" ? x.group.slice(0, 60) : "",
+        updatedAt: typeof x.updatedAt === "string" ? x.updatedAt : undefined, _sig: typeof x._sig === "string" ? x._sig : undefined };
+    });
+  }
   if(!Array.isArray(o.closures)) o.closures = [];
   o.closures = o.closures.filter(function(x){ return x && typeof x === "object" && DATE_RE.test(x.from || "") && DATE_RE.test(x.to || "") && x.from <= x.to; }).map(function(x){
     return { id: (typeof x.id === "string" && x.id) ? x.id : uid(), from: x.from, to: x.to, plageId: typeof x.plageId === "string" ? x.plageId : "", label: String(x.label || "").slice(0, 60),
@@ -7050,6 +7102,7 @@ function replaceState(o){
   state = normalizeState(o);
   migratePeriodizationData();
   resigAll(state);
+  catalogMigrate();
   saveData();
   renderAll();
   updateBackupUi();
@@ -8677,7 +8730,15 @@ document.getElementById("agTypeAddBtn").addEventListener("click", function(){
   while(list.some(function(t){ return t.name === n; })) n = "Nouveau type " + (++k);
   list.push({ name: n, color: "#1FA971", dur: 30 }); saveAgTypes(list); renderAgTypesList();
 });
-var agendaDate = todayISO(), agendaView = (typeof window.innerWidth === "number" && window.innerWidth >= 900) ? "week" : "day";
+function agIsSunday(d){ return new Date(d + "T00:00:00").getDay() === 0; }
+function agSkip(d, dir){ return agIsSunday(d) ? addDaysToDate(d, dir >= 0 ? 1 : -1) : d; }
+function agStepDays(d, n){
+  var dir = n >= 0 ? 1 : -1, left = Math.abs(n);
+  d = agSkip(d, dir);
+  while(left > 0){ d = agSkip(addDaysToDate(d, dir), dir); left--; }
+  return d;
+}
+var agendaDate = agSkip(todayISO(), 1), agendaView = (typeof window.innerWidth === "number" && window.innerWidth >= 900) ? "week" : "day";
 function pad2(n){ return String(n).padStart(2, "0"); }
 function minToHhmm(m){ return pad2(Math.floor(m / 60)) + ":" + pad2(m % 60); }
 function hhmmToMin(t){ var m = /^(\d\d):(\d\d)$/.exec(t || ""); return m ? (+m[1]) * 60 + (+m[2]) : null; }
@@ -8686,17 +8747,15 @@ function agCfg(){
   var c = (state.settings && state.settings.agenda) || {};
   var st = clampInt(c.start, 0, 23, 7), en = clampInt(c.end, 1, 24, 20);
   if(en <= st) en = Math.min(24, st + 1);
-  return { start: st, end: en, step: [5, 10, 15, 30].indexOf(parseInt(c.step)) !== -1 ? parseInt(c.step) : 15, dur: clampInt(c.dur, 5, 240, 30) };
+  return { start: st, end: en, step: [15, 30].indexOf(parseInt(c.step)) !== -1 ? parseInt(c.step) : 15, dur: clampInt(c.dur, 5, 240, 30) };
 }
 function agList(){ if(!Array.isArray(state.agenda)) state.agenda = []; return state.agenda; }
 function patientNameById(id){ var p = state.patients.find(function(x){ return x.id === id; }); return p ? p.name : "Patient supprimé"; }
 function agDays(){
   if(agendaView === "day") return [agendaDate];
-  if(agendaView === "3days") return [agendaDate, addDaysToDate(agendaDate, 1), addDaysToDate(agendaDate, 2)];
+  if(agendaView === "3days") return [agendaDate, agStepDays(agendaDate, 1), agStepDays(agendaDate, 2)];
   var mon = weekStartOf(agendaDate), d = [];
   for(var i = 0; i < 6; i++) d.push(addDaysToDate(mon, i));
-  var sun = addDaysToDate(mon, 6);
-  if(agList().some(function(a){ return a.date === sun; })) d.push(sun);
   return d;
 }
 function agLanes(aps){
@@ -8752,9 +8811,8 @@ function renderAgenda(){
       var hasSession = pat && pat.program && (pat.program.entries[ap.date] || []).length > 0;
       var tcol = ap.status === "annule" ? "#8A93A3" : agTypeByName(ap.type).color;
       h += '<div class="ag-ap st-' + ap.status + (it.lanes > 1 ? ' multi' : '') + (ht < 56 ? ' short' : '') + '" title="' + escHtml(patientNameById(ap.patientId) + ' · ' + ap.start + ' · ' + ap.type + ((ap.zones && ap.zones.length) ? ' · ' + ap.zones.join(", ") : '') + ' · ' + ap.dur + ' min') + '" data-apid="' + escHtml(ap.id) + '" style="background:' + hexToRgba(tcol, 0.14) + '; border-left-color:' + tcol + '; --tc:' + tcol + '; top:' + top + 'px; height:' + ht + 'px; left:calc(' + (it.lane / it.lanes * 100) + '% + 2px); width:calc(' + (100 / it.lanes) + '% - 4px);">' +
-        '<button type="button" class="ag-pt" style="border-color:' + (ap.status === "prevu" ? tcol : "") + ';" data-appt="' + escHtml(ap.id) + '" aria-label="Pointer ' + escHtml(patientNameById(ap.patientId)) + '">' + (ap.status === "present" ? "✓" : (ap.status === "absent" ? "✕" : "")) + '</button>' +
         '<button type="button" class="ag-more" data-apmore="' + escHtml(ap.id) + '" aria-label="Autres actions">⋯</button>' +
-        '<div class="l1"><span class="nm">' + escHtml(patientNameById(ap.patientId)) + '</span><span class="tm">' + ap.start + '</span></div>' +
+        '<div class="l1">' + (ap.status === "present" ? '<span class="ag-st ok" title="Présent">✓</span>' : (ap.status === "absent" ? '<span class="ag-st ko" title="Absent">✕</span>' : "")) + '<span class="nm">' + escHtml(patientNameById(ap.patientId)) + '</span><span class="tm">' + ap.start + '</span></div>' +
         (ht >= 48 ? '<div class="sb">' + escHtml(ap.type) + ((ap.zones && ap.zones.length) ? ' · ' + escHtml(ap.zones.join(", ")) : '') + ' · ' + ap.dur + ' min' + (hasSession ? ' · séance saisie' : '') + '</div>' : '') + '</div>';
     });
     h += '</div>';
@@ -8792,13 +8850,14 @@ document.getElementById("agendaView").addEventListener("click", function(e){
   var t;
   if((t = e.target.closest("[data-agnav]"))){
     var d = parseInt(t.dataset.agnav);
-    agendaDate = d === 0 ? todayISO() : addDaysToDate(agendaDate, d * (agendaView === "week" ? 7 : (agendaView === "3days" ? 3 : 1)));
+    if(d === 0) agendaDate = agSkip(todayISO(), 1);
+    else if(agendaView === "week") agendaDate = addDaysToDate(agendaDate, 7 * d);
+    else agendaDate = agStepDays(agendaDate, d * (agendaView === "3days" ? 3 : 1));
     renderAgenda.scrolled = false; renderAgenda(); return;
   }
   if((t = e.target.closest("[data-agview]"))){ agendaView = t.dataset.agview; renderAgenda(); return; }
   if(e.target.closest("#agNewBtn")){ openApptModal({ date: agendaDate, start: minToHhmm(Math.max(agCfg().start * 60, 9 * 60)) }); return; }
   if((t = e.target.closest(".ag-hcell.clickable"))){ openDayPlageSheet(t.dataset.date); return; }
-  if((t = e.target.closest("[data-appt]"))){ e.stopPropagation(); var a1 = agFind(t.dataset.appt); if(a1) agToggleCheck(a1); return; }
   if((t = e.target.closest("[data-apmore]"))){ e.stopPropagation(); openApptSheet(t.dataset.apmore); return; }
   if((t = e.target.closest(".ag-ap"))){ var a2 = agFind(t.dataset.apid); if(a2) openAgendaSession(a2); return; }
   if((t = e.target.closest(".ag-col"))){
@@ -8892,7 +8951,7 @@ function openApptSheet(id){
   document.getElementById("asBody").innerHTML =
     '<div class="as-sub">' + new Date(ap.date + "T00:00:00").toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" }) + ' · ' + ap.start + ' – ' + minToHhmm(hhmmToMin(ap.start) + ap.dur) + ' · ' + escHtml(ap.type) + ' · ' + ({ prevu: "Prévu", present: "Présent", absent: "Absent", annule: "Annulé" }[ap.status]) + (ap.note ? '<br>' + escHtml(ap.note) : '') + '</div>' +
     '<button type="button" class="as-item" data-asact="open">Ouvrir la séance du jour</button>' +
-    '<button type="button" class="as-item" data-asact="check">' + (ap.status === "present" ? "Retirer le pointage" : "Pointer : présent") + '</button>' +
+    '<button type="button" class="as-item" data-asact="check">' + (ap.status === "present" ? "Retirer le pointage" : "Pointer : patient présent") + '</button>' +
     '<button type="button" class="as-item" data-asact="absent">' + (ap.status === "absent" ? "Remettre « prévu »" : "Marquer absent") + '</button>' +
     '<button type="button" class="as-item" data-asact="cancel">' + (ap.status === "annule" ? "Remettre « prévu »" : "Annuler le rendez-vous") + '</button>' +
     '<button type="button" class="as-item" data-asact="edit">Modifier ou déplacer…</button>' +
@@ -8951,12 +9010,15 @@ function openApptModal(o){
 }
 function renderApSlots(slots, editing){
   document.getElementById("apSlots").innerHTML = slots.map(function(sl, i){
-    return '<div class="ap-slot"><input type="date" class="ap-date"' + (i === 0 ? ' id="apDate"' : '') + ' value="' + escHtml(sl.date) + '" aria-label="Date du créneau ' + (i + 1) + '"><input type="time" class="ap-time"' + (i === 0 ? ' id="apTime"' : '') + ' step="300" value="' + escHtml(sl.start) + '" aria-label="Heure du créneau ' + (i + 1) + '">' + ((slots.length > 1 && !editing) ? '<button type="button" class="del-x" data-apslotdel="' + i + '" aria-label="Retirer ce créneau">✕</button>' : '<span></span>') + '</div>';
+    var tm = hhmmToMin(sl.start) || 0, qm = Math.round(tm / 15) * 15, hh = Math.floor(qm / 60) % 24, mm = qm % 60, hopts = "", mopts = "";
+    for(var h = 0; h < 24; h++) hopts += '<option value="' + pad2(h) + '"' + (h === hh ? " selected" : "") + '>' + pad2(h) + ' h</option>';
+    [0, 15, 30, 45].forEach(function(m){ mopts += '<option value="' + pad2(m) + '"' + (m === mm ? " selected" : "") + '>' + pad2(m) + '</option>'; });
+    return '<div class="ap-slot"><input type="date" class="ap-date"' + (i === 0 ? ' id="apDate"' : '') + ' value="' + escHtml(sl.date) + '" aria-label="Date du créneau ' + (i + 1) + '"><div class="ap-time"><select class="ap-h"' + (i === 0 ? ' id="apH"' : '') + ' aria-label="Heure du créneau ' + (i + 1) + '">' + hopts + '</select><span>:</span><select class="ap-m"' + (i === 0 ? ' id="apM"' : '') + ' aria-label="Minutes du créneau ' + (i + 1) + ' (00, 15, 30 ou 45)">' + mopts + '</select></div>' + ((slots.length > 1 && !editing) ? '<button type="button" class="del-x" data-apslotdel="' + i + '" aria-label="Retirer ce créneau">✕</button>' : '<span></span>') + '</div>';
   }).join("");
   document.getElementById("apAddSlotBtn").hidden = !!editing;
 }
 function readApSlots(){
-  return [].slice.call(document.querySelectorAll("#apSlots .ap-slot")).map(function(r){ return { date: r.querySelector(".ap-date").value, start: r.querySelector(".ap-time").value }; });
+  return [].slice.call(document.querySelectorAll("#apSlots .ap-slot")).map(function(r){ return { date: r.querySelector(".ap-date").value, start: r.querySelector(".ap-h").value + ":" + r.querySelector(".ap-m").value }; });
 }
 function apRepeatCount(){ return (!apEditId && document.getElementById("apRepeat").value === "weekly") ? clampInt(document.getElementById("apRepeatN").value, 2, 52, 8) : 1; }
 function apExpand(){
@@ -9007,6 +9069,7 @@ document.getElementById("apSlots").addEventListener("click", function(e){
   renderApSlots(cur, false); updateApPreview();
 });
 document.getElementById("apSlots").addEventListener("input", updateApPreview);
+document.getElementById("apSlots").addEventListener("change", updateApPreview);
 document.getElementById("apRepeatN").addEventListener("input", updateApPreview);
 document.getElementById("apPatient").addEventListener("change", function(){
   document.getElementById("apNewName").hidden = this.value !== "__new__";
@@ -9023,6 +9086,8 @@ document.getElementById("apSaveBtn").addEventListener("click", function(){
     var np = makePatientObject(nm); state.patients.push(np); pid = np.id; state.selectedPatientId = pid;
   }
   if(slots.some(function(sl){ return hhmmToMin(sl.start) + apDur > 24 * 60; })){ alert("Un rendez-vous dépasse minuit."); return; }
+  if(slots.some(function(sl){ return [0, 15, 30, 45].indexOf(hhmmToMin(sl.start) % 60) === -1; })){ alert("Les rendez-vous commencent à :00, :15, :30 ou :45."); return; }
+  if(slots.some(function(sl){ return agIsSunday(sl.date); })){ alert("Le dimanche n'est pas proposé dans l'agenda : choisis un autre jour."); return; }
   var note = document.getElementById("apNote").value.trim().slice(0, 500), created = 0;
   if(apEditId){
     var ap = agFind(apEditId);
@@ -9337,7 +9402,7 @@ function openPlageModal(id){
   document.getElementById("plageOverlay").hidden = false;
 }
 function renderPlChips(){
-  document.getElementById("plDays").innerHTML = WD_LABELS.map(function(l, i){ return '<button type="button" class="chip-btn' + (plDays.indexOf(i + 1) !== -1 ? ' on' : '') + '" data-plday="' + (i + 1) + '">' + l + '</button>'; }).join("");
+  document.getElementById("plDays").innerHTML = WD_LABELS.slice(0, 6).map(function(l, i){ return '<button type="button" class="chip-btn' + (plDays.indexOf(i + 1) !== -1 ? ' on' : '') + '" data-plday="' + (i + 1) + '">' + l + '</button>'; }).join("");
   document.getElementById("plColors").innerHTML = PLAGE_COLORS.map(function(c){ return '<button type="button" class="chip-btn' + (plColor === c.hex ? ' on' : '') + '" data-plcolor="' + c.hex + '">' + (c.hex ? '<span class="dot" style="background:' + c.hex + ';"></span>' : '') + escHtml(c.name) + '</button>'; }).join("");
 }
 document.getElementById("plageOverlay").addEventListener("click", function(e){
@@ -9407,7 +9472,7 @@ document.getElementById("clDeleteBtn").addEventListener("click", function(){
 function renderPlagesMgr(){
   var pls = plList().slice().sort(function(a, b){ return (a.days[0] - b.days[0]) || a.start.localeCompare(b.start); }), h = "";
   if(!pls.length) h += '<div class="tc-sub">Aucune plage : tous les jours restent libres.</div>';
-  for(var wd = 1; wd <= 7; wd++){
+  for(var wd = 1; wd <= 6; wd++){
     var rows = pls.filter(function(p){ return p.days.indexOf(wd) !== -1; });
     if(!rows.length) continue;
     h += '<div class="pm-day">' + WD_LONG[wd - 1] + '</div>' + rows.map(function(p){
@@ -9508,8 +9573,8 @@ function renderStats(){
   var zc = {}; counted.forEach(function(a){ var zs = (a.zones && a.zones.length) ? a.zones : ["Non renseignée"]; zs.forEach(function(z){ zc[z] = (zc[z] || 0) + 1; }); });
   var zk = Object.keys(zc).sort(function(a, b){ return zc[b] - zc[a]; }), zmax = zk.length ? zc[zk[0]] : 1;
   h += '<div class="st-card"><h3>Zones traitées</h3>' + (zk.length ? zk.map(function(z){ return '<div class="st-hbar"><span>' + escHtml(z) + '</span><div class="b"><div style="width:' + (zc[z] / zmax * 100) + '%; background:' + (z === "Non renseignée" ? "#cfd4dc" : "#007BFF") + ';"></div></div><span class="n">' + zc[z] + '</span></div>'; }).join("") : '<div class="tc-sub">Rien à afficher avec ce filtre.</div>') + '<div class="tc-sub" style="margin-top:6px;">La zone vient de la fiche clinique du patient et se règle rendez-vous par rendez-vous.</div></div>';
-  var wdc = [0, 0, 0, 0, 0, 0, 0]; counted.forEach(function(a){ wdc[isoWeekday(a.date) - 1]++; });
-  h += '<div class="st-card"><h3>Rendez-vous par jour de la semaine</h3>' + svgBars(WD_LABELS, [{ name: "Rendez-vous", color: "#0B1220", values: wdc }], "Rendez-vous par jour de la semaine") + '</div>';
+  var wdc = [0, 0, 0, 0, 0, 0]; counted.forEach(function(a){ var w = isoWeekday(a.date) - 1; if(w < 6) wdc[w]++; });
+  h += '<div class="st-card"><h3>Rendez-vous par jour de la semaine</h3>' + svgBars(WD_LABELS.slice(0, 6), [{ name: "Rendez-vous", color: "#0B1220", values: wdc }], "Rendez-vous par jour de la semaine") + '</div>';
   body.innerHTML = h;
 }
 document.getElementById("statsView").addEventListener("click", function(e){
@@ -9533,6 +9598,66 @@ document.getElementById("moreSheet").addEventListener("click", function(e){
   if(b.dataset.more === "export") doExport();
   else if(b.dataset.more === "import") document.getElementById("importFile").click();
   else if(b.dataset.more === "mode") openModeModal();
+});
+
+/* ============================================================
+   BIBLIOTHÈQUE D'EXERCICES PARTAGÉE (commune à tous les patients)
+   ============================================================ */
+function exCatalog(){ if(!Array.isArray(state.exerciseCatalog)) state.exerciseCatalog = []; return state.exerciseCatalog; }
+function exCatId(kind, name){ return "x" + fnvHash(kind + "|" + normTxt(name)); }
+function catalogFind(kind, name){ var id = exCatId(kind, name); return exCatalog().find(function(x){ return x.id === id; }) || null; }
+function catalogAdd(kind, name, group){
+  name = String(name || "").trim().slice(0, 80);
+  if(!name || ["exercise", "stretching", "isometric"].indexOf(kind) === -1) return null;
+  var it = catalogFind(kind, name);
+  if(!it){ it = { id: exCatId(kind, name), kind: kind, name: name, group: group || "" }; exCatalog().push(it); }
+  else if(group && it.group !== group) it.group = group;
+  return it;
+}
+function catalogGroupOf(name){
+  var n = normTxt(name), hit = exCatalog().find(function(x){ return normTxt(x.name) === n && x.group; });
+  return hit ? hit.group : "";
+}
+function catalogMigrate(){
+  if(state.exerciseCatalog !== undefined) return;
+  state.exerciseCatalog = [];
+  state.patients.forEach(function(p){
+    var g = (p.program && p.program.exerciseGroups) || {};
+    Object.keys(p.program.entries || {}).forEach(function(k){
+      (p.program.entries[k] || []).forEach(function(e){ if(e.name) catalogAdd(e.kind, e.name, e.group || g[e.name] || ""); });
+    });
+    (p.program.exerciseLibrary || []).forEach(function(n){ if(!state.exerciseCatalog.some(function(x){ return normTxt(x.name) === normTxt(n); })) catalogAdd("exercise", n, g[n] || ""); });
+  });
+  saveData();
+}
+function renderExMgr(){
+  var q = normTxt(document.getElementById("exMgrSearch").value), h = "";
+  [["exercise", "Exercices"], ["stretching", "Étirements"], ["isometric", "Isométrie"]].forEach(function(K){
+    var list = exCatalog().filter(function(x){ return x.kind === K[0] && (!q || normTxt(x.name).indexOf(q) !== -1); }).sort(function(a, b){ return a.name.localeCompare(b.name); });
+    if(!list.length) return;
+    h += '<div class="pm-day">' + K[1] + ' (' + list.length + ')</div>' + list.map(function(x){
+      return '<div class="pm-row"><div class="t">' + escHtml(x.name) + '</div>' + (K[0] !== "stretching" ? '<select data-exgroup="' + escHtml(x.id) + '" aria-label="Groupe de ' + escHtml(x.name) + '" style="max-width:160px; min-height:38px;"><option value="">Non classé</option>' + TRAIN_GROUPS.map(function(g){ return '<option value="' + escHtml(g) + '"' + (x.group === g ? " selected" : "") + '>' + escHtml(g) + '</option>'; }).join("") + '</select>' : '') + '<button type="button" class="del-x" data-exdel="' + escHtml(x.id) + '" aria-label="Supprimer ' + escHtml(x.name) + '">✕</button></div>';
+    }).join("");
+  });
+  document.getElementById("exMgrBody").innerHTML = h || '<div class="tc-sub">' + (q ? "Aucun exercice ne correspond." : "Aucun exercice enregistré pour l'instant : ils s'ajoutent tout seuls quand tu les saisis dans une séance.") + '</div>';
+}
+document.getElementById("openExMgrBtn").addEventListener("click", function(){ catalogMigrate(); document.getElementById("exMgrSearch").value = ""; renderExMgr(); document.getElementById("exMgrOverlay").hidden = false; });
+document.getElementById("exMgrCloseBtn").addEventListener("click", function(){ document.getElementById("exMgrOverlay").hidden = true; });
+document.getElementById("exMgrSearch").addEventListener("input", renderExMgr);
+document.getElementById("exMgrBody").addEventListener("change", function(e){
+  var g = e.target.closest("[data-exgroup]");
+  if(!g) return;
+  var it = exCatalog().find(function(x){ return x.id === g.dataset.exgroup; });
+  if(it){ it.group = g.value; saveData(); }
+});
+document.getElementById("exMgrBody").addEventListener("click", function(e){
+  var d = e.target.closest("[data-exdel]");
+  if(!d) return;
+  var it = exCatalog().find(function(x){ return x.id === d.dataset.exdel; });
+  if(!it || !confirm("Retirer « " + it.name + " » de la bibliothèque ? Les séances déjà enregistrées gardent leur exercice.")) return;
+  addTombstone("exerciseCatalog", it.id);
+  state.exerciseCatalog = exCatalog().filter(function(x){ return x.id !== it.id; });
+  saveData(); renderExMgr();
 });
 
 /* ============================================================
@@ -9961,6 +10086,7 @@ document.getElementById("importFile").addEventListener("change", function(e){
 
 if(isAutonomous()) appMode = 'today';
 seedPlagesIfNeeded();
+catalogMigrate();
 renderAll();
 updateBackupUi();
 (function(){
