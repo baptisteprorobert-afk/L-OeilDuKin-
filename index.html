@@ -644,7 +644,7 @@
   }
 
   /* ---------- carte anamnèse compacte, ordre de l'overview ---------- */
-  .ov-clin{ order:-6; } .ov-period{ order:-3; } .ov-anam{ order:-2; } .ov-rts{ order:-1; }
+  .ov-clin{ order:-6; grid-column:1 / -1; } .ov-period{ order:-3; } .ov-anam{ order:-2; } .ov-rts{ order:-1; }
   @media (max-width: 760px){ .ov-anam{ order:-5; } .ov-rts{ order:-4; } }
   .rts-mini .am-top{ display:flex; align-items:center; gap:10px; }
   .anam-mini{ cursor:pointer; }
@@ -693,6 +693,61 @@
   .sp-hist:last-child{ border-bottom:0; }
   .sp-hist .t{ font-weight:600; font-size:14px; } .sp-hist .s{ font-size:12.5px; color:var(--muted); margin-top:2px; line-height:1.4; }
   .spec-test-btn{ display:block; width:100%; text-align:left; margin-bottom:8px; }
+
+  /* ---------- fiche clinique en onglet, profil ---------- */
+  .profile-row > div{ min-width:120px; }
+  .profile-row .fl{ margin:0 0 4px; }
+  .profile-row input[type=date]{ min-height:42px; }
+  .profile-row input[type=number]{ min-height:42px; }
+  .clin-strip{ background:#fff; border:1px solid var(--border); border-radius:14px; padding:10px 14px; cursor:pointer; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .clin-strip .cs-main{ font-size:14px; font-weight:600; flex:1; min-width:0; overflow-wrap:anywhere; }
+  .clin-strip .cs-sub{ font-size:12.5px; color:var(--muted); font-weight:500; }
+  .clin-strip .cs-prec{ width:100%; background:#fff8e8; border:1px solid #f4d9b8; color:#8a5200; border-radius:10px; padding:6px 10px; font-size:13px; }
+  .vp-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .vp-grid label{ margin:0 0 4px; }
+
+  /* ---------- agenda ---------- */
+  .ag-bar{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:10px; }
+  .ag-title{ font-size:18px; font-weight:700; flex:1; min-width:150px; text-transform:capitalize; }
+  .ag-seg{ display:flex; border:1px solid var(--border); border-radius:10px; overflow:hidden; background:#fff; }
+  .ag-seg button{ border:0; background:#fff; padding:0 14px; min-height:40px; font-weight:600; color:var(--muted); font-size:14px; }
+  .ag-seg button.on{ background:var(--text); color:#fff; }
+  .ag-scroll{ overflow:auto; background:#fff; border:1px solid var(--border); border-radius:14px; max-height:calc(100vh - 200px); max-height:calc(100dvh - 200px); position:relative; -webkit-overflow-scrolling:touch; }
+  .ag-grid{ display:grid; min-width:100%; }
+  .ag-hcell{ position:sticky; top:0; z-index:6; background:#fff; border-bottom:1px solid var(--border); padding:8px 6px; text-align:center; font-size:12.5px; font-weight:600; text-transform:capitalize; color:var(--muted); }
+  .ag-hcell.today{ color:var(--blue-text); }
+  .ag-hcell .n{ display:block; font-size:19px; font-weight:700; color:var(--text); }
+  .ag-hcell.today .n{ color:var(--blue-text); }
+  .ag-hcell .c{ display:block; font-size:11px; font-weight:500; text-transform:none; }
+  .ag-times{ position:sticky; left:0; z-index:4; border-right:1px solid var(--border); background:#fff; }
+  .ag-times span{ position:absolute; right:6px; transform:translateY(-50%); font-size:11px; color:var(--muted); background:#fff; padding:0 2px; }
+  .ag-col{ position:relative; border-left:1px solid #eef0f3; background-image:linear-gradient(to bottom, #dfe2e8 1px, transparent 1px), linear-gradient(to bottom, #f0f1f4 1px, transparent 1px); }
+  .ag-col.today{ background-color:#f6faff; }
+  .ag-now{ position:absolute; left:0; right:0; height:2px; background:#e0483e; z-index:3; pointer-events:none; }
+  .ag-now::before{ content:""; position:absolute; left:-4px; top:-3px; width:8px; height:8px; border-radius:50%; background:#e0483e; }
+  .ag-ap{ position:absolute; box-sizing:border-box; border-radius:8px; padding:3px 24px 3px 38px; background:#e8f2ff; border-left:4px solid #007BFF; color:var(--text); overflow:hidden; cursor:pointer; touch-action:manipulation; -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; font-size:12.5px; line-height:1.3; z-index:2; }
+  .ag-ap.st-present{ background:#e6f6ee; border-left-color:#1fa971; }
+  .ag-ap.st-absent{ background:#fdf0ef; border-left-color:#e0483e; }
+  .ag-ap.st-annule{ background:#f1f3f6; border-left-color:#8a93a3; color:#8a93a3; }
+  .ag-ap.st-annule .nm{ text-decoration:line-through; }
+  .ag-ap.dragging{ opacity:0.3; }
+  .ag-ap.multi{ padding:2px 22px 2px 30px; font-size:12px; }
+  .ag-ap.multi > div{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .ag-ap.multi .ag-pt{ width:22px; height:22px; left:4px; top:3px; font-size:12px; }
+  .ag-ap.multi .ag-more{ width:22px; }
+  .ag-ap .tm{ font-weight:700; }
+  .ag-ap .nm{ font-weight:600; }
+  .ag-ap .sb{ color:var(--muted); font-size:11.5px; }
+  .ag-pt{ position:absolute; left:5px; top:3px; width:28px; height:28px; border-radius:50%; border:2px solid #007BFF; background:#fff; padding:0; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; color:#fff; }
+  .ag-ap.st-present .ag-pt{ background:#1fa971; border-color:#1fa971; }
+  .ag-ap.st-absent .ag-pt{ border-color:#e0483e; } .ag-ap.st-annule .ag-pt{ border-color:#8a93a3; }
+  .ag-more{ position:absolute; right:0; top:0; border:0; background:transparent; width:28px; height:28px; font-size:17px; color:var(--muted); padding:0; }
+  .ag-ghost{ position:absolute; z-index:20; border-radius:8px; background:rgba(0,123,255,0.16); border:2px dashed #007BFF; pointer-events:none; padding:3px 8px; font-size:12px; font-weight:700; color:#0062CC; box-sizing:border-box; }
+  .ag-toast{ position:fixed; left:50%; bottom:96px; transform:translateX(-50%); background:var(--night); color:#fff; padding:10px 16px; border-radius:12px; font-size:13.5px; z-index:300; max-width:90vw; text-align:center; }
+  .as-item{ display:block; width:100%; text-align:left; min-height:48px; border:0; border-bottom:1px solid #eef0f3; background:transparent; font-size:16px; font-weight:600; padding:0 4px; color:var(--text); }
+  .as-item.danger{ color:#b3261e; }
+  .as-sub{ font-size:13px; color:var(--muted); padding:2px 4px 10px; }
+  @media (max-width: 760px){ .ag-scroll{ max-height:calc(100dvh - 250px); } }
 </style>
 </head>
 <body>
@@ -709,7 +764,7 @@
     <div class="main-nav" id="appNav">
       <button data-appmode="profils" class="active"><svg class="nav-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17.5" cy="9.5" r="2.4"/><path d="M16.5 14.2c2.3.2 3.7 1.7 4.2 4"/></svg><span>Profils</span></button>
       <button data-appmode="leaderboard"><svg class="nav-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 20V11M12 20V5M17 20v-6"/></svg><span>Classement</span></button>
-      <button data-appmode="programme"><svg class="nav-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M9 3.5v4M15 3.5v4"/></svg><span>Programme</span></button>
+      <button data-appmode="agenda"><svg class="nav-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M9 3.5v4M15 3.5v4"/></svg><span>Agenda</span></button>
     </div>
     <div style="margin-top:auto; display:flex; flex-direction:column; gap:8px;">
       <button class="btn-ghost" id="exportBtn">Exporter les données</button>
@@ -726,10 +781,26 @@
       <div id="todayContent"></div>
     </div>
 
+    <div id="agendaView" hidden>
+      <div class="ag-bar">
+        <button type="button" class="btn-ghost" data-agnav="-1" aria-label="Précédent" style="min-height:40px;">‹</button>
+        <button type="button" class="btn-ghost" data-agnav="0" style="min-height:40px;">Aujourd'hui</button>
+        <button type="button" class="btn-ghost" data-agnav="1" aria-label="Suivant" style="min-height:40px;">›</button>
+        <div class="ag-title" id="agTitle"></div>
+        <div class="ag-seg" id="agSeg"><button type="button" data-agview="day">Jour</button><button type="button" data-agview="week">Semaine</button></div>
+        <button type="button" class="btn-primary" id="agNewBtn" style="min-height:40px;">+ Rendez-vous</button>
+      </div>
+      <div class="ag-scroll" id="agScroll"><div class="ag-grid" id="agGrid"></div></div>
+      <div class="tc-sub" style="margin-top:8px;">Touche un rendez-vous pour ouvrir la séance du jour · appui long puis glisse pour le déplacer · ○ pour pointer le patient · ⋯ pour les autres actions.</div>
+    </div>
+
     <div id="leaderboardView" hidden>
       <h2 style="margin:0 0 4px;">🏆 Leaderboard</h2>
-      <div class="sub" style="color:var(--muted); font-size:12.5px; margin-bottom:14px;">Classement des tests isométriques (force uniquement, pas d'EMG) — dernière mesure de chaque patient par mouvement.</div>
-      <label style="display:block; font-size:12px; color:var(--muted); font-weight:600; margin-bottom:6px;">Filtrer par muscle</label>
+      <div class="chip-row" id="lbModeRow" style="margin-bottom:12px;"><button type="button" class="chip-btn on" data-lbmode="iso">Force isométrique</button><button type="button" class="chip-btn" data-lbmode="jump">Sauts</button></div>
+      <div class="sub" id="lbSub" style="color:var(--muted); font-size:12.5px; margin-bottom:14px;">Classement des tests isométriques (force uniquement, pas d'EMG) — dernière mesure de chaque patient par mouvement.</div>
+      <div id="lbJumpWrap" hidden><label style="display:block; font-size:12px; color:var(--muted); font-weight:600; margin-bottom:6px;">Test de saut</label>
+      <select id="leaderboardJumpFilter" style="margin-bottom:18px; background:var(--surface); border:1px solid var(--border); padding:8px 12px; border-radius:10px; font-size:13px; min-width:220px;"></select></div>
+      <label id="lbMuscleLabel" style="display:block; font-size:12px; color:var(--muted); font-weight:600; margin-bottom:6px;">Filtrer par muscle</label>
       <select id="leaderboardMuscleFilter" style="margin-bottom:18px; background:var(--surface); border:1px solid var(--border); padding:8px 12px; border-radius:10px; font-size:13px;">
         <option value="all">Tous les muscles</option>
       </select>
@@ -837,17 +908,10 @@
         </div>
       </header>
 
-      <div class="profile-row">
-        <input type="date" id="dobInput" title="Date de naissance">
-        <div class="unit-toggle" id="sexToggle">
-          <button data-sex="H">Homme</button>
-          <button data-sex="F">Femme</button>
-        </div>
-        <input type="number" id="weightInput" placeholder="Poids (kg)" step="0.1">
-      </div>
-
       <div class="tab-bar">
         <button data-tab="overview" class="active">Overview</button>
+        <button data-tab="fiche">Fiche clinique</button>
+        <button data-tab="programme">Programme</button>
         <button data-tab="fonctionnel">Mouvements fonctionnels</button>
         <button data-tab="periodisation" class="adv-only">Périodisation</button>
       </div>
@@ -855,6 +919,23 @@
       <div id="tab-overview" class="tab-panel">
         <div id="cardsGrid"></div>
       </div>
+
+      <div id="tab-fiche" class="tab-panel" hidden>
+        <div class="fiche-profile">
+          <div class="today-h" style="margin-bottom:8px;">Profil</div>
+          <div class="profile-row" style="margin:0 0 6px;">
+            <div><label class="fl">Date de naissance</label><input type="date" id="dobInput" title="Date de naissance"></div>
+            <div><label class="fl">Âge</label><input type="number" id="ageInput" placeholder="Âge" min="0" max="120" step="1"></div>
+            <div><label class="fl">Sexe</label><div class="unit-toggle" id="sexToggle"><button data-sex="H">Homme</button><button data-sex="F">Femme</button></div></div>
+            <div><label class="fl">Poids (kg)</label><input type="number" id="weightInput" placeholder="Poids (kg)" step="0.1"></div>
+            <div><label class="fl">Taille (cm)</label><input type="number" id="heightInput" placeholder="Taille (cm)" step="1"></div>
+          </div>
+          <div class="tc-sub" id="imcLabel" style="margin-bottom:14px;"></div>
+        </div>
+        <div id="ficheClinical"></div>
+      </div>
+
+      <div id="tab-programme" class="tab-panel" hidden></div>
 
       <div id="tab-periodisation" class="tab-panel" hidden>
         <div id="periodGate"></div>
@@ -1266,6 +1347,7 @@
       <button type="button" data-anamtab="synth">Synthèse</button>
     </div>
     <div class="day-body" id="anamBody"></div>
+    <div class="day-foot"><button type="button" class="btn-primary btn-lg" id="anamValidateBtn">Valider l'anamnèse</button></div>
   </div>
 </div>
 
@@ -1299,10 +1381,14 @@
 <!-- Reporter l'anamnèse dans la fiche clinique -->
 <div id="anamPushOverlay" class="modal-overlay" hidden>
   <div class="modal-box">
-    <div class="modal-header"><h2>Reporter dans la fiche clinique</h2><button class="btn-ghost" id="closeAnamPushBtn">Fermer</button></div>
-    <p class="tc-sub">Coche ce que tu veux copier. Rien n'est écrasé sans ton accord.</p>
+    <div class="modal-header"><h2>Valider l'anamnèse</h2><button class="btn-ghost" id="closeAnamPushBtn">Fermer</button></div>
+    <div class="today-h">Profil du patient</div>
+    <p class="tc-sub" style="margin-top:0;">Utilisé pour l'âge, les normes de force (% du poids du corps) et le bilan.</p>
+    <div id="anamPushProfile"></div>
+    <div class="today-h" style="margin-top:16px;">Reporter dans la fiche clinique</div>
+    <p class="tc-sub" style="margin-top:0;">Coche ce que tu veux copier. Rien n'est écrasé sans ton accord.</p>
     <div id="anamPushList"></div>
-    <div class="modal-actions"><button class="btn-primary" id="anamPushApplyBtn">Reporter</button></div>
+    <div class="modal-actions"><button class="btn-primary" id="anamPushApplyBtn">Valider</button></div>
   </div>
 </div>
 
@@ -1331,9 +1417,44 @@
     <div id="rtsDetailRows"></div>
     <p class="tc-sub" style="margin-top:10px;">Aide à la décision : elle ne remplace pas le jugement clinique.</p>
     <div class="modal-actions">
+      <button class="btn-ghost btn-danger" id="rtsDetailDeleteBtn">Supprimer la carte et les critères</button>
       <button class="btn-ghost" id="rtsDetailHideBtn">Masquer la carte</button>
       <button class="btn-primary" id="rtsDetailEditBtn">Modifier les critères</button>
     </div>
+  </div>
+</div>
+
+<!-- Rendez-vous : création / modification -->
+<div id="apptOverlay" class="modal-overlay" hidden>
+  <div class="modal-box">
+    <div class="modal-header"><h2 id="apTitle">Nouveau rendez-vous</h2><button class="btn-ghost" id="apCloseBtn">Fermer</button></div>
+    <label for="apPatient">Patient</label>
+    <select id="apPatient"></select>
+    <input id="apNewName" placeholder="Nom du nouveau patient" hidden style="margin-top:8px;">
+    <div class="sides-entry" style="margin-top:8px;">
+      <div><label for="apDate">Date</label><input type="date" id="apDate"></div>
+      <div><label for="apTime">Heure</label><input type="time" id="apTime" step="300"></div>
+    </div>
+    <label>Durée</label>
+    <div class="chip-row" id="apDur"></div>
+    <label>Type</label>
+    <div class="chip-row" id="apType"></div>
+    <div id="apRepeatWrap">
+      <label for="apRepeat">Répéter</label>
+      <div class="sides-entry"><div><select id="apRepeat"><option value="none">Une seule fois</option><option value="weekly">Chaque semaine</option></select></div><div><input type="number" id="apRepeatN" min="2" max="52" value="8" hidden placeholder="Nombre de séances"></div></div>
+    </div>
+    <label for="apNote">Note (facultatif)</label>
+    <textarea id="apNote" rows="2" placeholder="Ex. apporter les résultats d'IRM"></textarea>
+    <div class="modal-actions"><button class="btn-primary" id="apSaveBtn">Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- Rendez-vous : actions -->
+<div id="apptSheet" class="sheet-overlay" hidden>
+  <div class="sheet" role="dialog" aria-label="Actions du rendez-vous">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head"><h3 id="asTitle">Rendez-vous</h3><button type="button" class="icon-btn" id="asCloseBtn" aria-label="Fermer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="sheet-body" id="asBody"></div>
   </div>
 </div>
 
@@ -1427,6 +1548,13 @@
     </div>
     <label for="setFirstName">Ton prénom (affiché à l'accueil)</label>
     <input id="setFirstName" placeholder="Ex. Baptiste" autocomplete="given-name">
+    <label>Agenda</label>
+    <div class="vp-grid">
+      <div><label for="agStart" style="font-weight:500;">Première heure</label><input type="number" id="agStart" min="0" max="23" step="1"></div>
+      <div><label for="agEnd" style="font-weight:500;">Dernière heure</label><input type="number" id="agEnd" min="1" max="24" step="1"></div>
+      <div><label for="agStep" style="font-weight:500;">Pas de déplacement (min)</label><select id="agStep"><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="30">30</option></select></div>
+      <div><label for="agDur" style="font-weight:500;">Durée par défaut (min)</label><input type="number" id="agDur" min="5" max="240" step="5"></div>
+    </div>
     <label>Mode d'utilisation</label>
     <div id="modeCards"></div>
     <div id="modeExtra"></div>
@@ -1723,6 +1851,16 @@ function fmtDate(iso){
   var d = new Date(iso + "T00:00:00");
   return d.toLocaleDateString("fr-FR", { day:"2-digit", month:"2-digit", year:"numeric" });
 }
+function patientAge(p){
+  if(!p) return null;
+  if(p.dob) return computeAge(p.dob);
+  if(p.ageDeclared && typeof p.ageDeclared.age === "number" && p.ageDeclared.on){
+    var d = Math.floor((new Date(todayISO() + "T00:00:00") - new Date(p.ageDeclared.on + "T00:00:00")) / 86400000);
+    return p.ageDeclared.age + Math.max(0, Math.floor(d / 365.25));
+  }
+  return null;
+}
+function bmiOf(p){ return (p && p.weightKg > 0 && p.heightCm > 0) ? round1(p.weightKg / Math.pow(p.heightCm / 100, 2)) : null; }
 function computeAge(dob){
   if(!dob) return null;
   var b = new Date(dob + "T00:00:00");
@@ -1867,15 +2005,18 @@ function initials(name){
   return s.toUpperCase();
 }
 
-function createPatient(name){
-  var patient = {
+function makePatientObject(name){
+  return {
     id: uid(), name: name, createdAt: todayISO(),
-    dob: null, sex: null, weightKg: null,
+    dob: null, sex: null, weightKg: null, heightCm: null,
     measurements: {}, leverArms: {},
     periodization: { macrocycles: [], mesocycles: [] },
     program: { entries: {}, exerciseLibrary: [], plan: {} },
     tests: []
   };
+}
+function createPatient(name){
+  var patient = makePatientObject(name);
   state.patients.push(patient);
   state.selectedPatientId = patient.id;
   saveData();
@@ -1886,6 +2027,7 @@ function getSelectedPatient(){
 }
 function deletePatient(id){
   state.patients = state.patients.filter(function(p){ return p.id !== id; });
+  state.agenda = (state.agenda || []).filter(function(a){ return a.patientId !== id; });
   if(state.selectedPatientId === id) state.selectedPatientId = null;
   saveData();
   renderAll();
@@ -1909,7 +2051,7 @@ function renderProfilsListCards(){
     var card = document.createElement("div");
     card.className = "test-card";
     card.style.cursor = "pointer";
-    var age = computeAge(p.dob);
+    var age = patientAge(p);
     var lastDate = lastTestDate(p);
     card.innerHTML =
       '<div class="tc-top">' +
@@ -1935,7 +2077,7 @@ function renderProfilsListCards(){
 function isAutonomous(){ return !!(state.settings && state.settings.mode === 'autonome'); }
 function renderAll(){
   document.body.classList.toggle("mode-autonome", isAutonomous());
-  if(isAutonomous() && (appMode === 'leaderboard' || appMode === 'periodisation')) appMode = 'today';
+  if(isAutonomous() && (appMode === 'leaderboard' || appMode === 'periodisation' || appMode === 'agenda')) appMode = 'today';
   if(!isAutonomous() && appMode === 'today') appMode = 'profils';
   var emptyState = document.getElementById("emptyState");
   var patientView = document.getElementById("patientView");
@@ -1949,10 +2091,10 @@ function renderAll(){
 
   emptyState.hidden = true;
   leaderboardView.hidden = true;
-  programmeView.hidden = true;
   profilsListView.hidden = true;
   patientView.hidden = true;
   document.getElementById("todayView").hidden = true;
+  document.getElementById("agendaView").hidden = true;
 
   if(appMode === 'today'){
     document.getElementById("todayView").hidden = false;
@@ -1966,10 +2108,15 @@ function renderAll(){
     return;
   }
 
-  if(appMode === 'programme'){
-    programmeView.hidden = false;
-    renderProgrammeView();
+  if(appMode === 'agenda'){
+    document.getElementById("agendaView").hidden = false;
+    renderAgenda();
     return;
+  }
+  if(appMode === 'programme'){
+    appMode = 'profils'; activeTab = 'programme';
+    var spp = getSelectedPatient() || state.patients[0] || null;
+    if(spp){ state.selectedPatientId = spp.id; profilsSubview = 'detail'; } else profilsSubview = 'list';
   }
 
   if(appMode === 'periodisation'){ appMode = 'profils'; activeTab = 'periodisation'; if(getSelectedPatient()) profilsSubview = 'detail'; }
@@ -1987,10 +2134,11 @@ function renderAll(){
 
   document.getElementById("patientAvatar").textContent = initials(patient.name);
   document.getElementById("patientName").textContent = patient.name;
-  var age = computeAge(patient.dob);
+  var age = patientAge(patient);
   var lastDate = lastTestDate(patient);
   document.getElementById("patientSub").textContent =
-    (age !== null ? "Âge " + age + " (" + fmtDate(patient.dob) + ")" : "Date de naissance non renseignée") +
+    (age !== null ? "Âge " + age + (patient.dob ? " (" + fmtDate(patient.dob) + ")" : "") : "Âge non renseigné") +
+    (patient.heightCm ? " · " + patient.heightCm + " cm" : "") + (patient.weightKg ? " · " + patient.weightKg + " kg" : "") +
     " · " + patient.tests.length + " test(s) suivis" +
     " · Dernier test : " + (lastDate ? fmtDate(lastDate) : "aucun");
 
@@ -1999,6 +2147,11 @@ function renderAll(){
     btn.classList.toggle("active", btn.dataset.sex === patient.sex);
   });
   document.getElementById("weightInput").value = patient.weightKg || "";
+  document.getElementById("heightInput").value = patient.heightCm || "";
+  document.getElementById("ageInput").value = patient.dob ? "" : ((patient.ageDeclared && patientAge(patient) !== null) ? patientAge(patient) : "");
+  document.getElementById("ageInput").disabled = !!patient.dob;
+  document.getElementById("ageInput").placeholder = patient.dob ? "Calculé" : "Âge";
+  updateImcLabel(patient);
 
   document.querySelectorAll(".tab-bar button[data-tab]").forEach(function(btn){
     btn.classList.toggle("active", btn.dataset.tab === activeTab);
@@ -2006,6 +2159,10 @@ function renderAll(){
   document.getElementById("tab-overview").hidden = activeTab !== 'overview';
   document.getElementById("tab-fonctionnel").hidden = activeTab !== 'fonctionnel';
   document.getElementById("tab-periodisation").hidden = activeTab !== 'periodisation';
+  document.getElementById("tab-fiche").hidden = activeTab !== 'fiche';
+  document.getElementById("tab-programme").hidden = activeTab !== 'programme';
+  if(activeTab === 'fiche') renderFicheTab(patient);
+  if(activeTab === 'programme') renderProgrammeView();
 
   if(activeTab === 'periodisation') renderPeriodTab(patient);
   if(activeTab === 'overview') renderCardsGrid(patient);
@@ -2060,6 +2217,7 @@ document.getElementById("dobInput").addEventListener("change", function(e){
   var patient = getSelectedPatient();
   if(!patient) return;
   patient.dob = e.target.value || null;
+  if(patient.dob) delete patient.ageDeclared;
   saveData();
   renderAll();
 });
@@ -2078,7 +2236,29 @@ document.getElementById("weightInput").addEventListener("change", function(e){
   var v = parseFloat(e.target.value);
   patient.weightKg = isNaN(v) ? null : v;
   saveData();
+  updateImcLabel(patient);
 });
+document.getElementById("heightInput").addEventListener("change", function(e){
+  var patient = getSelectedPatient();
+  if(!patient) return;
+  var v = parseFloat(e.target.value);
+  patient.heightCm = (isNaN(v) || v <= 0) ? null : v;
+  saveData();
+  updateImcLabel(patient);
+});
+document.getElementById("ageInput").addEventListener("change", function(e){
+  var patient = getSelectedPatient();
+  if(!patient) return;
+  var v = parseInt(e.target.value);
+  if(isNaN(v) || v < 0) delete patient.ageDeclared;
+  else { patient.ageDeclared = { age: v, on: todayISO() }; patient.dob = null; document.getElementById("dobInput").value = ""; }
+  saveData();
+  renderAll();
+});
+function updateImcLabel(patient){
+  var b = bmiOf(patient);
+  document.getElementById("imcLabel").textContent = b !== null ? "IMC : " + frDec(b) + " (calculé à partir du poids et de la taille)" : "";
+}
 
 /* ============================================================
    SPARKLINE
@@ -2156,7 +2336,7 @@ function renderCardsGrid(patient){
   grid.innerHTML = "";
 
   ensurePeriodization(patient);
-  var cClin = renderClinicalCard(patient); cClin.classList.add("ov-clin"); grid.appendChild(cClin);
+  var cClin = renderClinicalStrip(patient); cClin.classList.add("ov-clin"); grid.appendChild(cClin);
   grid.appendChild(renderAnamCard(patient));
   var cRts = renderRtsCard(patient); if(cRts) grid.appendChild(cRts);
   var periodCard = renderPeriodOverviewCard(patient);
@@ -2590,7 +2770,43 @@ function renderMethodesTab(){
 /* ============================================================
    LEADERBOARD (iso only, fun ranking)
    ============================================================ */
+var lbMode = "iso";
+function renderLeaderboardJumps(){
+  var el = document.getElementById("leaderboardContent"), sel = document.getElementById("leaderboardJumpFilter"), groups = {};
+  state.patients.forEach(function(patient){
+    patient.tests.filter(function(t){ return t.type === "jump"; }).forEach(function(test){
+      var key = test.name + "||" + (test.unit || "");
+      var g = groups[key] = groups[key] || { name: test.name, unit: test.unit || "", rows: [] };
+      var es = test.entries.slice().sort(function(a, b){ return a.date.localeCompare(b.date); });
+      if(test.tracksSides){
+        ["D", "G"].forEach(function(side){
+          var vals = es.filter(function(e){ var v = side === "D" ? e.valueD : e.valueG; return v !== null && v !== undefined; });
+          if(vals.length){ var l = vals[vals.length - 1]; g.rows.push({ patient: patient.name, side: side, value: side === "D" ? l.valueD : l.valueG, date: l.date }); }
+        });
+      } else {
+        var vals2 = es.filter(function(e){ return e.value !== null && e.value !== undefined; });
+        if(vals2.length){ var l2 = vals2[vals2.length - 1]; g.rows.push({ patient: patient.name, side: "", value: l2.value, date: l2.date }); }
+      }
+    });
+  });
+  var keys = Object.keys(groups).filter(function(k){ return groups[k].rows.length; }).sort();
+  var prev = sel.value;
+  sel.innerHTML = keys.map(function(k){ return '<option value="' + escHtml(k) + '">' + escHtml(groups[k].name) + (groups[k].unit ? ' (' + escHtml(groups[k].unit) + ')' : '') + '</option>'; }).join("");
+  if(!keys.length){ el.innerHTML = '<div class="w-callout">Aucun test de saut enregistré.</div>'; return; }
+  sel.value = keys.indexOf(prev) !== -1 ? prev : keys[0];
+  var g = groups[sel.value];
+  g.rows.sort(function(a, b){ return b.value - a.value; });
+  var medals = ["🥇", "🥈", "🥉"];
+  el.innerHTML = '<div class="tc-sub" style="margin-bottom:8px;">Classement par valeur la plus élevée de la dernière mesure. Seules les mesures de même test et de même unité sont comparées.</div><table class="norm-table"><thead><tr><th>#</th><th>Patient</th><th>Côté</th><th>Valeur</th><th>Date</th></tr></thead><tbody>' +
+    g.rows.map(function(r, i){ return '<tr><td>' + (medals[i] || (i + 1)) + '</td><td>' + escHtml(r.patient) + '</td><td>' + (r.side === "D" ? "Droite" : (r.side === "G" ? "Gauche" : "—")) + '</td><td class="val">' + r.value + ' ' + escHtml(g.unit) + '</td><td>' + fmtDate(r.date) + '</td></tr>'; }).join("") + '</tbody></table>';
+}
 function renderLeaderboard(){
+  document.querySelectorAll("#lbModeRow .chip-btn").forEach(function(b){ b.classList.toggle("on", b.dataset.lbmode === lbMode); });
+  document.getElementById("lbJumpWrap").hidden = lbMode !== "jump";
+  document.getElementById("leaderboardMuscleFilter").hidden = lbMode === "jump";
+  document.getElementById("lbMuscleLabel").hidden = lbMode === "jump";
+  document.getElementById("lbSub").textContent = lbMode === "jump" ? "Classement des tests de saut — dernière mesure de chaque patient." : "Classement des tests isométriques (force uniquement, pas d'EMG) — dernière mesure de chaque patient par mouvement.";
+  if(lbMode === "jump"){ renderLeaderboardJumps(); return; }
   var el = document.getElementById("leaderboardContent");
   var filterSelect = document.getElementById("leaderboardMuscleFilter");
   var rows = [];
@@ -2638,12 +2854,19 @@ function renderLeaderboard(){
   var medals = ['🥇','🥈','🥉'];
   var html = '<table class="norm-table"><thead><tr><th>#</th><th>Patient</th><th>Test</th><th>Côté</th><th>Valeur</th><th>% BW</th><th>Date</th></tr></thead><tbody>';
   filteredRows.forEach(function(r, i){
-    html += '<tr><td>' + (medals[i] || (i+1)) + '</td><td>' + r.patientName + '</td><td>' + r.testName + '</td><td>' + (r.side==='D'?'Droite':'Gauche') + '</td><td class="val">' + r.value + ' ' + r.unit + '</td><td class="val">' + (r.pct !== null ? r.pct + '%' : '—') + '</td><td class="src">' + fmtDate(r.date) + '</td></tr>';
+    html += '<tr><td>' + (medals[i] || (i+1)) + '</td><td>' + escHtml(r.patientName) + '</td><td>' + escHtml(r.testName) + '</td><td>' + (r.side==='D'?'Droite':'Gauche') + '</td><td class="val">' + r.value + ' ' + r.unit + '</td><td class="val">' + (r.pct !== null ? r.pct + '%' : '—') + '</td><td class="src">' + fmtDate(r.date) + '</td></tr>';
   });
   html += '</tbody></table>';
   el.innerHTML = html;
 }
 document.getElementById("leaderboardMuscleFilter").addEventListener("change", renderLeaderboard);
+document.getElementById("leaderboardJumpFilter").addEventListener("change", renderLeaderboard);
+document.getElementById("lbModeRow").addEventListener("click", function(e){
+  var b = e.target.closest("[data-lbmode]");
+  if(!b) return;
+  lbMode = b.dataset.lbmode;
+  renderLeaderboard();
+});
 
 /* ============================================================
    PÉRIODISATION (Phase 1 : macrocycle, mésocycle, assistant, presets)
@@ -4385,36 +4608,12 @@ function renderWeekStrip(patient, targetId){
 }
 
 function renderProgrammeView(){
-  var select = document.getElementById("programmePatientSelect");
-  var prevVal = select.value;
-  select.innerHTML = "";
-  state.patients.forEach(function(p){
-    var opt = document.createElement("option");
-    opt.value = p.id; opt.textContent = p.name;
-    select.appendChild(opt);
-  });
-  if(state.patients.length === 0){
-    document.getElementById("programmeEmptyNote").hidden = false;
-    document.getElementById("programmeEmptyNote").textContent = "Crée d'abord un patient dans l'onglet Profils.";
-    document.getElementById("programmeCalendarWrap").hidden = true;
-    return;
-  }
-  // pick current selectedPatientId if valid, else previous select, else first patient
-  var pid = (getSelectedPatient() && select.querySelector('option[value="'+state.selectedPatientId+'"]')) ? state.selectedPatientId : (prevVal || state.patients[0].id);
-  select.value = pid;
-  state.selectedPatientId = pid;
   var patient = getSelectedPatient();
+  if(!patient) return;
   if(!patient.program) patient.program = { entries: {} };
-
-  document.getElementById("programmeEmptyNote").hidden = true;
   document.getElementById("programmeCalendarWrap").hidden = false;
   renderCalendarGrid(patient);
 }
-document.getElementById("programmePatientSelect").addEventListener("change", function(e){
-  state.selectedPatientId = e.target.value;
-  saveData();
-  renderProgrammeView();
-});
 
 function renderCalendarGrid(patient){
   document.getElementById("calMonthLabel").textContent =
@@ -5084,7 +5283,9 @@ document.getElementById("addNextEntryBtn").addEventListener("click", function(){
 document.getElementById("closeDayBtn").addEventListener("click", function(){
   ["exSheet","feelSheet","closeSheet","rpeSheet"].forEach(function(id){ document.getElementById(id).hidden = true; });
   document.getElementById("dayOverlay").hidden = true;
-  if(appMode === 'today') renderToday(); else renderCalendarGrid(getSelectedPatient());
+  if(appMode === 'today') renderToday();
+  else if(appMode === 'agenda') renderAgenda();
+  else if(getSelectedPatient()) renderCalendarGrid(getSelectedPatient());
 });
 
 /* ============================================================
@@ -5920,7 +6121,12 @@ document.addEventListener("click", function(e){
   reg.setAttribute("data-appmode", "reglages"); reg.className = "auto-only";
   reg.innerHTML = ic('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>') + '<span>Réglages</span>';
   nav.appendChild(reg);
-  ["leaderboard","periodisation"].forEach(function(m){ var b = nav.querySelector('[data-appmode="' + m + '"]'); if(b) b.classList.add("adv-nav"); });
+  var prog = document.createElement("button");
+  prog.setAttribute("data-appmode", "programme"); prog.className = "auto-only";
+  prog.innerHTML = ic('<rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M9 3.5v4M15 3.5v4"/>') + '<span>Programme</span>';
+  var profBtn = nav.querySelector('[data-appmode="profils"]');
+  nav.insertBefore(prog, profBtn ? profBtn.nextSibling : null);
+  ["leaderboard","periodisation","agenda"].forEach(function(m){ var b = nav.querySelector('[data-appmode="' + m + '"]'); if(b) b.classList.add("adv-nav"); });
 })();
 
 /* ----- réglages de l'application / mode ----- */
@@ -5934,6 +6140,9 @@ function setMode(mode){
 }
 function renderModeModal(){
   document.getElementById("setFirstName").value = (state.settings && state.settings.firstName) || "";
+  var ac = agCfg();
+  document.getElementById("agStart").value = ac.start; document.getElementById("agEnd").value = ac.end;
+  document.getElementById("agStep").value = String(ac.step); document.getElementById("agDur").value = ac.dur;
   var cur = isAutonomous() ? 'autonome' : 'accompagne';
   document.getElementById("modeCards").innerHTML = [
     ['accompagne', "Accompagné", "Pour un kiné ou un préparateur physique : plusieurs patients, tests, périodisation complète, journal des décisions."],
@@ -5953,6 +6162,14 @@ function renderModeModal(){
 }
 function openModeModal(){ renderModeModal(); document.getElementById("modeOverlay").hidden = false; }
 document.getElementById("openModeBtn").addEventListener("click", openModeModal);
+["agStart", "agEnd", "agStep", "agDur"].forEach(function(id){
+  document.getElementById(id).addEventListener("change", function(){
+    if(!state.settings.agenda) state.settings.agenda = {};
+    var k = id.replace("ag", "").toLowerCase();
+    state.settings.agenda[k] = parseInt(this.value);
+    saveData();
+  });
+});
 document.getElementById("setFirstName").addEventListener("input", function(){
   state.settings.firstName = this.value.trim().slice(0, 40);
   saveData();
@@ -6495,7 +6712,7 @@ document.getElementById("toggleTargetBtn").addEventListener("click", function(){
    IMPORT SÉCURISÉ : nettoyage des fichiers reçus
    ============================================================ */
 var DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
-var ID_KEYS = { id:1, mesoId:1, macrocycleId:1 };
+var ID_KEYS = { id:1, mesoId:1, macrocycleId:1, patientId:1, seriesId:1 };
 function cleanImported(v, key, parentKey, depth){
   if(depth > 14) return undefined;
   if(typeof v === "string"){
@@ -6550,6 +6767,12 @@ function normalizeState(o){
   if(!Array.isArray(o.functionalMovements)) o.functionalMovements = [];
   if(!Array.isArray(o.presetsPerso)) o.presetsPerso = [];
   if(!Array.isArray(o.anamTemplates)) o.anamTemplates = [];
+  if(!Array.isArray(o.agenda)) o.agenda = [];
+  var okSt = { prevu:1, present:1, absent:1, annule:1 };
+  o.agenda = o.agenda.filter(function(a){ return a && typeof a === "object" && typeof a.patientId === "string" && DATE_RE.test(a.date || "") && /^\d\d:\d\d$/.test(a.start || ""); }).map(function(a){
+    return { id: (typeof a.id === "string" && a.id) ? a.id : uid(), patientId: a.patientId, date: a.date, start: a.start, dur: Math.max(5, Math.min(480, parseInt(a.dur) || 30)),
+      type: String(a.type || "Séance").slice(0, 60), status: okSt[a.status] ? a.status : "prevu", note: String(a.note || "").slice(0, 500), seriesId: a.seriesId ? String(a.seriesId) : undefined, checkedAt: a.checkedAt || undefined };
+  });
   if(!o.settings || typeof o.settings !== "object") o.settings = {};
   if(o.settings.hardRpe === undefined) o.settings.hardRpe = 7;
   if(o.settings.hardRir === undefined) o.settings.hardRir = 2;
@@ -6599,6 +6822,28 @@ function sinceText(c){
 }
 function affectedSide(patient){ var c = patient.clinical; return (c && (c.cote === "D" || c.cote === "G")) ? c.cote : null; }
 var showAllNotes = false;
+function refreshClinical(patient){
+  renderCardsGrid(patient);
+  if(activeTab === 'fiche') renderFicheTab(patient);
+}
+function renderFicheTab(patient){
+  var host = document.getElementById("ficheClinical");
+  host.innerHTML = "";
+  var card = renderClinicalCard(patient);
+  card.style.gridColumn = "";
+  host.appendChild(card);
+}
+function renderClinicalStrip(patient){
+  var c = clin(patient), el = document.createElement("div");
+  el.className = "clin-strip";
+  var empty = !(c.patho || c.cote || c.date || c.phase || c.sport || c.objectif || c.prec || c.ant);
+  var main = empty ? "Fiche clinique non renseignée" : [c.patho, c.cote ? COTE_LABELS[c.cote] : "", c.phase].filter(Boolean).join(" · ");
+  var sub = (!empty && c.date) ? sinceText(c) : "";
+  el.innerHTML = '<div class="cs-main">🩺 ' + escHtml(main) + (sub ? ' <span class="cs-sub">' + escHtml(sub) + '</span>' : '') + '</div><span class="cs-sub">Fiche clinique ›</span>' +
+    (c.prec ? '<div class="cs-prec"><b>Précautions :</b> ' + escHtml(c.prec) + '</div>' : '');
+  el.addEventListener("click", function(){ activeTab = 'fiche'; renderAll(); });
+  return el;
+}
 
 function renderClinicalCard(patient){
   var c = clin(patient);
@@ -6632,17 +6877,17 @@ function renderClinicalCard(patient){
     if(!tx) return;
     c.notes.unshift({ id: uid(), date: todayISO(), text: tx.slice(0, 1000) });
     if(c.notes.length > 300) c.notes.length = 300;
-    saveData(); renderCardsGrid(patient);
+    saveData(); refreshClinical(patient);
   });
   card.querySelectorAll("[data-delnote]").forEach(function(b){
     b.addEventListener("click", function(){
       if(!confirm("Supprimer cette note ?")) return;
       c.notes = c.notes.filter(function(n){ return n.id !== b.dataset.delnote; });
-      saveData(); renderCardsGrid(patient);
+      saveData(); refreshClinical(patient);
     });
   });
   var allBtn = card.querySelector("[data-allnotes]");
-  if(allBtn) allBtn.addEventListener("click", function(){ showAllNotes = !showAllNotes; renderCardsGrid(patient); });
+  if(allBtn) allBtn.addEventListener("click", function(){ showAllNotes = !showAllNotes; refreshClinical(patient); });
   return card;
 }
 
@@ -6680,7 +6925,7 @@ document.getElementById("saveClinicalBtn").addEventListener("click", function(){
   c.objectif = v("cliObjectif").slice(0, 600); c.prec = v("cliPrec").slice(0, 600); c.ant = v("cliAnt").slice(0, 600);
   saveData();
   document.getElementById("clinicalOverlay").hidden = true;
-  renderCardsGrid(patient);
+  refreshClinical(patient);
 });
 
 /* ----- critères de retour au sport ----- */
@@ -6762,7 +7007,7 @@ function rtsStatus(sm){
   if(sm.nodata) return { tone:"na", title:"À compléter", sub: sm.nodata + " critère(s) sans donnée : aucun n'est encore échoué.", unmet:[] };
   return { tone:"ok", title:"Critères atteints", sub:"Tous les critères sont validés.", unmet:[] };
 }
-function rtsRowsHtml(sm){
+function rtsRowsHtml(sm, withDel){
   return sm.items.map(function(x){
     var r = x.r, c = x.c;
     var left = c.type === "manual"
@@ -6770,7 +7015,8 @@ function rtsRowsHtml(sm){
       : '<div class="rts-dot ' + (r.status === "ok" ? "ok" : (r.status === "ko" ? "ko" : "")) + '">' + (r.status === "ok" ? "✓" : (r.status === "ko" ? "✕" : "–")) + '</div>';
     var spark = (r.series && r.series.length >= 2) ? '<div class="rts-spark">' + sparklineSvg([{ values: r.series, color: "#007BFF" }]) + '</div>' : '';
     return '<div class="rts-row">' + left + '<div class="rts-main"><div class="l">' + escHtml(c.label) + '</div><div class="s">' + escHtml(r.detail || "") + '</div></div>' + spark +
-      '<div class="rts-val">' + escHtml(r.valueText) + (r.target ? '<span class="t">' + escHtml(r.target) + '</span>' : '') + '</div></div>';
+      '<div class="rts-val">' + escHtml(r.valueText) + (r.target ? '<span class="t">' + escHtml(r.target) + '</span>' : '') + '</div>' +
+      (withDel ? '<button type="button" class="del-x" data-rtsrowdel="' + escHtml(c.id) + '" aria-label="Supprimer ce critère">✕</button>' : '') + '</div>';
   }).join("");
 }
 function renderRtsCard(patient){
@@ -6791,7 +7037,7 @@ var rtsFromDetail = false;
 function renderRtsDetail(patient){
   var sm = rtsSummary(patient), st = rtsStatus(sm);
   document.getElementById("rtsDetailBanner").innerHTML = '<div class="rts-banner ' + st.tone + '"><b>' + st.title + '</b>' + escHtml(st.sub) + '</div>';
-  document.getElementById("rtsDetailRows").innerHTML = sm.total ? rtsRowsHtml(sm) : '<div class="tc-sub">Aucun critère pour l\'instant.</div>';
+  document.getElementById("rtsDetailRows").innerHTML = sm.total ? rtsRowsHtml(sm, true) : '<div class="tc-sub">Aucun critère pour l\'instant.</div>';
 }
 function openRtsDetail(patient){ renderRtsDetail(patient); document.getElementById("rtsDetailOverlay").hidden = false; }
 function activateRts(patient){
@@ -6808,6 +7054,22 @@ document.getElementById("rtsDetailHideBtn").addEventListener("click", function()
   if(!confirm("Masquer la carte « Retour au sport » ? Les critères sont conservés : tu pourras la réafficher avec le + de l'overview.")) return;
   var p = getSelectedPatient(); p.rtsActive = false; saveData();
   document.getElementById("rtsDetailOverlay").hidden = true; renderCardsGrid(p);
+});
+document.getElementById("rtsDetailRows").addEventListener("click", function(e){
+  var d = e.target.closest("[data-rtsrowdel]");
+  if(!d) return;
+  var patient = getSelectedPatient();
+  if(!confirm("Supprimer ce critère ?")) return;
+  patient.rts.criteria = rtsList(patient).filter(function(c){ return c.id !== d.dataset.rtsrowdel; });
+  saveData(); renderRtsDetail(patient); renderCardsGrid(patient);
+});
+document.getElementById("rtsDetailDeleteBtn").addEventListener("click", function(){
+  var patient = getSelectedPatient();
+  if(!confirm("Supprimer la carte « Retour au sport » ET tous ses critères ? Cette action est définitive.")) return;
+  patient.rts = { criteria: [] }; patient.rtsActive = false;
+  saveData();
+  document.getElementById("rtsDetailOverlay").hidden = true;
+  renderCardsGrid(patient);
 });
 document.getElementById("rtsDetailRows").addEventListener("change", function(e){
   var cb = e.target.closest("[data-rtsdone]"), patient = getSelectedPatient();
@@ -6970,8 +7232,8 @@ function buildReportPdf(patient, o){
   txt("L'œil du kiné", W - M - 18, M + 6.5, 7.5, "normal", GREY, { align: "right" });
   txt("Bilan de suivi", M, y, 21, "bold"); y += 9;
   txt(patient.name, M, y, 14, "bold", BLUE); y += 6;
-  var age = patient.dob ? computeAge(patient.dob) : null;
-  txt([age !== null ? age + " ans" : "", patient.sex === "F" ? "Femme" : (patient.sex === "H" ? "Homme" : ""), patient.weightKg ? patient.weightKg + " kg" : ""].filter(Boolean).join(" - ") + (o.practitioner ? "   |   " + o.practitioner : ""), M, y, 9.5, "normal", GREY); y += 5;
+  var age = patientAge(patient);
+  txt([age !== null ? age + " ans" : "", patient.sex === "F" ? "Femme" : (patient.sex === "H" ? "Homme" : ""), patient.heightCm ? patient.heightCm + " cm" : "", patient.weightKg ? patient.weightKg + " kg" : ""].filter(Boolean).join(" - ") + (o.practitioner ? "   |   " + o.practitioner : ""), M, y, 9.5, "normal", GREY); y += 5;
   txt("Établi le " + fmtDate(today), M, y, 9.5, "normal", GREY); y += 4;
   if(o.summary){
     y += 3; font(10, "normal");
@@ -7308,7 +7570,7 @@ function flagsOfAnam(anam){
 }
 function buildAnamSummary(patient, anam){
   var who = patient.sex === "F" ? "Patiente" : (patient.sex === "H" ? "Patient" : "Patient(e)");
-  var age = patient.dob ? computeAge(patient.dob) : null, parts = [];
+  var age = patientAge(patient), parts = [];
   var motif = roleText(anam, "motif", true), cote = roleItems(anam, "cote")[0], debut = roleItems(anam, "debut")[0];
   var coteTxt = cote ? ({ D: "côté droit", G: "côté gauche", B: "des deux côtés" }[cote.v] || "") : "", since = "";
   if(debut && DATE_RE.test(debut.v)){
@@ -7372,6 +7634,7 @@ function renderAnamCard(patient){
   if(last){
     var sm = buildAnamSummary(patient, last), eva = roleItems(last, "eva")[0], motif = roleText(last, "motif");
     if(eva) chips += '<span class="am-chip">EVA ' + eva.v + '/10</span>';
+    if(last.validated) chips += '<span class="am-chip" style="background:#e6f6ee; color:#157a4f;">✓ Validée</span>';
     if(sm.flags.length) chips += '<span class="am-chip flag">⚑ ' + sm.flags.length + ' drapeau' + (sm.flags.length > 1 ? 'x' : '') + ' rouge' + (sm.flags.length > 1 ? 's' : '') + '</span>';
     chips += '<span class="am-chip mute">' + escHtml(last.templateName) + '</span>';
     if(motif) chips += '<span class="am-chip mute" title="' + escHtml(motif) + '">' + escHtml(motif.length > 34 ? motif.slice(0, 34) + "…" : motif) + '</span>';
@@ -7489,7 +7752,7 @@ function renderAnam(){
   if(!a){ document.getElementById("anamOverlay").hidden = true; return; }
   var body = document.getElementById("anamBody"), top = body.scrollTop, c = anamFilledCount(a);
   document.getElementById("anamTitle").textContent = a.templateName;
-  document.getElementById("anamSub").textContent = patient.name + " · " + c.n + " / " + c.t + " champs renseignés";
+  document.getElementById("anamSub").textContent = patient.name + " · " + c.n + " / " + c.t + " champs renseignés" + (a.validated ? " · validée" : "");
   if(anamTab === "synth"){ renderAnamSynth(patient, a); body.scrollTop = 0; return; }
   var idx = 0;
   body.innerHTML =
@@ -7556,7 +7819,7 @@ function renderAnamSynth(patient, a){
     (sm.yellow ? '<div class="yel-box"><b>Drapeaux jaunes :</b> ' + escHtml(sm.yellow) + '</div>' : '') +
     '<div class="as"><div class="as-h"><b>Synthèse</b><span class="tc-sub">' + (edited ? 'modifiée à la main' : 'générée automatiquement') + '</span></div>' +
       '<textarea class="synth-narr" id="synthText">' + escHtml(txtv) + '</textarea>' +
-      '<div class="tpl-acts" style="margin-top:8px;"><button type="button" class="btn-ghost" data-synth="regen">Régénérer</button><button type="button" class="btn-ghost" data-synth="copy">Copier</button><button type="button" class="btn-primary" data-synth="push" style="min-height:40px;">Reporter dans la fiche clinique</button></div>' +
+      '<div class="tpl-acts" style="margin-top:8px;"><button type="button" class="btn-ghost" data-synth="regen">Régénérer</button><button type="button" class="btn-ghost" data-synth="copy">Copier</button><button type="button" class="btn-primary" data-synth="push" style="min-height:40px;">Valider l\'anamnèse</button></div>' +
       '<div class="tc-sub" style="margin-top:8px;">Synthèse rédigée par des règles à partir de tes réponses, sans intelligence artificielle : relis-la, elle ne remplace pas ton jugement.</div></div>' +
     (sm.keyPoints.length ? '<div class="as"><div class="as-h"><b>Points clés</b></div><ul class="kp-list">' + sm.keyPoints.map(function(k){ return '<li>' + escHtml(k) + '</li>'; }).join("") + '</ul></div>' : '') +
     (sm.missing.length ? '<div class="yel-box"><b>À compléter :</b> ' + escHtml(sm.missing.join(", ")) + '</div>' : '') +
@@ -7580,8 +7843,41 @@ document.getElementById("anamBody").addEventListener("click", function(e){
   } else if(b.dataset.synth === "push") openAnamPush(patient, a);
 });
 
-/* ----- report dans la fiche clinique ----- */
-var pushRows = [];
+/* ----- validation : profil du patient + report dans la fiche clinique ----- */
+var pushRows = [], vpSex = "";
+function renderVpProfile(patient){
+  vpSex = patient.sex || "";
+  var age = patientAge(patient);
+  document.getElementById("anamPushProfile").innerHTML =
+    '<div class="vp-grid"><div><label for="vpDob">Date de naissance</label><input type="date" id="vpDob" value="' + escHtml(patient.dob || "") + '"></div>' +
+    '<div><label for="vpAge">Âge</label><input type="number" id="vpAge" min="0" max="120" step="1" value="' + (patient.dob ? "" : (age !== null ? age : "")) + '" placeholder="' + (patient.dob ? "Calculé" : "Âge") + '"' + (patient.dob ? " disabled" : "") + '></div></div>' +
+    '<label>Sexe</label><div class="chip-row" id="vpSexRow">' + [["H", "Homme"], ["F", "Femme"]].map(function(o){ return '<button type="button" class="chip-btn' + (vpSex === o[0] ? " on" : "") + '" data-vpsex="' + o[0] + '">' + o[1] + '</button>'; }).join("") + '</div>' +
+    '<div class="vp-grid" style="margin-top:10px;"><div><label for="vpWeight">Poids (kg)</label><input type="number" id="vpWeight" step="0.1" value="' + (patient.weightKg || "") + '"></div>' +
+    '<div><label for="vpHeight">Taille (cm)</label><input type="number" id="vpHeight" step="1" value="' + (patient.heightCm || "") + '"></div></div>' +
+    '<div class="tc-sub" id="vpImc" style="margin-top:6px;"></div><div class="tc-sub" id="vpMissing" style="color:#8a5200; font-weight:600;"></div>';
+  updateVpInfo();
+}
+function updateVpInfo(){
+  var w = parseFloat(document.getElementById("vpWeight").value), h = parseFloat(document.getElementById("vpHeight").value);
+  document.getElementById("vpImc").textContent = (w > 0 && h > 0) ? "IMC : " + frDec(round1(w / Math.pow(h / 100, 2))) : "";
+  var dobV = document.getElementById("vpDob").value, ageV = document.getElementById("vpAge").value, miss = [];
+  if(!dobV && !ageV) miss.push("âge");
+  if(!(w > 0)) miss.push("poids");
+  if(!(h > 0)) miss.push("taille");
+  if(!vpSex) miss.push("sexe");
+  document.getElementById("vpMissing").textContent = miss.length ? "À renseigner : " + miss.join(", ") + (miss.indexOf("poids") !== -1 || miss.indexOf("sexe") !== -1 ? " (nécessaires aux normes de force en % du poids du corps)." : ".") : "";
+}
+document.getElementById("anamPushOverlay").addEventListener("input", function(e){
+  if(e.target.id === "vpDob"){ document.getElementById("vpAge").disabled = !!e.target.value; }
+  updateVpInfo();
+});
+document.getElementById("anamPushOverlay").addEventListener("click", function(e){
+  var b = e.target.closest("[data-vpsex]");
+  if(!b) return;
+  vpSex = (vpSex === b.dataset.vpsex) ? "" : b.dataset.vpsex;
+  document.querySelectorAll("#vpSexRow .chip-btn").forEach(function(x){ x.classList.toggle("on", x.dataset.vpsex === vpSex); });
+  updateVpInfo();
+});
 function openAnamPush(patient, a){
   var c = clin(patient), rows = [];
   var cote = roleItems(a, "cote")[0], debut = roleItems(a, "debut")[0];
@@ -7596,15 +7892,27 @@ function openAnamPush(patient, a){
   var precNew = [pr, fl.length ? "Drapeaux rouges : " + fl.join(", ") : ""].filter(Boolean).join(" — ");
   add("prec", "Précautions", precNew, c.prec);
   pushRows = rows;
+  renderVpProfile(patient);
   document.getElementById("anamPushList").innerHTML = rows.length ? rows.map(function(r, i){
     var same = (r.cur === r.val);
-    return '<label class="rts-row" style="cursor:pointer;"><input type="checkbox" class="rts-check" data-pushrow="' + i + '"' + (same ? '' : ' checked') + '><div class="rts-main"><div class="l">' + escHtml(r.label) + '</div><div class="s">Nouveau : ' + escHtml(String(r.show).slice(0, 160)) + '</div>' + (r.cur && !same ? '<div class="s">Actuel : ' + escHtml(r.cur === r.val ? "" : (r.key === "cote" ? (COTE_LABELS[r.cur] || r.cur) : (r.key === "date" ? fmtDate(r.cur) : String(r.cur))).slice(0, 160)) + '</div>' : '') + (same ? '<div class="s">Déjà identique</div>' : '') + '</div></label>';
+    return '<label class="rts-row" style="cursor:pointer;"><input type="checkbox" class="rts-check" data-pushrow="' + i + '"' + (same ? '' : ' checked') + '><div class="rts-main"><div class="l">' + escHtml(r.label) + '</div><div class="s">Nouveau : ' + escHtml(String(r.show).slice(0, 160)) + '</div>' + (r.cur && !same ? '<div class="s">Actuel : ' + escHtml((r.key === "cote" ? (COTE_LABELS[r.cur] || r.cur) : (r.key === "date" ? fmtDate(r.cur) : String(r.cur))).slice(0, 160)) + '</div>' : '') + (same ? '<div class="s">Déjà identique</div>' : '') + '</div></label>';
   }).join("") : '<div class="tc-sub">Aucune rubrique de l\'anamnèse n\'est reliée à la fiche clinique (rôles à définir dans le modèle).</div>';
   document.getElementById("anamPushOverlay").hidden = false;
 }
+document.getElementById("anamValidateBtn").addEventListener("click", function(){
+  var a = curAnam();
+  if(a) openAnamPush(getSelectedPatient(), a);
+});
 document.getElementById("closeAnamPushBtn").addEventListener("click", function(){ document.getElementById("anamPushOverlay").hidden = true; });
 document.getElementById("anamPushApplyBtn").addEventListener("click", function(){
-  var patient = getSelectedPatient(), c = clin(patient), n = 0;
+  var patient = getSelectedPatient(), a = curAnam(), c = clin(patient), n = 0;
+  var dobV = document.getElementById("vpDob").value, ageV = parseInt(document.getElementById("vpAge").value);
+  if(dobV && DATE_RE.test(dobV)){ patient.dob = dobV; delete patient.ageDeclared; }
+  else if(!dobV && !isNaN(ageV) && ageV >= 0){ patient.dob = null; patient.ageDeclared = { age: ageV, on: todayISO() }; }
+  var w = parseFloat(document.getElementById("vpWeight").value), h = parseFloat(document.getElementById("vpHeight").value);
+  if(w > 0) patient.weightKg = w;
+  if(h > 0) patient.heightCm = h;
+  if(vpSex) patient.sex = vpSex;
   document.querySelectorAll("#anamPushList [data-pushrow]").forEach(function(cb){
     if(!cb.checked) return;
     var r = pushRows[parseInt(cb.dataset.pushrow)];
@@ -7612,8 +7920,12 @@ document.getElementById("anamPushApplyBtn").addEventListener("click", function()
     c[r.key] = r.val; n++;
     if(r.key === "date" && !c.dateType) c.dateType = "symptomes";
   });
-  if(n){ saveData(); renderCardsGrid(patient); }
+  if(a){ a.validated = true; a.validatedAt = new Date().toISOString(); }
+  saveData();
   document.getElementById("anamPushOverlay").hidden = true;
+  document.getElementById("anamOverlay").hidden = true;
+  anamCurId = null;
+  renderAll();
 });
 
 /* ----- gestion des modèles ----- */
@@ -8038,6 +8350,306 @@ document.getElementById("specDeleteBtn").addEventListener("click", function(){
 });
 
 /* ============================================================
+   AGENDA (type Doctolib) : rendez-vous, pointage, déplacement par appui long
+   ============================================================ */
+var AG_PX = 1.4, AG_TYPES = ["Séance", "Bilan", "Première consultation", "Autre"], AG_DURS = [15, 30, 45, 60, 90];
+var agendaDate = todayISO(), agendaView = (typeof window.innerWidth === "number" && window.innerWidth >= 900) ? "week" : "day";
+function pad2(n){ return String(n).padStart(2, "0"); }
+function minToHhmm(m){ return pad2(Math.floor(m / 60)) + ":" + pad2(m % 60); }
+function hhmmToMin(t){ var m = /^(\d\d):(\d\d)$/.exec(t || ""); return m ? (+m[1]) * 60 + (+m[2]) : null; }
+function clampInt(v, lo, hi, def){ v = parseInt(v); return isNaN(v) ? def : Math.max(lo, Math.min(hi, v)); }
+function agCfg(){
+  var c = (state.settings && state.settings.agenda) || {};
+  var st = clampInt(c.start, 0, 23, 7), en = clampInt(c.end, 1, 24, 20);
+  if(en <= st) en = Math.min(24, st + 1);
+  return { start: st, end: en, step: [5, 10, 15, 30].indexOf(parseInt(c.step)) !== -1 ? parseInt(c.step) : 15, dur: clampInt(c.dur, 5, 240, 30) };
+}
+function agList(){ if(!Array.isArray(state.agenda)) state.agenda = []; return state.agenda; }
+function patientNameById(id){ var p = state.patients.find(function(x){ return x.id === id; }); return p ? p.name : "Patient supprimé"; }
+function agDays(){
+  if(agendaView === "day") return [agendaDate];
+  var mon = weekStartOf(agendaDate), d = [];
+  for(var i = 0; i < 6; i++) d.push(addDaysToDate(mon, i));
+  var sun = addDaysToDate(mon, 6);
+  if(agList().some(function(a){ return a.date === sun; })) d.push(sun);
+  return d;
+}
+function agLanes(aps){
+  var sorted = aps.slice().sort(function(a, b){ return hhmmToMin(a.start) - hhmmToMin(b.start) || a.dur - b.dur; });
+  var out = [], cluster = [], clusterEnd = -1;
+  function flush(){
+    var lanes = [];
+    cluster.forEach(function(it){ var l = 0; while(lanes[l] !== undefined && lanes[l] > it.s) l++; lanes[l] = it.e; it.lane = l; });
+    cluster.forEach(function(it){ it.lanes = lanes.length; out.push(it); });
+    cluster = [];
+  }
+  sorted.forEach(function(ap){
+    var s = hhmmToMin(ap.start), e = s + ap.dur;
+    if(cluster.length && s >= clusterEnd){ flush(); clusterEnd = -1; }
+    cluster.push({ ap: ap, s: s, e: e }); clusterEnd = Math.max(clusterEnd, e);
+  });
+  if(cluster.length) flush();
+  return out;
+}
+function agRange(){
+  var cfg = agCfg(), lo = cfg.start * 60, hi = cfg.end * 60;
+  agDays().forEach(function(d){ agList().forEach(function(a){ if(a.date !== d) return; var s = hhmmToMin(a.start); lo = Math.min(lo, Math.floor(s / 60) * 60); hi = Math.max(hi, Math.ceil((s + a.dur) / 60) * 60); }); });
+  return { lo: lo, hi: Math.min(hi, 24 * 60), step: cfg.step };
+}
+function agTitle(days){
+  if(agendaView === "day") return new Date(days[0] + "T00:00:00").toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  var a = new Date(days[0] + "T00:00:00"), b = new Date(days[days.length - 1] + "T00:00:00");
+  return a.toLocaleDateString("fr-FR", { day: "numeric", month: "short" }) + " – " + b.toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" });
+}
+function renderAgenda(){
+  var days = agDays(), rg = agRange(), H = (rg.hi - rg.lo) * AG_PX, today = todayISO();
+  document.getElementById("agTitle").textContent = agTitle(days);
+  document.querySelectorAll("#agSeg button").forEach(function(b){ b.classList.toggle("on", b.dataset.agview === agendaView); });
+  var n = days.length, grid = document.getElementById("agGrid");
+  grid.style.gridTemplateColumns = "48px repeat(" + n + ", minmax(" + (n > 1 ? 118 : 0) + "px, 1fr))";
+  var h = '<div class="ag-hcell" style="left:0; z-index:7;"></div>';
+  days.forEach(function(d){
+    var dt = new Date(d + "T00:00:00"), cnt = agList().filter(function(a){ return a.date === d && a.status !== "annule"; }).length;
+    h += '<div class="ag-hcell' + (d === today ? ' today' : '') + '">' + dt.toLocaleDateString("fr-FR", { weekday: "short" }) + '<span class="n">' + dt.getDate() + '</span><span class="c">' + (cnt ? cnt + ' rdv' : '—') + '</span></div>';
+  });
+  var times = '<div class="ag-times" style="height:' + H + 'px;">';
+  for(var m = Math.ceil(rg.lo / 60) * 60; m <= rg.hi; m += 60) times += '<span style="top:' + ((m - rg.lo) * AG_PX + (m === rg.lo ? 8 : 0)) + 'px;">' + pad2(m / 60) + ':00</span>';
+  h += times + '</div>';
+  var nowMin = (function(){ var d = new Date(); return d.getHours() * 60 + d.getMinutes(); })();
+  days.forEach(function(d){
+    var aps = agList().filter(function(a){ return a.date === d; });
+    h += '<div class="ag-col' + (d === today ? ' today' : '') + '" data-date="' + d + '" style="height:' + H + 'px; background-size:100% ' + (60 * AG_PX) + 'px, 100% ' + (30 * AG_PX) + 'px;">';
+    agLanes(aps).forEach(function(it){
+      var ap = it.ap, top = (it.s - rg.lo) * AG_PX, ht = Math.max(it.ap.dur * AG_PX - 2, 30), pat = state.patients.find(function(p){ return p.id === ap.patientId; });
+      var hasSession = pat && pat.program && (pat.program.entries[ap.date] || []).length > 0;
+      h += '<div class="ag-ap st-' + ap.status + (it.lanes > 1 ? ' multi' : '') + '" title="' + escHtml(patientNameById(ap.patientId) + ' · ' + ap.start + ' · ' + ap.type + ' · ' + ap.dur + ' min') + '" data-apid="' + escHtml(ap.id) + '" style="top:' + top + 'px; height:' + ht + 'px; left:calc(' + (it.lane / it.lanes * 100) + '% + 2px); width:calc(' + (100 / it.lanes) + '% - 4px);">' +
+        '<button type="button" class="ag-pt" data-appt="' + escHtml(ap.id) + '" aria-label="Pointer ' + escHtml(patientNameById(ap.patientId)) + '">' + (ap.status === "present" ? "✓" : "") + '</button>' +
+        '<button type="button" class="ag-more" data-apmore="' + escHtml(ap.id) + '" aria-label="Autres actions">⋯</button>' +
+        '<div><span class="tm">' + ap.start + '</span> <span class="nm">' + escHtml(patientNameById(ap.patientId)) + '</span></div>' +
+        (ht >= 48 ? '<div class="sb">' + escHtml(ap.type) + ' · ' + ap.dur + ' min' + (hasSession ? ' · séance saisie' : '') + '</div>' : '') + '</div>';
+    });
+    if(d === today && nowMin >= rg.lo && nowMin <= rg.hi) h += '<div class="ag-now" style="top:' + ((nowMin - rg.lo) * AG_PX) + 'px;"></div>';
+    h += '</div>';
+  });
+  grid.innerHTML = h;
+  var sc = document.getElementById("agScroll");
+  if(!renderAgenda.scrolled){ sc.scrollTop = Math.max(0, ((days.indexOf(today) !== -1 ? nowMin : 8 * 60) - rg.lo - 60) * AG_PX); renderAgenda.scrolled = true; }
+}
+function agToast(msg){
+  var t = document.createElement("div");
+  t.className = "ag-toast"; t.textContent = msg; document.body.appendChild(t);
+  setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 2600);
+}
+function agSnap(min, step){ return Math.round(min / step) * step; }
+function agFind(id){ return agList().find(function(a){ return a.id === id; }); }
+function openAgendaSession(ap){
+  if(!state.patients.some(function(p){ return p.id === ap.patientId; })){ alert("Ce patient n'existe plus."); return; }
+  state.selectedPatientId = ap.patientId;
+  saveData();
+  openDayModal(ap.date);
+}
+function agToggleCheck(ap){
+  if(ap.status === "present"){ ap.status = "prevu"; delete ap.checkedAt; }
+  else { ap.status = "present"; ap.checkedAt = new Date().toISOString(); }
+  saveData(); renderAgenda();
+}
+
+/* ----- navigation / clics ----- */
+document.getElementById("agendaView").addEventListener("click", function(e){
+  if(agSuppressClick) return;
+  var t;
+  if((t = e.target.closest("[data-agnav]"))){
+    var d = parseInt(t.dataset.agnav);
+    agendaDate = d === 0 ? todayISO() : addDaysToDate(agendaDate, d * (agendaView === "week" ? 7 : 1));
+    renderAgenda.scrolled = false; renderAgenda(); return;
+  }
+  if((t = e.target.closest("[data-agview]"))){ agendaView = t.dataset.agview; renderAgenda(); return; }
+  if(e.target.closest("#agNewBtn")){ openApptModal({ date: agendaDate, start: minToHhmm(Math.max(agCfg().start * 60, 9 * 60)) }); return; }
+  if((t = e.target.closest("[data-appt]"))){ e.stopPropagation(); var a1 = agFind(t.dataset.appt); if(a1) agToggleCheck(a1); return; }
+  if((t = e.target.closest("[data-apmore]"))){ e.stopPropagation(); openApptSheet(t.dataset.apmore); return; }
+  if((t = e.target.closest(".ag-ap"))){ var a2 = agFind(t.dataset.apid); if(a2) openAgendaSession(a2); return; }
+  if((t = e.target.closest(".ag-col"))){
+    var rg = agRange(), y = e.clientY - t.getBoundingClientRect().top;
+    var min = Math.max(rg.lo, Math.min(rg.hi - agCfg().dur, agSnap(rg.lo + y / AG_PX, rg.step)));
+    openApptModal({ date: t.dataset.date, start: minToHhmm(min) });
+  }
+});
+
+/* ----- déplacement : appui long (tactile / stylet) ou clic-glisser (souris) ----- */
+var agDrag = null, agSuppressClick = false;
+function agStartDrag(){
+  if(!agDrag || agDrag.active) return;
+  agDrag.active = true;
+  agDrag.el.classList.add("dragging");
+  var r = agDrag.el.getBoundingClientRect();
+  agDrag.grabY = agDrag.lastY - r.top;
+  var ghost = document.createElement("div");
+  ghost.className = "ag-ghost"; ghost.style.height = r.height + "px";
+  agDrag.ghost = ghost;
+  agDrag.target = { date: agDrag.ap.date, min: hhmmToMin(agDrag.ap.start) };
+  if(navigator.vibrate) try{ navigator.vibrate(15); }catch(e){}
+  agMoveDrag();
+}
+function agMoveDrag(){
+  var d = agDrag, rg = agRange();
+  var els = document.elementsFromPoint(d.lastX, d.lastY), col = null;
+  for(var i = 0; i < els.length; i++) if(els[i].classList && els[i].classList.contains("ag-col")){ col = els[i]; break; }
+  if(!col) col = document.querySelector('.ag-col[data-date="' + d.target.date + '"]');
+  if(!col) return;
+  var cr = col.getBoundingClientRect();
+  var min = agSnap(rg.lo + (d.lastY - d.grabY - cr.top) / AG_PX, rg.step);
+  min = Math.max(rg.lo, Math.min(rg.hi - d.ap.dur, min));
+  d.target = { date: col.dataset.date, min: min };
+  if(d.ghost.parentNode !== col) col.appendChild(d.ghost);
+  d.ghost.style.top = ((min - rg.lo) * AG_PX) + "px"; d.ghost.style.left = "2px"; d.ghost.style.right = "2px";
+  d.ghost.textContent = minToHhmm(min) + " – " + minToHhmm(min + d.ap.dur) + " · " + patientNameById(d.ap.patientId);
+  var sc = document.getElementById("agScroll"), sr = sc.getBoundingClientRect();
+  if(d.lastY > sr.bottom - 50) sc.scrollTop += 14; else if(d.lastY < sr.top + 60) sc.scrollTop -= 14;
+  if(d.lastX > sr.right - 40) sc.scrollLeft += 14; else if(d.lastX < sr.left + 60) sc.scrollLeft -= 14;
+}
+function agEndDrag(commit){
+  var d = agDrag; agDrag = null;
+  if(!d) return;
+  clearTimeout(d.timer);
+  if(!d.active) return;
+  agSuppressClick = true; setTimeout(function(){ agSuppressClick = false; }, 350);
+  if(d.ghost && d.ghost.parentNode) d.ghost.parentNode.removeChild(d.ghost);
+  d.el.classList.remove("dragging");
+  if(commit && d.target && (d.target.date !== d.ap.date || minToHhmm(d.target.min) !== d.ap.start)){
+    d.ap.date = d.target.date; d.ap.start = minToHhmm(d.target.min);
+    saveData();
+    agToast(patientNameById(d.ap.patientId) + " déplacé : " + new Date(d.ap.date + "T00:00:00").toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" }) + " à " + d.ap.start);
+  }
+  renderAgenda();
+}
+document.getElementById("agendaView").addEventListener("pointerdown", function(e){
+  agSuppressClick = false;
+  var el = e.target.closest(".ag-ap");
+  if(!el || e.target.closest(".ag-pt, .ag-more")) return;
+  if(e.pointerType === "mouse" && e.button !== 0) return;
+  var ap = agFind(el.dataset.apid);
+  if(!ap) return;
+  agDrag = { ap: ap, el: el, startX: e.clientX, startY: e.clientY, lastX: e.clientX, lastY: e.clientY, pointerType: e.pointerType, active: false, timer: null };
+  if(e.pointerType !== "mouse") agDrag.timer = setTimeout(agStartDrag, 380);
+});
+document.addEventListener("pointermove", function(e){
+  if(!agDrag) return;
+  agDrag.lastX = e.clientX; agDrag.lastY = e.clientY;
+  if(!agDrag.active){
+    var moved = Math.hypot(e.clientX - agDrag.startX, e.clientY - agDrag.startY);
+    if(agDrag.pointerType === "mouse"){ if(moved > 6) agStartDrag(); else return; }
+    else { if(moved > 10){ clearTimeout(agDrag.timer); agDrag = null; } return; }
+  }
+  agMoveDrag();
+});
+document.addEventListener("pointerup", function(){ agEndDrag(true); });
+document.addEventListener("pointercancel", function(){ agEndDrag(false); });
+document.addEventListener("touchmove", function(e){ if(agDrag && agDrag.active && e.cancelable) e.preventDefault(); }, { passive: false });
+document.getElementById("agendaView").addEventListener("contextmenu", function(e){ if(e.target.closest(".ag-ap")) e.preventDefault(); });
+
+/* ----- feuille d'actions ----- */
+var apSheetId = null;
+function openApptSheet(id){
+  var ap = agFind(id); if(!ap) return;
+  apSheetId = id;
+  var series = ap.seriesId ? agList().filter(function(a){ return a.seriesId === ap.seriesId && a.date > ap.date; }).length : 0;
+  document.getElementById("asTitle").textContent = patientNameById(ap.patientId);
+  document.getElementById("asBody").innerHTML =
+    '<div class="as-sub">' + new Date(ap.date + "T00:00:00").toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" }) + ' · ' + ap.start + ' – ' + minToHhmm(hhmmToMin(ap.start) + ap.dur) + ' · ' + escHtml(ap.type) + ' · ' + ({ prevu: "Prévu", present: "Présent", absent: "Absent", annule: "Annulé" }[ap.status]) + (ap.note ? '<br>' + escHtml(ap.note) : '') + '</div>' +
+    '<button type="button" class="as-item" data-asact="open">Ouvrir la séance du jour</button>' +
+    '<button type="button" class="as-item" data-asact="check">' + (ap.status === "present" ? "Retirer le pointage" : "Pointer : présent") + '</button>' +
+    '<button type="button" class="as-item" data-asact="absent">' + (ap.status === "absent" ? "Remettre « prévu »" : "Marquer absent") + '</button>' +
+    '<button type="button" class="as-item" data-asact="cancel">' + (ap.status === "annule" ? "Remettre « prévu »" : "Annuler le rendez-vous") + '</button>' +
+    '<button type="button" class="as-item" data-asact="edit">Modifier ou déplacer…</button>' +
+    '<button type="button" class="as-item" data-asact="dup">Dupliquer à une autre date…</button>' +
+    '<button type="button" class="as-item danger" data-asact="del">Supprimer ce rendez-vous</button>' +
+    (series ? '<button type="button" class="as-item danger" data-asact="delseries">Supprimer aussi les ' + series + ' suivants de la série</button>' : '');
+  document.getElementById("apptSheet").hidden = false;
+}
+document.getElementById("asCloseBtn").addEventListener("click", function(){ document.getElementById("apptSheet").hidden = true; });
+document.getElementById("apptSheet").addEventListener("click", function(e){
+  if(e.target === this){ this.hidden = true; return; }
+  var b = e.target.closest("[data-asact]");
+  if(!b) return;
+  var ap = agFind(apSheetId), act = b.dataset.asact;
+  if(!ap) return;
+  document.getElementById("apptSheet").hidden = true;
+  if(act === "open") openAgendaSession(ap);
+  else if(act === "check") agToggleCheck(ap);
+  else if(act === "absent"){ ap.status = ap.status === "absent" ? "prevu" : "absent"; delete ap.checkedAt; saveData(); renderAgenda(); }
+  else if(act === "cancel"){ ap.status = ap.status === "annule" ? "prevu" : "annule"; delete ap.checkedAt; saveData(); renderAgenda(); }
+  else if(act === "edit") openApptModal({ id: ap.id });
+  else if(act === "dup") openApptModal({ patientId: ap.patientId, date: addDaysToDate(ap.date, 7), start: ap.start, dur: ap.dur, type: ap.type, note: ap.note });
+  else if(act === "del"){ if(confirm("Supprimer ce rendez-vous ?")){ state.agenda = agList().filter(function(a){ return a.id !== ap.id; }); saveData(); renderAgenda(); } }
+  else if(act === "delseries"){
+    if(confirm("Supprimer ce rendez-vous et tous les suivants de la série ?")){
+      state.agenda = agList().filter(function(a){ return !(a.seriesId === ap.seriesId && a.date >= ap.date); }); saveData(); renderAgenda();
+    }
+  }
+});
+
+/* ----- création / modification ----- */
+var apEditId = null, apDur = 30, apType = "Séance";
+function openApptModal(o){
+  var cfg = agCfg(), ap = o.id ? agFind(o.id) : null;
+  apEditId = ap ? ap.id : null;
+  document.getElementById("apTitle").textContent = ap ? "Modifier le rendez-vous" : "Nouveau rendez-vous";
+  var sel = document.getElementById("apPatient"), pid = ap ? ap.patientId : (o.patientId || state.selectedPatientId || "");
+  sel.innerHTML = state.patients.slice().sort(function(a, b){ return a.name.localeCompare(b.name); }).map(function(p){ return '<option value="' + escHtml(p.id) + '"' + (p.id === pid ? " selected" : "") + '>' + escHtml(p.name) + '</option>'; }).join("") + '<option value="__new__"' + (!state.patients.length ? " selected" : "") + '>+ Nouveau patient…</option>';
+  document.getElementById("apNewName").hidden = sel.value !== "__new__"; document.getElementById("apNewName").value = "";
+  document.getElementById("apDate").value = ap ? ap.date : (o.date || todayISO());
+  document.getElementById("apTime").value = ap ? ap.start : (o.start || "09:00");
+  apDur = ap ? ap.dur : (o.dur || cfg.dur); apType = ap ? ap.type : (o.type || "Séance");
+  document.getElementById("apNote").value = ap ? (ap.note || "") : (o.note || "");
+  document.getElementById("apRepeatWrap").hidden = !!ap;
+  document.getElementById("apRepeat").value = "none"; document.getElementById("apRepeatN").hidden = true;
+  renderApChips();
+  document.getElementById("apptOverlay").hidden = false;
+}
+function renderApChips(){
+  var durs = AG_DURS.slice(); if(durs.indexOf(apDur) === -1) durs.push(apDur); durs.sort(function(a, b){ return a - b; });
+  document.getElementById("apDur").innerHTML = durs.map(function(d){ return '<button type="button" class="chip-btn' + (d === apDur ? ' on' : '') + '" data-apdur="' + d + '">' + d + ' min</button>'; }).join("");
+  document.getElementById("apType").innerHTML = AG_TYPES.map(function(t){ return '<button type="button" class="chip-btn' + (t === apType ? ' on' : '') + '" data-aptype="' + escHtml(t) + '">' + escHtml(t) + '</button>'; }).join("");
+}
+document.getElementById("apptOverlay").addEventListener("click", function(e){
+  var d = e.target.closest("[data-apdur]"), t = e.target.closest("[data-aptype]");
+  if(d){ apDur = parseInt(d.dataset.apdur); renderApChips(); }
+  if(t){ apType = t.dataset.aptype; renderApChips(); }
+});
+document.getElementById("apPatient").addEventListener("change", function(){ document.getElementById("apNewName").hidden = this.value !== "__new__"; });
+document.getElementById("apRepeat").addEventListener("change", function(){ document.getElementById("apRepeatN").hidden = this.value !== "weekly"; });
+document.getElementById("apCloseBtn").addEventListener("click", function(){ document.getElementById("apptOverlay").hidden = true; });
+document.getElementById("apSaveBtn").addEventListener("click", function(){
+  var date = document.getElementById("apDate").value, time = document.getElementById("apTime").value, pid = document.getElementById("apPatient").value;
+  if(!DATE_RE.test(date) || hhmmToMin(time) === null){ alert("Indique une date et une heure valides."); return; }
+  if(pid === "__new__"){
+    var nm = document.getElementById("apNewName").value.trim();
+    if(!nm){ alert("Indique le nom du nouveau patient."); return; }
+    var np = makePatientObject(nm); state.patients.push(np); pid = np.id; state.selectedPatientId = pid;
+  }
+  if(hhmmToMin(time) + apDur > 24 * 60){ alert("Le rendez-vous dépasse minuit."); return; }
+  var note = document.getElementById("apNote").value.trim().slice(0, 500);
+  if(apEditId){
+    var ap = agFind(apEditId);
+    ap.patientId = pid; ap.date = date; ap.start = time; ap.dur = apDur; ap.type = apType; ap.note = note;
+  } else {
+    var rep = document.getElementById("apRepeat").value === "weekly" ? clampInt(document.getElementById("apRepeatN").value, 2, 52, 8) : 1, sid = rep > 1 ? uid() : undefined;
+    for(var i = 0; i < rep; i++) agList().push({ id: uid(), patientId: pid, date: addDaysToDate(date, 7 * i), start: time, dur: apDur, type: apType, status: "prevu", note: note, seriesId: sid });
+  }
+  saveData();
+  document.getElementById("apptOverlay").hidden = true;
+  agendaDate = date;
+  if(appMode === "agenda") renderAgenda(); else renderAll();
+});
+
+(function moveProgrammeIntoPatient(){
+  var wrap = document.getElementById("programmeCalendarWrap"), panel = document.getElementById("tab-programme"), old = document.getElementById("programmeView");
+  panel.appendChild(wrap);
+  wrap.hidden = false;
+  if(old && old.parentNode) old.parentNode.removeChild(old);
+})();
+
+/* ============================================================
    MUSCLE WIZARD (EMG / ISO)
    ============================================================ */
 var wizard = { stepIndex:0, steps:[], mode:null, limb:null, muscleId:null, side:null, recalMeasure:false, recalLever:false, isoUnit:'kg' };
@@ -8348,7 +8960,13 @@ function handleWizardNext(){
    ============================================================ */
 document.getElementById("newPatientBtn").addEventListener("click", function(){
   var name = prompt("Nom du patient :");
-  if(name && name.trim()) createPatient(name.trim());
+  if(name && name.trim()){
+    createPatient(name.trim());
+    if(!isAutonomous() && confirm("Planifier un rendez-vous pour ce patient maintenant ?")){
+      var d = new Date(), mins = Math.ceil((d.getHours() * 60 + d.getMinutes()) / 15) * 15;
+      openApptModal({ patientId: state.selectedPatientId, date: todayISO(), start: minToHhmm(Math.min(mins, 23 * 60)) });
+    }
+  }
 });
 document.getElementById("deletePatientBtn").addEventListener("click", function(){
   var patient = getSelectedPatient();
