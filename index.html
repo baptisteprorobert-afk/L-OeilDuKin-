@@ -789,6 +789,51 @@
   .pm-row .t{ font-weight:600; font-size:14.5px; flex:1; min-width:0; overflow-wrap:anywhere; }
   .pm-row .s{ font-size:12.5px; color:var(--muted); font-weight:500; }
   .pm-dot{ width:14px; height:14px; border-radius:4px; flex-shrink:0; border:1px solid rgba(11,18,32,0.15); }
+
+  /* ---------- écran fixe (iPad / iPhone) : seule la zone centrale défile, en vertical ---------- */
+  html, body{ height:100%; overflow:hidden; overscroll-behavior:none; }
+  body{ position:fixed; inset:0; width:100%; touch-action:pan-y; }
+  #app{ height:100%; min-height:0; }
+  .sidebar{ height:100%; overflow-y:auto; overscroll-behavior:contain; }
+  main{ height:100%; min-width:0; overflow-y:auto; overflow-x:hidden; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; }
+  .search-bar{ position:relative; display:flex; align-items:center; margin:0 0 14px; }
+  .search-bar svg{ position:absolute; left:14px; color:var(--muted); pointer-events:none; }
+  .search-bar input{ width:100%; min-height:46px; border:1.5px solid var(--border); border-radius:14px; padding:0 40px 0 42px; font-size:16px; background:#fff; color:var(--text); box-sizing:border-box; -webkit-appearance:none; appearance:none; }
+  .search-bar input:focus{ outline:none; border-color:var(--blue); }
+  .search-bar input::-webkit-search-cancel-button{ display:none; }
+  .search-bar button{ position:absolute; right:6px; width:36px; height:36px; border:0; background:transparent; color:var(--muted); font-size:16px; }
+  .ap-slot{ display:grid; grid-template-columns:1fr 1fr 40px; gap:8px; align-items:center; margin-bottom:8px; }
+  .ap-slot input{ min-height:44px; width:100%; box-sizing:border-box; }
+  .ap-preview{ font-size:13px; color:var(--muted); margin:6px 0 4px; line-height:1.45; }
+  .ap-preview b{ color:var(--text); }
+  .ap-preview .warn{ color:#8a5200; font-weight:600; }
+  @media (max-width: 760px){
+    #app{ height:100%; min-height:0; }
+    .sidebar{ height:auto; overflow:visible; }
+    main{ height:auto; flex:1; min-height:0; }
+  }
+
+  /* ---------- rail d'icônes (iPad, ordinateur) ; barre du bas conservée sur iPhone ---------- */
+  .rail-more{ display:none; }
+  @media (min-width: 761px){
+    .sidebar{ width:84px; padding:14px 8px; align-items:center; gap:10px; }
+    .sidebar .brand{ margin:0 0 6px; justify-content:center; }
+    .sidebar .brand > div:last-child{ display:none; }
+    .sidebar .brand img{ width:42px; height:42px; }
+    .main-nav{ width:100%; gap:6px; margin:0; }
+    .main-nav button{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; padding:10px 2px 8px; min-height:62px; font-size:10.5px; font-weight:600; line-height:1.1; background:transparent; border:0; border-radius:14px; color:var(--muted); }
+    .main-nav button:hover{ background:#eef0f3; color:var(--text); border-color:transparent; }
+    .main-nav button.active{ background:var(--text); color:#fff; }
+    .main-nav button.active:hover{ background:var(--text); color:#fff; }
+    .main-nav .nav-ic{ display:block; }
+    .main-nav button span{ max-width:100%; overflow:hidden; text-overflow:ellipsis; }
+    .sidebar > div:last-child > .btn-ghost{ display:none; }
+    .sidebar > div:last-child{ width:100%; align-items:center; }
+    .rail-more{ display:flex; flex-direction:column; align-items:center; gap:4px; width:100%; min-height:58px; padding:8px 2px; border:0; border-radius:14px; background:transparent; color:var(--muted); font-size:10.5px; font-weight:600; }
+    .rail-more:hover{ background:#eef0f3; color:var(--text); }
+    .rail-more .rm-ic{ display:block; line-height:0; }
+    main{ padding:22px 28px; }
+  }
 </style>
 </head>
 <body>
@@ -803,12 +848,13 @@
   <aside class="sidebar">
     <div class="brand"><img src="icons/horus-icon.png" width="40" height="40" alt=""><div><div class="brand-name">HORUS</div><div class="brand-tag">L'œil du kiné</div></div></div>
     <div class="main-nav" id="appNav">
-      <button data-appmode="profils" class="active"><svg class="nav-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17.5" cy="9.5" r="2.4"/><path d="M16.5 14.2c2.3.2 3.7 1.7 4.2 4"/></svg><span>Profils</span></button>
-      <button data-appmode="leaderboard"><svg class="nav-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 20V11M12 20V5M17 20v-6"/></svg><span>Classement</span></button>
-      <button data-appmode="agenda"><svg class="nav-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M9 3.5v4M15 3.5v4"/></svg><span>Agenda</span></button>
+      <button data-appmode="agenda" class="active"><svg class="nav-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M9 3.5v4M15 3.5v4"/></svg><span>Agenda</span></button>
+      <button data-appmode="profils"><svg class="nav-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17.5" cy="9.5" r="2.4"/><path d="M16.5 14.2c2.3.2 3.7 1.7 4.2 4"/></svg><span>Profils</span></button>
+      <button data-appmode="leaderboard"><svg class="nav-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M5 4H3v2a3 3 0 0 0 3 3M19 4h2v2a3 3 0 0 1-3 3"/></svg><span>Classement</span></button>
       <button data-appmode="stats"><svg class="nav-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V11M12 20V4M19 20v-6"/></svg><span>Statistiques</span></button>
     </div>
     <div style="margin-top:auto; display:flex; flex-direction:column; gap:8px;">
+      <button class="rail-more" id="railMoreBtn" type="button" aria-label="Plus : exporter, importer, réglages"><i class="rm-ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></svg></i><span>Plus</span></button>
       <button class="btn-ghost" id="exportBtn">Exporter les données</button>
       <button class="btn-ghost" id="importBtn">Importer une sauvegarde</button>
       <input type="file" id="importFile" accept=".json,application/json,text/plain" hidden>
@@ -928,6 +974,7 @@
     <div id="profilsListView" hidden>
       <div class="brand-bar"><img src="icons/horus-icon.png" width="36" height="36" alt=""><div><div class="brand-name">HORUS</div><div class="brand-tag">L'œil du kiné</div></div></div>
       <div class="hello"><div class="hello-t" id="helloTitle">Bonjour</div><div class="hello-s" id="helloSub"></div></div>
+      <div class="search-bar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="patientSearch" type="search" placeholder="Rechercher un patient (nom, pathologie, zone)…" autocomplete="off" autocapitalize="off" aria-label="Rechercher un patient"><button type="button" id="patientSearchClear" aria-label="Effacer la recherche" hidden>✕</button></div>
       <div class="cta-row" style="margin-bottom:20px;">
         <button class="btn-primary" id="newPatientBtn">+ Nouveau patient</button>
       </div>
@@ -1491,10 +1538,9 @@
     <label for="apPatient">Patient</label>
     <select id="apPatient"></select>
     <input id="apNewName" placeholder="Nom du nouveau patient" hidden style="margin-top:8px;">
-    <div class="sides-entry" style="margin-top:8px;">
-      <div><label for="apDate">Date</label><input type="date" id="apDate"></div>
-      <div><label for="apTime">Heure</label><input type="time" id="apTime" step="300"></div>
-    </div>
+    <label style="margin-top:12px;">Créneaux</label>
+    <div id="apSlots"></div>
+    <button type="button" class="btn-ghost" id="apAddSlotBtn" style="min-height:40px; margin-bottom:4px;">+ Ajouter un autre créneau</button>
     <label>Durée</label>
     <div class="chip-row" id="apDur"></div>
     <label>Type</label>
@@ -1507,6 +1553,7 @@
     </div>
     <label for="apNote">Note (facultatif)</label>
     <textarea id="apNote" rows="2" placeholder="Ex. apporter les résultats d'IRM"></textarea>
+    <div class="ap-preview" id="apPreview"></div>
     <div class="modal-actions"><button class="btn-primary" id="apSaveBtn">Enregistrer</button></div>
   </div>
 </div>
@@ -1563,6 +1610,20 @@
     <p class="tc-sub">Les plages définissent tes horaires de la semaine (par exemple la balnéothérapie en bleu). Tout ce qui est hors plage est hachuré, et tu peux quand même y créer un rendez-vous après confirmation. Touche l'en-tête d'un jour dans l'agenda pour modifier ou fermer ses plages. Sans aucune plage, rien n'est hachuré.</p>
     <div id="pmBody"></div>
     <div class="modal-actions"><button class="btn-ghost" id="pmCloseBtn2">Fermer une période</button><button class="btn-primary" id="pmNewBtn">+ Nouvelle plage</button></div>
+  </div>
+</div>
+
+<!-- Menu « Plus » du rail -->
+<div id="moreSheet" class="sheet-overlay" hidden>
+  <div class="sheet" role="dialog" aria-label="Plus">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head"><h3>Plus</h3><button type="button" class="icon-btn" id="moreCloseBtn" aria-label="Fermer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="sheet-body">
+      <div class="as-sub" id="moreExportInfo"></div>
+      <button type="button" class="as-item" data-more="export">Exporter les données</button>
+      <button type="button" class="as-item" data-more="import">Importer une sauvegarde</button>
+      <button type="button" class="as-item" data-more="mode">Mode et réglages</button>
+    </div>
   </div>
 </div>
 
@@ -2146,7 +2207,7 @@ if(!state.settings.prog) state.settings.prog = {};
 migratePeriodizationData();
 var activeTab = 'overview';
 var profilsSubview = 'list';
-var appMode = 'profils';
+var appMode = 'agenda';
 var detailTestId = null;
 var createTestType = null;
 
@@ -2199,6 +2260,11 @@ function deletePatient(id){
 /* ============================================================
    SIDEBAR
    ============================================================ */
+function normTxt(t){ return String(t || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ").trim(); }
+function patientMatches(p, q){
+  var hay = normTxt([p.name, (p.clinical && p.clinical.patho) || "", ((p.clinical && p.clinical.zones) || []).join(" "), (p.clinical && p.clinical.sport) || ""].join(" "));
+  return q.split(" ").every(function(w){ return hay.indexOf(w) !== -1; });
+}
 function renderProfilsListCards(){
   if(typeof updateBackupUi === "function") updateBackupUi();
   var fn = (state.settings && state.settings.firstName) || "";
@@ -2210,7 +2276,12 @@ function renderProfilsListCards(){
     grid.innerHTML = '<div class="w-callout">Aucun patient pour l\'instant — clique sur "+ Nouveau patient".</div>';
     return;
   }
-  state.patients.forEach(function(p){
+  var sq = normTxt(document.getElementById("patientSearch").value);
+  document.getElementById("patientSearchClear").hidden = !sq;
+  var shown = sq ? state.patients.filter(function(p){ return patientMatches(p, sq); }) : state.patients.slice();
+  if(sq) shown.sort(function(a, b){ return (normTxt(a.name).indexOf(sq) === 0 ? 0 : 1) - (normTxt(b.name).indexOf(sq) === 0 ? 0 : 1) || a.name.localeCompare(b.name); });
+  if(!shown.length){ grid.innerHTML = '<div class="w-callout">Aucun patient ne correspond à « ' + escHtml(document.getElementById("patientSearch").value.trim()) + ' ».</div>'; return; }
+  shown.forEach(function(p){
     var card = document.createElement("div");
     card.className = "test-card";
     card.style.cursor = "pointer";
@@ -2238,10 +2309,13 @@ function renderProfilsListCards(){
    PATIENT VIEW / TABS
    ============================================================ */
 function isAutonomous(){ return !!(state.settings && state.settings.mode === 'autonome'); }
+var lastViewKey = "";
 function renderAll(){
+  var vk = appMode + "|" + (typeof profilsSubview !== "undefined" ? profilsSubview : "") + "|" + activeTab + "|" + state.selectedPatientId;
+  if(vk !== lastViewKey){ lastViewKey = vk; var mn = document.querySelector("main"); if(mn) mn.scrollTop = 0; }
   document.body.classList.toggle("mode-autonome", isAutonomous());
   if(isAutonomous() && (appMode === 'leaderboard' || appMode === 'periodisation' || appMode === 'agenda' || appMode === 'stats')) appMode = 'today';
-  if(!isAutonomous() && appMode === 'today') appMode = 'profils';
+  if(!isAutonomous() && appMode === 'today') appMode = 'agenda';
   var emptyState = document.getElementById("emptyState");
   var patientView = document.getElementById("patientView");
   var leaderboardView = document.getElementById("leaderboardView");
@@ -6295,6 +6369,7 @@ document.addEventListener("click", function(e){
   prog.innerHTML = ic('<rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M9 3.5v4M15 3.5v4"/>') + '<span>Programme</span>';
   var profBtn = nav.querySelector('[data-appmode="profils"]');
   nav.insertBefore(prog, profBtn ? profBtn.nextSibling : null);
+  nav.insertBefore(today, nav.firstChild);
   ["leaderboard","periodisation","agenda","stats"].forEach(function(m){ var b = nav.querySelector('[data-appmode="' + m + '"]'); if(b) b.classList.add("adv-nav"); });
 })();
 
@@ -6302,7 +6377,7 @@ document.addEventListener("click", function(e){
 function setMode(mode){
   state.settings.mode = mode;
   saveData();
-  appMode = (mode === 'autonome') ? 'today' : 'profils';
+  appMode = (mode === 'autonome') ? 'today' : 'agenda';
   profilsSubview = 'list';
   renderAll();
   renderModeModal();
@@ -8862,8 +8937,7 @@ function openApptModal(o){
   var sel = document.getElementById("apPatient"), pid = ap ? ap.patientId : (o.patientId || state.selectedPatientId || "");
   sel.innerHTML = state.patients.slice().sort(function(a, b){ return a.name.localeCompare(b.name); }).map(function(p){ return '<option value="' + escHtml(p.id) + '"' + (p.id === pid ? " selected" : "") + '>' + escHtml(p.name) + '</option>'; }).join("") + '<option value="__new__"' + (!state.patients.length ? " selected" : "") + '>+ Nouveau patient…</option>';
   document.getElementById("apNewName").hidden = sel.value !== "__new__"; document.getElementById("apNewName").value = "";
-  document.getElementById("apDate").value = ap ? ap.date : (o.date || todayISO());
-  document.getElementById("apTime").value = ap ? ap.start : (o.start || "09:00");
+  renderApSlots([{ date: ap ? ap.date : (o.date || todayISO()), start: ap ? ap.start : (o.start || "09:00") }], !!ap);
   apType = ap ? ap.type : (o.type || agTypes()[0].name);
   apDur = ap ? ap.dur : (o.dur || agTypeByName(apType).dur); apDurManual = !!o.dur;
   apZones = ap ? (ap.zones || []).slice() : (o.zones ? o.zones.slice() : zonesOfPatient(pid)); apZonesManual = !!ap || !!o.zones;
@@ -8872,9 +8946,41 @@ function openApptModal(o){
   document.getElementById("apRepeatWrap").hidden = !!ap;
   document.getElementById("apRepeat").value = "none"; document.getElementById("apRepeatN").hidden = true;
   renderApChips();
+  updateApPreview();
   document.getElementById("apptOverlay").hidden = false;
 }
+function renderApSlots(slots, editing){
+  document.getElementById("apSlots").innerHTML = slots.map(function(sl, i){
+    return '<div class="ap-slot"><input type="date" class="ap-date"' + (i === 0 ? ' id="apDate"' : '') + ' value="' + escHtml(sl.date) + '" aria-label="Date du créneau ' + (i + 1) + '"><input type="time" class="ap-time"' + (i === 0 ? ' id="apTime"' : '') + ' step="300" value="' + escHtml(sl.start) + '" aria-label="Heure du créneau ' + (i + 1) + '">' + ((slots.length > 1 && !editing) ? '<button type="button" class="del-x" data-apslotdel="' + i + '" aria-label="Retirer ce créneau">✕</button>' : '<span></span>') + '</div>';
+  }).join("");
+  document.getElementById("apAddSlotBtn").hidden = !!editing;
+}
+function readApSlots(){
+  return [].slice.call(document.querySelectorAll("#apSlots .ap-slot")).map(function(r){ return { date: r.querySelector(".ap-date").value, start: r.querySelector(".ap-time").value }; });
+}
+function apRepeatCount(){ return (!apEditId && document.getElementById("apRepeat").value === "weekly") ? clampInt(document.getElementById("apRepeatN").value, 2, 52, 8) : 1; }
+function apExpand(){
+  var out = [], rep = apRepeatCount();
+  readApSlots().forEach(function(sl, si){
+    if(!DATE_RE.test(sl.date) || hhmmToMin(sl.start) === null) return;
+    for(var k = 0; k < rep; k++) out.push({ date: addDaysToDate(sl.date, 7 * k), start: sl.start, slot: si });
+  });
+  return out;
+}
+function updateApPreview(){
+  var el = document.getElementById("apPreview");
+  if(apEditId){ el.innerHTML = ""; return; }
+  var list = apExpand(), n = list.length, overlap = 0, off = 0;
+  list.forEach(function(x){
+    var s0 = hhmmToMin(x.start);
+    if(agList().some(function(a){ return a.date === x.date && a.status !== "annule" && hhmmToMin(a.start) < s0 + apDur && s0 < hhmmToMin(a.start) + a.dur; })) overlap++;
+    var at = agPlageAt(x.date, s0); if(at && (at.off || at.closed)) off++;
+  });
+  el.innerHTML = n ? '<b>' + n + ' rendez-vous</b> seront créés' + (n > 1 ? ' (' + new Date(list[0].date + "T00:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "short" }) + ' → ' + new Date(list[n - 1].date + "T00:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "short" }) + ')' : '') + '.' +
+    (overlap ? ' <span class="warn">' + overlap + ' chevauche' + (overlap > 1 ? 'nt' : '') + ' un autre rendez-vous.</span>' : '') + (off ? ' <span class="warn">' + off + ' hors plage ou fermé' + (off > 1 ? 's' : '') + '.</span>' : '') : '<span class="warn">Indique au moins une date et une heure.</span>';
+}
 function renderApChips(){
+  updateApPreview();
   var durs = AG_DURS.slice(); if(durs.indexOf(apDur) === -1) durs.push(apDur); durs.sort(function(a, b){ return a - b; });
   document.getElementById("apDur").innerHTML = durs.map(function(d){ return '<button type="button" class="chip-btn' + (d === apDur ? ' on' : '') + '" data-apdur="' + d + '">' + d + ' min</button>'; }).join("");
   var types = agTypes();
@@ -8888,32 +8994,50 @@ document.getElementById("apptOverlay").addEventListener("click", function(e){
   if(d){ apDur = parseInt(d.dataset.apdur); apDurManual = true; renderApChips(); }
   if(t){ apType = t.dataset.aptype; if(!apEditId && !apDurManual) apDur = agTypeByName(apType).dur; renderApChips(); }
 });
+document.getElementById("apAddSlotBtn").addEventListener("click", function(){
+  var cur = readApSlots(), last = cur[cur.length - 1] || { date: todayISO(), start: "09:00" };
+  cur.push({ date: DATE_RE.test(last.date) ? addDaysToDate(last.date, 1) : todayISO(), start: last.start || "09:00" });
+  renderApSlots(cur, false); updateApPreview();
+  var rows = document.querySelectorAll("#apSlots .ap-slot"); rows[rows.length - 1].querySelector(".ap-date").focus();
+});
+document.getElementById("apSlots").addEventListener("click", function(e){
+  var d = e.target.closest("[data-apslotdel]");
+  if(!d) return;
+  var cur = readApSlots(); cur.splice(parseInt(d.dataset.apslotdel), 1);
+  renderApSlots(cur, false); updateApPreview();
+});
+document.getElementById("apSlots").addEventListener("input", updateApPreview);
+document.getElementById("apRepeatN").addEventListener("input", updateApPreview);
 document.getElementById("apPatient").addEventListener("change", function(){
   document.getElementById("apNewName").hidden = this.value !== "__new__";
   if(!apZonesManual){ apZones = this.value === "__new__" ? [] : zonesOfPatient(this.value); renderApZones(); }
 });
-document.getElementById("apRepeat").addEventListener("change", function(){ document.getElementById("apRepeatN").hidden = this.value !== "weekly"; });
+document.getElementById("apRepeat").addEventListener("change", function(){ document.getElementById("apRepeatN").hidden = this.value !== "weekly"; updateApPreview(); });
 document.getElementById("apCloseBtn").addEventListener("click", function(){ document.getElementById("apptOverlay").hidden = true; });
 document.getElementById("apSaveBtn").addEventListener("click", function(){
-  var date = document.getElementById("apDate").value, time = document.getElementById("apTime").value, pid = document.getElementById("apPatient").value;
-  if(!DATE_RE.test(date) || hhmmToMin(time) === null){ alert("Indique une date et une heure valides."); return; }
+  var pid = document.getElementById("apPatient").value, slots = readApSlots();
+  if(!slots.length || slots.some(function(sl){ return !DATE_RE.test(sl.date) || hhmmToMin(sl.start) === null; })){ alert("Indique une date et une heure valides pour chaque créneau."); return; }
   if(pid === "__new__"){
     var nm = document.getElementById("apNewName").value.trim();
     if(!nm){ alert("Indique le nom du nouveau patient."); return; }
     var np = makePatientObject(nm); state.patients.push(np); pid = np.id; state.selectedPatientId = pid;
   }
-  if(hhmmToMin(time) + apDur > 24 * 60){ alert("Le rendez-vous dépasse minuit."); return; }
-  var note = document.getElementById("apNote").value.trim().slice(0, 500);
+  if(slots.some(function(sl){ return hhmmToMin(sl.start) + apDur > 24 * 60; })){ alert("Un rendez-vous dépasse minuit."); return; }
+  var note = document.getElementById("apNote").value.trim().slice(0, 500), created = 0;
   if(apEditId){
     var ap = agFind(apEditId);
-    ap.patientId = pid; ap.date = date; ap.start = time; ap.dur = apDur; ap.type = apType; ap.note = note; ap.zones = apZones.slice();
+    ap.patientId = pid; ap.date = slots[0].date; ap.start = slots[0].start; ap.dur = apDur; ap.type = apType; ap.note = note; ap.zones = apZones.slice();
   } else {
-    var rep = document.getElementById("apRepeat").value === "weekly" ? clampInt(document.getElementById("apRepeatN").value, 2, 52, 8) : 1, sid = rep > 1 ? uid() : undefined;
-    for(var i = 0; i < rep; i++) agList().push({ id: uid(), patientId: pid, date: addDaysToDate(date, 7 * i), start: time, dur: apDur, type: apType, status: "prevu", note: note, zones: apZones.slice(), seriesId: sid });
+    var rep = apRepeatCount();
+    slots.forEach(function(sl){
+      var sid = rep > 1 ? uid() : undefined;
+      for(var i = 0; i < rep; i++){ agList().push({ id: uid(), patientId: pid, date: addDaysToDate(sl.date, 7 * i), start: sl.start, dur: apDur, type: apType, status: "prevu", note: note, zones: apZones.slice(), seriesId: sid }); created++; }
+    });
   }
   saveData();
   document.getElementById("apptOverlay").hidden = true;
-  agendaDate = date;
+  agendaDate = slots.map(function(sl){ return sl.date; }).sort()[0];
+  if(created > 1) agToast(created + " rendez-vous créés");
   if(appMode === "agenda") renderAgenda(); else renderAll();
 });
 
@@ -9394,6 +9518,23 @@ document.getElementById("statsView").addEventListener("click", function(e){
   if(m){ stMode = m.dataset.stmode; renderStats(); }
 });
 
+/* ----- menu « Plus » du rail ----- */
+document.getElementById("railMoreBtn").addEventListener("click", function(){
+  var lbl = document.getElementById("lastExportLabel");
+  document.getElementById("moreExportInfo").textContent = lbl ? lbl.textContent : "";
+  document.getElementById("moreSheet").hidden = false;
+});
+document.getElementById("moreCloseBtn").addEventListener("click", function(){ document.getElementById("moreSheet").hidden = true; });
+document.getElementById("moreSheet").addEventListener("click", function(e){
+  if(e.target === this){ this.hidden = true; return; }
+  var b = e.target.closest("[data-more]");
+  if(!b) return;
+  document.getElementById("moreSheet").hidden = true;
+  if(b.dataset.more === "export") doExport();
+  else if(b.dataset.more === "import") document.getElementById("importFile").click();
+  else if(b.dataset.more === "mode") openModeModal();
+});
+
 /* ============================================================
    MUSCLE WIZARD (EMG / ISO)
    ============================================================ */
@@ -9703,6 +9844,13 @@ function handleWizardNext(){
 /* ============================================================
    PATIENT / EXPORT / IMPORT
    ============================================================ */
+document.getElementById("patientSearch").addEventListener("input", function(){ renderProfilsListCards(); });
+document.getElementById("patientSearch").addEventListener("keydown", function(e){
+  if(e.key !== "Enter") return;
+  var first = document.querySelector("#patientCardsGrid .test-card");
+  if(first) first.click();
+});
+document.getElementById("patientSearchClear").addEventListener("click", function(){ var i = document.getElementById("patientSearch"); i.value = ""; renderProfilsListCards(); i.focus(); });
 document.getElementById("newPatientBtn").addEventListener("click", function(){
   var name = prompt("Nom du patient :");
   if(name && name.trim()){
@@ -9729,15 +9877,11 @@ function updateBackupUi(){
   var banner = document.getElementById("backupBanner");
   if(!lbl || !banner) return;
   var has = state.patients.length > 0;
-  if(!state.lastExportAt){
-    lbl.textContent = "Jamais exportée";
-    banner.hidden = !has;
-    banner.textContent = "Tes données ne sont stockées que sur cet appareil. Fais un export pour les sauvegarder.";
-  } else {
+  banner.hidden = true;
+  if(!state.lastExportAt) lbl.textContent = "Jamais exportée";
+  else {
     var d = daysSince(state.lastExportAt);
     lbl.textContent = "Dernier export : " + (d <= 0 ? "aujourd'hui" : "il y a " + d + " jour" + (d > 1 ? "s" : ""));
-    banner.hidden = !(has && d >= 14);
-    banner.textContent = "Dernier export il y a " + d + " jours : pense à sauvegarder tes données.";
   }
   var su = storageUsage();
   var sl = document.getElementById("storageLabel");
