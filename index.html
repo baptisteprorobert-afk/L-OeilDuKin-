@@ -726,11 +726,10 @@
   .ag-now{ position:absolute; left:0; right:0; height:2px; background:#e0483e; z-index:3; pointer-events:none; }
   .ag-now::before{ content:""; position:absolute; left:-4px; top:-3px; width:8px; height:8px; border-radius:50%; background:#e0483e; }
   .ag-ap{ position:absolute; box-sizing:border-box; border-radius:8px; padding:3px 24px 3px 38px; background:#e8f2ff; border-left:4px solid #007BFF; color:var(--text); overflow:hidden; cursor:pointer; touch-action:manipulation; -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; font-size:12.5px; line-height:1.3; z-index:2; }
-  .ag-ap.st-present{ background:#e6f6ee; border-left-color:#1fa971; }
-  .ag-ap.st-absent{ background:#fdf0ef; border-left-color:#e0483e; }
-  .ag-ap.st-annule{ background:#f1f3f6; border-left-color:#8a93a3; color:#8a93a3; }
+  .ag-ap.st-annule{ color:#6b7380; }
   .ag-ap.st-annule .nm{ text-decoration:line-through; }
   .ag-ap.dragging{ opacity:0.3; }
+  .ag-ap.short > div{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .ag-ap.multi{ padding:2px 22px 2px 30px; font-size:12px; }
   .ag-ap.multi > div{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .ag-ap.multi .ag-pt{ width:22px; height:22px; left:4px; top:3px; font-size:12px; }
@@ -740,7 +739,7 @@
   .ag-ap .sb{ color:var(--muted); font-size:11.5px; }
   .ag-pt{ position:absolute; left:5px; top:3px; width:28px; height:28px; border-radius:50%; border:2px solid #007BFF; background:#fff; padding:0; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; color:#fff; }
   .ag-ap.st-present .ag-pt{ background:#1fa971; border-color:#1fa971; }
-  .ag-ap.st-absent .ag-pt{ border-color:#e0483e; } .ag-ap.st-annule .ag-pt{ border-color:#8a93a3; }
+  .ag-ap.st-annule .ag-pt{ border-color:#8a93a3; }
   .ag-more{ position:absolute; right:0; top:0; border:0; background:transparent; width:28px; height:28px; font-size:17px; color:var(--muted); padding:0; }
   .ag-ghost{ position:absolute; z-index:20; border-radius:8px; background:rgba(0,123,255,0.16); border:2px dashed #007BFF; pointer-events:none; padding:3px 8px; font-size:12px; font-weight:700; color:#0062CC; box-sizing:border-box; }
   .ag-toast{ position:fixed; left:50%; bottom:96px; transform:translateX(-50%); background:var(--night); color:#fff; padding:10px 16px; border-radius:12px; font-size:13.5px; z-index:300; max-width:90vw; text-align:center; }
@@ -748,6 +747,50 @@
   .as-item.danger{ color:#b3261e; }
   .as-sub{ font-size:13px; color:var(--muted); padding:2px 4px 10px; }
   @media (max-width: 760px){ .ag-scroll{ max-height:calc(100dvh - 250px); } }
+
+  /* ---------- types de rendez-vous, légende ---------- */
+  .ag-legend{ display:flex; gap:14px; flex-wrap:wrap; margin:0 0 10px; font-size:12.5px; color:var(--muted); }
+  .ag-legend i{ display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:5px; vertical-align:-1px; }
+  .agt-row{ display:grid; grid-template-columns:46px 1fr 78px 36px; gap:8px; align-items:center; margin-bottom:8px; }
+  .agt-row input[type=color]{ width:46px; height:42px; padding:2px; border-radius:10px; }
+  .chip-btn .dot{ display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:6px; }
+  .ag-ap.st-absent{ opacity:0.72; outline:1.5px solid #e0483e; outline-offset:-1.5px; }
+  .ag-ap.st-annule{ opacity:0.5; }
+  .ag-ap.st-absent .ag-pt{ color:#e0483e; border-color:#e0483e; background:#fff; }
+
+  /* ---------- agenda : nom en premier, plages, statistiques ---------- */
+  .ag-ap .l1{ font-size:13px; line-height:1.25; }
+  .ag-ap .l1 .nm{ font-weight:700; }
+  .ag-ap .l1 .tm{ font-weight:500; color:var(--muted); font-size:11.5px; margin-left:4px; }
+  .ag-ap.multi .l1{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .st-kpis{ display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:10px; margin-bottom:14px; }
+  .st-kpi{ background:#fff; border:1px solid var(--border); border-radius:14px; padding:12px 14px; }
+  .st-kpi .v{ font-size:26px; font-weight:800; letter-spacing:-0.01em; }
+  .st-kpi .l{ font-size:12.5px; color:var(--muted); margin-top:2px; }
+  .st-card{ background:#fff; border:1px solid var(--border); border-radius:14px; padding:14px; margin-bottom:12px; }
+  .st-card h3{ margin:0 0 8px; font-size:15px; }
+  .st-svg{ width:100%; height:auto; display:block; }
+  .st-legend{ display:flex; gap:14px; flex-wrap:wrap; font-size:12.5px; color:var(--muted); margin-top:6px; }
+  .st-legend i{ display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:5px; vertical-align:-1px; }
+  .st-hbar{ display:grid; grid-template-columns:130px 1fr 40px; gap:8px; align-items:center; margin:6px 0; font-size:13.5px; }
+  .st-hbar .b{ height:14px; background:#eef0f3; border-radius:7px; overflow:hidden; }
+  .st-hbar .b div{ height:100%; border-radius:7px; }
+  .st-hbar .n{ text-align:right; font-weight:700; }
+  .st-donut-wrap{ display:flex; gap:18px; align-items:center; flex-wrap:wrap; }
+
+  /* ---------- plages ---------- */
+  .ag-off{ position:absolute; left:0; right:0; background:rgba(11,18,32,0.06); pointer-events:none; z-index:0; }
+  .ag-pfill{ position:absolute; left:0; right:0; pointer-events:none; z-index:0; }
+  .ag-closed{ position:absolute; left:0; right:0; pointer-events:none; z-index:1; background:repeating-linear-gradient(135deg, rgba(11,18,32,0.10) 0 7px, rgba(11,18,32,0.03) 7px 14px); }
+  .ag-pstrip{ position:absolute; left:0; width:20px; border:0; padding:0; z-index:4; cursor:pointer; overflow:hidden; border-radius:0 5px 5px 0; font-size:10px; font-weight:700; line-height:1; touch-action:manipulation; }
+  .ag-pstrip span{ display:block; writing-mode:vertical-rl; transform:rotate(180deg); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-height:100%; padding:4px 0; margin:0 auto; }
+  .ag-aps{ position:absolute; top:0; bottom:0; right:0; }
+  .ag-plabel{ position:absolute; left:26px; right:4px; font-size:10.5px; font-weight:700; letter-spacing:0.02em; text-transform:uppercase; pointer-events:none; z-index:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .pm-day{ font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:var(--muted); margin:14px 0 4px; }
+  .pm-row{ display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #eef0f3; }
+  .pm-row .t{ font-weight:600; font-size:14.5px; flex:1; min-width:0; overflow-wrap:anywhere; }
+  .pm-row .s{ font-size:12.5px; color:var(--muted); font-weight:500; }
+  .pm-dot{ width:14px; height:14px; border-radius:4px; flex-shrink:0; border:1px solid rgba(11,18,32,0.15); }
 </style>
 </head>
 <body>
@@ -765,6 +808,7 @@
       <button data-appmode="profils" class="active"><svg class="nav-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17.5" cy="9.5" r="2.4"/><path d="M16.5 14.2c2.3.2 3.7 1.7 4.2 4"/></svg><span>Profils</span></button>
       <button data-appmode="leaderboard"><svg class="nav-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 20V11M12 20V5M17 20v-6"/></svg><span>Classement</span></button>
       <button data-appmode="agenda"><svg class="nav-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M9 3.5v4M15 3.5v4"/></svg><span>Agenda</span></button>
+      <button data-appmode="stats"><svg class="nav-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V11M12 20V4M19 20v-6"/></svg><span>Statistiques</span></button>
     </div>
     <div style="margin-top:auto; display:flex; flex-direction:column; gap:8px;">
       <button class="btn-ghost" id="exportBtn">Exporter les données</button>
@@ -787,11 +831,20 @@
         <button type="button" class="btn-ghost" data-agnav="0" style="min-height:40px;">Aujourd'hui</button>
         <button type="button" class="btn-ghost" data-agnav="1" aria-label="Suivant" style="min-height:40px;">›</button>
         <div class="ag-title" id="agTitle"></div>
-        <div class="ag-seg" id="agSeg"><button type="button" data-agview="day">Jour</button><button type="button" data-agview="week">Semaine</button></div>
+        <div class="ag-seg" id="agSeg"><button type="button" data-agview="day">Jour</button><button type="button" data-agview="3days">3 jours</button><button type="button" data-agview="week">Semaine</button></div>
+        <button type="button" class="btn-ghost" id="agPlagesBtn" style="min-height:40px;">Plages</button>
         <button type="button" class="btn-primary" id="agNewBtn" style="min-height:40px;">+ Rendez-vous</button>
       </div>
+      <div class="ag-legend" id="agLegend"></div>
       <div class="ag-scroll" id="agScroll"><div class="ag-grid" id="agGrid"></div></div>
       <div class="tc-sub" style="margin-top:8px;">Touche un rendez-vous pour ouvrir la séance du jour · appui long puis glisse pour le déplacer · ○ pour pointer le patient · ⋯ pour les autres actions.</div>
+    </div>
+
+    <div id="statsView" hidden>
+      <h2 style="margin:0 0 4px;">📊 Statistiques de l'agenda</h2>
+      <div class="chip-row" id="stPeriod" style="margin:10px 0 8px;"></div>
+      <div class="chip-row" id="stCount" style="margin-bottom:14px;"></div>
+      <div id="stBody"></div>
     </div>
 
     <div id="leaderboardView" hidden>
@@ -1424,6 +1477,15 @@
   </div>
 </div>
 
+<!-- Fusion à l'import -->
+<div id="mergeOverlay" class="modal-overlay" hidden>
+  <div class="modal-box">
+    <div class="modal-header"><h2>Importer une sauvegarde</h2><button class="btn-ghost" id="mergeCloseBtn">Fermer</button></div>
+    <div id="mergeBody"></div>
+    <div class="modal-actions" id="mergeActions"></div>
+  </div>
+</div>
+
 <!-- Rendez-vous : création / modification -->
 <div id="apptOverlay" class="modal-overlay" hidden>
   <div class="modal-box">
@@ -1439,6 +1501,8 @@
     <div class="chip-row" id="apDur"></div>
     <label>Type</label>
     <div class="chip-row" id="apType"></div>
+    <label>Zone / motif</label>
+    <div class="chip-row" id="apZones"></div>
     <div id="apRepeatWrap">
       <label for="apRepeat">Répéter</label>
       <div class="sides-entry"><div><select id="apRepeat"><option value="none">Une seule fois</option><option value="weekly">Chaque semaine</option></select></div><div><input type="number" id="apRepeatN" min="2" max="52" value="8" hidden placeholder="Nombre de séances"></div></div>
@@ -1446,6 +1510,61 @@
     <label for="apNote">Note (facultatif)</label>
     <textarea id="apNote" rows="2" placeholder="Ex. apporter les résultats d'IRM"></textarea>
     <div class="modal-actions"><button class="btn-primary" id="apSaveBtn">Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- Plage : actions -->
+<div id="plageSheet" class="sheet-overlay" hidden>
+  <div class="sheet" role="dialog" aria-label="Actions de la plage">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head"><h3 id="plsTitle">Plage</h3><button type="button" class="icon-btn" id="plsCloseBtn" aria-label="Fermer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="sheet-body" id="plsBody"></div>
+  </div>
+</div>
+
+<!-- Plage : création / modification -->
+<div id="plageOverlay" class="modal-overlay" hidden>
+  <div class="modal-box">
+    <div class="modal-header"><h2 id="plTitle">Plage</h2><button class="btn-ghost" id="plCloseBtn">Fermer</button></div>
+    <label for="plLabel">Nom</label>
+    <input id="plLabel" placeholder="Ex. Balnéothérapie, Consultations">
+    <label>Jours</label>
+    <div class="chip-row" id="plDays"></div>
+    <div class="sides-entry" style="margin-top:8px;">
+      <div><label for="plStart">Début</label><input type="time" id="plStart" step="300"></div>
+      <div><label for="plEnd">Fin</label><input type="time" id="plEnd" step="300"></div>
+    </div>
+    <label>Couleur du fond</label>
+    <div class="chip-row" id="plColors"></div>
+    <label for="plType">Type de rendez-vous proposé par défaut</label>
+    <select id="plType"></select>
+    <div class="modal-actions"><button class="btn-ghost btn-danger" id="plDeleteBtn">Supprimer</button><button class="btn-primary" id="plSaveBtn">Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- Fermeture d'une plage ou d'une période -->
+<div id="closureOverlay" class="modal-overlay" hidden>
+  <div class="modal-box">
+    <div class="modal-header"><h2 id="clTitle">Fermer une plage</h2><button class="btn-ghost" id="clCloseBtn">Fermer</button></div>
+    <label for="clScope">Quoi fermer ?</label>
+    <select id="clScope"></select>
+    <div class="sides-entry" style="margin-top:8px;">
+      <div><label for="clFrom">Du</label><input type="date" id="clFrom"></div>
+      <div><label for="clTo">Au (inclus)</label><input type="date" id="clTo"></div>
+    </div>
+    <label for="clLabel">Motif (facultatif)</label>
+    <input id="clLabel" placeholder="Ex. Congés, formation">
+    <div class="modal-actions"><button class="btn-ghost btn-danger" id="clDeleteBtn">Supprimer</button><button class="btn-primary" id="clSaveBtn">Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- Gestion des plages -->
+<div id="plagesMgrOverlay" class="modal-overlay" hidden>
+  <div class="modal-box wide">
+    <div class="modal-header"><h2>Plages et fermetures</h2><button class="btn-ghost" id="pmCloseBtn">Fermer</button></div>
+    <p class="tc-sub">Les plages définissent tes horaires de la semaine (par exemple la balnéothérapie en bleu). Un jour sans plage reste libre. Touche la bande verticale d'une plage dans l'agenda pour la modifier ou la fermer.</p>
+    <div id="pmBody"></div>
+    <div class="modal-actions"><button class="btn-ghost" id="pmCloseBtn2">Fermer une période</button><button class="btn-primary" id="pmNewBtn">+ Nouvelle plage</button></div>
   </div>
 </div>
 
@@ -1467,6 +1586,8 @@
     </div>
     <label for="cliPatho">Pathologie / motif</label>
     <input id="cliPatho" placeholder="Ex. rupture du LCA, tendinopathie rotulienne…">
+    <label>Zone atteinte</label>
+    <div class="chip-row" id="cliZones"></div>
     <label>Côté atteint</label>
     <div class="quality-chip-grid" id="cliCote"></div>
     <label for="cliDate">Date de départ</label>
@@ -1553,8 +1674,13 @@
       <div><label for="agStart" style="font-weight:500;">Première heure</label><input type="number" id="agStart" min="0" max="23" step="1"></div>
       <div><label for="agEnd" style="font-weight:500;">Dernière heure</label><input type="number" id="agEnd" min="1" max="24" step="1"></div>
       <div><label for="agStep" style="font-weight:500;">Pas de déplacement (min)</label><select id="agStep"><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="30">30</option></select></div>
-      <div><label for="agDur" style="font-weight:500;">Durée par défaut (min)</label><input type="number" id="agDur" min="5" max="240" step="5"></div>
     </div>
+    <label>Types de rendez-vous (couleur et durée automatique)</label>
+    <div id="agTypesList"></div>
+    <button type="button" class="btn-ghost" id="agTypeAddBtn" style="min-height:40px; margin-bottom:6px;">+ Ajouter un type</button>
+    <label>Synchroniser mes appareils</label>
+    <p class="tc-sub" style="margin:0 0 8px;">Sur le 1er appareil : « Exporter les données ». Sur l'autre : « Importer une sauvegarde », puis « Fusionner ». Le plus récent gagne, rien n'est perdu sans pouvoir annuler.</p>
+    <button type="button" class="btn-ghost" id="undoMergeBtn" style="min-height:40px;" hidden>Annuler la dernière fusion</button>
     <label>Mode d'utilisation</label>
     <div id="modeCards"></div>
     <div id="modeExtra"></div>
@@ -1927,7 +2053,45 @@ function setSaveWarning(on){
   var el = document.getElementById("saveWarn");
   if(el) el.hidden = !on;
 }
+var TOMB_KINDS = ["patients", "agenda", "plages", "closures"], STAMPED_LISTS = ["agenda", "plages", "closures"], EPOCH = "1970-01-01T00:00:00.000Z";
+function fnvHash(str){ var h = 0x811c9dc5; for(var i = 0; i < str.length; i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(36); }
+function guessUpdatedAt(p){
+  var best = p.createdAt || "", t0 = new Date(), today = t0.getFullYear() + "-" + String(t0.getMonth() + 1).padStart(2, "0") + "-" + String(t0.getDate()).padStart(2, "0");
+  (p.tests || []).forEach(function(t){ (t.entries || []).forEach(function(e){ if(e.date && e.date <= today && e.date > best) best = e.date; }); });
+  Object.keys((p.program && p.program.entries) || {}).forEach(function(d){ if(d <= today && d > best) best = d; });
+  (p.anamneses || []).forEach(function(a){ var c = String(a.createdAt || a.date || "").slice(0, 10); if(c && c <= today && c > best) best = c; });
+  return best ? best.slice(0, 10) + "T00:00:00.000Z" : "1970-01-01T00:00:00.000Z";
+}
+function stampChanges(){
+  var now = new Date().toISOString();
+  (state.patients || []).forEach(function(p){
+    var u = p.updatedAt, sg = p._sig;
+    delete p.updatedAt; delete p._sig;
+    var h = fnvHash(JSON.stringify(p));
+    p._sig = h;
+    p.updatedAt = (sg === undefined) ? (u || guessUpdatedAt(p)) : (sg !== h ? now : (u || guessUpdatedAt(p)));
+  });
+  STAMPED_LISTS.forEach(function(k){
+    (state[k] || []).forEach(function(a){
+      var u = a.updatedAt, sg = a._sig;
+      delete a.updatedAt; delete a._sig;
+      var h = fnvHash(JSON.stringify(a));
+      a._sig = h;
+      a.updatedAt = (sg === undefined) ? (u || EPOCH) : (sg !== h ? now : (u || EPOCH));
+    });
+  });
+}
+function resigAll(st){
+  (st.patients || []).forEach(function(p){ var u = p.updatedAt; delete p.updatedAt; delete p._sig; p._sig = fnvHash(JSON.stringify(p)); p.updatedAt = u || guessUpdatedAt(p); });
+  STAMPED_LISTS.forEach(function(k){ (st[k] || []).forEach(function(a){ var u = a.updatedAt; delete a.updatedAt; delete a._sig; a._sig = fnvHash(JSON.stringify(a)); a.updatedAt = u || EPOCH; }); });
+}
+function addTombstone(kind, id){
+  if(!state.tombstones) state.tombstones = { patients: {}, agenda: {} };
+  if(!state.tombstones[kind]) state.tombstones[kind] = {};
+  state.tombstones[kind][id] = new Date().toISOString();
+}
 function saveData(){
+  try{ stampChanges(); }catch(e){ console.error("Horodatage impossible", e); }
   try{
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     if(saveFailed) setSaveWarning(false);
@@ -2027,6 +2191,7 @@ function getSelectedPatient(){
 }
 function deletePatient(id){
   state.patients = state.patients.filter(function(p){ return p.id !== id; });
+  addTombstone("patients", id);
   state.agenda = (state.agenda || []).filter(function(a){ return a.patientId !== id; });
   if(state.selectedPatientId === id) state.selectedPatientId = null;
   saveData();
@@ -2077,7 +2242,7 @@ function renderProfilsListCards(){
 function isAutonomous(){ return !!(state.settings && state.settings.mode === 'autonome'); }
 function renderAll(){
   document.body.classList.toggle("mode-autonome", isAutonomous());
-  if(isAutonomous() && (appMode === 'leaderboard' || appMode === 'periodisation' || appMode === 'agenda')) appMode = 'today';
+  if(isAutonomous() && (appMode === 'leaderboard' || appMode === 'periodisation' || appMode === 'agenda' || appMode === 'stats')) appMode = 'today';
   if(!isAutonomous() && appMode === 'today') appMode = 'profils';
   var emptyState = document.getElementById("emptyState");
   var patientView = document.getElementById("patientView");
@@ -2095,6 +2260,7 @@ function renderAll(){
   patientView.hidden = true;
   document.getElementById("todayView").hidden = true;
   document.getElementById("agendaView").hidden = true;
+  document.getElementById("statsView").hidden = true;
 
   if(appMode === 'today'){
     document.getElementById("todayView").hidden = false;
@@ -2111,6 +2277,11 @@ function renderAll(){
   if(appMode === 'agenda'){
     document.getElementById("agendaView").hidden = false;
     renderAgenda();
+    return;
+  }
+  if(appMode === 'stats'){
+    document.getElementById("statsView").hidden = false;
+    renderStats();
     return;
   }
   if(appMode === 'programme'){
@@ -6126,7 +6297,7 @@ document.addEventListener("click", function(e){
   prog.innerHTML = ic('<rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M9 3.5v4M15 3.5v4"/>') + '<span>Programme</span>';
   var profBtn = nav.querySelector('[data-appmode="profils"]');
   nav.insertBefore(prog, profBtn ? profBtn.nextSibling : null);
-  ["leaderboard","periodisation","agenda"].forEach(function(m){ var b = nav.querySelector('[data-appmode="' + m + '"]'); if(b) b.classList.add("adv-nav"); });
+  ["leaderboard","periodisation","agenda","stats"].forEach(function(m){ var b = nav.querySelector('[data-appmode="' + m + '"]'); if(b) b.classList.add("adv-nav"); });
 })();
 
 /* ----- réglages de l'application / mode ----- */
@@ -6142,7 +6313,9 @@ function renderModeModal(){
   document.getElementById("setFirstName").value = (state.settings && state.settings.firstName) || "";
   var ac = agCfg();
   document.getElementById("agStart").value = ac.start; document.getElementById("agEnd").value = ac.end;
-  document.getElementById("agStep").value = String(ac.step); document.getElementById("agDur").value = ac.dur;
+  document.getElementById("agStep").value = String(ac.step);
+  renderAgTypesList();
+  idbGet("premerge", function(b){ document.getElementById("undoMergeBtn").hidden = !(b && b.json); });
   var cur = isAutonomous() ? 'autonome' : 'accompagne';
   document.getElementById("modeCards").innerHTML = [
     ['accompagne', "Accompagné", "Pour un kiné ou un préparateur physique : plusieurs patients, tests, périodisation complète, journal des décisions."],
@@ -6162,7 +6335,7 @@ function renderModeModal(){
 }
 function openModeModal(){ renderModeModal(); document.getElementById("modeOverlay").hidden = false; }
 document.getElementById("openModeBtn").addEventListener("click", openModeModal);
-["agStart", "agEnd", "agStep", "agDur"].forEach(function(id){
+["agStart", "agEnd", "agStep"].forEach(function(id){
   document.getElementById(id).addEventListener("change", function(){
     if(!state.settings.agenda) state.settings.agenda = {};
     var k = id.replace("ag", "").toLowerCase();
@@ -6712,7 +6885,7 @@ document.getElementById("toggleTargetBtn").addEventListener("click", function(){
    IMPORT SÉCURISÉ : nettoyage des fichiers reçus
    ============================================================ */
 var DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
-var ID_KEYS = { id:1, mesoId:1, macrocycleId:1, patientId:1, seriesId:1 };
+var ID_KEYS = { id:1, mesoId:1, macrocycleId:1, patientId:1, seriesId:1, plageId:1 };
 function cleanImported(v, key, parentKey, depth){
   if(depth > 14) return undefined;
   if(typeof v === "string"){
@@ -6771,7 +6944,27 @@ function normalizeState(o){
   var okSt = { prevu:1, present:1, absent:1, annule:1 };
   o.agenda = o.agenda.filter(function(a){ return a && typeof a === "object" && typeof a.patientId === "string" && DATE_RE.test(a.date || "") && /^\d\d:\d\d$/.test(a.start || ""); }).map(function(a){
     return { id: (typeof a.id === "string" && a.id) ? a.id : uid(), patientId: a.patientId, date: a.date, start: a.start, dur: Math.max(5, Math.min(480, parseInt(a.dur) || 30)),
-      type: String(a.type || "Séance").slice(0, 60), status: okSt[a.status] ? a.status : "prevu", note: String(a.note || "").slice(0, 500), seriesId: a.seriesId ? String(a.seriesId) : undefined, checkedAt: a.checkedAt || undefined };
+      type: String(a.type || "Séance").slice(0, 60), zones: Array.isArray(a.zones) ? a.zones.filter(function(z){ return typeof z === "string"; }).map(function(z){ return z.slice(0, 40); }).slice(0, 6) : [], status: okSt[a.status] ? a.status : "prevu", note: String(a.note || "").slice(0, 500), seriesId: a.seriesId ? String(a.seriesId) : undefined, checkedAt: a.checkedAt || undefined,
+      updatedAt: typeof a.updatedAt === "string" ? a.updatedAt : undefined, _sig: typeof a._sig === "string" ? a._sig : undefined };
+  });
+  if(!o.tombstones || typeof o.tombstones !== "object") o.tombstones = {};
+  var okT = /^\d\d:\d\d$/;
+  if(o.plages !== undefined){
+    if(!Array.isArray(o.plages)) o.plages = [];
+    o.plages = o.plages.filter(function(x){ return x && typeof x === "object" && Array.isArray(x.days) && okT.test(x.start || "") && okT.test(x.end || "") && x.start < x.end; }).map(function(x){
+      var days = []; x.days.forEach(function(d){ d = parseInt(d); if(d >= 1 && d <= 7 && days.indexOf(d) === -1) days.push(d); });
+      return { id: (typeof x.id === "string" && x.id) ? x.id : uid(), days: days, start: x.start, end: x.end, label: String(x.label || "Plage").slice(0, 40), color: /^#[0-9a-fA-F]{6}$/.test(x.color || "") ? x.color : "", defaultType: String(x.defaultType || "").slice(0, 40),
+        updatedAt: typeof x.updatedAt === "string" ? x.updatedAt : undefined, _sig: typeof x._sig === "string" ? x._sig : undefined };
+    }).filter(function(x){ return x.days.length; });
+  }
+  if(!Array.isArray(o.closures)) o.closures = [];
+  o.closures = o.closures.filter(function(x){ return x && typeof x === "object" && DATE_RE.test(x.from || "") && DATE_RE.test(x.to || "") && x.from <= x.to; }).map(function(x){
+    return { id: (typeof x.id === "string" && x.id) ? x.id : uid(), from: x.from, to: x.to, plageId: typeof x.plageId === "string" ? x.plageId : "", label: String(x.label || "").slice(0, 60),
+      updatedAt: typeof x.updatedAt === "string" ? x.updatedAt : undefined, _sig: typeof x._sig === "string" ? x._sig : undefined };
+  });
+  TOMB_KINDS.forEach(function(k){
+    if(!o.tombstones[k] || typeof o.tombstones[k] !== "object") o.tombstones[k] = {};
+    Object.keys(o.tombstones[k]).forEach(function(id){ if(typeof o.tombstones[k][id] !== "string") delete o.tombstones[k][id]; });
   });
   if(!o.settings || typeof o.settings !== "object") o.settings = {};
   if(o.settings.hardRpe === undefined) o.settings.hardRpe = 7;
@@ -6783,6 +6976,7 @@ function normalizeState(o){
 function replaceState(o){
   state = normalizeState(o);
   migratePeriodizationData();
+  resigAll(state);
   saveData();
   renderAll();
   updateBackupUi();
@@ -6836,8 +7030,8 @@ function renderFicheTab(patient){
 function renderClinicalStrip(patient){
   var c = clin(patient), el = document.createElement("div");
   el.className = "clin-strip";
-  var empty = !(c.patho || c.cote || c.date || c.phase || c.sport || c.objectif || c.prec || c.ant);
-  var main = empty ? "Fiche clinique non renseignée" : [c.patho, c.cote ? COTE_LABELS[c.cote] : "", c.phase].filter(Boolean).join(" · ");
+  var empty = !(c.patho || c.cote || c.date || c.phase || c.sport || c.objectif || c.prec || c.ant || (c.zones && c.zones.length));
+  var main = empty ? "Fiche clinique non renseignée" : [c.patho, (c.zones || []).join(", "), c.cote ? COTE_LABELS[c.cote] : "", c.phase].filter(Boolean).join(" · ");
   var sub = (!empty && c.date) ? sinceText(c) : "";
   el.innerHTML = '<div class="cs-main">🩺 ' + escHtml(main) + (sub ? ' <span class="cs-sub">' + escHtml(sub) + '</span>' : '') + '</div><span class="cs-sub">Fiche clinique ›</span>' +
     (c.prec ? '<div class="cs-prec"><b>Précautions :</b> ' + escHtml(c.prec) + '</div>' : '');
@@ -6850,10 +7044,11 @@ function renderClinicalCard(patient){
   var card = document.createElement("div");
   card.className = "test-card";
   card.style.gridColumn = "1 / -1";
-  var empty = !(c.patho || c.cote || c.date || c.phase || c.sport || c.objectif || c.prec || c.ant);
+  var empty = !(c.patho || c.cote || c.date || c.phase || c.sport || c.objectif || c.prec || c.ant || (c.zones && c.zones.length));
   var items = [];
   function it(label, val){ if(val) items.push('<div class="clin-item">' + label + '<b>' + escHtml(val) + '</b></div>'); }
   it("Pathologie", c.patho);
+  it("Zone atteinte", (c.zones || []).join(", "));
   it("Côté atteint", c.cote ? COTE_LABELS[c.cote] : "");
   it(c.dateType ? DATE_TYPES[c.dateType] : "Date de départ", c.date ? fmtDate(c.date) + (sinceText(c) ? " · " + sinceText(c) : "") : "");
   it("Phase", c.phase);
@@ -6891,10 +7086,10 @@ function renderClinicalCard(patient){
   return card;
 }
 
-var cliDraft = { cote:"", dom:"" };
+var cliDraft = { cote:"", dom:"", zones:[] };
 function openClinicalModal(patient){
   var c = clin(patient);
-  cliDraft = { cote: c.cote || "", dom: c.dom || "" };
+  cliDraft = { cote: c.cote || "", dom: c.dom || "", zones: (c.zones || []).slice() };
   document.getElementById("cliPatho").value = c.patho || "";
   document.getElementById("cliDate").value = c.date || "";
   document.getElementById("cliDateType").innerHTML = Object.keys(DATE_TYPES).map(function(k){ return '<option value="' + k + '"' + ((c.dateType || "chirurgie") === k ? " selected" : "") + '>' + DATE_TYPES[k] + '</option>'; }).join("");
@@ -6908,10 +7103,13 @@ function openClinicalModal(patient){
   document.getElementById("clinicalOverlay").hidden = false;
 }
 function renderCliChips(){
+  document.getElementById("cliZones").innerHTML = BODY_ZONES.map(function(z){ return '<button type="button" class="chip-btn' + (cliDraft.zones.indexOf(z) !== -1 ? ' on' : '') + '" data-clizone="' + escHtml(z) + '">' + escHtml(z) + '</button>'; }).join("");
   document.getElementById("cliCote").innerHTML = Object.keys(COTE_LABELS).map(function(k){ return '<div class="quality-chip' + (cliDraft.cote === k ? ' selected single' : '') + '" data-clicote="' + k + '">' + COTE_LABELS[k] + '</div>'; }).join("");
   document.getElementById("cliDom").innerHTML = ["D", "G"].map(function(k){ return '<div class="quality-chip' + (cliDraft.dom === k ? ' selected single' : '') + '" data-clidom="' + k + '">' + COTE_LABELS[k] + '</div>'; }).join("");
 }
 document.getElementById("clinicalOverlay").addEventListener("click", function(e){
+  var zc = e.target.closest("[data-clizone]");
+  if(zc){ var zi = cliDraft.zones.indexOf(zc.dataset.clizone); if(zi === -1) cliDraft.zones.push(zc.dataset.clizone); else cliDraft.zones.splice(zi, 1); renderCliChips(); }
   var a = e.target.closest("[data-clicote]"), b = e.target.closest("[data-clidom]");
   if(a){ cliDraft.cote = (cliDraft.cote === a.dataset.clicote) ? "" : a.dataset.clicote; renderCliChips(); }
   if(b){ cliDraft.dom = (cliDraft.dom === b.dataset.clidom) ? "" : b.dataset.clidom; renderCliChips(); }
@@ -6919,7 +7117,7 @@ document.getElementById("clinicalOverlay").addEventListener("click", function(e)
 document.getElementById("closeClinicalBtn").addEventListener("click", function(){ document.getElementById("clinicalOverlay").hidden = true; });
 document.getElementById("saveClinicalBtn").addEventListener("click", function(){
   var patient = getSelectedPatient(), c = clin(patient), v = function(id){ return document.getElementById(id).value.trim(); };
-  c.patho = v("cliPatho").slice(0, 300); c.cote = cliDraft.cote; c.dom = cliDraft.dom;
+  c.patho = v("cliPatho").slice(0, 300); c.cote = cliDraft.cote; c.dom = cliDraft.dom; c.zones = cliDraft.zones.slice();
   c.date = document.getElementById("cliDate").value; c.dateType = document.getElementById("cliDateType").value;
   c.phase = document.getElementById("cliPhase").value; c.sport = v("cliSport").slice(0, 120); c.niveau = document.getElementById("cliNiveau").value;
   c.objectif = v("cliObjectif").slice(0, 600); c.prec = v("cliPrec").slice(0, 600); c.ant = v("cliAnt").slice(0, 600);
@@ -7883,6 +8081,8 @@ function openAnamPush(patient, a){
   var cote = roleItems(a, "cote")[0], debut = roleItems(a, "debut")[0];
   function add(key, label, val, cur, show){ if(val) rows.push({ key: key, label: label, val: val, cur: cur || "", show: show || val }); }
   add("patho", "Pathologie", roleText(a, "motif"), c.patho);
+  var zmap = { "genou": "Genou", "épaule": "Épaule", "cheville / pied": "Cheville", "lombaire / rachis": "Rachis", "hanche": "Hanche" }, zname = zmap[String(a.templateName || "").toLowerCase()];
+  if(zname) add("zones", "Zone atteinte", zname, (c.zones || []).indexOf(zname) !== -1 ? zname : "", zname);
   if(cote) add("cote", "Côté atteint", cote.v, c.cote, COTE_LABELS[cote.v]);
   if(debut && DATE_RE.test(debut.v)) add("date", "Date de départ", debut.v, c.date, fmtDate(debut.v));
   add("ant", "Antécédents", roleText(a, "antecedents"), c.ant);
@@ -7917,6 +8117,7 @@ document.getElementById("anamPushApplyBtn").addEventListener("click", function()
     if(!cb.checked) return;
     var r = pushRows[parseInt(cb.dataset.pushrow)];
     if(!r) return;
+    if(r.key === "zones"){ c.zones = c.zones || []; if(c.zones.indexOf(r.val) === -1) c.zones.push(r.val); n++; return; }
     c[r.key] = r.val; n++;
     if(r.key === "date" && !c.dateType) c.dateType = "symptomes";
   });
@@ -8352,7 +8553,57 @@ document.getElementById("specDeleteBtn").addEventListener("click", function(){
 /* ============================================================
    AGENDA (type Doctolib) : rendez-vous, pointage, déplacement par appui long
    ============================================================ */
-var AG_PX = 1.4, AG_TYPES = ["Séance", "Bilan", "Première consultation", "Autre"], AG_DURS = [15, 30, 45, 60, 90];
+var AG_PX = 1.4, AG_DURS = [15, 30, 45, 60, 90];
+var AG_DEFAULT_TYPES = [ { name:"Séance", color:"#8A93A3", dur:30 }, { name:"Bilan", color:"#1FA971", dur:60 }, { name:"Balnéothérapie", color:"#007BFF", dur:30 } ];
+var BODY_ZONES = ["Rachis", "Épaule", "Coude", "Poignet / main", "Hanche", "Genou", "Cheville", "Pied", "Autre"];
+function agTypes(){
+  var t = state.settings && state.settings.agendaTypes;
+  if(Array.isArray(t) && t.length){
+    var ok = t.filter(function(x){ return x && typeof x.name === "string" && x.name.trim() && /^#[0-9a-fA-F]{6}$/.test(x.color || ""); }).map(function(x){ return { name: x.name.trim().slice(0, 40), color: x.color, dur: clampInt(x.dur, 5, 240, 30) }; });
+    if(ok.length) return ok;
+  }
+  return AG_DEFAULT_TYPES.map(function(x){ return { name:x.name, color:x.color, dur:x.dur }; });
+}
+function agTypeByName(n){ return agTypes().find(function(t){ return t.name === n; }) || { name: n, color: "#8A93A3", dur: 30 }; }
+function hexToRgba(h, a){ var n = parseInt(h.slice(1), 16); return "rgba(" + (n >> 16 & 255) + "," + (n >> 8 & 255) + "," + (n & 255) + "," + a + ")"; }
+function saveAgTypes(list){ state.settings.agendaTypes = list; saveData(); }
+function renderAgTypesList(){
+  var list = agTypes();
+  document.getElementById("agTypesList").innerHTML = list.map(function(t, i){
+    return '<div class="agt-row"><input type="color" value="' + t.color + '" data-agtcolor="' + i + '" aria-label="Couleur"><input data-agtname="' + i + '" value="' + escHtml(t.name) + '" aria-label="Nom du type"><input type="number" data-agtdur="' + i + '" min="5" max="240" step="5" value="' + t.dur + '" aria-label="Durée en minutes"><button type="button" class="del-x" data-agtdel="' + i + '" aria-label="Supprimer ce type">✕</button></div>';
+  }).join("");
+}
+document.getElementById("agTypesList").addEventListener("input", function(e){
+  var c = e.target.closest("[data-agtcolor]");
+  if(!c) return;
+  var list = agTypes(); list[+c.dataset.agtcolor].color = c.value; saveAgTypes(list);
+});
+document.getElementById("agTypesList").addEventListener("change", function(e){
+  var list = agTypes(), el, i;
+  if((el = e.target.closest("[data-agtname]"))){
+    i = +el.dataset.agtname;
+    var nn = el.value.trim().slice(0, 40), old = list[i].name;
+    if(!nn || list.some(function(t, k){ return k !== i && t.name === nn; })){ el.value = old; return; }
+    list[i].name = nn; saveAgTypes(list);
+    agList().forEach(function(a){ if(a.type === old) a.type = nn; });
+    saveData();
+  } else if((el = e.target.closest("[data-agtdur]"))){
+    i = +el.dataset.agtdur; list[i].dur = clampInt(el.value, 5, 240, 30); el.value = list[i].dur; saveAgTypes(list);
+  }
+});
+document.getElementById("agTypesList").addEventListener("click", function(e){
+  var d = e.target.closest("[data-agtdel]");
+  if(!d) return;
+  var list = agTypes();
+  if(list.length <= 1){ alert("Garde au moins un type."); return; }
+  if(!confirm("Supprimer ce type ? Les rendez-vous déjà créés gardent leur nom, avec une couleur grise.")) return;
+  list.splice(+d.dataset.agtdel, 1); saveAgTypes(list); renderAgTypesList();
+});
+document.getElementById("agTypeAddBtn").addEventListener("click", function(){
+  var list = agTypes(), n = "Nouveau type", k = 1;
+  while(list.some(function(t){ return t.name === n; })) n = "Nouveau type " + (++k);
+  list.push({ name: n, color: "#1FA971", dur: 30 }); saveAgTypes(list); renderAgTypesList();
+});
 var agendaDate = todayISO(), agendaView = (typeof window.innerWidth === "number" && window.innerWidth >= 900) ? "week" : "day";
 function pad2(n){ return String(n).padStart(2, "0"); }
 function minToHhmm(m){ return pad2(Math.floor(m / 60)) + ":" + pad2(m % 60); }
@@ -8368,6 +8619,7 @@ function agList(){ if(!Array.isArray(state.agenda)) state.agenda = []; return st
 function patientNameById(id){ var p = state.patients.find(function(x){ return x.id === id; }); return p ? p.name : "Patient supprimé"; }
 function agDays(){
   if(agendaView === "day") return [agendaDate];
+  if(agendaView === "3days") return [agendaDate, addDaysToDate(agendaDate, 1), addDaysToDate(agendaDate, 2)];
   var mon = weekStartOf(agendaDate), d = [];
   for(var i = 0; i < 6; i++) d.push(addDaysToDate(mon, i));
   var sun = addDaysToDate(mon, 6);
@@ -8406,7 +8658,7 @@ function renderAgenda(){
   document.getElementById("agTitle").textContent = agTitle(days);
   document.querySelectorAll("#agSeg button").forEach(function(b){ b.classList.toggle("on", b.dataset.agview === agendaView); });
   var n = days.length, grid = document.getElementById("agGrid");
-  grid.style.gridTemplateColumns = "48px repeat(" + n + ", minmax(" + (n > 1 ? 118 : 0) + "px, 1fr))";
+  grid.style.gridTemplateColumns = "48px repeat(" + n + ", minmax(" + (n > 3 ? 118 : (n > 1 ? 130 : 0)) + "px, 1fr))";
   var h = '<div class="ag-hcell" style="left:0; z-index:7;"></div>';
   days.forEach(function(d){
     var dt = new Date(d + "T00:00:00"), cnt = agList().filter(function(a){ return a.date === d && a.status !== "annule"; }).length;
@@ -8419,19 +8671,24 @@ function renderAgenda(){
   days.forEach(function(d){
     var aps = agList().filter(function(a){ return a.date === d; });
     h += '<div class="ag-col' + (d === today ? ' today' : '') + '" data-date="' + d + '" style="height:' + H + 'px; background-size:100% ' + (60 * AG_PX) + 'px, 100% ' + (30 * AG_PX) + 'px;">';
+    var lay = agPlageLayers(d, rg);
+    h += lay.html + '<div class="ag-aps" style="left:' + lay.pad + 'px;">';
     agLanes(aps).forEach(function(it){
       var ap = it.ap, top = (it.s - rg.lo) * AG_PX, ht = Math.max(it.ap.dur * AG_PX - 2, 30), pat = state.patients.find(function(p){ return p.id === ap.patientId; });
       var hasSession = pat && pat.program && (pat.program.entries[ap.date] || []).length > 0;
-      h += '<div class="ag-ap st-' + ap.status + (it.lanes > 1 ? ' multi' : '') + '" title="' + escHtml(patientNameById(ap.patientId) + ' · ' + ap.start + ' · ' + ap.type + ' · ' + ap.dur + ' min') + '" data-apid="' + escHtml(ap.id) + '" style="top:' + top + 'px; height:' + ht + 'px; left:calc(' + (it.lane / it.lanes * 100) + '% + 2px); width:calc(' + (100 / it.lanes) + '% - 4px);">' +
-        '<button type="button" class="ag-pt" data-appt="' + escHtml(ap.id) + '" aria-label="Pointer ' + escHtml(patientNameById(ap.patientId)) + '">' + (ap.status === "present" ? "✓" : "") + '</button>' +
+      var tcol = ap.status === "annule" ? "#8A93A3" : agTypeByName(ap.type).color;
+      h += '<div class="ag-ap st-' + ap.status + (it.lanes > 1 ? ' multi' : '') + (ht < 56 ? ' short' : '') + '" title="' + escHtml(patientNameById(ap.patientId) + ' · ' + ap.start + ' · ' + ap.type + ((ap.zones && ap.zones.length) ? ' · ' + ap.zones.join(", ") : '') + ' · ' + ap.dur + ' min') + '" data-apid="' + escHtml(ap.id) + '" style="background:' + hexToRgba(tcol, 0.14) + '; border-left-color:' + tcol + '; --tc:' + tcol + '; top:' + top + 'px; height:' + ht + 'px; left:calc(' + (it.lane / it.lanes * 100) + '% + 2px); width:calc(' + (100 / it.lanes) + '% - 4px);">' +
+        '<button type="button" class="ag-pt" style="border-color:' + (ap.status === "prevu" ? tcol : "") + ';" data-appt="' + escHtml(ap.id) + '" aria-label="Pointer ' + escHtml(patientNameById(ap.patientId)) + '">' + (ap.status === "present" ? "✓" : (ap.status === "absent" ? "✕" : "")) + '</button>' +
         '<button type="button" class="ag-more" data-apmore="' + escHtml(ap.id) + '" aria-label="Autres actions">⋯</button>' +
-        '<div><span class="tm">' + ap.start + '</span> <span class="nm">' + escHtml(patientNameById(ap.patientId)) + '</span></div>' +
-        (ht >= 48 ? '<div class="sb">' + escHtml(ap.type) + ' · ' + ap.dur + ' min' + (hasSession ? ' · séance saisie' : '') + '</div>' : '') + '</div>';
+        '<div class="l1"><span class="nm">' + escHtml(patientNameById(ap.patientId)) + '</span><span class="tm">' + ap.start + '</span></div>' +
+        (ht >= 48 ? '<div class="sb">' + escHtml(ap.type) + ((ap.zones && ap.zones.length) ? ' · ' + escHtml(ap.zones.join(", ")) : '') + ' · ' + ap.dur + ' min' + (hasSession ? ' · séance saisie' : '') + '</div>' : '') + '</div>';
     });
+    h += '</div>';
     if(d === today && nowMin >= rg.lo && nowMin <= rg.hi) h += '<div class="ag-now" style="top:' + ((nowMin - rg.lo) * AG_PX) + 'px;"></div>';
     h += '</div>';
   });
   grid.innerHTML = h;
+  document.getElementById("agLegend").innerHTML = agTypes().map(function(t){ return '<span><i style="background:' + t.color + ';"></i>' + escHtml(t.name) + ' · ' + t.dur + ' min</span>'; }).join("");
   var sc = document.getElementById("agScroll");
   if(!renderAgenda.scrolled){ sc.scrollTop = Math.max(0, ((days.indexOf(today) !== -1 ? nowMin : 8 * 60) - rg.lo - 60) * AG_PX); renderAgenda.scrolled = true; }
 }
@@ -8460,18 +8717,21 @@ document.getElementById("agendaView").addEventListener("click", function(e){
   var t;
   if((t = e.target.closest("[data-agnav]"))){
     var d = parseInt(t.dataset.agnav);
-    agendaDate = d === 0 ? todayISO() : addDaysToDate(agendaDate, d * (agendaView === "week" ? 7 : 1));
+    agendaDate = d === 0 ? todayISO() : addDaysToDate(agendaDate, d * (agendaView === "week" ? 7 : (agendaView === "3days" ? 3 : 1)));
     renderAgenda.scrolled = false; renderAgenda(); return;
   }
   if((t = e.target.closest("[data-agview]"))){ agendaView = t.dataset.agview; renderAgenda(); return; }
   if(e.target.closest("#agNewBtn")){ openApptModal({ date: agendaDate, start: minToHhmm(Math.max(agCfg().start * 60, 9 * 60)) }); return; }
+  if((t = e.target.closest(".ag-pstrip"))){ e.stopPropagation(); openPlageSheet({ plageId: t.dataset.plage || "", closureId: t.dataset.plclosure || "", date: t.dataset.pdate }); return; }
   if((t = e.target.closest("[data-appt]"))){ e.stopPropagation(); var a1 = agFind(t.dataset.appt); if(a1) agToggleCheck(a1); return; }
   if((t = e.target.closest("[data-apmore]"))){ e.stopPropagation(); openApptSheet(t.dataset.apmore); return; }
   if((t = e.target.closest(".ag-ap"))){ var a2 = agFind(t.dataset.apid); if(a2) openAgendaSession(a2); return; }
   if((t = e.target.closest(".ag-col"))){
     var rg = agRange(), y = e.clientY - t.getBoundingClientRect().top;
     var min = Math.max(rg.lo, Math.min(rg.hi - agCfg().dur, agSnap(rg.lo + y / AG_PX, rg.step)));
-    openApptModal({ date: t.dataset.date, start: minToHhmm(min) });
+    var at = agPlageAt(t.dataset.date, min);
+    if(at && (at.closed || at.off) && !confirm(at.closed ? "Cette plage est fermée (" + at.label + "). Créer quand même un rendez-vous ?" : "Ce créneau est en dehors de tes plages d'ouverture. Créer quand même un rendez-vous ?")) return;
+    openApptModal({ date: t.dataset.date, start: minToHhmm(min), type: at && at.plage && at.plage.defaultType ? at.plage.defaultType : undefined });
   }
 });
 
@@ -8579,17 +8839,22 @@ document.getElementById("apptSheet").addEventListener("click", function(e){
   else if(act === "absent"){ ap.status = ap.status === "absent" ? "prevu" : "absent"; delete ap.checkedAt; saveData(); renderAgenda(); }
   else if(act === "cancel"){ ap.status = ap.status === "annule" ? "prevu" : "annule"; delete ap.checkedAt; saveData(); renderAgenda(); }
   else if(act === "edit") openApptModal({ id: ap.id });
-  else if(act === "dup") openApptModal({ patientId: ap.patientId, date: addDaysToDate(ap.date, 7), start: ap.start, dur: ap.dur, type: ap.type, note: ap.note });
-  else if(act === "del"){ if(confirm("Supprimer ce rendez-vous ?")){ state.agenda = agList().filter(function(a){ return a.id !== ap.id; }); saveData(); renderAgenda(); } }
+  else if(act === "dup") openApptModal({ patientId: ap.patientId, date: addDaysToDate(ap.date, 7), start: ap.start, dur: ap.dur, type: ap.type, note: ap.note, zones: ap.zones || [] });
+  else if(act === "del"){ if(confirm("Supprimer ce rendez-vous ?")){ addTombstone("agenda", ap.id); state.agenda = agList().filter(function(a){ return a.id !== ap.id; }); saveData(); renderAgenda(); } }
   else if(act === "delseries"){
     if(confirm("Supprimer ce rendez-vous et tous les suivants de la série ?")){
+      agList().forEach(function(a){ if(a.seriesId === ap.seriesId && a.date >= ap.date) addTombstone("agenda", a.id); });
       state.agenda = agList().filter(function(a){ return !(a.seriesId === ap.seriesId && a.date >= ap.date); }); saveData(); renderAgenda();
     }
   }
 });
 
 /* ----- création / modification ----- */
-var apEditId = null, apDur = 30, apType = "Séance";
+var apEditId = null, apDur = 30, apType = "Séance", apDurManual = false, apZones = [], apZonesManual = false;
+function zonesOfPatient(pid){ var p = state.patients.find(function(x){ return x.id === pid; }); return p && p.clinical && Array.isArray(p.clinical.zones) ? p.clinical.zones.slice() : []; }
+function renderApZones(){
+  document.getElementById("apZones").innerHTML = BODY_ZONES.map(function(z){ return '<button type="button" class="chip-btn' + (apZones.indexOf(z) !== -1 ? ' on' : '') + '" data-apzone="' + escHtml(z) + '">' + escHtml(z) + '</button>'; }).join("");
+}
 function openApptModal(o){
   var cfg = agCfg(), ap = o.id ? agFind(o.id) : null;
   apEditId = ap ? ap.id : null;
@@ -8599,7 +8864,10 @@ function openApptModal(o){
   document.getElementById("apNewName").hidden = sel.value !== "__new__"; document.getElementById("apNewName").value = "";
   document.getElementById("apDate").value = ap ? ap.date : (o.date || todayISO());
   document.getElementById("apTime").value = ap ? ap.start : (o.start || "09:00");
-  apDur = ap ? ap.dur : (o.dur || cfg.dur); apType = ap ? ap.type : (o.type || "Séance");
+  apType = ap ? ap.type : (o.type || agTypes()[0].name);
+  apDur = ap ? ap.dur : (o.dur || agTypeByName(apType).dur); apDurManual = !!o.dur;
+  apZones = ap ? (ap.zones || []).slice() : (o.zones ? o.zones.slice() : zonesOfPatient(pid)); apZonesManual = !!ap || !!o.zones;
+  renderApZones();
   document.getElementById("apNote").value = ap ? (ap.note || "") : (o.note || "");
   document.getElementById("apRepeatWrap").hidden = !!ap;
   document.getElementById("apRepeat").value = "none"; document.getElementById("apRepeatN").hidden = true;
@@ -8609,14 +8877,21 @@ function openApptModal(o){
 function renderApChips(){
   var durs = AG_DURS.slice(); if(durs.indexOf(apDur) === -1) durs.push(apDur); durs.sort(function(a, b){ return a - b; });
   document.getElementById("apDur").innerHTML = durs.map(function(d){ return '<button type="button" class="chip-btn' + (d === apDur ? ' on' : '') + '" data-apdur="' + d + '">' + d + ' min</button>'; }).join("");
-  document.getElementById("apType").innerHTML = AG_TYPES.map(function(t){ return '<button type="button" class="chip-btn' + (t === apType ? ' on' : '') + '" data-aptype="' + escHtml(t) + '">' + escHtml(t) + '</button>'; }).join("");
+  var types = agTypes();
+  if(!types.some(function(t){ return t.name === apType; })) types.push({ name: apType, color: "#8A93A3", dur: apDur });
+  document.getElementById("apType").innerHTML = types.map(function(t){ return '<button type="button" class="chip-btn' + (t.name === apType ? ' on' : '') + '" data-aptype="' + escHtml(t.name) + '"><span class="dot" style="background:' + t.color + ';"></span>' + escHtml(t.name) + '</button>'; }).join("");
 }
 document.getElementById("apptOverlay").addEventListener("click", function(e){
+  var zc = e.target.closest("[data-apzone]");
+  if(zc){ var zi = apZones.indexOf(zc.dataset.apzone); if(zi === -1) apZones.push(zc.dataset.apzone); else apZones.splice(zi, 1); apZonesManual = true; renderApZones(); }
   var d = e.target.closest("[data-apdur]"), t = e.target.closest("[data-aptype]");
-  if(d){ apDur = parseInt(d.dataset.apdur); renderApChips(); }
-  if(t){ apType = t.dataset.aptype; renderApChips(); }
+  if(d){ apDur = parseInt(d.dataset.apdur); apDurManual = true; renderApChips(); }
+  if(t){ apType = t.dataset.aptype; if(!apEditId && !apDurManual) apDur = agTypeByName(apType).dur; renderApChips(); }
 });
-document.getElementById("apPatient").addEventListener("change", function(){ document.getElementById("apNewName").hidden = this.value !== "__new__"; });
+document.getElementById("apPatient").addEventListener("change", function(){
+  document.getElementById("apNewName").hidden = this.value !== "__new__";
+  if(!apZonesManual){ apZones = this.value === "__new__" ? [] : zonesOfPatient(this.value); renderApZones(); }
+});
 document.getElementById("apRepeat").addEventListener("change", function(){ document.getElementById("apRepeatN").hidden = this.value !== "weekly"; });
 document.getElementById("apCloseBtn").addEventListener("click", function(){ document.getElementById("apptOverlay").hidden = true; });
 document.getElementById("apSaveBtn").addEventListener("click", function(){
@@ -8631,10 +8906,10 @@ document.getElementById("apSaveBtn").addEventListener("click", function(){
   var note = document.getElementById("apNote").value.trim().slice(0, 500);
   if(apEditId){
     var ap = agFind(apEditId);
-    ap.patientId = pid; ap.date = date; ap.start = time; ap.dur = apDur; ap.type = apType; ap.note = note;
+    ap.patientId = pid; ap.date = date; ap.start = time; ap.dur = apDur; ap.type = apType; ap.note = note; ap.zones = apZones.slice();
   } else {
     var rep = document.getElementById("apRepeat").value === "weekly" ? clampInt(document.getElementById("apRepeatN").value, 2, 52, 8) : 1, sid = rep > 1 ? uid() : undefined;
-    for(var i = 0; i < rep; i++) agList().push({ id: uid(), patientId: pid, date: addDaysToDate(date, 7 * i), start: time, dur: apDur, type: apType, status: "prevu", note: note, seriesId: sid });
+    for(var i = 0; i < rep; i++) agList().push({ id: uid(), patientId: pid, date: addDaysToDate(date, 7 * i), start: time, dur: apDur, type: apType, status: "prevu", note: note, zones: apZones.slice(), seriesId: sid });
   }
   saveData();
   document.getElementById("apptOverlay").hidden = true;
@@ -8648,6 +8923,453 @@ document.getElementById("apSaveBtn").addEventListener("click", function(){
   wrap.hidden = false;
   if(old && old.parentNode) old.parentNode.removeChild(old);
 })();
+
+/* ============================================================
+   FUSION DE DEUX APPAREILS (le plus récent gagne, rien n'est perdu sans pouvoir annuler)
+   ============================================================ */
+function maxStamp(a, b){ return (a || "") >= (b || "") ? a : b; }
+function mergeStates(local, remote){
+  if(!Array.isArray(local.agenda)) local.agenda = [];
+  var rep = { addedP: 0, updatedP: 0, removedP: 0, conflictsP: 0, addedA: 0, updatedA: 0, removedA: 0, addedO: 0, updatedO: 0, removedO: 0 };
+  var tl = local.tombstones || {}, tr = remote.tombstones || {};
+  var tomb = {};
+  TOMB_KINDS.forEach(function(k){
+    tomb[k] = {};
+    Object.keys(tl[k] || {}).forEach(function(id){ tomb[k][id] = tl[k][id]; });
+    Object.keys(tr[k] || {}).forEach(function(id){ tomb[k][id] = maxStamp(tomb[k][id], tr[k][id]); });
+  });
+  var cutoff = new Date(Date.now() - 120 * 86400000).toISOString();
+  var byId = {};
+  local.patients.forEach(function(p){ byId[p.id] = p; });
+  remote.patients.forEach(function(rp){
+    var lp = byId[rp.id], ru = rp.updatedAt || "";
+    if(!lp){
+      if(tomb.patients[rp.id] && tomb.patients[rp.id] >= ru) return;
+      local.patients.push(rp); byId[rp.id] = rp; rep.addedP++;
+    } else {
+      var lu = lp.updatedAt || "";
+      if(ru > lu){ local.patients[local.patients.indexOf(lp)] = rp; byId[rp.id] = rp; rep.updatedP++; }
+      else if(ru === lu && lp._sig !== rp._sig){
+        var tag = rp.id + ":" + rp._sig;
+        if(!local.patients.some(function(x){ return x.conflictOf === tag; })){
+          var copy = JSON.parse(JSON.stringify(rp)); copy.id = uid(); copy.name = rp.name + " (autre appareil)"; copy.conflictOf = tag; delete copy._sig;
+          local.patients.push(copy); rep.conflictsP++;
+        }
+      }
+    }
+  });
+  local.patients = local.patients.filter(function(p){
+    var t = tomb.patients[p.id];
+    if(t && t >= (p.updatedAt || "")){ rep.removedP++; return false; }
+    return true;
+  });
+  var ids = {}; local.patients.forEach(function(p){ ids[p.id] = 1; });
+  STAMPED_LISTS.forEach(function(k){
+    var L = local[k] = Array.isArray(local[k]) ? local[k] : [], R = Array.isArray(remote[k]) ? remote[k] : [], idx = {}, add = k === "agenda" ? "addedA" : "addedO", upd = k === "agenda" ? "updatedA" : "updatedO", rem = k === "agenda" ? "removedA" : "removedO";
+    L.forEach(function(x){ idx[x.id] = x; });
+    R.forEach(function(rx){
+      var lx = idx[rx.id], ru = rx.updatedAt || "";
+      if(!lx){ if(tomb[k][rx.id] && tomb[k][rx.id] >= ru) return; L.push(rx); idx[rx.id] = rx; rep[add]++; }
+      else if(ru > (lx.updatedAt || "")){ L[L.indexOf(lx)] = rx; idx[rx.id] = rx; rep[upd]++; }
+    });
+    local[k] = L.filter(function(x){
+      var t = tomb[k][x.id];
+      if((t && t >= (x.updatedAt || "")) || (k === "agenda" && !ids[x.patientId])){ rep[rem]++; return false; }
+      return true;
+    });
+  });
+  TOMB_KINDS.forEach(function(k){ Object.keys(tomb[k]).forEach(function(id){ if(tomb[k][id] < cutoff) delete tomb[k][id]; }); });
+  local.tombstones = tomb;
+  function unionBy(la, ra, keyFn){
+    var seen = {}; la.forEach(function(x){ seen[keyFn(x)] = 1; });
+    ra.forEach(function(x){ var k = keyFn(x); if(!seen[k]){ la.push(x); seen[k] = 1; } });
+  }
+  var keyOf = function(x){ return (x && (x.id || x.name)) || fnvHash(JSON.stringify(x)); };
+  unionBy(local.anamTemplates = local.anamTemplates || [], remote.anamTemplates || [], keyOf);
+  unionBy(local.functionalMovements = local.functionalMovements || [], remote.functionalMovements || [], keyOf);
+  unionBy(local.presetsPerso = local.presetsPerso || [], remote.presetsPerso || [], keyOf);
+  return rep;
+}
+function mergeSummaryHtml(rep){
+  var lines = [];
+  if(rep.addedP) lines.push(rep.addedP + " patient(s) ajouté(s)");
+  if(rep.updatedP) lines.push(rep.updatedP + " patient(s) mis à jour (version plus récente)");
+  if(rep.conflictsP) lines.push(rep.conflictsP + " conflit(s) : la version de l'autre appareil a été ajoutée comme « (autre appareil) »");
+  if(rep.removedP) lines.push(rep.removedP + " patient(s) supprimé(s) sur l'autre appareil");
+  if(rep.addedA) lines.push(rep.addedA + " rendez-vous ajouté(s)");
+  if(rep.updatedA) lines.push(rep.updatedA + " rendez-vous mis à jour");
+  if(rep.removedA) lines.push(rep.removedA + " rendez-vous retiré(s)");
+  if(rep.addedO || rep.updatedO || rep.removedO) lines.push("plages et fermetures : " + rep.addedO + " ajoutée(s), " + rep.updatedO + " mise(s) à jour, " + rep.removedO + " retirée(s)");
+  return lines.length ? '<ul class="kp-list">' + lines.map(function(l){ return '<li>' + l + '</li>'; }).join("") + '</ul>' : '<div class="tc-sub">Les deux appareils étaient déjà identiques : rien à changer.</div>';
+}
+var pendingImport = null;
+function openMergeChoice(imported){
+  pendingImport = imported;
+  var np = imported.patients.length, na = (imported.agenda || []).length;
+  document.getElementById("mergeBody").innerHTML = '<p>Cette sauvegarde contient <b>' + np + ' patient(s)</b> et <b>' + na + ' rendez-vous</b>.</p><p class="tc-sub"><b>Fusionner</b> (recommandé) : garde, pour chaque patient et chaque rendez-vous, la version la plus récente, et ajoute ce qui manque. <b>Remplacer</b> : efface tout ce qui est sur cet appareil. Dans les deux cas, tu pourras annuler.</p>';
+  document.getElementById("mergeActions").innerHTML = '<button class="btn-ghost btn-danger" id="mergeReplaceBtn">Remplacer tout</button><button class="btn-primary" id="mergeDoBtn">Fusionner</button>';
+  document.getElementById("mergeOverlay").hidden = false;
+}
+function snapshotBeforeMerge(){ idbPut("premerge", { at: new Date().toISOString(), json: JSON.stringify(state) }); }
+document.getElementById("mergeOverlay").addEventListener("click", function(e){
+  if(e.target.closest("#mergeDoBtn") && pendingImport){
+    snapshotBeforeMerge();
+    try{
+      var remote = normalizeState(pendingImport); pendingImport = null;
+      resigAll(remote);
+      var rep = mergeStates(state, remote);
+      state = normalizeState(state); migratePeriodizationData(); resigAll(state);
+      saveData(); renderAll(); updateBackupUi();
+      document.getElementById("mergeBody").innerHTML = '<p><b>Fusion terminée.</b></p>' + mergeSummaryHtml(rep);
+      document.getElementById("mergeActions").innerHTML = '<button class="btn-ghost" id="mergeUndoBtn">Annuler la fusion</button><button class="btn-primary" id="mergeOkBtn">OK</button>';
+    }catch(err){ alert("Fusion impossible : " + err.message); document.getElementById("mergeOverlay").hidden = true; }
+  } else if(e.target.closest("#mergeReplaceBtn") && pendingImport){
+    if(!confirm("Remplacer toutes les données de cet appareil ?")) return;
+    snapshotBeforeMerge();
+    var imp = pendingImport; pendingImport = null;
+    document.getElementById("mergeOverlay").hidden = true;
+    replaceState(imp);
+  } else if(e.target.closest("#mergeUndoBtn")){ undoMerge(true); }
+  else if(e.target.closest("#mergeOkBtn")) document.getElementById("mergeOverlay").hidden = true;
+});
+function undoMerge(fromModal){
+  idbGet("premerge", function(b){
+    if(!b || !b.json){ alert("Aucune fusion à annuler."); return; }
+    try{
+      var o = JSON.parse(b.json);
+      if(fromModal || confirm("Revenir aux données d'avant la dernière fusion (" + fmtDate(String(b.at).slice(0, 10)) + ") ?")){
+        document.getElementById("mergeOverlay").hidden = true;
+        replaceState(cleanImported(o, "", "", 0));
+        idbPut("premerge", null);
+      }
+    }catch(err){ alert("Impossible de restaurer."); }
+  });
+}
+document.getElementById("mergeCloseBtn").addEventListener("click", function(){ document.getElementById("mergeOverlay").hidden = true; pendingImport = null; });
+document.getElementById("undoMergeBtn").addEventListener("click", function(){ undoMerge(false); });
+
+/* ============================================================
+   PLAGES (horaires de la semaine) ET FERMETURES
+   ============================================================ */
+var PLAGE_COLORS = [ { name: "Aucune", hex: "" }, { name: "Bleuté", hex: "#007BFF" }, { name: "Vert", hex: "#1FA971" }, { name: "Gris", hex: "#8A93A3" }, { name: "Orange", hex: "#E58A00" } ];
+var WD_LABELS = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"], WD_LONG = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"];
+function plList(){ if(!Array.isArray(state.plages)) state.plages = []; return state.plages; }
+function clList(){ if(!Array.isArray(state.closures)) state.closures = []; return state.closures; }
+function isoWeekday(k){ return ((new Date(k + "T00:00:00").getDay() + 6) % 7) + 1; }
+function seedPlagesIfNeeded(){
+  if(state.plages !== undefined || isAutonomous()) return;
+  state.plages = [
+    { id: "seed-mar-balneo", days: [2], start: "07:00", end: "08:00", label: "Balnéothérapie", color: "#007BFF", defaultType: "Balnéothérapie" },
+    { id: "seed-mar-matin", days: [2], start: "08:00", end: "12:00", label: "Consultations", color: "", defaultType: "" },
+    { id: "seed-mar-aprem", days: [2], start: "14:00", end: "17:00", label: "Consultations", color: "", defaultType: "" }
+  ];
+  if(!Array.isArray(state.closures)) state.closures = [];
+  saveData();
+}
+function agPlagesFor(d){
+  var wd = isoWeekday(d);
+  var list = plList().filter(function(p){ return p.days.indexOf(wd) !== -1; }).sort(function(a, b){ return a.start.localeCompare(b.start); });
+  var dayClosed = clList().find(function(c){ return !c.plageId && c.from <= d && d <= c.to; }) || null;
+  var ranges = list.map(function(p){ return { p: p, closure: clList().find(function(c){ return c.plageId === p.id && c.from <= d && d <= c.to; }) || null }; });
+  return { ranges: ranges, dayClosed: dayClosed };
+}
+function agPlageAt(d, min){
+  var info = agPlagesFor(d);
+  if(info.dayClosed) return { closed: true, label: info.dayClosed.label || "Fermé" };
+  if(!info.ranges.length) return null;
+  for(var i = 0; i < info.ranges.length; i++){
+    var r = info.ranges[i], s0 = hhmmToMin(r.p.start), e0 = hhmmToMin(r.p.end);
+    if(min >= s0 && min < e0) return r.closure ? { closed: true, label: r.closure.label || ("Fermé · " + r.p.label) } : { plage: r.p };
+  }
+  return { off: true };
+}
+function agPlageLayers(d, rg){
+  var info = agPlagesFor(d), lo = rg.lo, hi = rg.hi, h = "";
+  function y(m){ return (Math.max(lo, Math.min(hi, m)) - lo) * AG_PX; }
+  function strip(top, bot, label, color, attrs, closed){
+    var ht = bot - top;
+    var bg = closed ? "rgba(11,18,32,0.16)" : hexToRgba(color || "#8A93A3", color ? 0.30 : 0.14), fg = closed ? "#4b5565" : (color ? color : "#6b7380");
+    return '<button type="button" class="ag-pstrip" style="top:' + top + 'px; height:' + ht + 'px; background:' + bg + '; color:' + fg + ';" ' + attrs + ' aria-label="Modifier : ' + escHtml(label) + '" title="' + escHtml(label) + ' — toucher pour modifier ou fermer"><span>' + (ht >= 60 ? "✎ " : "") + escHtml(label) + '</span></button>';
+  }
+  if(info.dayClosed){
+    var cl = info.dayClosed;
+    return { html: '<div class="ag-closed" style="top:0; height:' + y(hi) + 'px;"></div>' + strip(0, y(hi), "Fermé" + (cl.label ? " · " + cl.label : ""), "", 'data-plclosure="' + escHtml(cl.id) + '" data-pdate="' + d + '"', true), pad: 24 };
+  }
+  if(!info.ranges.length) return { html: "", pad: 0 };
+  var iv = info.ranges.map(function(r){ return [hhmmToMin(r.p.start), hhmmToMin(r.p.end)]; }).sort(function(a, b){ return a[0] - b[0]; }), cur = lo;
+  iv.forEach(function(v){ if(v[0] > cur) h += '<div class="ag-off" style="top:' + y(cur) + 'px; height:' + (y(v[0]) - y(cur)) + 'px;"></div>'; cur = Math.max(cur, v[1]); });
+  if(cur < hi) h += '<div class="ag-off" style="top:' + y(cur) + 'px; height:' + (y(hi) - y(cur)) + 'px;"></div>';
+  info.ranges.forEach(function(r){
+    var s0 = Math.max(lo, hhmmToMin(r.p.start)), e0 = Math.min(hi, hhmmToMin(r.p.end));
+    if(e0 <= s0) return;
+    var top = y(s0), bot = y(e0), attrs = 'data-plage="' + escHtml(r.p.id) + '" data-pdate="' + d + '"';
+    if(r.closure){ h += '<div class="ag-closed" style="top:' + top + 'px; height:' + (bot - top) + 'px;"></div>' + strip(top, bot, "Fermé · " + r.p.label + (r.closure.label ? " (" + r.closure.label + ")" : ""), "", attrs, true); }
+    else {
+      if(r.p.color) h += '<div class="ag-pfill" style="top:' + top + 'px; height:' + (bot - top) + 'px; background:' + hexToRgba(r.p.color, 0.11) + ';"></div>';
+      if(bot - top >= 40) h += '<div class="ag-plabel" style="top:' + (top + 3) + 'px; color:' + (r.p.color || "#8a93a3") + ';">' + escHtml(r.p.label) + ' · ' + r.p.start + '–' + r.p.end + '</div>';
+      h += strip(top, bot, r.p.label, r.p.color, attrs, false);
+    }
+  });
+  return { html: h, pad: 24 };
+}
+
+/* ----- feuille d'actions d'une plage ----- */
+var plsCtx = null;
+function fmtDayLong(d){ return new Date(d + "T00:00:00").toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" }); }
+function openPlageSheet(ctx){
+  plsCtx = ctx;
+  var p = ctx.plageId ? plList().find(function(x){ return x.id === ctx.plageId; }) : null, cl = ctx.closureId ? clList().find(function(x){ return x.id === ctx.closureId; }) : null;
+  var info = agPlagesFor(ctx.date), plClosure = p ? (info.ranges.find(function(r){ return r.p.id === p.id; }) || {}).closure : null, closed = cl || plClosure;
+  var h = '<div class="as-sub">' + fmtDayLong(ctx.date) + (p ? ' · ' + p.start + ' – ' + p.end : '') + (closed ? ' · <b>fermé</b>' + (closed.label ? ' (' + escHtml(closed.label) + ')' : '') : '') + '</div>';
+  if(closed){
+    h += '<button type="button" class="as-item" data-plact="reopen">Rouvrir le ' + fmtDayLong(ctx.date) + '</button>';
+    h += '<button type="button" class="as-item" data-plact="editclosure" data-id="' + escHtml(closed.id) + '">Modifier la fermeture (dates, motif)…</button>';
+    h += '<button type="button" class="as-item danger" data-plact="delclosure" data-id="' + escHtml(closed.id) + '">Supprimer la fermeture</button>';
+  } else {
+    h += '<button type="button" class="as-item" data-plact="edit">Modifier la plage (toutes les semaines)…</button>';
+    h += '<button type="button" class="as-item" data-plact="closeday">Fermer cette plage le ' + fmtDayLong(ctx.date) + '</button>';
+    h += '<button type="button" class="as-item" data-plact="closeallday">Fermer toute la journée du ' + fmtDayLong(ctx.date) + '</button>';
+    h += '<button type="button" class="as-item" data-plact="closeperiod">Fermer sur une période…</button>';
+    h += '<div class="as-sub" style="margin-top:8px;">Couleur du fond</div><div class="chip-row" style="padding:0 4px 10px;">' + PLAGE_COLORS.map(function(c){ return '<button type="button" class="chip-btn' + (p && (p.color || "") === c.hex ? ' on' : '') + '" data-plact="color" data-hex="' + c.hex + '">' + (c.hex ? '<span class="dot" style="background:' + c.hex + ';"></span>' : '') + escHtml(c.name) + '</button>'; }).join("") + '</div>';
+    h += '<button type="button" class="as-item danger" data-plact="del">Supprimer la plage…</button>';
+  }
+  document.getElementById("plsTitle").textContent = p ? p.label : "Fermeture";
+  document.getElementById("plsBody").innerHTML = h;
+  document.getElementById("plageSheet").hidden = false;
+}
+function reopenOn(cl, d){
+  var list = clList();
+  if(cl.from === cl.to){ addTombstone("closures", cl.id); state.closures = list.filter(function(x){ return x.id !== cl.id; }); }
+  else if(d === cl.from){ cl.from = addDaysToDate(d, 1); }
+  else if(d === cl.to){ cl.to = addDaysToDate(d, -1); }
+  else { var tail = { id: uid(), from: addDaysToDate(d, 1), to: cl.to, plageId: cl.plageId, label: cl.label }; cl.to = addDaysToDate(d, -1); list.push(tail); }
+}
+document.getElementById("plsCloseBtn").addEventListener("click", function(){ document.getElementById("plageSheet").hidden = true; });
+document.getElementById("plageSheet").addEventListener("click", function(e){
+  if(e.target === this){ this.hidden = true; return; }
+  var b = e.target.closest("[data-plact]");
+  if(!b || !plsCtx) return;
+  var act = b.dataset.plact, ctx = plsCtx, p = ctx.plageId ? plList().find(function(x){ return x.id === ctx.plageId; }) : null;
+  if(act !== "color") document.getElementById("plageSheet").hidden = true;
+  if(act === "edit") openPlageModal(p.id);
+  else if(act === "closeday"){ clList().push({ id: uid(), from: ctx.date, to: ctx.date, plageId: p.id, label: "" }); saveData(); renderAgenda(); }
+  else if(act === "closeallday"){ clList().push({ id: uid(), from: ctx.date, to: ctx.date, plageId: "", label: "" }); saveData(); renderAgenda(); }
+  else if(act === "closeperiod") openClosureModal({ plageId: p ? p.id : "", from: ctx.date, to: ctx.date });
+  else if(act === "color"){ p.color = b.dataset.hex; saveData(); renderAgenda(); openPlageSheet(ctx); }
+  else if(act === "del"){
+    if(confirm("Supprimer la plage « " + p.label + " » pour toutes les semaines ? Les rendez-vous ne sont pas touchés.")){
+      addTombstone("plages", p.id);
+      state.plages = plList().filter(function(x){ return x.id !== p.id; });
+      clList().filter(function(c){ return c.plageId === p.id; }).forEach(function(c){ addTombstone("closures", c.id); });
+      state.closures = clList().filter(function(c){ return c.plageId !== p.id; });
+      saveData(); renderAgenda();
+    }
+  }
+  else if(act === "reopen"){
+    var info = agPlagesFor(ctx.date), closure = (ctx.closureId && clList().find(function(x){ return x.id === ctx.closureId; })) || info.dayClosed || ((info.ranges.find(function(r){ return p && r.p.id === p.id; }) || {}).closure);
+    if(closure){ reopenOn(closure, ctx.date); saveData(); renderAgenda(); }
+  }
+  else if(act === "editclosure"){ var c1 = clList().find(function(x){ return x.id === b.dataset.id; }); if(c1) openClosureModal({ id: c1.id }); }
+  else if(act === "delclosure"){ if(confirm("Supprimer cette fermeture ?")){ addTombstone("closures", b.dataset.id); state.closures = clList().filter(function(x){ return x.id !== b.dataset.id; }); saveData(); renderAgenda(); } }
+});
+
+/* ----- création / modification d'une plage ----- */
+var plEditId = null, plDays = [], plColor = "";
+function openPlageModal(id){
+  var p = id ? plList().find(function(x){ return x.id === id; }) : null;
+  plEditId = p ? p.id : null;
+  document.getElementById("plTitle").textContent = p ? "Modifier la plage" : "Nouvelle plage";
+  document.getElementById("plLabel").value = p ? p.label : "";
+  plDays = p ? p.days.slice() : [isoWeekday(agendaDate)];
+  document.getElementById("plStart").value = p ? p.start : "08:00";
+  document.getElementById("plEnd").value = p ? p.end : "12:00";
+  plColor = p ? (p.color || "") : "";
+  document.getElementById("plType").innerHTML = '<option value="">(aucun)</option>' + agTypes().map(function(t){ return '<option value="' + escHtml(t.name) + '"' + (p && p.defaultType === t.name ? " selected" : "") + '>' + escHtml(t.name) + '</option>'; }).join("");
+  document.getElementById("plDeleteBtn").hidden = !p;
+  renderPlChips();
+  document.getElementById("plageOverlay").hidden = false;
+}
+function renderPlChips(){
+  document.getElementById("plDays").innerHTML = WD_LABELS.map(function(l, i){ return '<button type="button" class="chip-btn' + (plDays.indexOf(i + 1) !== -1 ? ' on' : '') + '" data-plday="' + (i + 1) + '">' + l + '</button>'; }).join("");
+  document.getElementById("plColors").innerHTML = PLAGE_COLORS.map(function(c){ return '<button type="button" class="chip-btn' + (plColor === c.hex ? ' on' : '') + '" data-plcolor="' + c.hex + '">' + (c.hex ? '<span class="dot" style="background:' + c.hex + ';"></span>' : '') + escHtml(c.name) + '</button>'; }).join("");
+}
+document.getElementById("plageOverlay").addEventListener("click", function(e){
+  var d = e.target.closest("[data-plday]"), c = e.target.closest("[data-plcolor]");
+  if(d){ var v = parseInt(d.dataset.plday), i = plDays.indexOf(v); if(i === -1) plDays.push(v); else plDays.splice(i, 1); renderPlChips(); }
+  if(c){ plColor = c.dataset.plcolor; renderPlChips(); }
+});
+document.getElementById("plCloseBtn").addEventListener("click", function(){ document.getElementById("plageOverlay").hidden = true; });
+document.getElementById("plSaveBtn").addEventListener("click", function(){
+  var st = document.getElementById("plStart").value, en = document.getElementById("plEnd").value;
+  if(!plDays.length){ alert("Choisis au moins un jour."); return; }
+  if(hhmmToMin(st) === null || hhmmToMin(en) === null || hhmmToMin(st) >= hhmmToMin(en)){ alert("L'heure de fin doit être après le début."); return; }
+  var o = { days: plDays.slice().sort(), start: st, end: en, label: document.getElementById("plLabel").value.trim().slice(0, 40) || "Plage", color: plColor, defaultType: document.getElementById("plType").value };
+  if(plEditId){ var p = plList().find(function(x){ return x.id === plEditId; }); Object.keys(o).forEach(function(k){ p[k] = o[k]; }); }
+  else { o.id = uid(); plList().push(o); }
+  saveData();
+  document.getElementById("plageOverlay").hidden = true;
+  if(appMode === "agenda") renderAgenda();
+  if(!document.getElementById("plagesMgrOverlay").hidden) renderPlagesMgr();
+});
+document.getElementById("plDeleteBtn").addEventListener("click", function(){
+  var p = plList().find(function(x){ return x.id === plEditId; });
+  if(!p || !confirm("Supprimer la plage « " + p.label + " » pour toutes les semaines ?")) return;
+  addTombstone("plages", p.id); state.plages = plList().filter(function(x){ return x.id !== p.id; });
+  clList().filter(function(c){ return c.plageId === p.id; }).forEach(function(c){ addTombstone("closures", c.id); });
+  state.closures = clList().filter(function(c){ return c.plageId !== p.id; });
+  saveData(); document.getElementById("plageOverlay").hidden = true;
+  if(appMode === "agenda") renderAgenda();
+  if(!document.getElementById("plagesMgrOverlay").hidden) renderPlagesMgr();
+});
+
+/* ----- fermeture ----- */
+var clEditId = null;
+function openClosureModal(o){
+  var c = o.id ? clList().find(function(x){ return x.id === o.id; }) : null;
+  clEditId = c ? c.id : null;
+  document.getElementById("clTitle").textContent = c ? "Modifier la fermeture" : "Fermer une plage ou une période";
+  var scope = c ? c.plageId : (o.plageId || "");
+  document.getElementById("clScope").innerHTML = '<option value="">Toutes les plages (journée entière)</option>' + plList().map(function(p){ return '<option value="' + escHtml(p.id) + '"' + (p.id === scope ? " selected" : "") + '>' + escHtml(p.label) + ' (' + p.days.map(function(d){ return WD_LABELS[d - 1]; }).join(", ") + ' ' + p.start + '–' + p.end + ')</option>'; }).join("");
+  document.getElementById("clFrom").value = c ? c.from : (o.from || agendaDate);
+  document.getElementById("clTo").value = c ? c.to : (o.to || o.from || agendaDate);
+  document.getElementById("clLabel").value = c ? (c.label || "") : "";
+  document.getElementById("clDeleteBtn").hidden = !c;
+  document.getElementById("closureOverlay").hidden = false;
+}
+document.getElementById("clCloseBtn").addEventListener("click", function(){ document.getElementById("closureOverlay").hidden = true; });
+document.getElementById("clSaveBtn").addEventListener("click", function(){
+  var f = document.getElementById("clFrom").value, t = document.getElementById("clTo").value;
+  if(!DATE_RE.test(f) || !DATE_RE.test(t) || f > t){ alert("Indique une période valide (début avant la fin)."); return; }
+  var o = { from: f, to: t, plageId: document.getElementById("clScope").value, label: document.getElementById("clLabel").value.trim().slice(0, 60) };
+  if(clEditId){ var c = clList().find(function(x){ return x.id === clEditId; }); Object.keys(o).forEach(function(k){ c[k] = o[k]; }); }
+  else { o.id = uid(); clList().push(o); }
+  saveData();
+  document.getElementById("closureOverlay").hidden = true;
+  if(appMode === "agenda") renderAgenda();
+  if(!document.getElementById("plagesMgrOverlay").hidden) renderPlagesMgr();
+});
+document.getElementById("clDeleteBtn").addEventListener("click", function(){
+  if(!clEditId || !confirm("Supprimer cette fermeture ?")) return;
+  addTombstone("closures", clEditId); state.closures = clList().filter(function(x){ return x.id !== clEditId; });
+  saveData(); document.getElementById("closureOverlay").hidden = true;
+  if(appMode === "agenda") renderAgenda();
+  if(!document.getElementById("plagesMgrOverlay").hidden) renderPlagesMgr();
+});
+
+/* ----- gestion globale ----- */
+function renderPlagesMgr(){
+  var pls = plList().slice().sort(function(a, b){ return (a.days[0] - b.days[0]) || a.start.localeCompare(b.start); }), h = "";
+  if(!pls.length) h += '<div class="tc-sub">Aucune plage : tous les jours restent libres.</div>';
+  for(var wd = 1; wd <= 7; wd++){
+    var rows = pls.filter(function(p){ return p.days.indexOf(wd) !== -1; });
+    if(!rows.length) continue;
+    h += '<div class="pm-day">' + WD_LONG[wd - 1] + '</div>' + rows.map(function(p){
+      return '<div class="pm-row"><span class="pm-dot" style="background:' + (p.color ? hexToRgba(p.color, 0.45) : "#fff") + ';"></span><div class="t">' + p.start + ' – ' + p.end + ' · ' + escHtml(p.label) + '<div class="s">' + (p.days.length > 1 ? p.days.map(function(d){ return WD_LABELS[d - 1]; }).join(", ") + ' · ' : '') + (p.defaultType ? 'type : ' + escHtml(p.defaultType) : 'sans type par défaut') + '</div></div><button type="button" class="btn-ghost" data-pmedit="' + escHtml(p.id) + '" style="min-height:38px;">Modifier</button><button type="button" class="del-x" data-pmdel="' + escHtml(p.id) + '" aria-label="Supprimer">✕</button></div>';
+    }).join("");
+  }
+  var cls = clList().slice().sort(function(a, b){ return a.from.localeCompare(b.from); });
+  h += '<div class="pm-day">Fermetures</div>' + (cls.length ? cls.map(function(c){
+    var p = c.plageId ? plList().find(function(x){ return x.id === c.plageId; }) : null;
+    return '<div class="pm-row"><span class="pm-dot" style="background:repeating-linear-gradient(135deg,#cfd4dc 0 4px,#fff 4px 8px);"></span><div class="t">' + (c.from === c.to ? fmtDate(c.from) : fmtDate(c.from) + ' → ' + fmtDate(c.to)) + (c.label ? ' · ' + escHtml(c.label) : '') + '<div class="s">' + (p ? escHtml(p.label) : 'toutes les plages') + '</div></div><button type="button" class="btn-ghost" data-pmcledit="' + escHtml(c.id) + '" style="min-height:38px;">Modifier</button><button type="button" class="del-x" data-pmcldel="' + escHtml(c.id) + '" aria-label="Supprimer">✕</button></div>';
+  }).join("") : '<div class="tc-sub">Aucune fermeture.</div>');
+  document.getElementById("pmBody").innerHTML = h;
+}
+document.getElementById("agPlagesBtn").addEventListener("click", function(){ renderPlagesMgr(); document.getElementById("plagesMgrOverlay").hidden = false; });
+document.getElementById("pmCloseBtn").addEventListener("click", function(){ document.getElementById("plagesMgrOverlay").hidden = true; if(appMode === "agenda") renderAgenda(); });
+document.getElementById("pmNewBtn").addEventListener("click", function(){ openPlageModal(null); });
+document.getElementById("pmCloseBtn2").addEventListener("click", function(){ openClosureModal({}); });
+document.getElementById("pmBody").addEventListener("click", function(e){
+  var t;
+  if((t = e.target.closest("[data-pmedit]"))) openPlageModal(t.dataset.pmedit);
+  else if((t = e.target.closest("[data-pmdel]"))){
+    var p = plList().find(function(x){ return x.id === t.dataset.pmdel; });
+    if(p && confirm("Supprimer la plage « " + p.label + " » pour toutes les semaines ?")){
+      addTombstone("plages", p.id); state.plages = plList().filter(function(x){ return x.id !== p.id; });
+      clList().filter(function(c){ return c.plageId === p.id; }).forEach(function(c){ addTombstone("closures", c.id); });
+      state.closures = clList().filter(function(c){ return c.plageId !== p.id; }); saveData(); renderPlagesMgr();
+    }
+  }
+  else if((t = e.target.closest("[data-pmcledit]"))) openClosureModal({ id: t.dataset.pmcledit });
+  else if((t = e.target.closest("[data-pmcldel]"))){ if(confirm("Supprimer cette fermeture ?")){ addTombstone("closures", t.dataset.pmcldel); state.closures = clList().filter(function(x){ return x.id !== t.dataset.pmcldel; }); saveData(); renderPlagesMgr(); } }
+});
+
+/* ============================================================
+   STATISTIQUES DE L'AGENDA
+   ============================================================ */
+var stWeeks = 8, stMode = "all";
+var ST_PERIODS = [[4, "4 semaines"], [8, "8 semaines"], [12, "12 semaines"], [26, "6 mois"], [52, "1 an"]];
+function niceTop(max){
+  var step = Math.max(1, Math.ceil(max / 4)), mag = Math.pow(10, Math.floor(Math.log(step) / Math.LN10)), norm = step / mag;
+  step = (norm <= 1 ? 1 : (norm <= 2 ? 2 : (norm <= 5 ? 5 : 10))) * mag;
+  return { step: step, top: step * 4 };
+}
+function svgBars(labels, series, ariaLabel){
+  var W = 640, H = 230, ml = 32, mr = 8, mt = 16, mb = 34, iw = W - ml - mr, ih = H - mt - mb, n = labels.length, max = 1;
+  series.forEach(function(se){ se.values.forEach(function(v){ if(v > max) max = v; }); });
+  var nt = niceTop(max), slot = iw / n, gap = 3, bw = Math.max(3, Math.min(26, (slot - 6) / series.length - gap)), every = Math.ceil(n / 12), h = '<svg class="st-svg" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + escHtml(ariaLabel) + '">';
+  for(var g = 0; g <= 4; g++){
+    var yv = mt + ih - (g / 4) * ih;
+    h += '<line x1="' + ml + '" x2="' + (W - mr) + '" y1="' + yv + '" y2="' + yv + '" stroke="#e5e7eb" stroke-width="1"/><text x="' + (ml - 5) + '" y="' + (yv + 4) + '" text-anchor="end" font-size="11" fill="#8a93a3">' + (nt.step * g) + '</text>';
+  }
+  labels.forEach(function(lb, i){
+    var gx = ml + slot * i + slot / 2 - (series.length * (bw + gap) - gap) / 2;
+    series.forEach(function(se, k){
+      var v = se.values[i], bh = (v / nt.top) * ih, x = gx + k * (bw + gap);
+      h += '<rect x="' + x + '" y="' + (mt + ih - bh) + '" width="' + bw + '" height="' + Math.max(bh, v > 0 ? 1 : 0) + '" rx="3" fill="' + se.color + '"/>';
+      if(n <= 16 && v > 0) h += '<text x="' + (x + bw / 2) + '" y="' + (mt + ih - bh - 4) + '" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0B1220">' + v + '</text>';
+    });
+    if(i % every === 0) h += '<text x="' + (ml + slot * i + slot / 2) + '" y="' + (H - 14) + '" text-anchor="middle" font-size="10.5" fill="#8a93a3">' + escHtml(lb) + '</text>';
+  });
+  return h + '</svg>';
+}
+function svgDonut(items, ariaLabel){
+  var total = items.reduce(function(a, x){ return a + x.value; }, 0), r = 52, C = 2 * Math.PI * r, acc = 0;
+  var h = '<svg viewBox="0 0 140 140" width="150" height="150" role="img" aria-label="' + escHtml(ariaLabel) + '"><g transform="rotate(-90 70 70)">';
+  items.forEach(function(it){
+    var len = total ? it.value / total * C : 0;
+    h += '<circle cx="70" cy="70" r="' + r + '" fill="none" stroke="' + it.color + '" stroke-width="22" stroke-dasharray="' + len + ' ' + (C - len) + '" stroke-dashoffset="' + (-acc) + '"/>';
+    acc += len;
+  });
+  return h + '</g><text x="70" y="68" text-anchor="middle" font-size="24" font-weight="800" fill="#0B1220">' + total + '</text><text x="70" y="86" text-anchor="middle" font-size="11" fill="#8a93a3">rdv</text></svg>';
+}
+function renderStats(){
+  document.getElementById("stPeriod").innerHTML = ST_PERIODS.map(function(p){ return '<button type="button" class="chip-btn' + (stWeeks === p[0] ? ' on' : '') + '" data-stweeks="' + p[0] + '">' + p[1] + '</button>'; }).join("");
+  document.getElementById("stCount").innerHTML = [["all", "Tous les rendez-vous (hors annulés)"], ["present", "Seulement les patients pointés présents"]].map(function(m){ return '<button type="button" class="chip-btn' + (stMode === m[0] ? ' on' : '') + '" data-stmode="' + m[0] + '">' + m[1] + '</button>'; }).join("");
+  var thisMon = weekStartOf(todayISO()), firstMon = addDaysToDate(thisMon, -7 * (stWeeks - 1)), lastSun = addDaysToDate(thisMon, 6);
+  var inPeriod = agList().filter(function(a){ return a.date >= firstMon && a.date <= lastSun; });
+  var counted = inPeriod.filter(function(a){ return stMode === "present" ? a.status === "present" : a.status !== "annule"; });
+  var body = document.getElementById("stBody");
+  if(!inPeriod.length){ body.innerHTML = '<div class="w-callout">Aucun rendez-vous sur cette période. Crée-en dans l\'onglet Agenda : les statistiques se remplissent toutes seules.</div>'; return; }
+  var weeks = [], pats = [], rdvs = [];
+  for(var i = 0; i < stWeeks; i++){
+    var wk = addDaysToDate(firstMon, 7 * i), set = {}, c = 0;
+    counted.forEach(function(a){ if(weekStartOf(a.date) === wk){ set[a.patientId] = 1; c++; } });
+    weeks.push(new Date(wk + "T00:00:00").toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" })); pats.push(Object.keys(set).length); rdvs.push(c);
+  }
+  var distinct = {}; counted.forEach(function(a){ distinct[a.patientId] = 1; });
+  var present = inPeriod.filter(function(a){ return a.status === "present"; }).length, absent = inPeriod.filter(function(a){ return a.status === "absent"; }).length, annule = inPeriod.filter(function(a){ return a.status === "annule"; }).length;
+  var avgP = pats.reduce(function(a, b){ return a + b; }, 0) / stWeeks;
+  var kpi = function(v, l){ return '<div class="st-kpi"><div class="v">' + v + '</div><div class="l">' + l + '</div></div>'; };
+  var h = '<div class="st-kpis">' + kpi(counted.length, 'rendez-vous') + kpi(Object.keys(distinct).length, 'patients différents') + kpi(frDec(round1(avgP)), 'patients par semaine (moyenne sur ' + stWeeks + ' sem.)') + kpi(present + absent ? Math.round(absent / (present + absent) * 100) + ' %' : '—', 'taux d\'absence (' + absent + ' absent(s), ' + present + ' présent(s))') + kpi(annule, 'annulé(s)') + '</div>';
+  h += '<div class="st-card"><h3>Patients et rendez-vous par semaine</h3>' + svgBars(weeks, [{ name: "Patients", color: "#007BFF", values: pats }, { name: "Rendez-vous", color: "#c9ced8", values: rdvs }], "Patients différents et rendez-vous par semaine") + '<div class="st-legend"><span><i style="background:#007BFF;"></i>Patients différents</span><span><i style="background:#c9ced8;"></i>Rendez-vous</span><span>Semaines commençant le (jj/mm)</span></div></div>';
+  var types = agTypes().map(function(t){ return { label: t.name, color: t.color, value: counted.filter(function(a){ return a.type === t.name; }).length }; });
+  var known = {}; types.forEach(function(t){ known[t.label] = 1; });
+  var other = counted.filter(function(a){ return !known[a.type]; }).length;
+  if(other) types.push({ label: "Autres types", color: "#cfd4dc", value: other });
+  types = types.filter(function(t){ return t.value > 0; });
+  h += '<div class="st-card"><h3>Types de consultation</h3>' + (types.length ? '<div class="st-donut-wrap">' + svgDonut(types, "Répartition par type de consultation") + '<div style="flex:1; min-width:180px;">' + types.map(function(t){ return '<div class="st-hbar" style="grid-template-columns:1fr 70px;"><span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;background:' + t.color + ';"></i>' + escHtml(t.label) + '</span><span class="n">' + t.value + ' · ' + Math.round(t.value / counted.length * 100) + ' %</span></div>'; }).join("") + '</div></div>' : '<div class="tc-sub">Rien à afficher avec ce filtre.</div>') + '</div>';
+  var zc = {}; counted.forEach(function(a){ var zs = (a.zones && a.zones.length) ? a.zones : ["Non renseignée"]; zs.forEach(function(z){ zc[z] = (zc[z] || 0) + 1; }); });
+  var zk = Object.keys(zc).sort(function(a, b){ return zc[b] - zc[a]; }), zmax = zk.length ? zc[zk[0]] : 1;
+  h += '<div class="st-card"><h3>Zones traitées</h3>' + (zk.length ? zk.map(function(z){ return '<div class="st-hbar"><span>' + escHtml(z) + '</span><div class="b"><div style="width:' + (zc[z] / zmax * 100) + '%; background:' + (z === "Non renseignée" ? "#cfd4dc" : "#007BFF") + ';"></div></div><span class="n">' + zc[z] + '</span></div>'; }).join("") : '<div class="tc-sub">Rien à afficher avec ce filtre.</div>') + '<div class="tc-sub" style="margin-top:6px;">La zone vient de la fiche clinique du patient et se règle rendez-vous par rendez-vous.</div></div>';
+  var wdc = [0, 0, 0, 0, 0, 0, 0]; counted.forEach(function(a){ wdc[isoWeekday(a.date) - 1]++; });
+  h += '<div class="st-card"><h3>Rendez-vous par jour de la semaine</h3>' + svgBars(WD_LABELS, [{ name: "Rendez-vous", color: "#0B1220", values: wdc }], "Rendez-vous par jour de la semaine") + '</div>';
+  body.innerHTML = h;
+}
+document.getElementById("statsView").addEventListener("click", function(e){
+  var w = e.target.closest("[data-stweeks]"), m = e.target.closest("[data-stmode]");
+  if(w){ stWeeks = parseInt(w.dataset.stweeks); renderStats(); }
+  if(m){ stMode = m.dataset.stmode; renderStats(); }
+});
 
 /* ============================================================
    MUSCLE WIZARD (EMG / ISO)
@@ -9062,7 +9784,7 @@ document.getElementById("importFile").addEventListener("change", function(e){
       var imported = cleanImported(JSON.parse(evt.target.result), "", "", 0);
       if(imported && imported.type === "patient" && imported.patient){ importPatientObject(imported.patient); return; }
       if(!imported || !Array.isArray(imported.patients)) throw new Error("format invalide");
-      if(state.patients.length > 0 && !confirm("Remplacer les données actuelles par cette sauvegarde ?")) return;
+      if(state.patients.length > 0){ openMergeChoice(imported); return; }
       replaceState(imported);
     }catch(err){ alert("Fichier invalide : sauvegarde ou patient partagé non reconnu."); }
   };
@@ -9071,6 +9793,7 @@ document.getElementById("importFile").addEventListener("change", function(e){
 });
 
 if(isAutonomous()) appMode = 'today';
+seedPlagesIfNeeded();
 renderAll();
 updateBackupUi();
 (function(){
