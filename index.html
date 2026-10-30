@@ -644,8 +644,9 @@
   }
 
   /* ---------- carte anamnèse compacte, ordre de l'overview ---------- */
-  .ov-clin{ order:-6; } .ov-rts{ order:-4; } .ov-period{ order:-3; } .ov-anam{ order:-2; }
-  @media (max-width: 760px){ .ov-anam{ order:-5; } }
+  .ov-clin{ order:-6; } .ov-period{ order:-3; } .ov-anam{ order:-2; } .ov-rts{ order:-1; }
+  @media (max-width: 760px){ .ov-anam{ order:-5; } .ov-rts{ order:-4; } }
+  .rts-mini .am-top{ display:flex; align-items:center; gap:10px; }
   .anam-mini{ cursor:pointer; }
   .anam-mini .am-top{ display:flex; align-items:center; gap:10px; }
   .anam-mini .am-chips{ display:flex; flex-wrap:wrap; gap:6px; margin:10px 0 2px; min-height:24px; }
@@ -654,6 +655,44 @@
   .am-chip.mute{ background:#f1f3f6; color:#4b5565; }
   .anam-mini .am-actions{ display:flex; gap:8px; margin-top:10px; }
   .anam-mini .am-actions .btn-ghost, .anam-mini .am-actions .btn-primary{ flex:1; min-height:40px; }
+
+  /* ---------- tests spécifiques, retour au sport compact ---------- */
+  .tc-icon.spec{ background:#eef2ff; color:var(--blue-text); }
+  .rts-mini{ cursor:pointer; border-width:1.5px; }
+  .rts-mini.rts-ok{ background:#eaf7f0; border-color:#1fa971; }
+  .rts-mini.rts-ko{ background:#fdf0ef; border-color:#e0483e; }
+  .rts-mini.rts-na{ background:#f4f5f7; border-color:#cfd4dc; }
+  .rts-state{ font-size:19px; font-weight:700; margin-top:10px; }
+  .rts-ok .rts-state{ color:#157a4f; } .rts-ko .rts-state{ color:#b3261e; } .rts-na .rts-state{ color:#4b5565; }
+  .rts-bar{ height:7px; border-radius:4px; background:rgba(11,18,32,0.10); margin:8px 0; overflow:hidden; }
+  .rts-bar div{ height:100%; border-radius:4px; background:#1fa971; }
+  .rts-ko .rts-bar div{ background:#e0483e; } .rts-na .rts-bar div{ background:#8a93a3; }
+  .rts-lines{ font-size:12.5px; line-height:1.45; color:var(--text); }
+  .rts-lines div{ padding:1px 0; }
+  .rts-banner{ border-radius:14px; padding:12px 14px; margin-bottom:10px; font-size:14px; }
+  .rts-banner b{ font-size:17px; display:block; }
+  .rts-banner.ok{ background:#eaf7f0; color:#157a4f; } .rts-banner.ko{ background:#fdf0ef; color:#b3261e; } .rts-banner.na{ background:#f4f5f7; color:#4b5565; }
+  .sp-grid{ display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:8px; align-items:center; }
+  .sp-grid .h{ font-size:12px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em; }
+  .sp-grid .l{ font-size:14px; font-weight:600; line-height:1.25; }
+  .sp-grid .l span{ display:block; font-size:11.5px; color:var(--muted); font-weight:500; }
+  .sp-grid input, .sp-grid select{ width:100%; min-height:44px; }
+  .sp-comp{ min-height:44px; display:flex; align-items:center; font-size:18px; font-weight:700; }
+  .sp-block{ border:1px solid var(--border); border-radius:14px; padding:10px 12px; margin-bottom:10px; background:#fff; }
+  .sp-block b{ display:block; margin-bottom:6px; }
+  .sp-block label.cb{ display:flex; align-items:flex-start; gap:10px; min-height:40px; font-size:14px; color:var(--text); text-transform:none; letter-spacing:0; font-weight:500; padding:4px 0; }
+  .sp-block label.cb input{ width:22px; height:22px; margin-top:1px; flex-shrink:0; }
+  .sp-block label.cb.sub{ margin-left:22px; }
+  .rule-box{ border-radius:14px; padding:12px 14px; font-weight:700; font-size:15px; margin:6px 0 10px; }
+  .tone-ok{ color:#157a4f; } .tone-warn{ color:#8a5200; } .tone-ko{ color:#b3261e; }
+  .rule-box.tone-ok{ background:#eaf7f0; } .rule-box.tone-ko{ background:#fdf0ef; }
+  .sp-result{ font-size:16px; font-weight:700; margin-top:10px; }
+  .sp-val{ font-size:18px; font-weight:700; margin-top:2px; }
+  .sp-sec{ font-size:12.5px; color:var(--muted); margin-top:6px; line-height:1.45; }
+  .sp-hist{ display:flex; justify-content:space-between; gap:8px; padding:8px 0; border-bottom:1px solid #eef0f3; cursor:pointer; }
+  .sp-hist:last-child{ border-bottom:0; }
+  .sp-hist .t{ font-weight:600; font-size:14px; } .sp-hist .s{ font-size:12.5px; color:var(--muted); margin-top:2px; line-height:1.4; }
+  .spec-test-btn{ display:block; width:100%; text-align:left; margin-bottom:8px; }
 </style>
 </head>
 <body>
@@ -833,13 +872,22 @@
 <!-- Create test modal -->
 <div id="createTestOverlay" class="modal-overlay" hidden>
   <div class="modal-box">
-    <h2>Nouveau test</h2>
+    <h2>Ajouter</h2>
     <label>Type de test</label>
     <div class="type-grid" id="typeGrid">
       <div class="type-card" data-type="emg">EMG</div>
       <div class="type-card" data-type="iso">Isométrique</div>
       <div class="type-card" data-type="jump">Saut</div>
       <div class="type-card" data-type="other">Autre</div>
+      <div class="type-card" data-type="spec">Spécifique</div>
+      <div class="type-card" data-type="rts">Retour au sport</div>
+    </div>
+
+    <div id="specPickWrap" hidden>
+      <label>Zone du corps</label>
+      <div class="type-grid" id="specZoneGrid"></div>
+      <label style="margin-top:14px;">Test</label>
+      <div id="specTestList"></div>
     </div>
 
     <div id="jumpTypeWrap" hidden>
@@ -1255,6 +1303,37 @@
     <p class="tc-sub">Coche ce que tu veux copier. Rien n'est écrasé sans ton accord.</p>
     <div id="anamPushList"></div>
     <div class="modal-actions"><button class="btn-primary" id="anamPushApplyBtn">Reporter</button></div>
+  </div>
+</div>
+
+<!-- Test spécifique : saisie et historique -->
+<div id="specOverlay" class="modal-overlay" hidden>
+  <div class="modal-box wide">
+    <div class="modal-header"><div><h2 id="specTitle" style="margin:0;"></h2><div class="tc-sub" id="specSub"></div></div><button class="btn-ghost" id="specCloseBtn">Fermer</button></div>
+    <div class="tc-sub" id="specHint" style="margin:6px 0 10px;"></div>
+    <label for="specDate">Date</label>
+    <input type="date" id="specDate">
+    <div id="specBody" style="margin-top:10px;"></div>
+    <label for="specNote">Note de qualité (facultatif)</label>
+    <div class="chip-row" id="specTags" style="margin-bottom:8px;"></div>
+    <textarea id="specNote" rows="3" placeholder="Qualité de la mesure, conditions, observations, protocole utilisé…"></textarea>
+    <div class="modal-actions"><button class="btn-primary" id="specSaveBtn">Enregistrer la mesure</button></div>
+    <div id="specHistWrap" style="margin-top:18px;"></div>
+    <div style="margin-top:14px;"><button class="btn-ghost btn-danger" id="specDeleteBtn" style="min-height:40px;">Supprimer ce test du dossier</button></div>
+  </div>
+</div>
+
+<!-- Retour au sport : détail -->
+<div id="rtsDetailOverlay" class="modal-overlay" hidden>
+  <div class="modal-box wide">
+    <div class="modal-header"><h2>Retour au sport</h2><button class="btn-ghost" id="closeRtsDetailBtn">Fermer</button></div>
+    <div id="rtsDetailBanner"></div>
+    <div id="rtsDetailRows"></div>
+    <p class="tc-sub" style="margin-top:10px;">Aide à la décision : elle ne remplace pas le jugement clinique.</p>
+    <div class="modal-actions">
+      <button class="btn-ghost" id="rtsDetailHideBtn">Masquer la carte</button>
+      <button class="btn-primary" id="rtsDetailEditBtn">Modifier les critères</button>
+    </div>
   </div>
 </div>
 
@@ -2033,9 +2112,9 @@ function sparklineSvg(seriesList){
 /* ============================================================
    TYPE LABELS
    ============================================================ */
-var TYPE_LABELS = { emg:"Test EMG", iso:"Test isométrique", jump:"Test de saut", other:"Test personnalisé" };
-var TYPE_ICON = { emg:"emg", iso:"iso", jump:"jump", other:"" };
-function typeIconText(type){ return type === 'emg' ? 'EMG' : type === 'iso' ? 'ISO' : type === 'jump' ? 'SAUT' : '•'; }
+var TYPE_LABELS = { emg:"Test EMG", iso:"Test isométrique", jump:"Test de saut", other:"Test personnalisé", spec:"Test spécifique" };
+var TYPE_ICON = { emg:"emg", iso:"iso", jump:"jump", other:"", spec:"spec" };
+function typeIconText(type){ return type === 'emg' ? 'EMG' : type === 'iso' ? 'ISO' : type === 'jump' ? 'SAUT' : type === 'spec' ? 'SPÉ' : '•'; }
 
 /* ============================================================
    OVERVIEW — CARDS
@@ -2079,20 +2158,20 @@ function renderCardsGrid(patient){
   ensurePeriodization(patient);
   var cClin = renderClinicalCard(patient); cClin.classList.add("ov-clin"); grid.appendChild(cClin);
   grid.appendChild(renderAnamCard(patient));
-  var cRts = renderRtsCard(patient); cRts.classList.add("ov-rts"); grid.appendChild(cRts);
+  var cRts = renderRtsCard(patient); if(cRts) grid.appendChild(cRts);
   var periodCard = renderPeriodOverviewCard(patient);
   if(periodCard) grid.appendChild(periodCard);
 
   patient.tests.forEach(function(test){
     var card = document.createElement("div");
     card.className = "test-card";
-    var entries = test.entries.slice().sort(function(a,b){ return a.date.localeCompare(b.date); });
+    var entries = (test.type === 'spec') ? sortedEntries(test) : test.entries.slice().sort(function(a,b){ return a.date.localeCompare(b.date); });
 
     var topHtml =
       '<div class="tc-top">' +
         '<div class="tc-icon ' + TYPE_ICON[test.type] + '">' + typeIconText(test.type) + '</div>' +
         '<div class="tc-title-wrap"><div class="tc-title" data-open="' + escHtml(test.id) + '">' + escHtml(test.name) + '</div>' +
-        '<div class="tc-sub">' + TYPE_LABELS[test.type] + '</div></div>' +
+        '<div class="tc-sub">' + (test.type === 'spec' ? 'Spécifique · ' + escHtml(test.zone || "") : TYPE_LABELS[test.type]) + '</div></div>' +
       '</div>';
 
     var bodyHtml = "";
@@ -2132,6 +2211,8 @@ function renderCardsGrid(patient){
         bodyHtml += '<div class="tc-asym-row"><div class="tc-asym-bar"><div class="tc-asym-fill" style="width:' + fillPct + '%; background:' + fillColor + ';"></div></div>' +
           '<div class="tc-asym-label"><span>Asymétrie ' + asym + '%</span><span>' + weaker + '</span></div></div>';
       }
+    } else if(test.type === 'spec'){
+      bodyHtml += specCardBody(test);
     } else {
       var vals = entries.filter(function(e){ return e.value !== null && e.value !== undefined; }).map(function(e){ return e.value; });
       var last = vals.length ? vals[vals.length-1] : null;
@@ -2139,9 +2220,13 @@ function renderCardsGrid(patient){
       bodyHtml += trendHtml(vals);
       bodyHtml += sparklineSvg([{ values: vals, color:'#007BFF' }]);
     }
+    if(test.type === 'spec' && test.tracksSides) bodyHtml += specSecondaryHtml(test);
 
     card.innerHTML = topHtml + bodyHtml;
-    card.querySelector('[data-open]').addEventListener("click", function(){ openTestDetail(test.id); });
+    if(test.type === 'spec'){
+      card.style.cursor = "pointer";
+      card.addEventListener("click", function(){ openSpec(test.id); });
+    } else card.querySelector('[data-open]').addEventListener("click", function(){ openTestDetail(test.id); });
     grid.appendChild(card);
   });
 
@@ -2154,7 +2239,7 @@ function renderCardsGrid(patient){
   if(patient.tests.length === 0){
     var note = document.createElement("div");
     note.id = "emptyOverviewNote";
-    note.textContent = "Aucun test encore créé — clique sur + pour ajouter ton premier test (EMG, isométrique, saut...).";
+    note.textContent = "Aucun test encore créé — clique sur + pour ajouter ton premier test (EMG, isométrique, saut, spécifique...).";
     grid.insertBefore(note, grid.firstChild);
   }
 }
@@ -2194,6 +2279,7 @@ function resetCreateModal(){
   createJumpType = null;
   createTestSides = false;
   document.getElementById("jumpTypeWrap").hidden = true;
+  document.getElementById("specPickWrap").hidden = true;
   document.getElementById("nameFieldWrap").hidden = true;
   document.getElementById("sidesFieldWrap").hidden = true;
   document.getElementById("unitFieldWrap").hidden = true;
@@ -2220,7 +2306,25 @@ document.getElementById("typeGrid").addEventListener("click", function(e){
   createTestType = card.dataset.type;
   document.querySelectorAll("#typeGrid .type-card").forEach(function(c){ c.classList.remove("selected"); });
   card.classList.add("selected");
+  document.getElementById("specPickWrap").hidden = true;
 
+  if(createTestType === 'rts'){
+    var pt = getSelectedPatient();
+    document.getElementById("createTestOverlay").hidden = true;
+    if(rtsIsOn(pt)){ alert("La carte « Retour au sport » est déjà affichée dans l'overview."); return; }
+    activateRts(pt);
+    return;
+  }
+  if(createTestType === 'spec'){
+    document.getElementById("jumpTypeWrap").hidden = true;
+    document.getElementById("nameFieldWrap").hidden = true;
+    document.getElementById("sidesFieldWrap").hidden = true;
+    document.getElementById("unitFieldWrap").hidden = true;
+    document.getElementById("simpleCreateActions").hidden = true;
+    document.getElementById("specPickWrap").hidden = false;
+    renderSpecPick(SPEC_ZONES.length === 1 ? SPEC_ZONES[0] : null);
+    return;
+  }
   if(createTestType === 'emg' || createTestType === 'iso'){
     document.getElementById("createTestOverlay").hidden = true;
     startMuscleWizard(createTestType);
@@ -6581,7 +6685,13 @@ document.getElementById("saveClinicalBtn").addEventListener("click", function(){
 
 /* ----- critères de retour au sport ----- */
 function rtsList(patient){ if(!patient.rts || !Array.isArray(patient.rts.criteria)) patient.rts = { criteria: [] }; return patient.rts.criteria; }
-function sortedEntries(test){ return test.entries.slice().sort(function(a, b){ return a.date.localeCompare(b.date); }); }
+function sortedEntries(test){
+  var es = test.entries.slice().sort(function(a, b){ return a.date.localeCompare(b.date); });
+  if(test.type === "spec" && test.tracksSides){
+    return es.map(function(e){ return { id: e.id, date: e.date, valueD: specNum(test, e, "D"), valueG: specNum(test, e, "G") }; });
+  }
+  return es;
+}
 function hasV(x){ return x !== undefined && x !== null; }
 function lastBoth(test){
   var es = sortedEntries(test);
@@ -6641,12 +6751,19 @@ function rtsSummary(patient){
   var list = rtsList(patient), res = list.map(function(c){ return { c:c, r:evalCriterion(patient, c) }; });
   return { items:res, ok:res.filter(function(x){ return x.r.status === "ok"; }).length, total:res.length, nodata:res.filter(function(x){ return x.r.status === "nodata"; }).length };
 }
-function renderRtsCard(patient){
-  var sm = rtsSummary(patient), card = document.createElement("div");
-  card.className = "test-card";
-  card.style.gridColumn = "1 / -1";
-  var chip = sm.total ? '<span class="rts-chip' + (sm.ok === sm.total ? ' ok' : '') + '">' + sm.ok + ' / ' + sm.total + ' validés</span>' : '';
-  var rows = sm.items.map(function(x){
+function rtsIsOn(patient){
+  if(typeof patient.rtsActive === "boolean") return patient.rtsActive;
+  return rtsList(patient).length > 0;
+}
+function rtsStatus(sm){
+  var unmet = sm.items.filter(function(x){ return x.r.status === "ko"; });
+  if(!sm.total) return { tone:"na", title:"Aucun critère défini", sub:"Touche pour en ajouter", unmet:[] };
+  if(unmet.length) return { tone:"ko", title: unmet.length + " critère" + (unmet.length > 1 ? "s" : "") + " non atteint" + (unmet.length > 1 ? "s" : ""), sub:"Il reste des critères à atteindre.", unmet:unmet };
+  if(sm.nodata) return { tone:"na", title:"À compléter", sub: sm.nodata + " critère(s) sans donnée : aucun n'est encore échoué.", unmet:[] };
+  return { tone:"ok", title:"Critères atteints", sub:"Tous les critères sont validés.", unmet:[] };
+}
+function rtsRowsHtml(sm){
+  return sm.items.map(function(x){
     var r = x.r, c = x.c;
     var left = c.type === "manual"
       ? '<input type="checkbox" class="rts-check" data-rtsdone="' + escHtml(c.id) + '"' + (c.done ? ' checked' : '') + ' aria-label="Valider : ' + escHtml(c.label) + '">'
@@ -6655,20 +6772,49 @@ function renderRtsCard(patient){
     return '<div class="rts-row">' + left + '<div class="rts-main"><div class="l">' + escHtml(c.label) + '</div><div class="s">' + escHtml(r.detail || "") + '</div></div>' + spark +
       '<div class="rts-val">' + escHtml(r.valueText) + (r.target ? '<span class="t">' + escHtml(r.target) + '</span>' : '') + '</div></div>';
   }).join("");
+}
+function renderRtsCard(patient){
+  if(!rtsIsOn(patient)) return null;
+  var sm = rtsSummary(patient), st = rtsStatus(sm), card = document.createElement("div");
+  var pct = sm.total ? Math.round(sm.ok / sm.total * 100) : 0;
+  card.className = "test-card rts-mini rts-" + st.tone + " ov-rts";
   card.innerHTML =
-    '<div class="rts-head"><div class="tc-top" style="margin:0;"><div class="tc-icon" style="background:#e6f6ee; color:#157a4f;">🏁</div><div class="tc-title-wrap"><div class="tc-title">Retour au sport</div><div class="tc-sub">Critères évalués sur tes mesures</div></div></div>' + chip +
-    '<button type="button" class="btn-ghost" data-rtsedit style="min-height:40px;">' + (sm.total ? "Modifier" : "Définir les critères") + '</button></div>' +
-    (sm.total ? '<div style="margin-top:6px;">' + rows + '</div>' + (sm.nodata ? '<div class="tc-sub" style="margin-top:6px;">' + sm.nodata + ' critère(s) sans donnée : ils ne comptent pas comme validés.</div>' : '') : '<div class="tc-sub" style="margin-top:8px;">Définis des critères (symétrie de force, % de la norme, ratio entre muscles, douleur, validations cliniques) : l\'appli les suit à chaque nouveau test.</div>') +
-    '<div class="tc-sub" style="margin-top:8px;">Aide à la décision : ne remplace pas le jugement clinique.</div>';
-  card.querySelector("[data-rtsedit]").addEventListener("click", function(){ openRtsModal(patient); });
-  card.querySelectorAll("[data-rtsdone]").forEach(function(cb){
-    cb.addEventListener("change", function(){
-      var c = rtsList(patient).find(function(x){ return x.id === cb.dataset.rtsdone; });
-      if(c){ c.done = cb.checked; c.doneDate = cb.checked ? todayISO() : ""; saveData(); renderCardsGrid(patient); }
-    });
-  });
+    '<div class="am-top"><div class="tc-icon" style="background:rgba(255,255,255,0.7);">🏁</div><div class="tc-title-wrap"><div class="tc-title">Retour au sport</div><div class="tc-sub">' + sm.ok + ' / ' + sm.total + ' critère' + (sm.total > 1 ? 's' : '') + ' validé' + (sm.ok > 1 ? 's' : '') + '</div></div></div>' +
+    '<div class="rts-state">' + st.title + '</div>' +
+    '<div class="rts-bar"><div style="width:' + pct + '%;"></div></div>' +
+    '<div class="rts-lines">' + (st.unmet.length ? st.unmet.slice(0, 2).map(function(x){ return '<div>• ' + escHtml(x.c.label) + ' : <b>' + escHtml(x.r.valueText) + '</b></div>'; }).join("") + (st.unmet.length > 2 ? '<div class="tc-sub">+ ' + (st.unmet.length - 2) + ' autre(s)</div>' : '') : '<div class="tc-sub">' + escHtml(st.sub) + '</div>') + '</div>' +
+    '<div class="tc-sub" style="margin-top:8px;">Touche pour le détail</div>';
+  card.addEventListener("click", function(){ openRtsDetail(patient); });
   return card;
 }
+var rtsFromDetail = false;
+function renderRtsDetail(patient){
+  var sm = rtsSummary(patient), st = rtsStatus(sm);
+  document.getElementById("rtsDetailBanner").innerHTML = '<div class="rts-banner ' + st.tone + '"><b>' + st.title + '</b>' + escHtml(st.sub) + '</div>';
+  document.getElementById("rtsDetailRows").innerHTML = sm.total ? rtsRowsHtml(sm) : '<div class="tc-sub">Aucun critère pour l\'instant.</div>';
+}
+function openRtsDetail(patient){ renderRtsDetail(patient); document.getElementById("rtsDetailOverlay").hidden = false; }
+function activateRts(patient){
+  patient.rtsActive = true;
+  rtsList(patient);
+  saveData();
+  renderCardsGrid(patient);
+  rtsFromDetail = false;
+  openRtsModal(patient);
+}
+document.getElementById("closeRtsDetailBtn").addEventListener("click", function(){ document.getElementById("rtsDetailOverlay").hidden = true; renderCardsGrid(getSelectedPatient()); });
+document.getElementById("rtsDetailEditBtn").addEventListener("click", function(){ document.getElementById("rtsDetailOverlay").hidden = true; rtsFromDetail = true; openRtsModal(getSelectedPatient()); });
+document.getElementById("rtsDetailHideBtn").addEventListener("click", function(){
+  if(!confirm("Masquer la carte « Retour au sport » ? Les critères sont conservés : tu pourras la réafficher avec le + de l'overview.")) return;
+  var p = getSelectedPatient(); p.rtsActive = false; saveData();
+  document.getElementById("rtsDetailOverlay").hidden = true; renderCardsGrid(p);
+});
+document.getElementById("rtsDetailRows").addEventListener("change", function(e){
+  var cb = e.target.closest("[data-rtsdone]"), patient = getSelectedPatient();
+  if(!cb) return;
+  var c = rtsList(patient).find(function(x){ return x.id === cb.dataset.rtsdone; });
+  if(c){ c.done = cb.checked; c.doneDate = cb.checked ? todayISO() : ""; saveData(); renderRtsDetail(patient); renderCardsGrid(patient); }
+});
 
 var RTS_TYPES = { lsi:"Symétrie de force (LSI)", norm:"% de la norme (force isométrique)", ratio:"Ratio entre deux tests", pain:"Douleur maximale", manual:"Validation clinique (case à cocher)" };
 function sideTests(patient, types){ return patient.tests.filter(function(t){ return t.tracksSides && types.indexOf(t.type) !== -1; }); }
@@ -6681,7 +6827,7 @@ function openRtsModal(patient){
 }
 function renderRtsFields(patient){
   var t = document.getElementById("rtsType").value, el = document.getElementById("rtsFields"), h = "";
-  var iso = sideTests(patient, ["iso"]), all = sideTests(patient, ["iso", "jump", "other"]);
+  var iso = sideTests(patient, ["iso"]), all = sideTests(patient, ["iso", "jump", "other", "spec"]);
   if(t === "lsi") h = '<label for="rtsTest">Test</label><select id="rtsTest">' + (all.length ? testOptions(all) : '<option value="">Aucun test avec côtés</option>') + '</select><label for="rtsThr">LSI minimal (%)</label><input id="rtsThr" type="number" inputmode="decimal" value="90">';
   else if(t === "norm") h = '<label for="rtsTest">Test isométrique</label><select id="rtsTest">' + (iso.length ? testOptions(iso) : '<option value="">Aucun test isométrique</option>') + '</select><label for="rtsThr">% de la norme minimal</label><input id="rtsThr" type="number" inputmode="decimal" value="100">';
   else if(t === "ratio") h = '<label for="rtsTest">Test 1 (numérateur)</label><select id="rtsTest">' + (iso.length ? testOptions(iso) : '<option value="">Aucun test isométrique</option>') + '</select><label for="rtsTest2">Test 2 (dénominateur)</label><select id="rtsTest2">' + (iso.length ? testOptions(iso) : '<option value="">—</option>') + '</select><label for="rtsThr">Ratio minimal (test 1 ÷ test 2)</label><input id="rtsThr" type="number" inputmode="decimal" step="0.01" placeholder="Ex. 0,5">';
@@ -6707,7 +6853,12 @@ function renderRtsList(patient){
   }).join("") : '<div class="tc-sub" style="margin-bottom:8px;">Aucun critère pour l\'instant.</div>';
 }
 document.getElementById("rtsType").addEventListener("change", function(){ renderRtsFields(getSelectedPatient()); });
-document.getElementById("closeRtsBtn").addEventListener("click", function(){ document.getElementById("rtsOverlay").hidden = true; renderCardsGrid(getSelectedPatient()); });
+document.getElementById("closeRtsBtn").addEventListener("click", function(){
+  document.getElementById("rtsOverlay").hidden = true;
+  var p = getSelectedPatient();
+  renderCardsGrid(p);
+  if(rtsFromDetail){ rtsFromDetail = false; openRtsDetail(p); }
+});
 document.getElementById("rtsAddBtn").addEventListener("click", function(){
   var patient = getSelectedPatient(), type = document.getElementById("rtsType").value, g = function(id){ var e = document.getElementById(id); return e ? e.value : ""; };
   var c = { id: uid(), type: type };
@@ -6857,9 +7008,10 @@ function buildReportPdf(patient, o){
   // ---- tests
   if(o.tests){
     heading("Tests et évolution");
-    var tests = patient.tests.filter(function(t){ return t.entries && t.entries.length; });
-    if(!tests.length) para("Aucun test enregistré.", M, CW, 10, "normal", GREY, 5);
-    else {
+    var tests = patient.tests.filter(function(t){ return t.entries && t.entries.length && t.type !== "spec"; });
+    var specTests = patient.tests.filter(function(t){ return t.type === "spec" && t.entries && t.entries.length; });
+    if(!tests.length && !specTests.length) para("Aucun test enregistré.", M, CW, 10, "normal", GREY, 5);
+    else if(tests.length){
       var cols = [["Test", 54], ["Droite", 24], ["Gauche", 24], ["Symétrie", 26], ["Norme D / G", 30], ["Date", 22]], x0 = M;
       need(14); doc.setFillColor(FILL[0], FILL[1], FILL[2]); doc.rect(M, y - 4.5, CW, 7, "F");
       cols.forEach(function(cl){ txt(cl[0], x0 + 1.5, y, 8.5, "bold", GREY); x0 += cl[1]; }); y += 5;
@@ -6933,8 +7085,26 @@ function buildReportPdf(patient, o){
     }
   }
 
+  // ---- tests spécifiques
+  if(o.tests){
+    var specT = patient.tests.filter(function(t){ return t.type === "spec" && t.entries && t.entries.length; });
+    if(specT.length){
+      y += 4; need(16); txt("Tests spécifiques", M, y, 11, "bold"); y += 5.5;
+      specT.forEach(function(t){
+        var es = t.entries.slice().sort(function(a, b){ return a.date.localeCompare(b.date); }), last = es[es.length - 1];
+        need(18);
+        txt(fit(t.name, 110, 10, "bold"), M, y, 10, "bold");
+        txt((t.zone || "") + " - " + fmtDate(last.date), W - M, y, 8.5, "normal", GREY, { align: "right" }); y += 4.8;
+        specSummaryLines(t, last).forEach(function(l){ para(l, M + 2, CW - 2, 9.5, "normal", BLACK, 4.6); });
+        if(es.length > 1){ var prevE = es[es.length - 2]; para("Mesure précédente (" + fmtDate(prevE.date) + ") : " + specSummaryLines(t, prevE).join(" ; "), M + 2, CW - 2, 8.5, "normal", GREY, 4.2); }
+        if((last.tags && last.tags.length) || last.note) para("Note : " + [(last.tags || []).join(", "), last.note].filter(Boolean).join(" - "), M + 2, CW - 2, 8.5, "normal", GREY, 4.2);
+        y += 1.5; doc.setDrawColor(LINEC[0], LINEC[1], LINEC[2]); doc.line(M, y - 1, W - M, y - 1); y += 2;
+      });
+    }
+  }
+
   // ---- retour au sport
-  if(o.rts){
+  if(o.rts && rtsIsOn(patient)){
     heading("Critères de retour au sport");
     var sm = rtsSummary(patient);
     if(!sm.total) para("Aucun critère défini.", M, CW, 10, "normal", GREY, 5);
@@ -7020,6 +7190,8 @@ function openReportModal(){
   sel.hidden = !al.length;
   document.getElementById("rptAnam").disabled = !al.length; document.getElementById("rptAnam").checked = al.length > 0;
   document.getElementById("rptAnamDetail").disabled = !al.length;
+  var rtsOn = rtsIsOn(patient);
+  document.getElementById("rptRts").disabled = !rtsOn; document.getElementById("rptRts").checked = rtsOn;
   document.getElementById("reportOverlay").hidden = false;
 }
 document.getElementById("openReportBtn").addEventListener("click", openReportModal);
@@ -7533,6 +7705,336 @@ document.getElementById("tplOverlay").addEventListener("click", function(e){
     saveData(); tplView = "list"; tplEdit = null;
   } else return;
   renderTpl();
+});
+
+/* ============================================================
+   TESTS SPÉCIFIQUES : base commune à tous les patients, classée par zone du corps
+   (pour en ajouter : compléter SPEC_TESTS ci-dessous)
+   ============================================================ */
+var SPEC_TAGS = ["Mesure à refaire", "Douleur pendant le test", "Compensation observée", "Protocole modifié"];
+var SPEC_ZONES = ["Cheville"];
+var TONE_DEFAULT = { yesno: ["", "warn"] };
+var SPEC_TESTS = {
+  "Cheville": [
+    { id:"cheville_ptgt", name:"Posterior talar glide test", hint:"Glissement postérieur du talus (mobilité tibio-talaire).",
+      fields:[ { key:"res", label:"Mobilité", type:"choice", options:["Normale", "Diminuée", "Augmentée"], tones:["ok", "warn", "warn"], primary:true }, { key:"pain", label:"Douleur provoquée", type:"yesno" } ] },
+    { id:"cheville_wblt", name:"WBLT (Weight-Bearing Lunge Test)", hint:"Fente en appui : distance au mur et/ou angle tibial.",
+      fields:[ { key:"cm", label:"Distance au mur", type:"number", unit:"cm", step:0.5, primary:true }, { key:"deg", label:"Angle tibial (facultatif)", type:"number", unit:"°", step:0.5 } ] },
+    { id:"cheville_ybt", name:"YBT (Y Balance Test)", hint:"Trois directions de portée ; score composite = somme des 3 portées ÷ (3 × longueur du membre) × 100.",
+      fields:[ { key:"len", label:"Longueur du membre", type:"number", unit:"cm", step:0.5, carry:true }, { key:"ant", label:"Antérieure", type:"number", unit:"cm", step:0.5 },
+        { key:"pm", label:"Postéro-médiale", type:"number", unit:"cm", step:0.5 }, { key:"pl", label:"Postéro-latérale", type:"number", unit:"cm", step:0.5 },
+        { key:"comp", label:"Score composite", type:"computed", unit:"%", formula:"ybt", primary:true } ] },
+    { id:"cheville_sidehop", name:"Side hop test", hint:"Sauts latéraux : précise le protocole utilisé dans la note.",
+      fields:[ { key:"n", label:"Nombre de sauts", type:"number", unit:"sauts", step:1, primary:true }, { key:"t", label:"Temps (facultatif)", type:"number", unit:"s", step:0.1 } ] },
+    { id:"cheville_tiroir_sup", name:"Tiroir antérieur - faisceau supérieur", hint:"Comparer au côté opposé.",
+      fields:[ { key:"res", label:"Tiroir antérieur", type:"choice", options:["Négatif", "Douteux", "Positif"], tones:["ok", "warn", "ko"], primary:true }, { key:"end", label:"Fin de course", type:"choice", options:["Ferme", "Molle"], tones:["ok", "warn"] }, { key:"pain", label:"Douleur provoquée", type:"yesno" } ] },
+    { id:"cheville_tiroir_inf", name:"Tiroir antérieur - faisceau inférieur", hint:"Comparer au côté opposé.",
+      fields:[ { key:"res", label:"Tiroir antérieur", type:"choice", options:["Négatif", "Douteux", "Positif"], tones:["ok", "warn", "ko"], primary:true }, { key:"end", label:"Fin de course", type:"choice", options:["Ferme", "Molle"], tones:["ok", "warn"] }, { key:"pain", label:"Douleur provoquée", type:"yesno" } ] },
+    { id:"cheville_ottawa", name:"Critères d'Ottawa", hint:"Aide à la décision pour la radiographie après un traumatisme de la cheville ou du pied.", rule:"ottawa" },
+    { id:"cheville_bernese", name:"Critères de Bernese", hint:"Aide à la décision pour la radiographie par contraintes indirectes (traumatisme de basse énergie en supination).", rule:"bernese" }
+  ]
+};
+var SPEC_RULES = {
+  ottawa: { blocks: [
+      { id:"mall", gate:"Douleur dans la zone malléolaire", items:["Sensibilité osseuse au bord postérieur ou à la pointe de la malléole latérale (6 cm distaux)", "Sensibilité osseuse au bord postérieur ou à la pointe de la malléole médiale (6 cm distaux)", "Impossibilité de faire 4 pas, juste après le traumatisme et à l'examen"], result:"Radiographie de la cheville indiquée" },
+      { id:"mid", gate:"Douleur dans la zone du médio-pied", items:["Sensibilité osseuse à la base du 5e métatarsien", "Sensibilité osseuse du naviculaire", "Impossibilité de faire 4 pas, juste après le traumatisme et à l'examen"], result:"Radiographie du pied indiquée" } ],
+    negative: "Aucune radiographie indiquée selon les critères d'Ottawa",
+    note: "Règle sensible mais peu spécifique. Moins fiable en cas de lésion douloureuse distractive, de trouble de la sensibilité ou de gonflement empêchant la palpation : le jugement clinique prime." },
+  bernese: { blocks: [
+      { id:"b", gate:null, items:["Contrainte fibulaire indirecte : compression de la fourche malléolaire environ 10 cm au-dessus de la pointe de la fibula", "Contrainte malléolaire médiale directe : pouce à plat sur la malléole médiale", "Compression du médio-pied et de l'arrière-pied : calcanéus fixé en neutre, charge sagittale sur l'avant-pied"], result:"Positif : radiographie indiquée", itemsLabel:"Manœuvre qui provoque la douleur" } ],
+    negative: "Négatif : aucune des trois manœuvres ne provoque de douleur",
+    note: "Technique de contrainte indirecte, décrite après un traumatisme de basse énergie en supination. Les performances diagnostiques varient selon les études : à interpréter avec le jugement clinique." }
+};
+function specDef(test){
+  var list = SPEC_TESTS[test.zone] || [];
+  return list.find(function(d){ return d.id === test.specId; }) || null;
+}
+function specPrimaryField(def){
+  if(!def || !def.fields) return null;
+  return def.fields.find(function(f){ return f.primary; }) || def.fields[0];
+}
+function toNum(v){ var n = parseFloat(String(v).replace(",", ".")); return isFinite(n) ? n : null; }
+function specComputed(f, d){
+  if(f.formula === "ybt"){
+    var a = toNum(d.ant), b = toNum(d.pm), c = toNum(d.pl), L = toNum(d.len);
+    if(a !== null && b !== null && c !== null && L !== null && L > 0) return Math.round((a + b + c) / (3 * L) * 1000) / 10;
+  }
+  return null;
+}
+function specFieldVal(entry, side, f){
+  var d = (entry.data && entry.data[side]) || {};
+  if(f.type === "computed") return specComputed(f, d);
+  var v = d[f.key];
+  return (v === undefined || v === null || v === "") ? null : v;
+}
+function specNum(test, entry, side){
+  var def = specDef(test), f = specPrimaryField(def);
+  if(!f || (f.type !== "number" && f.type !== "computed")) return undefined;
+  var v = specFieldVal(entry, side, f);
+  return typeof v === "number" ? v : undefined;
+}
+function specFmtVal(f, v){
+  if(v === null || v === undefined) return "—";
+  if(f.type === "number" || f.type === "computed") return frDec(v) + (f.unit ? " " + f.unit : "");
+  if(f.type === "yesno") return v === "oui" ? "Oui" : "Non";
+  return String(v);
+}
+function specTone(f, v){
+  if(f.type === "choice" && f.tones){ var i = (f.options || []).indexOf(v); return i >= 0 ? (f.tones[i] || "") : ""; }
+  if(f.type === "yesno") return v === "oui" ? "warn" : "";
+  return "";
+}
+function specRuleEval(rule, checks){
+  var pos = [];
+  rule.blocks.forEach(function(b){
+    var gateOk = b.gate ? !!checks[b.id + "_gate"] : true;
+    var hit = b.items.some(function(_, i){ return !!checks[b.id + "_" + i]; });
+    if(gateOk && hit) pos.push(b.result);
+  });
+  return pos.length ? { positive:true, text: pos.join(" · ") } : { positive:false, text: rule.negative };
+}
+function specSummaryLines(test, e){
+  var def = specDef(test), out = [];
+  if(!def) return out;
+  if(def.rule){
+    var rule = SPEC_RULES[def.rule], ev = specRuleEval(rule, e.checks || {});
+    out.push(ev.text + (e.side ? " (côté " + (e.side === "D" ? "droit" : "gauche") + ")" : ""));
+    rule.blocks.forEach(function(b){
+      var hits = b.items.filter(function(_, i){ return (e.checks || {})[b.id + "_" + i]; });
+      if(hits.length) out.push((b.itemsLabel || "Éléments positifs") + " : " + hits.join(" ; "));
+    });
+    return out;
+  }
+  def.fields.forEach(function(f){
+    var d = specFieldVal(e, "D", f), g = specFieldVal(e, "G", f);
+    if(d === null && g === null) return;
+    out.push(f.label + " : D " + specFmtVal(f, d) + " / G " + specFmtVal(f, g));
+  });
+  return out;
+}
+function specLast(test){
+  if(!test.entries.length) return null;
+  return test.entries.slice().sort(function(a, b){ return a.date.localeCompare(b.date); })[test.entries.length - 1];
+}
+function specSecondaryHtml(test){
+  var def = specDef(test), last = specLast(test);
+  if(!def || !last || def.rule) return "";
+  var pf = specPrimaryField(def), lines = [];
+  def.fields.forEach(function(f){
+    if(f === pf || f.type === "computed") return;
+    var d = specFieldVal(last, "D", f), g = specFieldVal(last, "G", f);
+    if(d === null && g === null) return;
+    lines.push(escHtml(f.label) + " : " + escHtml(specFmtVal(f, d)) + " | " + escHtml(specFmtVal(f, g)));
+  });
+  var meta = fmtDate(last.date) + ((last.tags && last.tags.length) ? " · " + escHtml(last.tags.join(", ")) : "");
+  return '<div class="sp-sec">' + lines.join("<br>") + (lines.length ? "<br>" : "") + meta + '</div>';
+}
+function specCardBody(test){
+  var def = specDef(test), last = specLast(test);
+  if(!def) return '<div class="tc-sub">Test inconnu.</div>';
+  if(!last) return '<div class="tc-sub" style="margin-top:10px;">Aucune mesure : touche la carte pour en ajouter.</div>';
+  if(def.rule){
+    var ev = specRuleEval(SPEC_RULES[def.rule], last.checks || {});
+    return '<div class="sp-result ' + (ev.positive ? "tone-ko" : "tone-ok") + '">' + escHtml(ev.text) + '</div><div class="sp-sec">' + fmtDate(last.date) + (last.side ? " · côté " + (last.side === "D" ? "droit" : "gauche") : "") + ((last.tags && last.tags.length) ? " · " + escHtml(last.tags.join(", ")) : "") + '</div>';
+  }
+  var pf = specPrimaryField(def), d = specFieldVal(last, "D", pf), g = specFieldVal(last, "G", pf);
+  function cell(lab, cls, v){ return '<div class="tc-side"><div class="tc-side-label ' + cls + '">' + lab + '</div><div class="sp-val tone-' + (specTone(pf, v) || "") + '">' + escHtml(specFmtVal(pf, v)) + '</div></div>'; }
+  return '<div class="tc-sides">' + cell("Droite", "d", d) + cell("Gauche", "g", g) + '</div>' + specSecondaryHtml(test);
+}
+function createSpecTest(patient, zone, specId){
+  var existing = patient.tests.find(function(t){ return t.type === "spec" && t.specId === specId; });
+  if(existing) return existing;
+  var def = (SPEC_TESTS[zone] || []).find(function(d){ return d.id === specId; });
+  var pf = def && specPrimaryField(def);
+  var numeric = !!(pf && !def.rule && (pf.type === "number" || pf.type === "computed"));
+  var t = { id: uid(), type: "spec", specId: specId, zone: zone, name: def.name, tracksSides: numeric, unit: numeric ? (pf.unit || "") : "", entries: [] };
+  patient.tests.push(t);
+  saveData();
+  return t;
+}
+
+/* ----- choix dans la modale « + » ----- */
+var specPickZone = null;
+function renderSpecPick(zone){
+  specPickZone = zone;
+  document.getElementById("specZoneGrid").innerHTML = SPEC_ZONES.map(function(z){ return '<div class="type-card' + (z === zone ? ' selected' : '') + '" data-speczone="' + escHtml(z) + '">' + escHtml(z) + '</div>'; }).join("");
+  var patient = getSelectedPatient(), list = zone ? (SPEC_TESTS[zone] || []) : [];
+  document.getElementById("specTestList").innerHTML = zone ? list.map(function(d){
+    var have = patient.tests.some(function(t){ return t.type === "spec" && t.specId === d.id; });
+    return '<button type="button" class="struct-card spec-test-btn" data-spectest="' + escHtml(d.id) + '"><b>' + escHtml(d.name) + '</b><div class="sw">' + escHtml(d.hint || "") + (have ? ' · déjà dans le dossier (ouvrir)' : '') + '</div></button>';
+  }).join("") : '<div class="tc-sub">Choisis une zone du corps.</div>';
+}
+document.getElementById("specPickWrap").addEventListener("click", function(e){
+  var z = e.target.closest("[data-speczone]");
+  if(z){ renderSpecPick(z.dataset.speczone); return; }
+  var t = e.target.closest("[data-spectest]");
+  if(!t || !specPickZone) return;
+  var patient = getSelectedPatient(), test = createSpecTest(patient, specPickZone, t.dataset.spectest);
+  document.getElementById("createTestOverlay").hidden = true;
+  renderAll();
+  openSpec(test.id);
+});
+
+/* ----- fenêtre de saisie ----- */
+var specTestId = null, specEditId = null, specTagsSel = [], specChecks = {}, specSide = "";
+function openSpec(testId, entryId){
+  var patient = getSelectedPatient(), test = patient.tests.find(function(t){ return t.id === testId; });
+  if(!test) return;
+  var def = specDef(test);
+  specTestId = testId; specEditId = entryId || null;
+  var entry = entryId ? test.entries.find(function(e){ return e.id === entryId; }) : null;
+  specTagsSel = entry ? (entry.tags || []).slice() : [];
+  specChecks = entry && entry.checks ? JSON.parse(JSON.stringify(entry.checks)) : {};
+  specSide = entry ? (entry.side || "") : "";
+  document.getElementById("specTitle").textContent = test.name;
+  document.getElementById("specSub").textContent = "Spécifique · " + (test.zone || "") + (entry ? " · modification de la mesure du " + fmtDate(entry.date) : "");
+  document.getElementById("specHint").textContent = def ? (def.hint || "") : "";
+  document.getElementById("specDate").value = entry ? entry.date : todayISO();
+  document.getElementById("specNote").value = entry ? (entry.note || "") : "";
+  document.getElementById("specSaveBtn").textContent = entry ? "Enregistrer les modifications" : "Enregistrer la mesure";
+  renderSpecForm(test, def, entry);
+  renderSpecTags();
+  renderSpecHist(test);
+  document.getElementById("specOverlay").hidden = false;
+}
+function renderSpecTags(){
+  document.getElementById("specTags").innerHTML = SPEC_TAGS.map(function(t){ return '<button type="button" class="chip-btn' + (specTagsSel.indexOf(t) !== -1 ? ' on' : '') + '" data-sptag="' + escHtml(t) + '">' + escHtml(t) + '</button>'; }).join("");
+}
+function renderSpecForm(test, def, entry){
+  var el = document.getElementById("specBody");
+  if(!def){ el.innerHTML = '<div class="tc-sub">Test inconnu.</div>'; return; }
+  if(def.rule){
+    var rule = SPEC_RULES[def.rule];
+    var h = '<label>Côté examiné</label><div class="chip-row" id="specSideRow">' + ["D", "G"].map(function(s){ return '<button type="button" class="chip-btn' + (specSide === s ? ' on' : '') + '" data-spside="' + s + '">' + (s === "D" ? "Droit" : "Gauche") + '</button>'; }).join("") + '</div><div style="height:10px;"></div>';
+    rule.blocks.forEach(function(b){
+      h += '<div class="sp-block">' + (b.gate ? '<label class="cb"><input type="checkbox" data-spcheck="' + b.id + '_gate"' + (specChecks[b.id + "_gate"] ? " checked" : "") + '><span><b style="margin:0;display:inline;">' + escHtml(b.gate) + '</b></span></label>' : '<b>' + escHtml(b.itemsLabel || "Éléments") + '</b>') +
+        b.items.map(function(it, i){ return '<label class="cb' + (b.gate ? ' sub' : '') + '"><input type="checkbox" data-spcheck="' + b.id + '_' + i + '"' + (specChecks[b.id + "_" + i] ? " checked" : "") + '><span>' + escHtml(it) + '</span></label>'; }).join("") + '</div>';
+    });
+    h += '<div class="rule-box" id="specRuleBox"></div><div class="tc-sub" style="margin-bottom:10px;">' + escHtml(rule.note) + '</div>';
+    el.innerHTML = h;
+    updateSpecRuleBox();
+    return;
+  }
+  var last = specLast(test), h2 = '<div class="sp-grid"><span></span><span class="h">Droite</span><span class="h">Gauche</span>';
+  def.fields.forEach(function(f){
+    h2 += '<div class="l">' + escHtml(f.label) + (f.unit ? '<span>' + escHtml(f.unit) + '</span>' : '') + '</div>';
+    ["D", "G"].forEach(function(side){
+      var v = null;
+      if(entry && f.type !== "computed") v = specFieldVal(entry, side, f);
+      else if(!entry && f.carry && last) v = specFieldVal(last, side, f);
+      var key = side + ":" + f.key;
+      if(f.type === "number") h2 += '<input type="number" inputmode="decimal" step="' + (f.step || "any") + '" data-spf="' + key + '" value="' + (v === null ? "" : escHtml(String(v))) + '" aria-label="' + escHtml(f.label) + ' ' + (side === "D" ? "droite" : "gauche") + '">';
+      else if(f.type === "choice") h2 += '<select data-spf="' + key + '" aria-label="' + escHtml(f.label) + ' ' + (side === "D" ? "droite" : "gauche") + '"><option value="">—</option>' + f.options.map(function(o){ return '<option value="' + escHtml(o) + '"' + (v === o ? " selected" : "") + '>' + escHtml(o) + '</option>'; }).join("") + '</select>';
+      else if(f.type === "yesno") h2 += '<select data-spf="' + key + '" aria-label="' + escHtml(f.label) + ' ' + (side === "D" ? "droite" : "gauche") + '"><option value="">—</option><option value="oui"' + (v === "oui" ? " selected" : "") + '>Oui</option><option value="non"' + (v === "non" ? " selected" : "") + '>Non</option></select>';
+      else h2 += '<div class="sp-comp" data-spcomp="' + key + '">—</div>';
+    });
+  });
+  el.innerHTML = h2 + '</div>';
+  updateSpecComputed();
+}
+function specCollect(def){
+  var data = { D: {}, G: {} };
+  document.querySelectorAll("#specBody [data-spf]").forEach(function(inp){
+    var parts = inp.getAttribute("data-spf").split(":"), side = parts[0], key = parts[1];
+    var f = def.fields.find(function(x){ return x.key === key; });
+    if(inp.value === "") return;
+    if(f.type === "number"){ var n = toNum(inp.value); if(n !== null) data[side][key] = n; }
+    else data[side][key] = inp.value;
+  });
+  return data;
+}
+function updateSpecComputed(){
+  var test = getSelectedPatient().tests.find(function(t){ return t.id === specTestId; }), def = test && specDef(test);
+  if(!def || def.rule) return;
+  var data = specCollect(def);
+  def.fields.forEach(function(f){
+    if(f.type !== "computed") return;
+    ["D", "G"].forEach(function(side){
+      var el = document.querySelector('#specBody [data-spcomp="' + side + ':' + f.key + '"]');
+      if(!el) return;
+      var v = specComputed(f, data[side]);
+      el.textContent = v === null ? "—" : frDec(v) + " " + (f.unit || "");
+    });
+  });
+}
+function updateSpecRuleBox(){
+  var test = getSelectedPatient().tests.find(function(t){ return t.id === specTestId; }), def = test && specDef(test);
+  if(!def || !def.rule) return;
+  var ev = specRuleEval(SPEC_RULES[def.rule], specChecks), box = document.getElementById("specRuleBox");
+  box.className = "rule-box " + (ev.positive ? "tone-ko" : "tone-ok");
+  box.textContent = ev.text;
+}
+document.getElementById("specBody").addEventListener("input", function(){ updateSpecComputed(); });
+document.getElementById("specBody").addEventListener("change", function(e){
+  var c = e.target.closest("[data-spcheck]");
+  if(c){ specChecks[c.dataset.spcheck] = c.checked; updateSpecRuleBox(); }
+  updateSpecComputed();
+});
+document.getElementById("specBody").addEventListener("click", function(e){
+  var s = e.target.closest("[data-spside]");
+  if(!s) return;
+  specSide = (specSide === s.dataset.spside) ? "" : s.dataset.spside;
+  document.querySelectorAll("#specSideRow .chip-btn").forEach(function(b){ b.classList.toggle("on", b.dataset.spside === specSide); });
+});
+document.getElementById("specTags").addEventListener("click", function(e){
+  var t = e.target.closest("[data-sptag]");
+  if(!t) return;
+  var i = specTagsSel.indexOf(t.dataset.sptag);
+  if(i === -1) specTagsSel.push(t.dataset.sptag); else specTagsSel.splice(i, 1);
+  renderSpecTags();
+});
+function renderSpecHist(test){
+  var es = test.entries.slice().sort(function(a, b){ return b.date.localeCompare(a.date); });
+  document.getElementById("specHistWrap").innerHTML = es.length ? '<label>Historique</label>' + es.map(function(e){
+    var lines = specSummaryLines(test, e).slice(0, 2).join(" · ");
+    return '<div class="sp-hist" data-sphist="' + escHtml(e.id) + '"><div><div class="t">' + fmtDate(e.date) + '</div><div class="s">' + escHtml(lines) + ((e.tags && e.tags.length) ? ' · ' + escHtml(e.tags.join(", ")) : '') + (e.note ? '<br>' + escHtml(e.note.slice(0, 120)) : '') + '</div></div><button type="button" class="del-x" data-spdel="' + escHtml(e.id) + '" aria-label="Supprimer cette mesure">✕</button></div>';
+  }).join("") : "";
+}
+document.getElementById("specHistWrap").addEventListener("click", function(e){
+  var patient = getSelectedPatient(), test = patient.tests.find(function(t){ return t.id === specTestId; });
+  var d = e.target.closest("[data-spdel]");
+  if(d){
+    e.stopPropagation();
+    if(!confirm("Supprimer cette mesure ?")) return;
+    test.entries = test.entries.filter(function(x){ return x.id !== d.dataset.spdel; });
+    saveData(); renderSpecHist(test); renderCardsGrid(patient);
+    if(specEditId === d.dataset.spdel) openSpec(test.id);
+    return;
+  }
+  var h = e.target.closest("[data-sphist]");
+  if(h) openSpec(test.id, h.dataset.sphist);
+});
+document.getElementById("specSaveBtn").addEventListener("click", function(){
+  var patient = getSelectedPatient(), test = patient.tests.find(function(t){ return t.id === specTestId; }), def = test && specDef(test);
+  if(!test || !def) return;
+  var date = document.getElementById("specDate").value;
+  if(!DATE_RE.test(date)){ alert("Indique une date valide."); return; }
+  var entry = { id: specEditId || uid(), date: date, note: document.getElementById("specNote").value.trim().slice(0, 1000), tags: specTagsSel.slice() };
+  if(def.rule){
+    entry.checks = JSON.parse(JSON.stringify(specChecks)); entry.side = specSide;
+    if(!Object.keys(entry.checks).some(function(k){ return entry.checks[k]; }) && !confirm("Aucune case cochée : enregistrer un résultat négatif ?")) return;
+  } else {
+    entry.data = specCollect(def);
+    var any = ["D", "G"].some(function(s){ return Object.keys(entry.data[s]).length > 0; });
+    if(!any){ alert("Renseigne au moins une valeur."); return; }
+  }
+  if(specEditId){
+    var idx = test.entries.findIndex(function(x){ return x.id === specEditId; });
+    if(idx !== -1) test.entries[idx] = entry; else test.entries.push(entry);
+  } else test.entries.push(entry);
+  saveData();
+  document.getElementById("specOverlay").hidden = true;
+  renderCardsGrid(patient);
+});
+document.getElementById("specCloseBtn").addEventListener("click", function(){ document.getElementById("specOverlay").hidden = true; renderCardsGrid(getSelectedPatient()); });
+document.getElementById("specDeleteBtn").addEventListener("click", function(){
+  var patient = getSelectedPatient(), test = patient.tests.find(function(t){ return t.id === specTestId; });
+  if(!test) return;
+  if(!confirm("Supprimer « " + test.name + " » et toutes ses mesures de ce dossier ? Cette action est définitive.")) return;
+  patient.tests = patient.tests.filter(function(t){ return t.id !== specTestId; });
+  saveData();
+  document.getElementById("specOverlay").hidden = true;
+  renderCardsGrid(patient);
 });
 
 /* ============================================================
