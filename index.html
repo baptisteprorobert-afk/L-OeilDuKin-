@@ -10055,6 +10055,21 @@ window.addEventListener("offline", function(){ renderSyncUi(); });
 setInterval(function(){ if(!document.hidden) syncNow(false); }, 60000);
 setTimeout(function(){ renderSyncUi(); syncSoon(); }, 1200);
 
+/* ----- ordre d'empilement : l'écran ouvert en dernier passe toujours devant ----- */
+(function(){
+  var top = 100;
+  var all = document.querySelectorAll(".modal-overlay, .sheet-overlay");
+  function anyOpen(){ for(var i = 0; i < all.length; i++) if(!all[i].hidden) return true; return false; }
+  var obs = new MutationObserver(function(muts){
+    muts.forEach(function(m){
+      var el = m.target;
+      if(!el.hidden){ el.style.zIndex = String(++top); }
+      else { el.style.zIndex = ""; if(!anyOpen()) top = 100; }
+    });
+  });
+  all.forEach(function(el){ obs.observe(el, { attributes: true, attributeFilter: ["hidden"] }); });
+})();
+
 /* ============================================================
    MUSCLE WIZARD (EMG / ISO)
    ============================================================ */
