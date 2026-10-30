@@ -1640,6 +1640,33 @@
   </div>
 </div>
 
+<!-- Changer le mot de passe -->
+<div id="pwOverlay" class="modal-overlay" hidden>
+  <div class="modal-box">
+    <div class="modal-header"><h2>Changer mon mot de passe</h2><button class="btn-ghost" id="pwCloseBtn">Fermer</button></div>
+    <label for="pwOld">Mot de passe actuel</label><input id="pwOld" type="password" autocomplete="current-password">
+    <label for="pwNew">Nouveau mot de passe (12 caractères minimum)</label><input id="pwNew" type="password" autocomplete="new-password">
+    <label for="pwNew2">Nouveau mot de passe, encore une fois</label><input id="pwNew2" type="password" autocomplete="new-password">
+    <div id="pwMsg" class="sync-msg" role="status" style="margin-top:8px;"></div>
+    <div class="modal-actions"><button class="btn-primary" id="pwSaveBtn">Changer</button></div>
+  </div>
+</div>
+
+<!-- Administration des praticiens -->
+<div id="adminOverlay" class="modal-overlay" hidden>
+  <div class="modal-box wide">
+    <div class="modal-header"><h2>Praticiens</h2><button class="btn-ghost" id="adminCloseBtn">Fermer</button></div>
+    <div class="tc-sub" id="adminInfo" style="margin-bottom:8px;"></div>
+    <div id="adminMsg" class="sync-msg" role="status"></div>
+    <div id="adminList"></div>
+    <div class="today-h" style="margin-top:16px;">Inviter un praticien</div>
+    <p class="tc-sub" style="margin-top:0;">Tu reçois un code à lui transmettre ; il choisit lui-même son mot de passe. Chaque praticien ne voit que ses propres patients.</p>
+    <div class="sides-entry"><div><input id="adminInviteEmail" type="email" autocapitalize="off" placeholder="E-mail du praticien" aria-label="E-mail du praticien"></div><div><button type="button" class="btn-primary" id="adminInviteBtn" style="min-height:44px; width:100%;">Créer l'invitation</button></div></div>
+    <div id="adminCodeBox" class="sync-status ok" hidden style="margin-top:10px;"></div>
+    <div id="adminCodeActions" hidden class="tpl-acts" style="margin-top:8px;"><button type="button" class="btn-ghost" id="adminCopyBtn" style="min-height:42px;">Copier le message à envoyer</button></div>
+  </div>
+</div>
+
 <!-- Menu « Plus » du rail -->
 <div id="moreSheet" class="sheet-overlay" hidden>
   <div class="sheet" role="dialog" aria-label="Plus">
@@ -1773,15 +1800,26 @@
     <div class="sync-box">
       <div id="syncStatus" class="sync-status"></div>
       <div id="syncForm">
+        <label for="syncAction" style="margin-top:0;">Que veux-tu faire ?</label>
+        <select id="syncAction" aria-label="Que veux-tu faire ?">
+          <option value="login">Me connecter</option>
+          <option value="join">Créer mon compte avec un code d'invitation</option>
+          <option value="reset">Mot de passe oublié : j'ai un code de réinitialisation</option>
+          <option value="setup">Première installation du serveur (administrateur)</option>
+          <option value="recover">Récupérer l'accès administrateur (code d'installation)</option>
+        </select>
         <input id="syncUrl" type="url" inputmode="url" autocapitalize="off" autocomplete="off" placeholder="Adresse du serveur : https://…" aria-label="Adresse du serveur">
         <input id="syncEmail" type="email" autocapitalize="off" autocomplete="username" placeholder="E-mail du compte" aria-label="E-mail du compte">
-        <input id="syncPass" type="password" autocomplete="current-password" placeholder="Mot de passe (12 caractères minimum à la création)" aria-label="Mot de passe">
-        <div id="syncSetupWrap" hidden><input id="syncSetup" autocapitalize="off" autocomplete="off" placeholder="Code d'installation (donné lors de la mise en place du serveur)" aria-label="Code d'installation"></div>
+        <input id="syncPass" type="password" autocomplete="current-password" placeholder="Mot de passe" aria-label="Mot de passe">
+        <div id="syncCodeWrap" hidden><input id="syncCode" autocapitalize="characters" autocomplete="off" placeholder="Code" aria-label="Code"></div>
+        <div id="syncHint" class="tc-sub" style="margin:0 0 8px;"></div>
         <div id="syncMsg" class="sync-msg" role="status"></div>
-        <div class="tpl-acts"><button type="button" class="btn-primary" id="syncLoginBtn" style="min-height:42px;">Se connecter</button><button type="button" class="btn-ghost" id="syncCreateBtn" style="min-height:42px;">Première fois : créer le compte</button></div>
+        <button type="button" class="btn-primary" id="syncLoginBtn" style="min-height:44px; width:100%;">Se connecter</button>
       </div>
       <div id="syncConnected" hidden>
-        <div class="tpl-acts"><button type="button" class="btn-primary" id="syncNowBtn" style="min-height:42px;">Synchroniser maintenant</button><button type="button" class="btn-ghost btn-danger" id="syncLogoutBtn" style="min-height:42px;">Se déconnecter</button></div>
+        <div id="syncWho" class="tc-sub" style="margin-bottom:8px;"></div>
+        <div class="tpl-acts"><button type="button" class="btn-primary" id="syncNowBtn" style="min-height:42px;">Synchroniser maintenant</button><button type="button" class="btn-ghost" id="syncPwBtn" style="min-height:42px;">Changer mon mot de passe</button></div>
+        <div class="tpl-acts" style="margin-top:8px;"><button type="button" class="btn-ghost" id="syncAdminBtn" style="min-height:42px;" hidden>Gérer les praticiens</button><button type="button" class="btn-ghost btn-danger" id="syncLogoutBtn" style="min-height:42px;">Se déconnecter</button></div>
         <label class="cb sync-auto"><input type="checkbox" id="syncAuto"> Synchronisation automatique (à l'ouverture, après chaque modification, toutes les minutes)</label>
       </div>
     </div>
@@ -9728,6 +9766,14 @@ function syncSoon(){
   clearTimeout(syncTimer);
   syncTimer = setTimeout(function(){ syncNow(false); }, 3500);
 }
+async function syncRefreshMe(c){
+  try{
+    var r = await syncFetch(c, "/api/me");
+    if(r.status === 200 && r.json){ c.role = r.json.role || c.role; c.email = r.json.email || c.email; c.serverOld = false; }
+    else if(r.status === 404) c.serverOld = true;
+    else if(r.status === 401) throw { auth: true };
+  }catch(e){ if(e && e.auth) throw e; }
+}
 async function syncPull(c){
   var since = c.lastRev || 0, docs = [], maxRev = since, guard = 0;
   while(guard++ < 400){
@@ -9812,6 +9858,7 @@ async function syncNow(manual){
   if(syncBusyUi()){ clearTimeout(syncTimer); syncTimer = setTimeout(function(){ syncNow(false); }, 4000); return; }
   syncRunning = true; renderSyncUi();
   try{
+    await syncRefreshMe(c);
     for(var pass = 0; pass < 2; pass++){
       var pulled = await syncPull(c);
       syncApplyPulled(c, pulled.docs);
@@ -9851,31 +9898,150 @@ function renderSyncUi(fillForm){
     var on = !!c.token;
     document.getElementById("syncForm").hidden = on; document.getElementById("syncConnected").hidden = !on;
     document.getElementById("syncAuto").checked = c.auto !== false;
-    if(fillForm){ document.getElementById("syncUrl").value = c.url || ""; document.getElementById("syncEmail").value = c.email || ""; document.getElementById("syncPass").value = ""; document.getElementById("syncMsg").textContent = ""; document.getElementById("syncSetupWrap").hidden = true; }
+    document.getElementById("syncWho").textContent = on ? "Connecté : " + (c.email || "") + " · " + (c.role === "admin" ? "Administrateur" : "Praticien") + (c.serverOld ? " — ⚠ le serveur n'est pas à jour : remplace server.js sur GitHub (version avec gestion des praticiens), puis relance l'application dans Clever Cloud (Re-build and start)." : "") : "";
+    document.getElementById("syncAdminBtn").hidden = !(on && c.role === "admin" && !c.serverOld);
+    if(fillForm){ document.getElementById("syncUrl").value = c.url || ""; document.getElementById("syncEmail").value = c.email || ""; document.getElementById("syncPass").value = ""; document.getElementById("syncCode").value = ""; document.getElementById("syncAction").value = "login"; syncApplyAction(); }
   }
   var dot = document.getElementById("railSyncDot"); if(dot) dot.className = "sync-dot " + (c.url ? st.cls : "");
   var mi = document.getElementById("moreSyncInfo"); if(mi) mi.textContent = c.url ? "Synchronisation : " + st.text : "";
   var mb = document.getElementById("moreSyncBtn"); if(mb) mb.hidden = !c.token;
 }
-async function syncLogin(create){
-  var msg = document.getElementById("syncMsg"), url = syncNormUrl(document.getElementById("syncUrl").value), email = document.getElementById("syncEmail").value.trim(), pass = document.getElementById("syncPass").value;
+var SYNC_OWNER_KEY = "horusSyncOwner_v1";
+var SYNC_ACTIONS = {
+  login:   { path: "/api/login",         btn: "Se connecter",                          hint: "",                                                                        code: "" },
+  join:    { path: "/api/join",          btn: "Créer mon compte",                      hint: "Saisis l'e-mail sur lequel l'invitation a été créée, le code reçu, et choisis un mot de passe de 12 caractères minimum.", code: "Code d'invitation (XXXX-XXXX-XXXX)" },
+  reset:   { path: "/api/reset",         btn: "Choisir un nouveau mot de passe",       hint: "Saisis ton e-mail, le code que l'administrateur t'a donné, et ton nouveau mot de passe (12 caractères minimum).", code: "Code de réinitialisation" },
+  setup:   { path: "/api/setup",         btn: "Créer le compte administrateur",        hint: "À faire une seule fois, par la personne qui administre le serveur. Le code d'installation est celui saisi dans les variables du serveur (SETUP_CODE).", code: "Code d'installation" },
+  recover: { path: "/api/admin-recover", btn: "Récupérer l'accès administrateur",      hint: "Pour l'administrateur qui a perdu son mot de passe : saisis son e-mail, le code d'installation (SETUP_CODE) et un nouveau mot de passe.", code: "Code d'installation" }
+};
+function syncApplyAction(){
+  var a = SYNC_ACTIONS[document.getElementById("syncAction").value] || SYNC_ACTIONS.login;
+  document.getElementById("syncLoginBtn").textContent = a.btn;
+  document.getElementById("syncCodeWrap").hidden = !a.code;
+  if(a.code) document.getElementById("syncCode").placeholder = a.code;
+  document.getElementById("syncHint").textContent = a.hint;
+  document.getElementById("syncPass").autocomplete = a.code ? "new-password" : "current-password";
+  document.getElementById("syncMsg").textContent = "";
+}
+function wipeLocalData(){
+  snapshotBeforeMerge();
+  replaceState({ patients: [], functionalMovements: [], presetsPerso: [], agenda: [], settings: state.settings || {} });
+}
+async function syncLogin(){
+  var msg = document.getElementById("syncMsg"), kind = document.getElementById("syncAction").value, act = SYNC_ACTIONS[kind] || SYNC_ACTIONS.login;
+  var url = syncNormUrl(document.getElementById("syncUrl").value), email = document.getElementById("syncEmail").value.trim().toLowerCase(), pass = document.getElementById("syncPass").value, code = document.getElementById("syncCode").value.trim();
   msg.textContent = "";
   if(!url || !syncUrlOk(url)){ msg.textContent = "Adresse invalide : elle doit commencer par https://."; return; }
   if(!email || !pass){ msg.textContent = "Indique l'e-mail et le mot de passe."; return; }
-  var setupWrap = document.getElementById("syncSetupWrap");
-  if(create && setupWrap.hidden){ setupWrap.hidden = false; msg.textContent = "Saisis le code d'installation, puis appuie de nouveau sur « Créer le compte »."; return; }
+  if(act.code && !code){ msg.textContent = "Saisis le code."; return; }
+  if(kind !== "login" && pass.length < 12){ msg.textContent = "Le mot de passe doit contenir au moins 12 caractères."; return; }
+  var body = kind === "login" ? { email: email, password: pass } : ((kind === "setup" || kind === "recover") ? { setupCode: code, email: email, password: pass } : { code: code, email: email, password: pass });
+  var btn = document.getElementById("syncLoginBtn"); btn.disabled = true;
   try{
-    var r = await syncFetch({ url: url, token: "" }, create ? "/api/setup" : "/api/login", "POST", create ? { setupCode: document.getElementById("syncSetup").value.trim(), email: email, password: pass } : { email: email, password: pass });
+    var r = await syncFetch({ url: url, token: "" }, act.path, "POST", body);
     if(r.status === 200 && r.json && r.json.token){
-      syncSave({ url: url, email: r.json.email || email, token: r.json.token, auto: true, lastRev: 0, pushed: {}, metaSig: {}, lastOkAt: "", lastError: "" });
-      document.getElementById("syncPass").value = "";
+      var owner = ""; try{ owner = localStorage.getItem(SYNC_OWNER_KEY) || ""; }catch(e){}
+      var who = r.json.email || email;
+      if(owner && owner !== who && ((state.patients || []).length || (state.agenda || []).length)){
+        if(!confirm("Cet appareil contient des données synchronisées avec un autre compte (" + owner + ").\n\nPour ne PAS les mélanger avec celles de " + who + ", elles vont être retirées de cet appareil (elles restent sur le compte de " + owner + ").\n\nContinuer ?")){ msg.textContent = "Connexion annulée : les données de cet appareil n'ont pas été touchées."; return; }
+        wipeLocalData();
+      }
+      try{ localStorage.setItem(SYNC_OWNER_KEY, who); }catch(e){}
+      syncSave({ url: url, email: who, role: r.json.role || "praticien", token: r.json.token, auto: true, lastRev: 0, pushed: {}, metaSig: {}, lastOkAt: "", lastError: "" });
+      document.getElementById("syncPass").value = ""; document.getElementById("syncCode").value = "";
+      document.getElementById("syncAction").value = "login"; syncApplyAction();
       renderSyncUi(true);
       syncNow(true);
     } else msg.textContent = (r.json && r.json.message) || ("Connexion impossible (code " + r.status + ").");
   }catch(e){ msg.textContent = "Serveur injoignable : vérifie l'adresse et ta connexion."; }
+  finally{ btn.disabled = false; }
 }
-document.getElementById("syncLoginBtn").addEventListener("click", function(){ syncLogin(false); });
-document.getElementById("syncCreateBtn").addEventListener("click", function(){ syncLogin(true); });
+document.getElementById("syncAction").addEventListener("change", syncApplyAction);
+document.getElementById("syncLoginBtn").addEventListener("click", syncLogin);
+/* ----- changer son mot de passe ----- */
+document.getElementById("syncPwBtn").addEventListener("click", function(){ ["pwOld", "pwNew", "pwNew2"].forEach(function(id){ document.getElementById(id).value = ""; }); document.getElementById("pwMsg").textContent = ""; document.getElementById("pwOverlay").hidden = false; });
+document.getElementById("pwCloseBtn").addEventListener("click", function(){ document.getElementById("pwOverlay").hidden = true; });
+document.getElementById("pwSaveBtn").addEventListener("click", async function(){
+  var m = document.getElementById("pwMsg"), o = document.getElementById("pwOld").value, n = document.getElementById("pwNew").value, n2 = document.getElementById("pwNew2").value;
+  m.textContent = "";
+  if(!o){ m.textContent = "Saisis ton mot de passe actuel."; return; }
+  if(n.length < 12){ m.textContent = "Le nouveau mot de passe doit contenir au moins 12 caractères."; return; }
+  if(n !== n2){ m.textContent = "Les deux nouveaux mots de passe sont différents."; return; }
+  var c = syncCfg();
+  try{
+    var r = await syncFetch(c, "/api/password", "POST", { oldPassword: o, newPassword: n });
+    if(r.status === 200 && r.json && r.json.token){ c.token = r.json.token; syncSave(c); document.getElementById("pwOverlay").hidden = true; renderSyncUi(); }
+    else m.textContent = (r.json && r.json.message) || "Changement impossible.";
+  }catch(e){ m.textContent = "Serveur injoignable."; }
+});
+/* ----- administration des praticiens ----- */
+var adminLast = null;
+function adminFmt(iso){ if(!iso) return "jamais"; var d = new Date(iso); return fmtDate(isoLocalDay(d)) + " " + String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); }
+async function adminLoad(){
+  var c = syncCfg(), m = document.getElementById("adminMsg");
+  m.textContent = "";
+  try{
+    var r = await syncFetch(c, "/api/admin/users");
+    if(r.status === 401){ m.textContent = "Reconnexion nécessaire."; return; }
+    if(r.status !== 200){ m.textContent = (r.json && r.json.message) || "Impossible de charger la liste."; return; }
+    adminLast = r.json; adminRender();
+  }catch(e){ m.textContent = "Serveur injoignable."; }
+}
+function adminRender(){
+  var d = adminLast; if(!d) return;
+  document.getElementById("adminInfo").textContent = d.users.length + " praticien" + (d.users.length > 1 ? "s" : "") + " sur " + d.maxUsers + " maximum. Un praticien ne voit jamais les patients d'un autre.";
+  document.getElementById("adminList").innerHTML = d.users.map(function(u){
+    return '<div class="pm-row" style="align-items:flex-start;"><div class="t">' + escHtml(u.email) + (u.self ? ' <span class="am-chip mute">toi</span>' : '') + ' <span class="am-chip' + (u.role === "admin" ? '' : ' mute') + '">' + (u.role === "admin" ? "Administrateur" : "Praticien") + '</span> <span class="am-chip' + (u.active ? '" style="background:#e6f6ee; color:#157a4f;' : ' flag') + '">' + (u.active ? "Actif" : "Désactivé") + '</span>' +
+      '<div class="s">' + u.patients + ' patient' + (u.patients > 1 ? 's' : '') + ' · dernière activité : ' + escHtml(adminFmt(u.lastSeen || u.lastLogin)) + '</div>' +
+      '<div class="tpl-acts" style="margin-top:6px;"><button type="button" class="btn-ghost" data-adreset="' + u.id + '" style="min-height:38px;">Mot de passe oublié</button>' +
+      (u.self ? '' : '<button type="button" class="btn-ghost" data-adactive="' + u.id + '" data-on="' + (u.active ? "0" : "1") + '" style="min-height:38px;">' + (u.active ? "Désactiver" : "Réactiver") + '</button><button type="button" class="btn-ghost btn-danger" data-addel="' + u.id + '" data-email="' + escHtml(u.email) + '" style="min-height:38px;">Supprimer…</button>') + '</div></div></div>';
+  }).join("") + (d.invites.length ? '<div class="pm-day">Invitations en attente</div>' + d.invites.map(function(i){ return '<div class="pm-row"><div class="t">' + escHtml(i.email) + '<div class="s">' + (i.kind === "join" ? "invitation" : "réinitialisation") + ' · valable jusqu\'au ' + escHtml(fmtDate(isoLocalDay(new Date(i.expiresAt)))) + '</div></div><button type="button" class="del-x" data-adrevoke="' + i.id + '" aria-label="Annuler cette invitation">✕</button></div>'; }).join("") : "");
+}
+function adminShowCode(kind, email, code, expiresAt){
+  var c = syncCfg(), until = fmtDate(isoLocalDay(new Date(expiresAt))), app = location.origin + location.pathname.replace(/index\.html$/, "");
+  var steps = kind === "join" ? "3. Choisis « Créer mon compte avec un code d'invitation »\n4. " : "3. Choisis « Mot de passe oublié : j'ai un code de réinitialisation »\n4. ";
+  var msg = "Bonjour,\nvoici ton accès à Horus.\n\n1. Ouvre l'application : " + app + "\n2. Plus → Mode et réglages → Serveur de synchronisation\n" + steps + "Adresse du serveur : " + c.url + "\n   E-mail : " + email + "\n   " + (kind === "join" ? "Code d'invitation : " : "Code de réinitialisation : ") + code + " (valable jusqu'au " + until + ")\n5. Choisis un mot de passe de 12 caractères minimum.";
+  var box = document.getElementById("adminCodeBox");
+  box.hidden = false; box.style.whiteSpace = "pre-wrap"; box.textContent = (kind === "join" ? "Invitation pour " : "Réinitialisation pour ") + email + "\nCode : " + code + "\nValable jusqu'au " + until + ". Il ne sert qu'une fois et ne sera plus affiché.";
+  document.getElementById("adminCodeActions").hidden = false;
+  document.getElementById("adminCopyBtn").dataset.msg = msg; document.getElementById("adminCopyBtn").textContent = "Copier le message à envoyer";
+}
+document.getElementById("syncAdminBtn").addEventListener("click", function(){ document.getElementById("adminCodeBox").hidden = true; document.getElementById("adminCodeActions").hidden = true; document.getElementById("adminInviteEmail").value = ""; document.getElementById("adminOverlay").hidden = false; adminLoad(); });
+document.getElementById("adminCloseBtn").addEventListener("click", function(){ document.getElementById("adminOverlay").hidden = true; });
+document.getElementById("adminInviteBtn").addEventListener("click", async function(){
+  var email = document.getElementById("adminInviteEmail").value.trim().toLowerCase(), m = document.getElementById("adminMsg"); m.textContent = "";
+  if(!email){ m.textContent = "Indique l'e-mail du praticien."; return; }
+  var r = await syncFetch(syncCfg(), "/api/admin/invite", "POST", { email: email }).catch(function(){ return null; });
+  if(!r){ m.textContent = "Serveur injoignable."; return; }
+  if(r.status === 200){ adminShowCode("join", email, r.json.code, r.json.expiresAt); document.getElementById("adminInviteEmail").value = ""; adminLoad(); }
+  else m.textContent = (r.json && r.json.message) || "Invitation impossible.";
+});
+document.getElementById("adminCopyBtn").addEventListener("click", function(){
+  var b = this, txt = b.dataset.msg || "";
+  function done(){ b.textContent = "Message copié ✓"; }
+  if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done).catch(function(){ prompt("Copie ce message :", txt); });
+  else prompt("Copie ce message :", txt);
+});
+document.getElementById("adminList").addEventListener("click", async function(e){
+  var m = document.getElementById("adminMsg"), t; m.textContent = "";
+  if((t = e.target.closest("[data-adactive]"))){
+    var on = t.dataset.on === "1";
+    if(!on && !confirm("Désactiver ce praticien ? Il sera déconnecté et ne pourra plus se synchroniser (ses données sont conservées).")) return;
+    var r1 = await syncFetch(syncCfg(), "/api/admin/users/" + t.dataset.adactive + "/active", "POST", { active: on }); if(r1.status !== 200) m.textContent = (r1.json && r1.json.message) || "Impossible."; adminLoad(); return;
+  }
+  if((t = e.target.closest("[data-adreset]"))){
+    var u = adminLast.users.find(function(x){ return String(x.id) === t.dataset.adreset; });
+    var r2 = await syncFetch(syncCfg(), "/api/admin/users/" + t.dataset.adreset + "/reset", "POST", {});
+    if(r2.status === 200) { adminShowCode("reset", u.email, r2.json.code, r2.json.expiresAt); adminLoad(); } else m.textContent = (r2.json && r2.json.message) || "Impossible."; return;
+  }
+  if((t = e.target.closest("[data-addel]"))){
+    var typed = prompt("Suppression définitive du compte et de TOUS les patients de ce praticien sur le serveur.\n\nPour confirmer, retape son adresse e-mail :\n" + t.dataset.email);
+    if(typed === null) return;
+    var r3 = await syncFetch(syncCfg(), "/api/admin/users/" + t.dataset.addel + "/delete", "POST", { confirmEmail: typed });
+    if(r3.status !== 200) m.textContent = (r3.json && r3.json.message) || "Impossible."; adminLoad(); return;
+  }
+  if((t = e.target.closest("[data-adrevoke]"))){ await syncFetch(syncCfg(), "/api/admin/invites/" + t.dataset.adrevoke + "/revoke", "POST", {}); adminLoad(); }
+});
 document.getElementById("syncNowBtn").addEventListener("click", function(){ syncNow(true); });
 document.getElementById("syncAuto").addEventListener("change", function(){ var c = syncCfg(); c.auto = this.checked; syncSave(c); if(c.auto) syncSoon(); });
 document.getElementById("syncLogoutBtn").addEventListener("click", function(){
