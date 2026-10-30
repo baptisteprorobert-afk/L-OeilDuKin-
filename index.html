@@ -715,16 +715,15 @@
   .ag-scroll{ overflow:auto; background:#fff; border:1px solid var(--border); border-radius:14px; max-height:calc(100vh - 200px); max-height:calc(100dvh - 200px); position:relative; -webkit-overflow-scrolling:touch; }
   .ag-grid{ display:grid; min-width:100%; }
   .ag-hcell{ position:sticky; top:0; z-index:6; background:#fff; border-bottom:1px solid var(--border); padding:8px 6px; text-align:center; font-size:12.5px; font-weight:600; text-transform:capitalize; color:var(--muted); }
-  .ag-hcell.today{ color:var(--blue-text); }
+  .ag-hcell.today{ color:var(--blue-text); background:#eaf3ff; }
   .ag-hcell.clickable{ cursor:pointer; }
   .ag-hcell.clickable:hover{ background:#f6f8fb; }
   .ag-hcell .n{ display:block; font-size:19px; font-weight:700; color:var(--text); }
-  .ag-hcell.today .n{ color:var(--blue-text); }
+  .ag-hcell.today .n{ color:#fff; background:#007BFF; border-radius:50%; width:34px; height:34px; line-height:34px; margin:2px auto; }
   .ag-hcell .c{ display:block; font-size:11px; font-weight:500; text-transform:none; }
   .ag-times{ position:sticky; left:0; z-index:4; border-right:1px solid var(--border); background:#fff; }
   .ag-times span{ position:absolute; right:6px; transform:translateY(-50%); font-size:11px; color:var(--muted); background:#fff; padding:0 2px; }
   .ag-col{ position:relative; border-left:1px solid #eef0f3; background-image:linear-gradient(to bottom, #dfe2e8 1px, transparent 1px), linear-gradient(to bottom, #f0f1f4 1px, transparent 1px); }
-  .ag-col.today{ background-color:#f6faff; }
   .ag-now{ position:absolute; left:0; right:0; height:2px; background:#e0483e; z-index:3; pointer-events:none; }
   .ag-now::before{ content:""; position:absolute; left:-4px; top:-3px; width:8px; height:8px; border-radius:50%; background:#e0483e; }
   .ag-ap{ position:absolute; box-sizing:border-box; border-radius:8px; padding:3px 24px 3px 38px; background:#e8f2ff; border-left:4px solid #007BFF; color:var(--text); overflow:hidden; cursor:pointer; touch-action:manipulation; -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; font-size:12.5px; line-height:1.3; z-index:2; }
@@ -781,9 +780,9 @@
   .st-donut-wrap{ display:flex; gap:18px; align-items:center; flex-wrap:wrap; }
 
   /* ---------- plages ---------- */
-  .ag-off{ position:absolute; left:0; right:0; background:rgba(11,18,32,0.06); pointer-events:none; z-index:0; }
+  .ag-off{ position:absolute; left:0; right:0; background:repeating-linear-gradient(135deg, rgba(11,18,32,0.13) 0 1.5px, rgba(11,18,32,0.025) 1.5px 9px); pointer-events:none; z-index:0; }
   .ag-pfill{ position:absolute; left:0; right:0; pointer-events:none; z-index:0; }
-  .ag-closed{ position:absolute; left:0; right:0; pointer-events:none; z-index:1; background:repeating-linear-gradient(135deg, rgba(11,18,32,0.10) 0 7px, rgba(11,18,32,0.03) 7px 14px); }
+  .ag-closed{ position:absolute; left:0; right:0; pointer-events:none; z-index:1; background:repeating-linear-gradient(135deg, rgba(11,18,32,0.26) 0 2.5px, rgba(11,18,32,0.09) 2.5px 7px); }
   .ag-aps{ position:absolute; top:0; bottom:0; right:0; }
   .pm-day{ font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:var(--muted); margin:14px 0 4px; }
   .pm-row{ display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #eef0f3; }
@@ -1561,7 +1560,7 @@
 <div id="plagesMgrOverlay" class="modal-overlay" hidden>
   <div class="modal-box wide">
     <div class="modal-header"><h2>Plages et fermetures</h2><button class="btn-ghost" id="pmCloseBtn">Fermer</button></div>
-    <p class="tc-sub">Les plages définissent tes horaires de la semaine (par exemple la balnéothérapie en bleu). Un jour sans plage reste libre. Touche la bande verticale d'une plage dans l'agenda pour la modifier ou la fermer.</p>
+    <p class="tc-sub">Les plages définissent tes horaires de la semaine (par exemple la balnéothérapie en bleu). Tout ce qui est hors plage est hachuré, et tu peux quand même y créer un rendez-vous après confirmation. Touche l'en-tête d'un jour dans l'agenda pour modifier ou fermer ses plages. Sans aucune plage, rien n'est hachuré.</p>
     <div id="pmBody"></div>
     <div class="modal-actions"><button class="btn-ghost" id="pmCloseBtn2">Fermer une période</button><button class="btn-primary" id="pmNewBtn">+ Nouvelle plage</button></div>
   </div>
@@ -8688,7 +8687,8 @@ function renderAgenda(){
     h += '</div>';
   });
   grid.innerHTML = h;
-  document.getElementById("agLegend").innerHTML = agTypes().map(function(t){ return '<span><i style="background:' + t.color + ';"></i>' + escHtml(t.name) + ' · ' + t.dur + ' min</span>'; }).join("");
+  document.getElementById("agLegend").innerHTML = agTypes().map(function(t){ return '<span><i style="background:' + t.color + ';"></i>' + escHtml(t.name) + ' · ' + t.dur + ' min</span>'; }).join("") +
+    (plList().length ? '<span><i style="background:repeating-linear-gradient(135deg, rgba(11,18,32,0.35) 0 1.5px, #fff 1.5px 4px); border:1px solid #d5d9e0;"></i>Hors plage</span><span><i style="background:repeating-linear-gradient(135deg, rgba(11,18,32,0.6) 0 2px, #cfd4dc 2px 4px);"></i>Fermé</span>' : "");
   var sc = document.getElementById("agScroll");
   if(!renderAgenda.scrolled){ sc.scrollTop = Math.max(0, ((days.indexOf(today) !== -1 ? nowMin : 8 * 60) - rg.lo - 60) * AG_PX); renderAgenda.scrolled = true; }
 }
@@ -9076,7 +9076,7 @@ function agPlagesFor(d){
 function agPlageAt(d, min){
   var info = agPlagesFor(d);
   if(info.dayClosed) return { closed: true, label: info.dayClosed.label || "Fermé" };
-  if(!info.ranges.length) return null;
+  if(!info.ranges.length) return plList().length ? { off: true } : null;
   for(var i = 0; i < info.ranges.length; i++){
     var r = info.ranges[i], s0 = hhmmToMin(r.p.start), e0 = hhmmToMin(r.p.end);
     if(min >= s0 && min < e0) return r.closure ? { closed: true, label: r.closure.label || ("Fermé · " + r.p.label) } : { plage: r.p };
@@ -9087,7 +9087,7 @@ function agPlageLayers(d, rg){
   var info = agPlagesFor(d), lo = rg.lo, hi = rg.hi, h = "";
   function y(m){ return (Math.max(lo, Math.min(hi, m)) - lo) * AG_PX; }
   if(info.dayClosed) return { html: '<div class="ag-closed" style="top:0; height:' + y(hi) + 'px;"></div>', pad: 0 };
-  if(!info.ranges.length) return { html: "", pad: 0 };
+  if(!info.ranges.length) return { html: plList().length ? '<div class="ag-off" style="top:0; height:' + y(hi) + 'px;"></div>' : "", pad: 0 };
   var iv = info.ranges.map(function(r){ return [hhmmToMin(r.p.start), hhmmToMin(r.p.end)]; }).sort(function(a, b){ return a[0] - b[0]; }), cur = lo;
   iv.forEach(function(v){ if(v[0] > cur) h += '<div class="ag-off" style="top:' + y(cur) + 'px; height:' + (y(v[0]) - y(cur)) + 'px;"></div>'; cur = Math.max(cur, v[1]); });
   if(cur < hi) h += '<div class="ag-off" style="top:' + y(cur) + 'px; height:' + (y(hi) - y(cur)) + 'px;"></div>';
@@ -9111,7 +9111,7 @@ function openDayPlageSheet(d){
       '<button type="button" class="as-item" data-plact="editclosure" data-id="' + escHtml(info.dayClosed.id) + '">Modifier la fermeture (dates, motif)…</button>' +
       '<button type="button" class="as-item danger" data-plact="delclosure" data-id="' + escHtml(info.dayClosed.id) + '">Supprimer la fermeture</button>';
   } else {
-    if(!info.ranges.length) h += '<div class="as-sub">Aucune plage ce jour-là : tout est libre.</div>';
+    if(!info.ranges.length) h += '<div class="as-sub">Aucune plage ce jour-là : la journée est hachurée. Tu peux y ajouter une plage via « Toutes les plages… ».</div>';
     info.ranges.forEach(function(r){
       var closed = !!r.closure, col = r.p.color ? '<span class="dot" style="display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;background:' + hexToRgba(r.p.color, 0.6) + ';"></span>' : '';
       h += '<div class="as-sub" style="padding-top:8px;"><b>' + col + escHtml(r.p.label) + '</b> · ' + r.p.start + ' – ' + r.p.end + (closed ? ' · <b>fermée</b>' + (r.closure.label ? ' (' + escHtml(r.closure.label) + ')' : '') : '') + '</div>' +
