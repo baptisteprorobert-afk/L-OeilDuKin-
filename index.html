@@ -852,6 +852,52 @@
   .sync-auto{ margin-top:8px; font-size:13px !important; }
   .sync-dot{ position:absolute; right:-3px; top:-3px; width:9px; height:9px; border-radius:50%; border:2px solid #fff; display:none; }
   .sync-dot.ok{ display:block; background:#1fa971; } .sync-dot.err{ display:block; background:#e0483e; } .sync-dot.warn{ display:block; background:#e58a00; } .sync-dot.run{ display:block; background:#007BFF; }
+
+  /* ---------- agenda : vues Jour / 3 jours plus lisibles + balayage ---------- */
+  .ag-grid.v1 .ag-hcell, .ag-grid.v3 .ag-hcell{ padding:10px 6px 8px; font-size:12.5px; }
+  .ag-grid.v1 .ag-hcell .n, .ag-grid.v3 .ag-hcell .n{ width:42px; height:42px; line-height:42px; border-radius:50%; margin:4px auto 2px; font-size:21px; background:#f1f3f6; }
+  .ag-grid.v1 .ag-hcell.today .n, .ag-grid.v3 .ag-hcell.today .n{ background:#007BFF; color:#fff; width:42px; height:42px; line-height:42px; }
+  .ag-grid.v1 .ag-hcell .c, .ag-grid.v3 .ag-hcell .c{ font-size:11.5px; min-height:14px; }
+  .ag-grid.v1 .ag-col, .ag-grid.v3 .ag-col{ border-left:1px solid #e3e6ec; }
+  .ag-grid.v1 .ag-col.today, .ag-grid.v3 .ag-col.today{ background-color:#fafcff; }
+  .ag-grid.v1 .ag-ap, .ag-grid.v3 .ag-ap{ border-radius:10px; padding:5px 26px 5px 9px; box-shadow:0 1px 3px rgba(11,18,32,0.12); }
+  .ag-grid.v1 .ag-ap .l1, .ag-grid.v3 .ag-ap .l1{ font-size:14px; }
+  .ag-grid.v1 .ag-ap .sb, .ag-grid.v3 .ag-ap .sb{ font-size:12px; margin-top:1px; }
+  .ag-grid.v3 .ag-ap.multi .l1 .tm{ display:none; }
+  @keyframes agInNext{ from{ opacity:0.35; transform:translateX(28px); } to{ opacity:1; transform:none; } }
+  @keyframes agInPrev{ from{ opacity:0.35; transform:translateX(-28px); } to{ opacity:1; transform:none; } }
+  .ag-grid.in-next{ animation:agInNext 0.22s ease-out; }
+  .ag-grid.in-prev{ animation:agInPrev 0.22s ease-out; }
+  @media (prefers-reduced-motion: reduce){ .ag-grid.in-next, .ag-grid.in-prev{ animation:none; } }
+  @media (max-width:600px){
+    .ag-title{ font-size:16px; min-width:0; }
+    .ag-bar .ag-seg{ flex:1 1 100%; }
+    .ag-seg button{ flex:1; padding:0 6px; }
+    #agPlagesBtn, #agNewBtn, #ag3Btn{ flex:1 1 0; white-space:nowrap; padding-left:8px; padding-right:8px; }
+    .ag-grid.v3 .ag-hcell{ padding:8px 2px 6px; font-size:11.5px; }
+    .ag-grid.v3 .ag-hcell .n, .ag-grid.v3 .ag-hcell.today .n{ width:36px; height:36px; line-height:36px; font-size:18px; }
+    .ag-grid.v3 .ag-ap{ padding:3px 19px 3px 7px; }
+    .ag-grid.v3 .ag-ap .l1 .nm{ display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:13px; }
+    .ag-grid.v3 .ag-ap .l1 .tm{ display:block; margin:0; font-size:11.5px; }
+    .ag-grid.v3 .ag-ap .ag-more{ width:19px; }
+    .ag-grid.v3 .ag-ap .sb{ font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .ag-grid.v3 .ag-ap.multi .l1 .tm{ display:none; }
+  }
+
+  .sp-result.tone-ok{ color:#157a4f; } .sp-result.tone-warn{ color:#8a5200; }
+  .rule-box.tone-warn{ background:#fff8e8; color:#8a5200; }
+  .sp-comp.tone-ok{ color:#157a4f; } .sp-comp.tone-ko{ color:#b3261e; }
+  .sp-sec .tone-ok{ color:#157a4f; font-weight:600; } .sp-sec .tone-ko{ color:#b3261e; font-weight:600; } .sp-sec .tone-warn{ color:#8a5200; font-weight:600; }
+  .sp-grid .l .del-x{ margin-left:4px; }
+
+  /* ---------- profils : index alphabétique ---------- */
+  #patientCardsGrid .al-h{ grid-column:1 / -1; position:sticky; top:0; z-index:3; background:var(--bg, #f4f5f7); font-weight:800; font-size:14px; color:#0062CC; padding:8px 4px 4px; border-bottom:1px solid var(--border); margin-top:4px; }
+  #patientCardsGrid.al{ padding-right:26px; }
+  .al-index{ position:fixed; right:3px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; z-index:20; touch-action:none; background:rgba(255,255,255,0.78); border-radius:12px; padding:4px 0; -webkit-user-select:none; user-select:none; }
+  .al-index[hidden]{ display:none !important; }
+  .al-l{ border:0; background:transparent; font-size:11px; line-height:1; padding:2.4px 7px; color:#c3c8d1; font-weight:700; min-height:0; }
+  .al-l.on{ color:#0062CC; }
+  .al-l:disabled{ cursor:default; }
 </style>
 </head>
 <body>
@@ -894,6 +940,7 @@
         <button type="button" class="btn-ghost" data-agnav="1" aria-label="Suivant" style="min-height:40px;">›</button>
         <div class="ag-title" id="agTitle"></div>
         <div class="ag-seg" id="agSeg"><button type="button" data-agview="day">Jour</button><button type="button" data-agview="3days">3 jours</button><button type="button" data-agview="week">Semaine</button></div>
+        <button type="button" class="btn-ghost" id="ag3Btn" hidden style="min-height:40px;">📅 3 jours</button>
         <button type="button" class="btn-ghost" id="agPlagesBtn" style="min-height:40px;">Plages</button>
         <button type="button" class="btn-primary" id="agNewBtn" style="min-height:40px;">+ Rendez-vous</button>
       </div>
@@ -1019,6 +1066,7 @@
         <div class="header-actions">
           <button class="btn-ghost" id="openReportBtn" title="Générer un bilan PDF">📄 Bilan PDF</button>
           <button class="btn-ghost" id="sharePatientBtn" title="Envoyer ce patient en fichier">Partager</button>
+          <button class="btn-ghost" id="renamePatientBtn" title="Modifier le nom du patient">✎ Renommer</button>
           <button class="btn-ghost" id="openRefBtn" title="Positions de test & normes">📖 Référence</button>
           <button class="btn-ghost btn-danger" id="deletePatientBtn">Supprimer</button>
         </div>
@@ -1083,7 +1131,8 @@
     <div id="specPickWrap" hidden>
       <label>Zone du corps</label>
       <div class="type-grid" id="specZoneGrid"></div>
-      <label style="margin-top:14px;">Test</label>
+      <div class="chip-row" id="specCatRow" style="margin-top:14px;"></div>
+      <label style="margin-top:10px;">Test</label>
       <div id="specTestList"></div>
     </div>
 
@@ -1093,6 +1142,7 @@
         <div class="type-card" data-jump="CMJ">CMJ</div>
         <div class="type-card" data-jump="SJ">Squat Jump</div>
         <div class="type-card" data-jump="Drop Jump">Drop Jump</div>
+        <div class="type-card" data-jump="Drop Jump unilatéral">Drop Jump unilatéral</div>
         <div class="type-card" data-jump="other">Autre</div>
       </div>
     </div>
@@ -1576,6 +1626,23 @@
   </div>
 </div>
 
+<!-- Vue 3 jours : choix des jours -->
+<div id="ag3Sheet" class="sheet-overlay" hidden>
+  <div class="sheet" role="dialog" aria-label="Choisir les jours de la vue 3 jours">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head"><h3>Vue 3 jours</h3><button type="button" class="icon-btn" id="ag3CloseBtn" aria-label="Fermer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="sheet-body">
+      <div class="chip-row" id="ag3Mode"><button type="button" class="chip-btn" data-ag3mode="seq">3 jours à la suite</button><button type="button" class="chip-btn" data-ag3mode="custom">Mes 3 jours</button></div>
+      <div id="ag3Custom">
+        <p class="tc-sub" style="margin:0 0 8px;">Choisis exactement 3 jours (par exemple lundi, mercredi, vendredi). Ils restent les mêmes d'une semaine à l'autre : ‹ et › (ou un balayage) changent de semaine.</p>
+        <div class="chip-row" id="ag3Days"></div>
+      </div>
+      <div id="ag3Msg" class="sync-msg" role="status"></div>
+    </div>
+    <div class="sheet-foot"><button type="button" class="btn-primary" id="ag3SaveBtn" style="min-height:46px;">Afficher</button></div>
+  </div>
+</div>
+
 <!-- Plage : actions -->
 <div id="plageSheet" class="sheet-overlay" hidden>
   <div class="sheet" role="dialog" aria-label="Actions de la plage">
@@ -1942,7 +2009,7 @@
 </div>
 
 <script>
-(function(){
+window.__horusStart = function(){
 "use strict";
 
 /* ============================================================
@@ -2178,18 +2245,23 @@ function evaluateForceNorm(muscle, patient, measuredValue, measuredUnit, leverAr
 }
 function normBandLabel(band){ return band === 'ok' ? 'Dans la norme' : (band === 'low' ? 'Sous la norme' : 'À risque / très faible'); }
 
+function tryParseState(raw){
+  try{ var o = JSON.parse(raw); if(o && typeof o === "object"){ if(!o.patients) o.patients = []; return o; } }catch(e){}
+  return null;
+}
 function loadData(){
-  try{
-    var raw = localStorage.getItem(STORAGE_KEY);
-    if(!raw) return { patients: [], selectedPatientId: null };
-    var parsed = JSON.parse(raw);
-    if(!parsed.patients) parsed.patients = [];
-    return parsed;
-  }catch(e){
-    console.error("Lecture impossible", e);
-    try{ var raw0 = localStorage.getItem(STORAGE_KEY); if(raw0) localStorage.setItem(STORAGE_KEY + "_corrompu", raw0); loadCorrupted = true; }catch(e2){}
-    return { patients: [], selectedPatientId: null };
+  var boot = window.__horusBoot, idbObj = null, lsRaw = null, lsObj = null;
+  if(boot && boot.raw && boot.raw.json) idbObj = tryParseState(boot.raw.json);
+  try{ lsRaw = localStorage.getItem(STORAGE_KEY); }catch(e){}
+  if(lsRaw) lsObj = tryParseState(lsRaw);
+  if(lsRaw && !lsObj && !idbObj){
+    console.error("Lecture impossible");
+    try{ localStorage.setItem(STORAGE_KEY + "_corrompu", lsRaw); }catch(e2){}
+    loadCorrupted = true;
   }
+  /* la copie la plus récente gagne ; une copie sans horodatage (ancienne version) est prioritaire */
+  if(idbObj && lsObj) return (lsObj.savedAt && (idbObj.savedAt || "") > lsObj.savedAt) ? idbObj : lsObj;
+  return idbObj || lsObj || { patients: [], selectedPatientId: null };
 }
 var loadCorrupted = false;
 var saveFailed = false;
@@ -2235,18 +2307,60 @@ function addTombstone(kind, id){
   if(!state.tombstones[kind]) state.tombstones[kind] = {};
   state.tombstones[kind][id] = new Date().toISOString();
 }
+var LS_MIRROR_MAX = 2500000;
+var IDBM = { busy: false, pending: null, disabled: !!(window.__horusBoot && window.__horusBoot.degraded) };
+function idbMainOpen(cb){
+  if(typeof indexedDB === "undefined" || !indexedDB){ cb(null); return; }
+  var r;
+  try{ r = indexedDB.open("horus-main", 1); }catch(e){ cb(null); return; }
+  r.onupgradeneeded = function(){ try{ r.result.createObjectStore("kv"); }catch(e){} };
+  r.onsuccess = function(){ cb(r.result); };
+  r.onerror = function(){ cb(null); };
+  r.onblocked = function(){ cb(null); };
+}
+function idbMainFlush(){
+  var job = IDBM.pending;
+  if(!job) return;
+  IDBM.pending = null; IDBM.busy = true;
+  var finished = false;
+  function done(ok){
+    if(finished) return; finished = true;
+    IDBM.busy = false;
+    job.cbs.forEach(function(f){ try{ f(ok); }catch(e){} });
+    if(IDBM.pending) idbMainFlush();
+  }
+  idbMainOpen(function(db){
+    if(!db){ done(false); return; }
+    try{
+      var tx = db.transaction("kv", "readwrite");
+      tx.objectStore("kv").put({ at: job.at, json: job.json }, "state");
+      tx.oncomplete = function(){ try{ db.close(); }catch(e){} done(true); };
+      tx.onerror = tx.onabort = function(){ try{ db.close(); }catch(e){} done(false); };
+    }catch(e){ try{ db.close(); }catch(e2){} done(false); }
+  });
+}
+function idbMainSave(json, at, cb){
+  if(IDBM.disabled){ if(cb) cb(false); return; }
+  IDBM.pending = { json: json, at: at, cbs: (IDBM.pending ? IDBM.pending.cbs : []).concat(cb ? [cb] : []) };
+  if(!IDBM.busy) idbMainFlush();
+}
 function saveData(){
   try{ stampChanges(); }catch(e){ console.error("Horodatage impossible", e); }
+  var json;
+  try{ state.savedAt = new Date().toISOString(); json = JSON.stringify(state); }
+  catch(e){ console.error("Sauvegarde impossible", e); setSaveWarning(true); return; }
+  var lsOk = false;
   try{
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    if(saveFailed) setSaveWarning(false);
-  }catch(e){
-    console.error("Sauvegarde impossible", e);
-    setSaveWarning(true);
-  }
+    if(json.length <= LS_MIRROR_MAX){ localStorage.setItem(STORAGE_KEY, json); lsOk = true; }
+  }catch(e){ lsOk = false; }
+  idbMainSave(json, state.savedAt, function(ok){
+    if(ok && !lsOk){ try{ localStorage.removeItem(STORAGE_KEY); }catch(e){} }
+    if(ok || lsOk){ if(saveFailed) setSaveWarning(false); } else setSaveWarning(true);
+  });
   scheduleIdbBackup();
   try{ syncSoon(); }catch(e){}
 }
+try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist(); }catch(e){}
 /* copie de secours dans IndexedDB (autre quota que localStorage) */
 var IDB_NAME = "suivi-tests-backup", IDB_STORE = "kv", idbTimer = null;
 function idbOpen(cb){
@@ -2282,12 +2396,13 @@ function scheduleIdbBackup(){
 function storageUsage(){
   var chars = 0;
   try{ chars = JSON.stringify(state).length; }catch(e){}
-  return { kb: Math.round(chars / 1024), pct: Math.round(chars / 5000000 * 100) };
+  return { kb: Math.round(chars / 1024), pct: 0 };
 }
 
 var state = loadData();
 if(!state.functionalMovements) state.functionalMovements = [];
 if(!state.presetsPerso) state.presetsPerso = [];
+if(!state.palpLib) state.palpLib = [];
 if(!state.settings) state.settings = { hardRpe: 7 };
 if(state.settings.hardRir === undefined) state.settings.hardRir = 2;
 if(!state.settings.prog) state.settings.prog = {};
@@ -2359,6 +2474,7 @@ function renderProfilsListCards(){
   document.getElementById("helloSub").textContent = state.patients.length ? "Aujourd'hui, " + state.patients.length + " patient" + (state.patients.length > 1 ? "s" : "") + " dans ton suivi" : "Crée ton premier patient pour commencer";
   var grid = document.getElementById("patientCardsGrid");
   grid.innerHTML = "";
+  renderAlIndex(null);
   if(state.patients.length === 0){
     grid.innerHTML = '<div class="w-callout">Aucun patient pour l\'instant — clique sur "+ Nouveau patient".</div>';
     return;
@@ -2368,7 +2484,15 @@ function renderProfilsListCards(){
   var shown = sq ? state.patients.filter(function(p){ return patientMatches(p, sq); }) : state.patients.slice();
   if(sq) shown.sort(function(a, b){ return (normTxt(a.name).indexOf(sq) === 0 ? 0 : 1) - (normTxt(b.name).indexOf(sq) === 0 ? 0 : 1) || a.name.localeCompare(b.name); });
   if(!shown.length){ grid.innerHTML = '<div class="w-callout">Aucun patient ne correspond à « ' + escHtml(document.getElementById("patientSearch").value.trim()) + ' ».</div>'; return; }
+  var useIdx = !sq;
+  if(useIdx) shown.sort(function(a, b){ return ((alLetter(a.name) === "#") - (alLetter(b.name) === "#")) || normTxt(a.name).localeCompare(normTxt(b.name), "fr"); });
+  grid.classList.toggle("al", useIdx);
+  var curL = "", letters = {};
   shown.forEach(function(p){
+    if(useIdx){
+      var L = alLetter(p.name);
+      if(L !== curL){ curL = L; letters[L] = 1; var hd = document.createElement("div"); hd.className = "al-h"; hd.id = "al-" + (L === "#" ? "num" : L); hd.textContent = L; grid.appendChild(hd); }
+    }
     var card = document.createElement("div");
     card.className = "test-card";
     card.style.cursor = "pointer";
@@ -2390,6 +2514,28 @@ function renderProfilsListCards(){
     });
     grid.appendChild(card);
   });
+  renderAlIndex(useIdx ? letters : null);
+}
+function alLetter(name){ var c = normTxt(name).trim().charAt(0).toUpperCase(); return /[A-Z]/.test(c) ? c : "#"; }
+var alLast = "";
+function alJump(l){ var h = document.getElementById("al-" + (l === "#" ? "num" : l)); if(h) h.scrollIntoView({ block: "start" }); }
+function alPick(nav, y){
+  var best = null, bd = 1e9;
+  nav.querySelectorAll(".al-l.on").forEach(function(b){ var r = b.getBoundingClientRect(), d = Math.abs((r.top + r.bottom) / 2 - y); if(d < bd){ bd = d; best = b; } });
+  if(best && best.dataset.l !== alLast){ alLast = best.dataset.l; alJump(alLast); }
+}
+function renderAlIndex(letters){
+  var nav = document.getElementById("alIndex");
+  if(!nav){
+    nav = document.createElement("nav"); nav.id = "alIndex"; nav.className = "al-index"; nav.setAttribute("aria-label", "Index alphabétique des patients");
+    document.getElementById("profilsListView").appendChild(nav);
+    nav.addEventListener("pointerdown", function(e){ alLast = ""; try{ nav.setPointerCapture(e.pointerId); }catch(x){} alPick(nav, e.clientY); e.preventDefault(); });
+    nav.addEventListener("pointermove", function(e){ if(e.buttons || e.pointerType === "touch") alPick(nav, e.clientY); });
+    nav.addEventListener("pointerup", function(){ alLast = ""; });
+  }
+  if(!letters){ nav.hidden = true; return; }
+  nav.hidden = false;
+  nav.innerHTML = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#".split("").map(function(l){ return '<button type="button" class="al-l' + (letters[l] ? ' on' : '') + '" data-l="' + l + '"' + (letters[l] ? '' : ' disabled') + ' tabindex="-1" aria-label="Lettre ' + l + '">' + l + '</button>'; }).join("");
 }
 
 /* ============================================================
@@ -2863,6 +3009,12 @@ document.getElementById("typeGrid").addEventListener("click", function(e){
 document.getElementById("jumpTypeGrid").addEventListener("click", function(e){
   var card = e.target.closest(".type-card");
   if(!card) return;
+  if(card.dataset.jump === "Drop Jump" || card.dataset.jump === "Drop Jump unilatéral"){
+    var pj = getSelectedPatient(); if(!pj) return;
+    var tj = createSpecTest(pj, "Sauts", card.dataset.jump === "Drop Jump" ? "saut_dj" : "saut_dj_sl");
+    document.getElementById("createTestOverlay").hidden = true;
+    renderAll(); openSpec(tj.id); return;
+  }
   createJumpType = card.dataset.jump;
   document.querySelectorAll("#jumpTypeGrid .type-card").forEach(function(c){ c.classList.remove("selected"); });
   card.classList.add("selected");
@@ -7125,6 +7277,8 @@ function normalizeState(o){
   if(!Array.isArray(o.functionalMovements)) o.functionalMovements = [];
   if(!Array.isArray(o.presetsPerso)) o.presetsPerso = [];
   if(!Array.isArray(o.anamTemplates)) o.anamTemplates = [];
+  if(!Array.isArray(o.palpLib)) o.palpLib = [];
+  o.palpLib = o.palpLib.filter(function(x){ return x && typeof x === "object" && typeof x.id === "string" && typeof x.zone === "string" && typeof x.name === "string" && x.name; });
   if(!Array.isArray(o.agenda)) o.agenda = [];
   var okSt = { prevu:1, present:1, absent:1, annule:1 };
   o.agenda = o.agenda.filter(function(a){ return a && typeof a === "object" && typeof a.patientId === "string" && DATE_RE.test(a.date || "") && /^\d\d:\d\d$/.test(a.start || ""); }).map(function(a){
@@ -8419,42 +8573,66 @@ document.getElementById("tplOverlay").addEventListener("click", function(e){
    (pour en ajouter : compléter SPEC_TESTS ci-dessous)
    ============================================================ */
 var SPEC_TAGS = ["Mesure à refaire", "Douleur pendant le test", "Compensation observée", "Protocole modifié"];
-var SPEC_ZONES = ["Cheville"];
+var SPEC_ZONES = ["Épaule", "Coude", "Poignet / main", "Hanche", "Genou", "Cheville", "Pied"];
+var SPEC_CATS_ORDER = ["Mobilité", "Stabilité ligamentaire", "Équilibre / fonctionnel", "Proprioception", "Aide à la décision", "Palpatoire"];
 var TONE_DEFAULT = { yesno: ["", "warn"] };
 var SPEC_TESTS = {
   "Cheville": [
-    { id:"cheville_ptgt", name:"Posterior talar glide test", hint:"Glissement postérieur du talus (mobilité tibio-talaire).",
-      fields:[ { key:"res", label:"Mobilité", type:"choice", options:["Normale", "Diminuée", "Augmentée"], tones:["ok", "warn", "warn"], primary:true }, { key:"pain", label:"Douleur provoquée", type:"yesno" } ] },
-    { id:"cheville_wblt", name:"WBLT (Weight-Bearing Lunge Test)", hint:"Fente en appui : distance au mur et/ou angle tibial.",
-      fields:[ { key:"cm", label:"Distance au mur", type:"number", unit:"cm", step:0.5, primary:true }, { key:"deg", label:"Angle tibial (facultatif)", type:"number", unit:"°", step:0.5 } ] },
-    { id:"cheville_ybt", name:"YBT (Y Balance Test)", hint:"Trois directions de portée ; score composite = somme des 3 portées ÷ (3 × longueur du membre) × 100.",
+    { id:"cheville_ptgt", cat:"Mobilité", name:"Posterior talar glide test", hint:"Glissement postérieur du talus (mobilité tibio-talaire) : note l'amplitude en degrés.",
+      fields:[ { key:"deg", label:"Amplitude", type:"number", unit:"°", step:0.5, primary:true }, { key:"res", label:"Mobilité", type:"choice", options:["Normale", "Diminuée", "Augmentée"], tones:["ok", "warn", "warn"] } ] },
+    { id:"cheville_wblt", cat:"Mobilité", name:"WBLT (Weight-Bearing Lunge Test)", hint:"Fente en appui : distance au mur.",
+      fields:[ { key:"cm", label:"Distance au mur", type:"number", unit:"cm", step:0.5, primary:true } ] },
+    { id:"cheville_ybt", cat:"Équilibre / fonctionnel", name:"YBT (Y Balance Test)", hint:"Longueur du membre : de l'épine iliaque antéro-supérieure à la malléole médiale. Portée en % = portée ÷ longueur × 100. Seuils : antérieure ≥ 60 %, postéro-médiale ≥ 100 %, postéro-latérale ≥ 100 %. Score composite = somme des 3 portées ÷ (3 × longueur) × 100.",
       fields:[ { key:"len", label:"Longueur du membre", type:"number", unit:"cm", step:0.5, carry:true }, { key:"ant", label:"Antérieure", type:"number", unit:"cm", step:0.5 },
         { key:"pm", label:"Postéro-médiale", type:"number", unit:"cm", step:0.5 }, { key:"pl", label:"Postéro-latérale", type:"number", unit:"cm", step:0.5 },
+        { key:"ant_pct", label:"Antérieure (%)", type:"computed", unit:"%", formula:"ybt_dir", dir:"ant", cut:60, secondary:true },
+        { key:"pm_pct", label:"Postéro-médiale (%)", type:"computed", unit:"%", formula:"ybt_dir", dir:"pm", cut:100, secondary:true },
+        { key:"pl_pct", label:"Postéro-latérale (%)", type:"computed", unit:"%", formula:"ybt_dir", dir:"pl", cut:100, secondary:true },
         { key:"comp", label:"Score composite", type:"computed", unit:"%", formula:"ybt", primary:true } ] },
-    { id:"cheville_sidehop", name:"Side hop test", hint:"Sauts latéraux : précise le protocole utilisé dans la note.",
+    { id:"cheville_sidehop", cat:"Équilibre / fonctionnel", name:"Side hop test", hint:"Sauts latéraux : précise le protocole utilisé dans la note.",
       fields:[ { key:"n", label:"Nombre de sauts", type:"number", unit:"sauts", step:1, primary:true }, { key:"t", label:"Temps (facultatif)", type:"number", unit:"s", step:0.1 } ] },
-    { id:"cheville_tiroir_sup", name:"Tiroir antérieur - faisceau supérieur", hint:"Comparer au côté opposé.",
+    { id:"cheville_footlift", cat:"Équilibre / fonctionnel", name:"Foot lift test", hint:"Note, pour chaque côté, le nombre d'erreurs et le cluster.",
+      fields:[ { key:"err", label:"Nombre d'erreurs", type:"number", unit:"erreurs", step:1, primary:true }, { key:"cluster", label:"Cluster", type:"number", step:1 } ] },
+    { id:"cheville_jps", cat:"Proprioception", name:"Test de repositionnement articulaire", hint:"Écart, en degrés, entre la position cible et la position reproduite.",
+      fields:[ { key:"dev", label:"Écart de repositionnement", type:"number", unit:"°", step:0.5, primary:true } ] },
+    { id:"cheville_tiroir_sup", cat:"Stabilité ligamentaire", name:"Tiroir antérieur - faisceau supérieur", hint:"Comparer au côté opposé.",
       fields:[ { key:"res", label:"Tiroir antérieur", type:"choice", options:["Négatif", "Douteux", "Positif"], tones:["ok", "warn", "ko"], primary:true }, { key:"end", label:"Fin de course", type:"choice", options:["Ferme", "Molle"], tones:["ok", "warn"] }, { key:"pain", label:"Douleur provoquée", type:"yesno" } ] },
-    { id:"cheville_tiroir_inf", name:"Tiroir antérieur - faisceau inférieur", hint:"Comparer au côté opposé.",
+    { id:"cheville_tiroir_inf", cat:"Stabilité ligamentaire", name:"Tiroir antérieur - faisceau inférieur", hint:"Comparer au côté opposé.",
       fields:[ { key:"res", label:"Tiroir antérieur", type:"choice", options:["Négatif", "Douteux", "Positif"], tones:["ok", "warn", "ko"], primary:true }, { key:"end", label:"Fin de course", type:"choice", options:["Ferme", "Molle"], tones:["ok", "warn"] }, { key:"pain", label:"Douleur provoquée", type:"yesno" } ] },
-    { id:"cheville_ottawa", name:"Critères d'Ottawa", hint:"Aide à la décision pour la radiographie après un traumatisme de la cheville ou du pied.", rule:"ottawa" },
-    { id:"cheville_bernese", name:"Critères de Bernese", hint:"Aide à la décision pour la radiographie par contraintes indirectes (traumatisme de basse énergie en supination).", rule:"bernese" }
+    { id:"cheville_ottawa", cat:"Aide à la décision", name:"Critères d'Ottawa", hint:"Coche les éléments présents à l'examen après un traumatisme de la cheville ou du pied.", rule:"ottawa" },
+    { id:"cheville_bernese", cat:"Aide à la décision", name:"Critères de Bernese", hint:"Coche les manœuvres de contrainte indirecte qui provoquent la douleur (traumatisme de basse énergie en supination).", rule:"bernese" }
+  ],
+  "Sauts": [
+    { id:"saut_dj", name:"Drop Jump", hint:"Saisis les valeurs fournies par ton système de mesure.", single:true,
+      fields:[ { key:"rsi", label:"RSI", type:"number", step:0.01, primary:true }, { key:"flight", label:"Flight time (temps de vol)", type:"number", unit:"ms", step:1 }, { key:"contact", label:"Contact time (temps de contact)", type:"number", unit:"ms", step:1 } ] },
+    { id:"saut_dj_sl", name:"Drop Jump unilatéral (single leg)", hint:"Saisis les valeurs fournies par ton système de mesure, pour chaque jambe.",
+      fields:[ { key:"h", label:"Hauteur de saut", type:"number", unit:"cm", step:0.1, primary:true }, { key:"force", label:"Force", type:"number", unit:"N", step:1 }, { key:"vel", label:"Vélocité", type:"number", unit:"m/s", step:0.01 },
+        { key:"flight", label:"Flight time (temps de vol)", type:"number", unit:"ms", step:1 }, { key:"contact", label:"Contact time (temps de contact)", type:"number", unit:"ms", step:1 }, { key:"rsi", label:"RSI", type:"number", step:0.01 } ] }
   ]
 };
 var SPEC_RULES = {
   ottawa: { blocks: [
-      { id:"mall", gate:"Douleur dans la zone malléolaire", items:["Sensibilité osseuse au bord postérieur ou à la pointe de la malléole latérale (6 cm distaux)", "Sensibilité osseuse au bord postérieur ou à la pointe de la malléole médiale (6 cm distaux)", "Impossibilité de faire 4 pas, juste après le traumatisme et à l'examen"], result:"Radiographie de la cheville indiquée" },
-      { id:"mid", gate:"Douleur dans la zone du médio-pied", items:["Sensibilité osseuse à la base du 5e métatarsien", "Sensibilité osseuse du naviculaire", "Impossibilité de faire 4 pas, juste après le traumatisme et à l'examen"], result:"Radiographie du pied indiquée" } ],
-    negative: "Aucune radiographie indiquée selon les critères d'Ottawa",
+      { id:"mall", label:"Zone malléolaire", gate:"Douleur dans la zone malléolaire", items:["Sensibilité osseuse au bord postérieur ou à la pointe de la malléole latérale (6 cm distaux)", "Sensibilité osseuse au bord postérieur ou à la pointe de la malléole médiale (6 cm distaux)", "Impossibilité de faire 4 pas, juste après le traumatisme et à l'examen"] },
+      { id:"mid", label:"Zone du médio-pied", gate:"Douleur dans la zone du médio-pied", items:["Sensibilité osseuse à la base du 5e métatarsien", "Sensibilité osseuse du naviculaire", "Impossibilité de faire 4 pas, juste après le traumatisme et à l'examen"] } ],
+    none: "Aucun élément coché",
     note: "Règle sensible mais peu spécifique. Moins fiable en cas de lésion douloureuse distractive, de trouble de la sensibilité ou de gonflement empêchant la palpation : le jugement clinique prime." },
   bernese: { blocks: [
-      { id:"b", gate:null, items:["Contrainte fibulaire indirecte : compression de la fourche malléolaire environ 10 cm au-dessus de la pointe de la fibula", "Contrainte malléolaire médiale directe : pouce à plat sur la malléole médiale", "Compression du médio-pied et de l'arrière-pied : calcanéus fixé en neutre, charge sagittale sur l'avant-pied"], result:"Positif : radiographie indiquée", itemsLabel:"Manœuvre qui provoque la douleur" } ],
-    negative: "Négatif : aucune des trois manœuvres ne provoque de douleur",
+      { id:"b", label:"Manœuvres douloureuses", gate:null, items:["Contrainte fibulaire indirecte : compression de la fourche malléolaire environ 10 cm au-dessus de la pointe de la fibula", "Contrainte malléolaire médiale directe : pouce à plat sur la malléole médiale", "Compression du médio-pied et de l'arrière-pied : calcanéus fixé en neutre, charge sagittale sur l'avant-pied"], itemsLabel:"Manœuvre qui provoque la douleur" } ],
+    none: "Aucune manœuvre douloureuse cochée",
     note: "Technique de contrainte indirecte, décrite après un traumatisme de basse énergie en supination. Les performances diagnostiques varient selon les études : à interpréter avec le jugement clinique." }
 };
+var PALP_DEFAULTS = { "Cheville": ["LTFAi", "LTFA sup", "LTFA inf", "LCF", "Nerf fibulaire superficiel"] };
+var specPalpDraft = null;
+function palpDef(zone){ return { id: "palp_" + zone.replace(/[^\w]/g, "_"), name: "Palpation — " + zone, hint: "Structures palpées : indique, pour chaque côté, si elle est douloureuse. Tu peux ajouter tes propres structures à la liste.", cat: "Palpatoire", palp: true, fields: [] }; }
+function specList(zone){ var l = (SPEC_TESTS[zone] || []).slice(); if(SPEC_ZONES.indexOf(zone) !== -1) l.push(palpDef(zone)); return l; }
+function palpStructures(zone){
+  var out = (PALP_DEFAULTS[zone] || []).map(function(n){ return { name: n, builtin: true }; });
+  (state.palpLib || []).forEach(function(x){ if(x && x.zone === zone && !out.some(function(o){ return o.name.toLowerCase() === String(x.name).toLowerCase(); })) out.push({ name: x.name, id: x.id, builtin: false }); });
+  return out;
+}
+function specSides(def){ return def && def.single ? ["S"] : ["D", "G"]; }
 function specDef(test){
-  var list = SPEC_TESTS[test.zone] || [];
-  return list.find(function(d){ return d.id === test.specId; }) || null;
+  return specList(test.zone).find(function(d){ return d.id === test.specId; }) || null;
 }
 function specPrimaryField(def){
   if(!def || !def.fields) return null;
@@ -8462,9 +8640,14 @@ function specPrimaryField(def){
 }
 function toNum(v){ var n = parseFloat(String(v).replace(",", ".")); return isFinite(n) ? n : null; }
 function specComputed(f, d){
+  var L = toNum(d.len);
   if(f.formula === "ybt"){
-    var a = toNum(d.ant), b = toNum(d.pm), c = toNum(d.pl), L = toNum(d.len);
+    var a = toNum(d.ant), b = toNum(d.pm), c = toNum(d.pl);
     if(a !== null && b !== null && c !== null && L !== null && L > 0) return Math.round((a + b + c) / (3 * L) * 1000) / 10;
+  }
+  if(f.formula === "ybt_dir"){
+    var r = toNum(d[f.dir]);
+    if(r !== null && L !== null && L > 0) return Math.round(r / L * 1000) / 10;
   }
   return null;
 }
@@ -8487,18 +8670,26 @@ function specFmtVal(f, v){
   return String(v);
 }
 function specTone(f, v){
+  if(f.cut !== undefined && typeof v === "number") return v >= f.cut ? "ok" : "ko";
   if(f.type === "choice" && f.tones){ var i = (f.options || []).indexOf(v); return i >= 0 ? (f.tones[i] || "") : ""; }
   if(f.type === "yesno") return v === "oui" ? "warn" : "";
   return "";
 }
 function specRuleEval(rule, checks){
-  var pos = [];
+  var parts = [], total = 0;
   rule.blocks.forEach(function(b){
-    var gateOk = b.gate ? !!checks[b.id + "_gate"] : true;
-    var hit = b.items.some(function(_, i){ return !!checks[b.id + "_" + i]; });
-    if(gateOk && hit) pos.push(b.result);
+    var n = b.items.filter(function(_, i){ return !!checks[b.id + "_" + i]; }).length;
+    if(n){ total += n; parts.push((b.label || "Éléments cochés") + " : " + n); }
   });
-  return pos.length ? { positive:true, text: pos.join(" · ") } : { positive:false, text: rule.negative };
+  return total ? { positive: true, text: parts.join(" · ") } : { positive: false, text: rule.none || "Aucun élément coché" };
+}
+function palpLines(e){
+  var pl = e.palp || {}, painful = { D: [], G: [] };
+  Object.keys(pl).forEach(function(n){ ["D", "G"].forEach(function(sd){ if(pl[n][sd] === "douloureux") painful[sd].push(n); }); });
+  var out = [];
+  ["D", "G"].forEach(function(sd){ if(painful[sd].length) out.push("Douloureux " + (sd === "D" ? "à droite" : "à gauche") + " : " + painful[sd].join(" ; ")); });
+  if(!out.length) out.push("Aucune structure douloureuse");
+  return out;
 }
 function specSummaryLines(test, e){
   var def = specDef(test), out = [];
@@ -8507,15 +8698,18 @@ function specSummaryLines(test, e){
     var rule = SPEC_RULES[def.rule], ev = specRuleEval(rule, e.checks || {});
     out.push(ev.text + (e.side ? " (côté " + (e.side === "D" ? "droit" : "gauche") + ")" : ""));
     rule.blocks.forEach(function(b){
+      if(b.gate && (e.checks || {})[b.id + "_gate"]) out.push(b.gate);
       var hits = b.items.filter(function(_, i){ return (e.checks || {})[b.id + "_" + i]; });
-      if(hits.length) out.push((b.itemsLabel || "Éléments positifs") + " : " + hits.join(" ; "));
+      if(hits.length) out.push((b.itemsLabel || "Éléments cochés") + " : " + hits.join(" ; "));
     });
     return out;
   }
+  if(def.palp) return palpLines(e);
+  var sides = specSides(def);
   def.fields.forEach(function(f){
-    var d = specFieldVal(e, "D", f), g = specFieldVal(e, "G", f);
-    if(d === null && g === null) return;
-    out.push(f.label + " : D " + specFmtVal(f, d) + " / G " + specFmtVal(f, g));
+    var vals = sides.map(function(sd){ return specFieldVal(e, sd, f); });
+    if(vals.every(function(v){ return v === null; })) return;
+    out.push(f.label + " : " + (def.single ? specFmtVal(f, vals[0]) : "D " + specFmtVal(f, vals[0]) + " / G " + specFmtVal(f, vals[1])));
   });
   return out;
 }
@@ -8525,13 +8719,13 @@ function specLast(test){
 }
 function specSecondaryHtml(test){
   var def = specDef(test), last = specLast(test);
-  if(!def || !last || def.rule) return "";
-  var pf = specPrimaryField(def), lines = [];
+  if(!def || !last || def.rule || def.palp) return "";
+  var pf = specPrimaryField(def), lines = [], sides = specSides(def);
   def.fields.forEach(function(f){
-    if(f === pf || f.type === "computed") return;
-    var d = specFieldVal(last, "D", f), g = specFieldVal(last, "G", f);
-    if(d === null && g === null) return;
-    lines.push(escHtml(f.label) + " : " + escHtml(specFmtVal(f, d)) + " | " + escHtml(specFmtVal(f, g)));
+    if(f === pf || (f.type === "computed" && !f.secondary)) return;
+    var vals = sides.map(function(sd){ return specFieldVal(last, sd, f); });
+    if(vals.every(function(v){ return v === null; })) return;
+    lines.push(escHtml(f.label) + " : " + vals.map(function(v){ var t = specTone(f, v); return '<span class="' + (t ? "tone-" + t : "") + '">' + escHtml(specFmtVal(f, v)) + '</span>'; }).join(" | "));
   });
   var meta = fmtDate(last.date) + ((last.tags && last.tags.length) ? " · " + escHtml(last.tags.join(", ")) : "");
   return '<div class="sp-sec">' + lines.join("<br>") + (lines.length ? "<br>" : "") + meta + '</div>';
@@ -8540,40 +8734,58 @@ function specCardBody(test){
   var def = specDef(test), last = specLast(test);
   if(!def) return '<div class="tc-sub">Test inconnu.</div>';
   if(!last) return '<div class="tc-sub" style="margin-top:10px;">Aucune mesure : touche la carte pour en ajouter.</div>';
+  var meta = fmtDate(last.date) + (last.side ? " · côté " + (last.side === "D" ? "droit" : "gauche") : "") + ((last.tags && last.tags.length) ? " · " + escHtml(last.tags.join(", ")) : "");
   if(def.rule){
-    var ev = specRuleEval(SPEC_RULES[def.rule], last.checks || {});
-    return '<div class="sp-result ' + (ev.positive ? "tone-ko" : "tone-ok") + '">' + escHtml(ev.text) + '</div><div class="sp-sec">' + fmtDate(last.date) + (last.side ? " · côté " + (last.side === "D" ? "droit" : "gauche") : "") + ((last.tags && last.tags.length) ? " · " + escHtml(last.tags.join(", ")) : "") + '</div>';
+    var ev = specRuleEval(SPEC_RULES[def.rule], last.checks || {}), more = specSummaryLines(test, last).slice(1);
+    return '<div class="sp-result ' + (ev.positive ? "tone-warn" : "") + '">' + escHtml(ev.text) + '</div>' + (more.length ? '<div class="sp-sec">' + more.map(escHtml).join("<br>") + '</div>' : '') + '<div class="sp-sec">' + meta + '</div>';
   }
-  var pf = specPrimaryField(def), d = specFieldVal(last, "D", pf), g = specFieldVal(last, "G", pf);
+  if(def.palp){
+    var pl = palpLines(last), pain = pl[0] !== "Aucune structure douloureuse";
+    return '<div class="sp-result ' + (pain ? "tone-warn" : "tone-ok") + '">' + pl.map(escHtml).join("<br>") + '</div><div class="sp-sec">' + meta + '</div>';
+  }
+  var pf = specPrimaryField(def);
+  if(def.single){
+    var v = specFieldVal(last, "S", pf);
+    return '<div class="sp-sec" style="margin:8px 0 0;">' + escHtml(pf.label) + '</div><div class="tc-single-value">' + (v === null ? "—" : escHtml(frDec(v))) + '<span class="unit">' + escHtml(pf.unit || "") + '</span></div>' + specSecondaryHtml(test);
+  }
+  var d = specFieldVal(last, "D", pf), g = specFieldVal(last, "G", pf);
   function cell(lab, cls, v){ return '<div class="tc-side"><div class="tc-side-label ' + cls + '">' + lab + '</div><div class="sp-val tone-' + (specTone(pf, v) || "") + '">' + escHtml(specFmtVal(pf, v)) + '</div></div>'; }
   return '<div class="tc-sides">' + cell("Droite", "d", d) + cell("Gauche", "g", g) + '</div>' + specSecondaryHtml(test);
 }
 function createSpecTest(patient, zone, specId){
   var existing = patient.tests.find(function(t){ return t.type === "spec" && t.specId === specId; });
   if(existing) return existing;
-  var def = (SPEC_TESTS[zone] || []).find(function(d){ return d.id === specId; });
+  var def = specList(zone).find(function(d){ return d.id === specId; });
   var pf = def && specPrimaryField(def);
-  var numeric = !!(pf && !def.rule && (pf.type === "number" || pf.type === "computed"));
-  var t = { id: uid(), type: "spec", specId: specId, zone: zone, name: def.name, tracksSides: numeric, unit: numeric ? (pf.unit || "") : "", entries: [] };
+  var numeric = !!(pf && !def.rule && !def.palp && !def.single && (pf.type === "number" || pf.type === "computed"));
+  var t = { id: uid(), type: "spec", specId: specId, zone: zone, name: def.name, tracksSides: numeric, unit: (numeric || def.single) ? (pf.unit || "") : "", entries: [] };
   patient.tests.push(t);
   saveData();
   return t;
 }
 
 /* ----- choix dans la modale « + » ----- */
-var specPickZone = null;
+var specPickZone = null, specPickCat = "";
 function renderSpecPick(zone){
   specPickZone = zone;
   document.getElementById("specZoneGrid").innerHTML = SPEC_ZONES.map(function(z){ return '<div class="type-card' + (z === zone ? ' selected' : '') + '" data-speczone="' + escHtml(z) + '">' + escHtml(z) + '</div>'; }).join("");
-  var patient = getSelectedPatient(), list = zone ? (SPEC_TESTS[zone] || []) : [];
-  document.getElementById("specTestList").innerHTML = zone ? list.map(function(d){
+  var patient = getSelectedPatient(), list = zone ? specList(zone) : [];
+  var cats = [];
+  list.forEach(function(d){ if(cats.indexOf(d.cat) === -1) cats.push(d.cat); });
+  cats.sort(function(a, b){ return SPEC_CATS_ORDER.indexOf(a) - SPEC_CATS_ORDER.indexOf(b); });
+  if(specPickCat && cats.indexOf(specPickCat) === -1) specPickCat = "";
+  document.getElementById("specCatRow").innerHTML = cats.length > 1 ? ["Tous"].concat(cats).map(function(c){ var v = c === "Tous" ? "" : c; return '<button type="button" class="chip-btn' + (specPickCat === v ? ' on' : '') + '" data-speccat="' + escHtml(v) + '">' + escHtml(c) + '</button>'; }).join("") : "";
+  var shownList = specPickCat ? list.filter(function(d){ return d.cat === specPickCat; }) : list;
+  document.getElementById("specTestList").innerHTML = zone ? shownList.map(function(d){
     var have = patient.tests.some(function(t){ return t.type === "spec" && t.specId === d.id; });
-    return '<button type="button" class="struct-card spec-test-btn" data-spectest="' + escHtml(d.id) + '"><b>' + escHtml(d.name) + '</b><div class="sw">' + escHtml(d.hint || "") + (have ? ' · déjà dans le dossier (ouvrir)' : '') + '</div></button>';
+    return '<button type="button" class="struct-card spec-test-btn" data-spectest="' + escHtml(d.id) + '"><b>' + escHtml(d.name) + '</b><div class="sw">' + escHtml(d.cat ? d.cat + " · " : "") + escHtml(d.hint || "") + (have ? ' · déjà dans le dossier (ouvrir)' : '') + '</div></button>';
   }).join("") : '<div class="tc-sub">Choisis une zone du corps.</div>';
 }
 document.getElementById("specPickWrap").addEventListener("click", function(e){
   var z = e.target.closest("[data-speczone]");
-  if(z){ renderSpecPick(z.dataset.speczone); return; }
+  if(z){ specPickCat = ""; renderSpecPick(z.dataset.speczone); return; }
+  var c = e.target.closest("[data-speccat]");
+  if(c){ specPickCat = c.dataset.speccat; renderSpecPick(specPickZone); return; }
   var t = e.target.closest("[data-spectest]");
   if(!t || !specPickZone) return;
   var patient = getSelectedPatient(), test = createSpecTest(patient, specPickZone, t.dataset.spectest);
@@ -8594,7 +8806,8 @@ function openSpec(testId, entryId){
   specChecks = entry && entry.checks ? JSON.parse(JSON.stringify(entry.checks)) : {};
   specSide = entry ? (entry.side || "") : "";
   document.getElementById("specTitle").textContent = test.name;
-  document.getElementById("specSub").textContent = "Spécifique · " + (test.zone || "") + (entry ? " · modification de la mesure du " + fmtDate(entry.date) : "");
+  specPalpDraft = null;
+  document.getElementById("specSub").textContent = (test.zone === "Sauts" ? "Saut" : "Spécifique · " + (test.zone || "")) + (entry ? " · modification de la mesure du " + fmtDate(entry.date) : "");
   document.getElementById("specHint").textContent = def ? (def.hint || "") : "";
   document.getElementById("specDate").value = entry ? entry.date : todayISO();
   document.getElementById("specNote").value = entry ? (entry.note || "") : "";
@@ -8622,29 +8835,55 @@ function renderSpecForm(test, def, entry){
     updateSpecRuleBox();
     return;
   }
-  var last = specLast(test), h2 = '<div class="sp-grid"><span></span><span class="h">Droite</span><span class="h">Gauche</span>';
+  if(def.palp){
+    var cur = specPalpDraft || (entry && entry.palp) || {}, sts = palpStructures(test.zone);
+    var hp = '<div class="sp-grid" style="grid-template-columns:1.5fr 1fr 1fr;"><span></span><span class="h">Droite</span><span class="h">Gauche</span>';
+    sts.forEach(function(st){
+      hp += '<div class="l">' + escHtml(st.name) + (st.builtin ? '' : ' <button type="button" class="del-x" data-palpdel="' + escHtml(st.id) + '" aria-label="Retirer ' + escHtml(st.name) + ' de la liste">✕</button>') + '</div>';
+      ["D", "G"].forEach(function(sd){
+        var v = (cur[st.name] || {})[sd] || "";
+        hp += '<select data-palp="' + escHtml(st.name) + '" data-side="' + sd + '" aria-label="' + escHtml(st.name) + ' ' + (sd === "D" ? "droite" : "gauche") + '"><option value="">—</option><option value="douloureux"' + (v === "douloureux" ? " selected" : "") + '>Douloureux</option><option value="non"' + (v === "non" ? " selected" : "") + '>Non douloureux</option></select>';
+      });
+    });
+    hp += '</div><label>Ajouter une structure à la liste ' + escHtml(test.zone) + '</label><div class="sides-entry"><div><input id="palpNew" maxlength="60" placeholder="Nom de la structure"></div><div><button type="button" class="btn-ghost" id="palpAddBtn" style="min-height:44px; width:100%;">Ajouter</button></div></div>';
+    if(!sts.length) hp = '<div class="tc-sub" style="margin-bottom:8px;">Aucune structure pour l\'instant : ajoute celles que tu palpes habituellement.</div>' + hp;
+    el.innerHTML = hp;
+    return;
+  }
+  var sides = specSides(def), last = specLast(test), single = !!def.single;
+  var h2 = '<div class="sp-grid"' + (single ? ' style="grid-template-columns:1.4fr 1fr;"' : '') + '><span></span>' + (single ? '<span class="h">Valeur</span>' : '<span class="h">Droite</span><span class="h">Gauche</span>');
   def.fields.forEach(function(f){
     h2 += '<div class="l">' + escHtml(f.label) + (f.unit ? '<span>' + escHtml(f.unit) + '</span>' : '') + '</div>';
-    ["D", "G"].forEach(function(side){
-      var v = null;
+    sides.forEach(function(side){
+      var v = null, sname = side === "D" ? " droite" : (side === "G" ? " gauche" : "");
       if(entry && f.type !== "computed") v = specFieldVal(entry, side, f);
       else if(!entry && f.carry && last) v = specFieldVal(last, side, f);
       var key = side + ":" + f.key;
-      if(f.type === "number") h2 += '<input type="number" inputmode="decimal" step="' + (f.step || "any") + '" data-spf="' + key + '" value="' + (v === null ? "" : escHtml(String(v))) + '" aria-label="' + escHtml(f.label) + ' ' + (side === "D" ? "droite" : "gauche") + '">';
-      else if(f.type === "choice") h2 += '<select data-spf="' + key + '" aria-label="' + escHtml(f.label) + ' ' + (side === "D" ? "droite" : "gauche") + '"><option value="">—</option>' + f.options.map(function(o){ return '<option value="' + escHtml(o) + '"' + (v === o ? " selected" : "") + '>' + escHtml(o) + '</option>'; }).join("") + '</select>';
-      else if(f.type === "yesno") h2 += '<select data-spf="' + key + '" aria-label="' + escHtml(f.label) + ' ' + (side === "D" ? "droite" : "gauche") + '"><option value="">—</option><option value="oui"' + (v === "oui" ? " selected" : "") + '>Oui</option><option value="non"' + (v === "non" ? " selected" : "") + '>Non</option></select>';
+      if(f.type === "number") h2 += '<input type="number" inputmode="decimal" step="' + (f.step || "any") + '" data-spf="' + key + '" value="' + (v === null ? "" : escHtml(String(v))) + '" aria-label="' + escHtml(f.label) + sname + '">';
+      else if(f.type === "choice") h2 += '<select data-spf="' + key + '" aria-label="' + escHtml(f.label) + sname + '"><option value="">—</option>' + f.options.map(function(o){ return '<option value="' + escHtml(o) + '"' + (v === o ? " selected" : "") + '>' + escHtml(o) + '</option>'; }).join("") + '</select>';
+      else if(f.type === "yesno") h2 += '<select data-spf="' + key + '" aria-label="' + escHtml(f.label) + sname + '"><option value="">—</option><option value="oui"' + (v === "oui" ? " selected" : "") + '>Oui</option><option value="non"' + (v === "non" ? " selected" : "") + '>Non</option></select>';
       else h2 += '<div class="sp-comp" data-spcomp="' + key + '">—</div>';
     });
   });
   el.innerHTML = h2 + '</div>';
   updateSpecComputed();
 }
+function specPalpCollect(){
+  var out = {};
+  document.querySelectorAll("#specBody select[data-palp]").forEach(function(sel){
+    if(!sel.value) return;
+    var n = sel.getAttribute("data-palp"), sd = sel.getAttribute("data-side");
+    (out[n] = out[n] || {})[sd] = sel.value;
+  });
+  return out;
+}
 function specCollect(def){
-  var data = { D: {}, G: {} };
+  var data = {};
+  specSides(def).forEach(function(sd){ data[sd] = {}; });
   document.querySelectorAll("#specBody [data-spf]").forEach(function(inp){
     var parts = inp.getAttribute("data-spf").split(":"), side = parts[0], key = parts[1];
     var f = def.fields.find(function(x){ return x.key === key; });
-    if(inp.value === "") return;
+    if(inp.value === "" || !data[side]) return;
     if(f.type === "number"){ var n = toNum(inp.value); if(n !== null) data[side][key] = n; }
     else data[side][key] = inp.value;
   });
@@ -8652,15 +8891,16 @@ function specCollect(def){
 }
 function updateSpecComputed(){
   var test = getSelectedPatient().tests.find(function(t){ return t.id === specTestId; }), def = test && specDef(test);
-  if(!def || def.rule) return;
+  if(!def || def.rule || def.palp) return;
   var data = specCollect(def);
   def.fields.forEach(function(f){
     if(f.type !== "computed") return;
-    ["D", "G"].forEach(function(side){
+    specSides(def).forEach(function(side){
       var el = document.querySelector('#specBody [data-spcomp="' + side + ':' + f.key + '"]');
       if(!el) return;
-      var v = specComputed(f, data[side]);
-      el.textContent = v === null ? "—" : frDec(v) + " " + (f.unit || "");
+      var v = specComputed(f, data[side]), has = f.cut !== undefined && v !== null;
+      el.textContent = v === null ? "—" : frDec(v) + " " + (f.unit || "") + (has ? (v >= f.cut ? "  ✓" : "  ✗") : "");
+      el.className = "sp-comp" + (has ? (v >= f.cut ? " tone-ok" : " tone-ko") : "");
     });
   });
 }
@@ -8668,7 +8908,7 @@ function updateSpecRuleBox(){
   var test = getSelectedPatient().tests.find(function(t){ return t.id === specTestId; }), def = test && specDef(test);
   if(!def || !def.rule) return;
   var ev = specRuleEval(SPEC_RULES[def.rule], specChecks), box = document.getElementById("specRuleBox");
-  box.className = "rule-box " + (ev.positive ? "tone-ko" : "tone-ok");
+  box.className = "rule-box " + (ev.positive ? "tone-warn" : "tone-ok");
   box.textContent = ev.text;
 }
 document.getElementById("specBody").addEventListener("input", function(){ updateSpecComputed(); });
@@ -8678,6 +8918,23 @@ document.getElementById("specBody").addEventListener("change", function(e){
   updateSpecComputed();
 });
 document.getElementById("specBody").addEventListener("click", function(e){
+  var test = getSelectedPatient() && getSelectedPatient().tests.find(function(t){ return t.id === specTestId; });
+  if(e.target.closest("#palpAddBtn") && test){
+    var inp = document.getElementById("palpNew"), name = inp.value.trim().replace(/\s+/g, " ").slice(0, 60);
+    if(!name) return;
+    if(palpStructures(test.zone).some(function(x){ return x.name.toLowerCase() === name.toLowerCase(); })){ alert("Cette structure est déjà dans la liste."); return; }
+    specPalpDraft = specPalpCollect();
+    if(!Array.isArray(state.palpLib)) state.palpLib = [];
+    state.palpLib.push({ id: uid(), zone: test.zone, name: name });
+    saveData(); renderSpecForm(test, specDef(test), null); return;
+  }
+  var dl = e.target.closest("[data-palpdel]");
+  if(dl && test){
+    if(!confirm("Retirer cette structure de la liste ? Les mesures déjà enregistrées ne sont pas modifiées.")) return;
+    specPalpDraft = specPalpCollect();
+    state.palpLib = (state.palpLib || []).filter(function(x){ return x.id !== dl.dataset.palpdel; });
+    saveData(); renderSpecForm(test, specDef(test), null); return;
+  }
   var s = e.target.closest("[data-spside]");
   if(!s) return;
   specSide = (specSide === s.dataset.spside) ? "" : s.dataset.spside;
@@ -8720,9 +8977,12 @@ document.getElementById("specSaveBtn").addEventListener("click", function(){
   if(def.rule){
     entry.checks = JSON.parse(JSON.stringify(specChecks)); entry.side = specSide;
     if(!Object.keys(entry.checks).some(function(k){ return entry.checks[k]; }) && !confirm("Aucune case cochée : enregistrer un résultat négatif ?")) return;
+  } else if(def.palp){
+    entry.palp = specPalpCollect();
+    if(!Object.keys(entry.palp).length){ alert("Renseigne au moins une structure."); return; }
   } else {
     entry.data = specCollect(def);
-    var any = ["D", "G"].some(function(s){ return Object.keys(entry.data[s]).length > 0; });
+    var any = specSides(def).some(function(s){ return Object.keys(entry.data[s] || {}).length > 0; });
     if(!any){ alert("Renseigne au moins une valeur."); return; }
   }
   if(specEditId){
@@ -8807,6 +9067,15 @@ function agStepDays(d, n){
   return d;
 }
 var agendaDate = agSkip(todayISO(), 1), agendaView = (typeof window.innerWidth === "number" && window.innerWidth >= 900) ? "week" : "day";
+if(state.settings && ["day", "3days", "week"].indexOf(state.settings.agView) !== -1) agendaView = state.settings.agView;
+var AG3_NAMES = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
+function ag3Cfg(){
+  var c = (state.settings && state.settings.ag3) || {}, wd = [];
+  (Array.isArray(c.wd) ? c.wd : []).forEach(function(n){ n = parseInt(n); if(n >= 1 && n <= 6 && wd.indexOf(n) === -1) wd.push(n); });
+  wd.sort();
+  if(wd.length !== 3) wd = [1, 3, 5];
+  return { custom: c.custom === true, wd: wd };
+}
 function pad2(n){ return String(n).padStart(2, "0"); }
 function minToHhmm(m){ return pad2(Math.floor(m / 60)) + ":" + pad2(m % 60); }
 function hhmmToMin(t){ var m = /^(\d\d):(\d\d)$/.exec(t || ""); return m ? (+m[1]) * 60 + (+m[2]) : null; }
@@ -8821,10 +9090,28 @@ function agList(){ if(!Array.isArray(state.agenda)) state.agenda = []; return st
 function patientNameById(id){ var p = state.patients.find(function(x){ return x.id === id; }); return p ? p.name : "Patient supprimé"; }
 function agDays(){
   if(agendaView === "day") return [agendaDate];
-  if(agendaView === "3days") return [agendaDate, agStepDays(agendaDate, 1), agStepDays(agendaDate, 2)];
+  if(agendaView === "3days"){
+    var c3 = ag3Cfg();
+    if(c3.custom){ var mon3 = weekStartOf(agendaDate); return c3.wd.map(function(n){ return addDaysToDate(mon3, n - 1); }); }
+    return [agendaDate, agStepDays(agendaDate, 1), agStepDays(agendaDate, 2)];
+  }
   var mon = weekStartOf(agendaDate), d = [];
   for(var i = 0; i < 6; i++) d.push(addDaysToDate(mon, i));
   return d;
+}
+var agAnimDir = 0;
+function agCustom3(){ return agendaView === "3days" && ag3Cfg().custom; }
+function agMove(d){
+  if(d === 0){
+    agendaDate = agSkip(todayISO(), 1);
+    if(agCustom3()){ var dd = agDays(); if(dd[dd.length - 1] < todayISO()) agendaDate = addDaysToDate(agendaDate, 7); }
+    renderAgenda.scrolled = false; agAnimDir = 0;
+  } else {
+    if(agendaView === "week" || agCustom3()) agendaDate = addDaysToDate(agendaDate, 7 * d);
+    else agendaDate = agStepDays(agendaDate, d * (agendaView === "3days" ? 3 : 1));
+    agAnimDir = d;
+  }
+  renderAgenda();
 }
 function agLanes(aps){
   var sorted = aps.slice().sort(function(a, b){ return hhmmToMin(a.start) - hhmmToMin(b.start) || a.dur - b.dur; });
@@ -8848,7 +9135,16 @@ function agRange(){
   agDays().forEach(function(d){ agList().forEach(function(a){ if(a.date !== d) return; var s = hhmmToMin(a.start); lo = Math.min(lo, Math.floor(s / 60) * 60); hi = Math.max(hi, Math.ceil((s + a.dur) / 60) * 60); }); });
   return { lo: lo, hi: Math.min(hi, 24 * 60), step: cfg.step };
 }
+function agShortName(name){
+  var parts = String(name).trim().split(/\s+/);
+  if(parts.length < 2) return name;
+  return parts[0] + " " + parts[parts.length - 1].charAt(0).toUpperCase() + ".";
+}
 function agTitle(days){
+  if(agendaView === "3days" && ag3Cfg().custom){
+    var ds = days.map(function(x){ return new Date(x + "T00:00:00"); }), same = ds.every(function(x){ return x.getMonth() === ds[0].getMonth(); });
+    return ds.map(function(x, i){ return x.toLocaleDateString("fr-FR", { weekday: "short" }) + " " + x.getDate() + ((same && i < 2) ? "" : " " + x.toLocaleDateString("fr-FR", { month: "short" })); }).join(" · ") + " " + ds[2].getFullYear();
+  }
   if(agendaView === "day") return new Date(days[0] + "T00:00:00").toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
   var a = new Date(days[0] + "T00:00:00"), b = new Date(days[days.length - 1] + "T00:00:00");
   return a.toLocaleDateString("fr-FR", { day: "numeric", month: "short" }) + " – " + b.toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" });
@@ -8858,7 +9154,13 @@ function renderAgenda(){
   document.getElementById("agTitle").textContent = agTitle(days);
   document.querySelectorAll("#agSeg button").forEach(function(b){ b.classList.toggle("on", b.dataset.agview === agendaView); });
   var n = days.length, grid = document.getElementById("agGrid");
-  grid.style.gridTemplateColumns = "48px repeat(" + n + ", minmax(" + (n > 3 ? 118 : (n > 1 ? 130 : 0)) + "px, 1fr))";
+  var tw = (typeof window.innerWidth === "number" && window.innerWidth < 520) ? 42 : 48;
+  var narrowNames = typeof window.innerWidth === "number" && window.innerWidth < 600 && n >= 3;
+  grid.className = "ag-grid v" + n;
+  grid.style.gridTemplateColumns = tw + "px repeat(" + n + ", minmax(" + (n > 3 ? 118 : 0) + "px, 1fr))";
+  var b3 = document.getElementById("ag3Btn");
+  b3.hidden = agendaView !== "3days";
+  if(!b3.hidden){ var c3b = ag3Cfg(); b3.textContent = c3b.custom ? "📅 " + c3b.wd.map(function(k){ return AG3_NAMES[k - 1]; }).join(" · ") : "📅 3 jours à la suite"; }
   var h = '<div class="ag-hcell" style="left:0; z-index:7;"></div>';
   days.forEach(function(d){
     var dt = new Date(d + "T00:00:00"), cnt = agList().filter(function(a){ return a.date === d && a.status !== "annule"; }).length;
@@ -8878,9 +9180,9 @@ function renderAgenda(){
       var ap = it.ap, top = (it.s - rg.lo) * AG_PX, ht = Math.max(it.ap.dur * AG_PX - 2, 30), pat = state.patients.find(function(p){ return p.id === ap.patientId; });
       var hasSession = pat && pat.program && (pat.program.entries[ap.date] || []).length > 0;
       var tcol = ap.status === "annule" ? "#8A93A3" : agTypeByName(ap.type).color;
-      h += '<div class="ag-ap st-' + ap.status + (it.lanes > 1 ? ' multi' : '') + (ht < 56 ? ' short' : '') + '" title="' + escHtml(patientNameById(ap.patientId) + ' · ' + ap.start + ' · ' + ap.type + ((ap.zones && ap.zones.length) ? ' · ' + ap.zones.join(", ") : '') + ' · ' + ap.dur + ' min') + '" data-apid="' + escHtml(ap.id) + '" style="background:' + hexToRgba(tcol, 0.14) + '; border-left-color:' + tcol + '; --tc:' + tcol + '; top:' + top + 'px; height:' + ht + 'px; left:calc(' + (it.lane / it.lanes * 100) + '% + 2px); width:calc(' + (100 / it.lanes) + '% - 4px);">' +
+      h += '<div class="ag-ap st-' + ap.status + (it.lanes > 1 ? ' multi' : '') + (ht < 56 ? ' short' : '') + '" title="' + escHtml(patientNameById(ap.patientId) + ' · ' + ap.start + ' · ' + ap.type + ((ap.zones && ap.zones.length) ? ' · ' + ap.zones.join(", ") : '') + ' · ' + ap.dur + ' min') + '" data-apid="' + escHtml(ap.id) + '" style="background:linear-gradient(' + hexToRgba(tcol, 0.14) + ',' + hexToRgba(tcol, 0.14) + '),#fff; border-left-color:' + tcol + '; --tc:' + tcol + '; top:' + top + 'px; height:' + ht + 'px; left:calc(' + (it.lane / it.lanes * 100) + '% + 2px); width:calc(' + (100 / it.lanes) + '% - 4px);">' +
         '<button type="button" class="ag-more" data-apmore="' + escHtml(ap.id) + '" aria-label="Autres actions">⋯</button>' +
-        '<div class="l1">' + (ap.status === "present" ? '<span class="ag-st ok" title="Présent">✓</span>' : (ap.status === "absent" ? '<span class="ag-st ko" title="Absent">✕</span>' : "")) + '<span class="nm">' + escHtml(patientNameById(ap.patientId)) + '</span><span class="tm">' + ap.start + '</span></div>' +
+        '<div class="l1">' + (ap.status === "present" ? '<span class="ag-st ok" title="Présent">✓</span>' : (ap.status === "absent" ? '<span class="ag-st ko" title="Absent">✕</span>' : "")) + '<span class="nm">' + escHtml(narrowNames ? agShortName(patientNameById(ap.patientId)) : patientNameById(ap.patientId)) + '</span><span class="tm">' + ap.start + '</span></div>' +
         (ht >= 48 ? '<div class="sb">' + escHtml(ap.type) + ((ap.zones && ap.zones.length) ? ' · ' + escHtml(ap.zones.join(", ")) : '') + ' · ' + ap.dur + ' min' + (hasSession ? ' · séance saisie' : '') + '</div>' : '') + '</div>';
     });
     h += '</div>';
@@ -8888,6 +9190,7 @@ function renderAgenda(){
     h += '</div>';
   });
   grid.innerHTML = h;
+  if(agAnimDir){ void grid.offsetWidth; grid.classList.add(agAnimDir > 0 ? "in-next" : "in-prev"); agAnimDir = 0; }
   document.getElementById("agLegend").innerHTML = agTypes().map(function(t){ return '<span><i style="background:' + t.color + ';"></i>' + escHtml(t.name) + ' · ' + t.dur + ' min</span>'; }).join("") +
     (plList().length ? '<span><i style="background:repeating-linear-gradient(135deg, rgba(11,18,32,0.35) 0 1.5px, #fff 1.5px 4px); border:1px solid #d5d9e0;"></i>Hors plage</span><span><i style="background:repeating-linear-gradient(135deg, rgba(11,18,32,0.6) 0 2px, #cfd4dc 2px 4px);"></i>Fermé</span>' : "");
   var sc = document.getElementById("agScroll");
@@ -8917,13 +9220,14 @@ document.getElementById("agendaView").addEventListener("click", function(e){
   if(agSuppressClick) return;
   var t;
   if((t = e.target.closest("[data-agnav]"))){
-    var d = parseInt(t.dataset.agnav);
-    if(d === 0) agendaDate = agSkip(todayISO(), 1);
-    else if(agendaView === "week") agendaDate = addDaysToDate(agendaDate, 7 * d);
-    else agendaDate = agStepDays(agendaDate, d * (agendaView === "3days" ? 3 : 1));
-    renderAgenda.scrolled = false; renderAgenda(); return;
+    agMove(parseInt(t.dataset.agnav)); return;
   }
-  if((t = e.target.closest("[data-agview]"))){ agendaView = t.dataset.agview; renderAgenda(); return; }
+  if((t = e.target.closest("[data-agview]"))){
+    agendaView = t.dataset.agview;
+    if(state.settings){ state.settings.agView = agendaView; saveData(); }
+    renderAgenda(); return;
+  }
+  if(e.target.closest("#ag3Btn")){ ag3Open(); return; }
   if(e.target.closest("#agNewBtn")){ openApptModal({ date: agendaDate, start: minToHhmm(Math.max(agCfg().start * 60, 9 * 60)) }); return; }
   if((t = e.target.closest(".ag-hcell.clickable"))){ openDayPlageSheet(t.dataset.date); return; }
   if((t = e.target.closest("[data-apmore]"))){ e.stopPropagation(); openApptSheet(t.dataset.apmore); return; }
@@ -9008,6 +9312,64 @@ document.addEventListener("pointerup", function(){ agEndDrag(true); });
 document.addEventListener("pointercancel", function(){ agEndDrag(false); });
 document.addEventListener("touchmove", function(e){ if(agDrag && agDrag.active && e.cancelable) e.preventDefault(); }, { passive: false });
 document.getElementById("agendaView").addEventListener("contextmenu", function(e){ if(e.target.closest(".ag-ap")) e.preventDefault(); });
+
+/* ----- vue 3 jours : choix des jours ----- */
+var ag3Draft = null;
+function ag3Render(){
+  var d = ag3Draft;
+  document.querySelectorAll("#ag3Mode [data-ag3mode]").forEach(function(b){ b.classList.toggle("on", (b.dataset.ag3mode === "custom") === d.custom); });
+  document.getElementById("ag3Custom").hidden = !d.custom;
+  document.getElementById("ag3Days").innerHTML = AG3_NAMES.map(function(n, i){ return '<button type="button" class="chip-btn' + (d.wd.indexOf(i + 1) !== -1 ? ' on' : '') + '" data-ag3day="' + (i + 1) + '">' + n + '</button>'; }).join("");
+  var okc = !d.custom || d.wd.length === 3;
+  document.getElementById("ag3SaveBtn").disabled = !okc;
+  document.getElementById("ag3Msg").textContent = okc ? "" : "Choisis 3 jours (" + d.wd.length + " sur 3).";
+}
+function ag3Open(){ var c = ag3Cfg(); ag3Draft = { custom: c.custom, wd: c.wd.slice() }; ag3Render(); document.getElementById("ag3Sheet").hidden = false; }
+document.getElementById("ag3Sheet").addEventListener("click", function(e){
+  var t;
+  if(e.target === this || e.target.closest("#ag3CloseBtn")){ this.hidden = true; return; }
+  if((t = e.target.closest("[data-ag3mode]"))){ ag3Draft.custom = t.dataset.ag3mode === "custom"; ag3Render(); return; }
+  if((t = e.target.closest("[data-ag3day]"))){
+    var n = parseInt(t.dataset.ag3day), i = ag3Draft.wd.indexOf(n);
+    if(i !== -1) ag3Draft.wd.splice(i, 1); else { ag3Draft.wd.push(n); if(ag3Draft.wd.length > 3) ag3Draft.wd.shift(); }
+    ag3Render(); return;
+  }
+  if(e.target.closest("#ag3SaveBtn")){
+    var prev = ag3Cfg(), wd = ag3Draft.wd.length === 3 ? ag3Draft.wd.slice().sort() : prev.wd;
+    state.settings.ag3 = { custom: ag3Draft.custom, wd: wd };
+    agendaView = "3days"; state.settings.agView = "3days";
+    saveData(); this.hidden = true; renderAgenda();
+  }
+});
+/* ----- balayage gauche / droite pour changer de période ----- */
+(function(){
+  var sc = document.getElementById("agScroll"), sx = 0, sy = 0, sl = 0, smax = 0, t0 = 0, on = false;
+  sc.addEventListener("touchstart", function(e){
+    if(e.touches.length !== 1){ on = false; return; }
+    var t = e.touches[0]; sx = t.clientX; sy = t.clientY; sl = sc.scrollLeft; smax = sc.scrollWidth - sc.clientWidth; t0 = Date.now(); on = true;
+  }, { passive: true });
+  sc.addEventListener("touchend", function(e){
+    if(!on) return; on = false;
+    if(agDrag && agDrag.active) return;
+    var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+    if(Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy) * 1.6 || Date.now() - t0 > 900) return;
+    var dir = dx < 0 ? 1 : -1;
+    if(dir === -1 && sl > 2) return;
+    if(dir === 1 && sl < smax - 2) return;
+    agMove(dir);
+  }, { passive: true });
+  sc.addEventListener("touchcancel", function(){ on = false; }, { passive: true });
+})();
+/* ----- renommer un patient ----- */
+document.getElementById("renamePatientBtn").addEventListener("click", function(){
+  var p = getSelectedPatient(); if(!p) return;
+  var n = prompt("Nom du patient :", p.name);
+  if(n === null) return;
+  n = n.trim().replace(/\s+/g, " ").slice(0, 80);
+  if(!n){ alert("Le nom ne peut pas être vide."); return; }
+  if(n === p.name) return;
+  p.name = n; saveData(); renderAll();
+});
 
 /* ----- feuille d'actions ----- */
 var apSheetId = null;
@@ -9245,6 +9607,7 @@ function mergeStates(local, remote, opts){
   unionBy(local.anamTemplates = local.anamTemplates || [], remote.anamTemplates || [], keyOf);
   unionBy(local.functionalMovements = local.functionalMovements || [], remote.functionalMovements || [], keyOf);
   unionBy(local.presetsPerso = local.presetsPerso || [], remote.presetsPerso || [], keyOf);
+  unionBy(local.palpLib = local.palpLib || [], remote.palpLib || [], keyOf);
   return rep;
 }
 function mergeSummaryHtml(rep){
@@ -9734,7 +10097,7 @@ document.getElementById("exMgrBody").addEventListener("click", function(e){
    SYNCHRONISATION AVEC LE SERVEUR (envoi + réception, le plus récent gagne)
    ============================================================ */
 var SYNC_KEY = "horusSync_v1", syncRunning = false, syncTimer = null, syncRenderPending = false;
-var SYNC_LISTS = ["patients", "agenda", "plages", "closures", "exerciseCatalog"], SYNC_META = ["anamTemplates", "functionalMovements", "presetsPerso"];
+var SYNC_LISTS = ["patients", "agenda", "plages", "closures", "exerciseCatalog"], SYNC_META = ["anamTemplates", "functionalMovements", "presetsPerso", "palpLib"];
 function syncCfg(){
   try{ var c = JSON.parse(localStorage.getItem(SYNC_KEY) || "null"); if(c && typeof c === "object"){ c.pushed = c.pushed || {}; c.metaSig = c.metaSig || {}; return c; } }catch(e){}
   return { url: "", email: "", token: "", auto: true, lastRev: 0, pushed: {}, metaSig: {}, lastOkAt: "", lastError: "" };
@@ -9799,7 +10162,7 @@ function syncApplyPulled(c, docs){
     return lu === undefined || d.updatedAt > lu;
   });
   if(!news.length) return false;
-  var remote = { patients: [], agenda: [], plages: [], closures: [], exerciseCatalog: [], anamTemplates: [], functionalMovements: [], presetsPerso: [], tombstones: { patients: {}, agenda: {}, plages: {}, closures: {}, exerciseCatalog: {} } };
+  var remote = { patients: [], agenda: [], plages: [], closures: [], exerciseCatalog: [], anamTemplates: [], functionalMovements: [], presetsPerso: [], palpLib: [], tombstones: { patients: {}, agenda: {}, plages: {}, closures: {}, exerciseCatalog: {} } };
   news.forEach(function(d){
     if(d.c === "meta"){ if(d.data && Array.isArray(d.data.items)) remote[d.id] = d.data.items; return; }
     if(d.deleted) remote.tombstones[d.c][d.id] = d.updatedAt; else if(d.data) remote[d.c].push(d.data);
@@ -10420,10 +10783,10 @@ function updateBackupUi(){
   }
   var su = storageUsage();
   var sl = document.getElementById("storageLabel");
-  if(sl) sl.textContent = "Stockage de l'appareil : " + su.kb + " Ko utilisés (≈ " + su.pct + " % de la limite habituelle de 5 Mo)";
-  if(su.pct >= 70 && state.patients.length){
-    banner.hidden = false;
-    banner.textContent = "Stockage presque plein (≈ " + su.pct + " %) : exporte tes données, puis supprime ou archive les patients anciens.";
+  function fmtSize(b){ return b < 1048576 ? Math.max(1, Math.round(b / 1024)) + " Ko" : (b < 1073741824 ? (Math.round(b / 104857.6) / 10) + " Mo" : (Math.round(b / 107374182.4) / 10) + " Go"); }
+  if(sl){
+    sl.textContent = "Données sur cet appareil : " + fmtSize(su.kb * 1024);
+    try{ if(navigator.storage && navigator.storage.estimate) navigator.storage.estimate().then(function(e){ if(e && e.quota) sl.textContent = "Données sur cet appareil : " + fmtSize(su.kb * 1024) + " · espace disponible ≈ " + fmtSize(Math.max(0, e.quota - (e.usage || 0))); }).catch(function(){}); }catch(e){}
   }
 }
 function shareJson(obj, filename, title, onDone){
@@ -10511,8 +10874,34 @@ if(loadCorrupted) setTimeout(function(){ alert("Les données enregistrées sur c
 checkBackupRestore();
 if(navigator.storage && navigator.storage.persist){ navigator.storage.persist().catch(function(){}); }
 if("serviceWorker" in navigator && /^https?:$/.test(location.protocol)){
-  window.addEventListener("load", function(){ navigator.serviceWorker.register("sw.js").catch(function(){}); });
+  var regSw = function(){ navigator.serviceWorker.register("sw.js").catch(function(){}); };
+  if(document.readyState === "complete") regSw(); else window.addEventListener("load", regSw);
 }
+};
+</script>
+<script>
+(function(){
+  var started = false, timer = null;
+  function go(raw, degraded){
+    if(started) return; started = true; clearTimeout(timer);
+    window.__horusBoot = { raw: raw || null, degraded: !!degraded };
+    window.__horusStart();
+  }
+  /* sécurité : si IndexedDB ne répond pas, on démarre avec la copie locale SANS écraser la base principale */
+  timer = setTimeout(function(){ go(null, true); }, 12000);
+  try{
+    var r = indexedDB.open("horus-main", 1);
+    r.onupgradeneeded = function(){ try{ r.result.createObjectStore("kv"); }catch(e){} };
+    r.onsuccess = function(){
+      try{
+        var db = r.result, rq = db.transaction("kv", "readonly").objectStore("kv").get("state");
+        rq.onsuccess = function(){ var v = rq.result; try{ db.close(); }catch(e){} go(v); };
+        rq.onerror = function(){ try{ db.close(); }catch(e){} go(null, true); };
+      }catch(e){ go(null, true); }
+    };
+    r.onerror = function(){ go(null, true); };
+    r.onblocked = function(){ go(null, true); };
+  }catch(e){ go(null, false); }
 })();
 </script>
 </body>
