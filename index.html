@@ -898,6 +898,72 @@
   .al-l{ border:0; background:transparent; font-size:11px; line-height:1; padding:2.4px 7px; color:#c3c8d1; font-weight:700; min-height:0; }
   .al-l.on{ color:#0062CC; }
   .al-l:disabled{ cursor:default; }
+
+  /* ---------- choix du patient (rendez-vous) ---------- */
+  .pp-btn{ width:100%; min-height:48px; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 14px; border:1px solid var(--border); border-radius:12px; background:var(--surface); color:var(--text); font-size:16px; font-weight:600; text-align:left; }
+  .pp-btn .pp-chev{ color:var(--muted); font-size:22px; line-height:1; }
+  #apPatientLbl.empty{ color:var(--muted); font-weight:500; }
+  #ppOverlay{ padding:0; align-items:stretch; z-index:60; }
+  #exPickOverlay .pp-box{ max-width:none; width:100%; min-height:100%; height:100%; border-radius:0; border:0; padding:max(16px, env(safe-area-inset-top)) 16px max(12px, env(safe-area-inset-bottom)); display:flex; flex-direction:column; position:relative; box-sizing:border-box; }
+  #ppOverlay .pp-box{ max-width:none; width:100%; min-height:100%; height:100%; border-radius:0; border:0; padding:max(16px, env(safe-area-inset-top)) 16px max(12px, env(safe-area-inset-bottom)); display:flex; flex-direction:column; position:relative; box-sizing:border-box; }
+  .pp-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+  .pp-head h2{ margin:0; font-size:20px; }
+  #ppSearch{ width:100%; box-sizing:border-box; min-height:48px; font-size:16px; padding:0 14px; border-radius:12px; border:1px solid var(--border); }
+  .pp-scroll{ flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; margin:10px -4px 0; padding:0 30px 0 4px; }
+  .pp-h{ position:sticky; top:0; z-index:2; background:var(--surface); font-weight:800; font-size:14px; color:#0062CC; padding:8px 4px 4px; border-bottom:1px solid var(--border); }
+  .pp-item{ width:100%; display:flex; align-items:center; justify-content:space-between; gap:8px; min-height:52px; padding:0 8px; border:0; border-bottom:1px solid #eef0f4; background:transparent; font-size:17px; color:var(--text); text-align:left; }
+  .pp-item.on{ color:#0062CC; font-weight:700; }
+  .pp-item .pp-ck{ color:#0062CC; font-weight:800; }
+  .pp-empty{ padding:24px 8px; color:var(--muted); text-align:center; }
+  .pp-index{ position:absolute; right:4px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; z-index:3; touch-action:none; background:rgba(255,255,255,0.78); border-radius:12px; padding:4px 0; -webkit-user-select:none; user-select:none; }
+  .pp-index[hidden]{ display:none !important; }
+
+  /* ---------- dernier rendez-vous + rendez-vous dans le programme ---------- */
+  .ag-last{ position:absolute; right:4px; bottom:3px; width:16px; height:16px; border-radius:50%; background:#ff8a00; display:flex; align-items:center; justify-content:center; box-shadow:0 1px 2px rgba(0,0,0,0.25); pointer-events:auto; }
+  .ag-last-key{ background:#ff8a00 !important; border-radius:50% !important; }
+  .cal-rdv{ font-size:9.5px; font-weight:700; color:#0062CC; background:#e8f2ff; border-radius:6px; padding:1px 5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; align-self:flex-start; max-width:100%; }
+  .cal-rdv.abs{ color:#b3261e; background:#fdf0ef; text-decoration:line-through; }
+  .cal-next{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:0 0 10px; font-size:13px; }
+  .cal-next[hidden]{ display:none; }
+  .cal-next b{ margin-right:4px; }
+  .cal-nx{ border:1px solid #cfe2ff; background:#e8f2ff; color:#0062CC; border-radius:999px; padding:0 12px; min-height:34px; font-size:13px; font-weight:600; }
+
+  /* ---------- neurodynamique, fonctionnel, mode édition ---------- */
+  .cal-star{ color:#f5a623; font-size:13px; line-height:1; }
+  .ex-tile.star{ background:#f4f5f7 !important; color:#f5a623 !important; font-size:20px; }
+  .chip-tools{ flex-basis:100%; display:flex; justify-content:flex-end; }
+  .chip-edit{ border:1px solid var(--border); background:var(--surface); color:var(--muted); border-radius:999px; min-height:34px; padding:0 14px; font-size:13px; font-weight:600; }
+  .chip-edit.on{ background:#fff4e0; color:#8a5200; border-color:#f5c26b; }
+  .chip-btn.editing{ border-style:dashed; }
+  .chip-btn.editing::after{ content:" ✎"; color:var(--muted); }
+  .chip-btn.add{ border-style:dashed; color:#0062CC; }
+  .chip-btn .x{ margin-left:6px; color:#b3261e; font-weight:800; }
+
+  /* ---------- choix d'un exercice (récents + muscles + liste) ---------- */
+  .legacy-pick, #exGroupChips, #isoGroupChips, #exNameChips, #isoNameChips, #stretchNameChips, #neuroNameChips, #exName, #isoName, #stretchName, #neuroName, label[for="exName"], label[for="isoName"], label[for="stretchName"], label[for="neuroName"]{ display:none !important; }
+  #exPickOverlay .pp-scroll{ padding:0 4px; }
+  .pick-btn{ margin-bottom:10px; }
+  .pick-lbl.empty{ color:var(--muted); font-weight:500; }
+  #exPickOverlay{ padding:0; align-items:stretch; }
+  #epSearch{ width:100%; box-sizing:border-box; min-height:48px; font-size:16px; padding:0 14px; border-radius:12px; border:1px solid var(--border); }
+  .ep-sec{ font-weight:800; font-size:13px; color:var(--muted); text-transform:none; margin:16px 2px 8px; display:flex; justify-content:space-between; align-items:center; }
+  .ep-grid{ display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:8px; }
+  .ep-tile{ border:1px solid var(--border); background:var(--surface); border-radius:14px; padding:12px 12px; text-align:left; min-height:64px; display:flex; flex-direction:column; gap:2px; color:var(--text); }
+  .ep-tile b{ font-size:15px; }
+  .ep-tile span{ font-size:12.5px; color:var(--muted); }
+  .ep-tile.empty{ opacity:0.55; }
+  .ep-new{ width:100%; min-height:46px; margin-top:14px; }
+  .ep-edit{ border:1px solid var(--border); background:var(--surface); color:var(--muted); border-radius:999px; min-height:34px; padding:0 14px; font-size:13px; font-weight:600; }
+  .ep-edit.on{ background:#fff4e0; color:#8a5200; border-color:#f5c26b; }
+  .pp-item .ep-sub{ font-size:12.5px; color:var(--muted); font-weight:500; }
+
+  /* ---------- corbeille / restauration ---------- */
+  .trash-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 0; border-bottom:1px solid var(--border); }
+  .trash-row b{ display:block; font-size:16px; }
+  .trash-row span{ font-size:12.5px; color:var(--muted); }
+  .merge-restore{ margin:10px 0 12px; padding:10px 12px; border:1px solid #f5c26b; background:#fff8ea; border-radius:12px; }
+  .merge-row{ display:flex; align-items:center; gap:10px; min-height:44px; font-size:16px; }
+  .merge-row input{ width:22px; height:22px; }
 </style>
 </head>
 <body>
@@ -946,7 +1012,7 @@
       </div>
       <div class="ag-legend" id="agLegend"></div>
       <div class="ag-scroll" id="agScroll"><div class="ag-grid" id="agGrid"></div></div>
-      <div class="tc-sub" style="margin-top:8px;">Touche un rendez-vous pour ouvrir la séance du jour · appui long puis glisse pour le déplacer · ⋯ pour pointer (✓ présent, ✕ absent), modifier ou supprimer · touche l'en-tête d'un jour pour modifier ou fermer ses plages.</div>
+      <div class="tc-sub" style="margin-top:8px;">Touche un rendez-vous pour ouvrir la séance du jour · appui long puis glisse pour le déplacer · ⋯ pour ouvrir le dossier, marquer absent (✕), modifier ou supprimer · touche l'en-tête d'un jour pour modifier ou fermer ses plages.</div>
     </div>
 
     <div id="statsView" hidden>
@@ -981,6 +1047,7 @@
           <h3 id="calMonthLabel"></h3>
           <button class="btn-ghost" id="calNextBtn">Mois suivant →</button>
         </div>
+        <div class="cal-next" id="calNext" hidden></div>
         <div class="cal-grid" id="calGrid"></div>
         <div class="acwl-stat-row adv-only">
           <div class="acwl-stat"><div class="label">Charge aiguë (7j, UA/jour)</div><div class="value" id="acwlAcute">—</div></div>
@@ -1050,6 +1117,7 @@
         <div class="data-actions">
           <button type="button" class="btn-ghost" id="dataExportBtn">Exporter</button>
           <button type="button" class="btn-ghost" id="dataImportBtn">Importer</button>
+          <button type="button" class="btn-ghost" id="trashOpenBtn" hidden>Patients supprimés</button>
           <button type="button" class="btn-ghost" id="openModeBtn">Mode et réglages</button>
         </div>
       </div>
@@ -1260,13 +1328,15 @@
     <div class="sheet-body">
       <div class="segmented" id="dayKindGrid">
         <div class="type-card selected" data-kind="exercise">Exercice</div>
-        <div class="type-card" data-kind="run">Course</div>
+        <div class="type-card" data-kind="functional">Fonctionnel</div>
+        <div class="type-card" data-kind="neuro">Neurodynamique</div>
         <div class="type-card" data-kind="stretching">Étirement</div>
         <div class="type-card" data-kind="isometric">Isométrie</div>
       </div>
 
       <div id="exerciseFields" class="kind-fields">
-        <div class="fl">1 · Groupe musculaire</div>
+        <button type="button" class="pp-btn pick-btn" id="exPickBtn" data-pickkind="exercise" aria-haspopup="dialog"><span class="pick-lbl empty">Choisir un exercice</span><span class="pp-chev" aria-hidden="true">›</span></button>
+        <div class="fl legacy-pick">1 · Groupe musculaire</div>
         <div id="exGroupChips" class="chip-row"></div>
         <label class="fl" for="exName">2 · Exercice : touche-en un dans la liste ou tape un nouveau nom</label>
         <input id="exName" class="big-input" list="exerciseNamesDatalist" placeholder="Ex. Squat, Bulgarian Split Squat…" autocomplete="off">
@@ -1294,6 +1364,7 @@
       </div>
 
       <div id="stretchFields" class="kind-fields" hidden>
+        <button type="button" class="pp-btn pick-btn" id="stretchPickBtn" data-pickkind="stretching" aria-haspopup="dialog"><span class="pick-lbl empty">Choisir un étirement</span><span class="pp-chev" aria-hidden="true">›</span></button>
         <label class="fl" for="stretchName">Nom de l'étirement</label>
         <input id="stretchName" class="big-input" list="exerciseNamesDatalist" placeholder="Ex. Étirement ischios, psoas…" autocomplete="off">
         <div id="stretchNameChips" class="chip-row"></div>
@@ -1307,7 +1378,8 @@
       </div>
 
       <div id="isometricFields" class="kind-fields" hidden>
-        <div class="fl">1 · Groupe musculaire</div>
+        <button type="button" class="pp-btn pick-btn" id="isoPickBtn" data-pickkind="isometric" aria-haspopup="dialog"><span class="pick-lbl empty">Choisir un exercice</span><span class="pp-chev" aria-hidden="true">›</span></button>
+        <div class="fl legacy-pick">1 · Groupe musculaire</div>
         <div id="isoGroupChips" class="chip-row"></div>
         <label class="fl" for="isoName">2 · Exercice isométrique : touche-en un ou tape un nouveau nom</label>
         <input id="isoName" class="big-input" list="exerciseNamesDatalist" placeholder="Ex. Isométrie quadriceps 90°, wall sit…" autocomplete="off">
@@ -1329,7 +1401,30 @@
         <div hidden><input id="isoRpe" type="number"><input id="isoPct" type="number"></div>
       </div>
 
-      <div class="type-block">
+      <div id="neuroFields" class="kind-fields" hidden>
+        <button type="button" class="pp-btn pick-btn" id="neuroPickBtn" data-pickkind="neuro" aria-haspopup="dialog"><span class="pick-lbl empty">Choisir un exercice</span><span class="pp-chev" aria-hidden="true">›</span></button>
+        <label class="fl" for="neuroName">1 · Exercice : touche-en un dans la liste ou tape un nouveau nom</label>
+        <input id="neuroName" class="big-input" placeholder="Ex. Slump, Médian (ULNT1), Sciatique…" autocomplete="off">
+        <div id="neuroNameChips" class="chip-row"></div>
+        <div class="fl">2 · Technique</div>
+        <div class="chip-row" id="neuroTechChips"><button type="button" class="chip-btn" data-neurotech="tension">Tension</button><button type="button" class="chip-btn" data-neurotech="glissement">Glissement</button></div>
+        <div class="steppers"><div class="stepper-row"><label class="st-label" for="neuroSeries">Séries</label><div class="st-ctl"><button type="button" class="st-btn" data-stepfor="neuroSeries" data-step="-1" aria-label="Moins : séries"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button><input id="neuroSeries" class="st-input" type="number" inputmode="decimal" step="any" min="0" placeholder="0"><button type="button" class="st-btn" data-stepfor="neuroSeries" data-step="1" aria-label="Plus : séries"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div></div><div class="stepper-row"><label class="st-label" for="neuroReps">Répétitions</label><div class="st-ctl"><button type="button" class="st-btn" data-stepfor="neuroReps" data-step="-1" aria-label="Moins : répétitions"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button><input id="neuroReps" class="st-input" type="number" inputmode="decimal" step="any" min="0" placeholder="0"><button type="button" class="st-btn" data-stepfor="neuroReps" data-step="1" aria-label="Plus : répétitions"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div></div><div class="stepper-row" id="neuroHoldRow"><label class="st-label" for="neuroHold">Maintien</label><div class="st-ctl"><button type="button" class="st-btn" data-stepfor="neuroHold" data-step="-5" aria-label="Moins : maintien"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button><input id="neuroHold" class="st-input" type="number" inputmode="decimal" step="any" min="0" placeholder="0"><span class="st-unit">s</span><button type="button" class="st-btn" data-stepfor="neuroHold" data-step="5" aria-label="Plus : maintien"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div></div></div>
+        <div class="fl">Côté</div>
+        <div class="chip-row" id="neuroSideChips"><button type="button" class="chip-btn" data-neuroside="D">Droite</button><button type="button" class="chip-btn" data-neuroside="G">Gauche</button></div>
+      </div>
+      <div id="funcFields" class="kind-fields" hidden>
+        <div class="fl">1 · Activité</div>
+        <div id="funcActChips" class="chip-row"></div>
+        <div id="funcGeneric" hidden>
+          <div class="steppers"><div class="stepper-row"><label class="st-label" for="funcDuration">Durée</label><div class="st-ctl"><button type="button" class="st-btn" data-stepfor="funcDuration" data-step="-5" aria-label="Moins : durée"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button><input id="funcDuration" class="st-input" type="number" inputmode="decimal" step="any" min="0" placeholder="0"><span class="st-unit">min</span><button type="button" class="st-btn" data-stepfor="funcDuration" data-step="5" aria-label="Plus : durée"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div></div><div class="stepper-row"><label class="st-label" for="funcDistance">Distance</label><div class="st-ctl"><button type="button" class="st-btn" data-stepfor="funcDistance" data-step="-0.5" aria-label="Moins : distance"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button><input id="funcDistance" class="st-input" type="number" inputmode="decimal" step="any" min="0" placeholder="0"><span class="st-unit">km</span><button type="button" class="st-btn" data-stepfor="funcDistance" data-step="0.5" aria-label="Plus : distance"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div></div></div>
+          <div class="fl">Mesures (tu choisis ce que tu mesures)</div>
+          <div id="funcMeasChips" class="chip-row"></div>
+          <div class="steppers" id="funcMeasRows"></div>
+          <div class="fl">Côté</div>
+          <div class="chip-row" id="funcSideChips"><button type="button" class="chip-btn" data-funcside="D">Droite</button><button type="button" class="chip-btn" data-funcside="G">Gauche</button></div>
+        </div>
+      </div>
+      <div class="type-block" id="sessionBlock">
         <div class="type-head"><span class="fl" style="margin:0;">Type de séance</span><span class="type-label" id="sessionTypeLabel">À choisir</span></div>
         <div class="session-dots" id="sessionChipGrid"><div class="session-chip" data-session="hypertrophie" style="background:#8b5cf6;" title="Hypertrophie" aria-label="Hypertrophie"></div><div class="session-chip" data-session="endurance_force" style="background:#14b8a6;" title="Endurance de force" aria-label="Endurance de force"></div><div class="session-chip" data-session="nerveux" style="background:#f59e0b;" title="Nerveux" aria-label="Nerveux"></div><div class="session-chip" data-session="tendineux" style="background:#92400e;" title="Tendineux" aria-label="Tendineux"></div><div class="session-chip" data-session="rfd" style="background:#e0483e;" title="RFD" aria-label="RFD"></div><div class="session-chip" data-session="force_vitesse" style="background:#007BFF;" title="Force-Vitesse" aria-label="Force-Vitesse"></div><div class="session-chip" data-session="cod_deceleration" style="background:#1fa971;" title="COD / Décélération" aria-label="COD / Décélération"></div><div class="session-chip" data-session="antalgique" style="background:#8a93a3;" title="Antalgique" aria-label="Antalgique"></div></div>
         <div class="session-dots" id="runSessionChipGrid" hidden><div class="session-chip" data-session="endurance_fondamentale" style="background:#1fa971;" title="Endurance fondamentale" aria-label="Endurance fondamentale"></div><div class="session-chip" data-session="seuil" style="background:#f59e0b;" title="Seuil" aria-label="Seuil"></div><div class="session-chip" data-session="fractionne_vma" style="background:#e0483e;" title="Fractionné / VMA" aria-label="Fractionné / VMA"></div><div class="session-chip" data-session="sortie_longue" style="background:#007BFF;" title="Sortie longue" aria-label="Sortie longue"></div><div class="session-chip" data-session="cotes" style="background:#92400e;" title="Côtes" aria-label="Côtes"></div><div class="session-chip" data-session="recuperation" style="background:#8a93a3;" title="Récupération" aria-label="Récupération"></div><div class="session-chip" data-session="competition" style="background:#8b5cf6;" title="Compétition" aria-label="Compétition"></div></div>
@@ -1341,6 +1436,24 @@
       <button type="button" class="btn-ghost btn-lg" id="addDayEntryBtn">Enregistrer</button>
       <button type="button" class="btn-ghost btn-lg btn-danger" id="deleteEntryBtn" hidden>Supprimer cet exercice</button>
     </div>
+  </div>
+</div>
+
+<!-- Choix d'un exercice (plein écran) -->
+<div id="exPickOverlay" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Choisir un exercice" hidden>
+  <div class="modal-box pp-box ep-box">
+    <div class="pp-head"><button type="button" class="btn-ghost" id="epBackBtn" hidden>‹ Retour</button><h2 id="epTitle">Choisir un exercice</h2><button type="button" class="btn-ghost" id="epCloseBtn">Fermer</button></div>
+    <input id="epSearch" type="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Rechercher un exercice…" aria-label="Rechercher un exercice">
+    <div class="pp-scroll" id="epScroll"><div id="epBody"></div></div>
+  </div>
+</div>
+
+<!-- Tiroir : modifier un exercice de la liste -->
+<div id="exEditSheet" class="sheet-overlay" hidden>
+  <div class="sheet" role="dialog" aria-label="Modifier un exercice">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head"><h3 id="exEditTitle">Exercice</h3><button type="button" class="icon-btn" id="exEditClose" aria-label="Fermer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="sheet-body" id="exEditBody"></div>
   </div>
 </div>
 
@@ -1599,12 +1712,33 @@
   </div>
 </div>
 
+<!-- Patients supprimés (corbeille) -->
+<div id="trashOverlay" class="modal-overlay" hidden>
+  <div class="modal-box">
+    <div class="modal-header"><h2>Patients supprimés</h2><button class="btn-ghost" id="trashCloseBtn">Fermer</button></div>
+    <p class="tc-sub">Ces patients restent sur cet appareil pendant 60 jours. « Restaurer » les remet avec toutes leurs données et leurs rendez-vous.</p>
+    <div id="trashList"></div>
+  </div>
+</div>
+
+<!-- Choix d'un patient (plein écran) -->
+<div id="ppOverlay" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Choisir un patient" hidden>
+  <div class="modal-box pp-box">
+    <div class="pp-head"><h2>Choisir un patient</h2><button type="button" class="btn-ghost" id="ppCloseBtn">Fermer</button></div>
+    <input id="ppSearch" type="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Rechercher un patient…" aria-label="Rechercher un patient">
+    <button type="button" class="btn-primary" id="ppNewBtn" style="min-height:46px; margin-top:8px;">+ Nouveau patient</button>
+    <div class="pp-scroll" id="ppScroll"><div id="ppList"></div></div>
+    <nav class="pp-index" id="ppIndex" aria-label="Index alphabétique" hidden></nav>
+  </div>
+</div>
+
 <!-- Rendez-vous : création / modification -->
 <div id="apptOverlay" class="modal-overlay" hidden>
   <div class="modal-box">
     <div class="modal-header"><h2 id="apTitle">Nouveau rendez-vous</h2><button class="btn-ghost" id="apCloseBtn">Fermer</button></div>
-    <label for="apPatient">Patient</label>
-    <select id="apPatient"></select>
+    <label for="apPatientBtn">Patient</label>
+    <button type="button" class="pp-btn" id="apPatientBtn" aria-haspopup="dialog"><span id="apPatientLbl">Choisir un patient</span><span class="pp-chev" aria-hidden="true">›</span></button>
+    <select id="apPatient" hidden aria-hidden="true" tabindex="-1"></select>
     <input id="apNewName" placeholder="Nom du nouveau patient" hidden style="margin-top:8px;">
     <label style="margin-top:12px;">Créneaux</label>
     <div id="apSlots"></div>
@@ -2451,13 +2585,58 @@ function getSelectedPatient(){
   return state.patients.find(function(p){ return p.id === state.selectedPatientId; }) || null;
 }
 function deletePatient(id){
+  var gone = state.patients.find(function(p){ return p.id === id; });
+  if(gone){
+    if(!Array.isArray(state.trash)) state.trash = [];
+    state.trash = state.trash.filter(function(t){ return t.id !== id; });
+    state.trash.unshift({ id: id, name: gone.name, at: new Date().toISOString(), patient: JSON.parse(JSON.stringify(gone)), agenda: JSON.parse(JSON.stringify((state.agenda || []).filter(function(a){ return a.patientId === id; }))) });
+    state.trash = state.trash.slice(0, 10);
+  }
   state.patients = state.patients.filter(function(p){ return p.id !== id; });
   addTombstone("patients", id);
   state.agenda = (state.agenda || []).filter(function(a){ return a.patientId !== id; });
   if(state.selectedPatientId === id) state.selectedPatientId = null;
   saveData();
   renderAll();
+  updateTrashUi();
 }
+function updateTrashUi(){
+  var n = (state.trash || []).length, b = document.getElementById("trashOpenBtn");
+  if(!b) return;
+  b.hidden = n === 0; b.textContent = "Patients supprimés (" + n + ")";
+}
+function renderTrash(){
+  var list = state.trash || [];
+  document.getElementById("trashList").innerHTML = list.length ? list.map(function(t){
+    return '<div class="trash-row"><div><b>' + escHtml(t.name) + '</b><span>supprimé le ' + escHtml(fmtDate(t.at.slice(0, 10))) + ' · ' + (((t.agenda || []).length) ? t.agenda.length + ' rendez-vous' : 'sans rendez-vous') + '</span></div><button type="button" class="btn-primary" data-trashrestore="' + escHtml(t.id) + '">Restaurer</button></div>';
+  }).join("") : '<div class="tc-sub" style="padding:14px 0;">Aucun patient supprimé récemment.</div>';
+}
+function trashRestore(id){
+  var it = (state.trash || []).find(function(t){ return t.id === id; });
+  if(!it) return;
+  if(state.patients.some(function(p){ return p.id === id; })){ alert("Ce patient est déjà dans ta liste."); return; }
+  var now = new Date().toISOString(), p = normalizePatient(JSON.parse(JSON.stringify(it.patient)));
+  p.updatedAt = now; delete p._sig;
+  state.patients.push(p);
+  if(state.tombstones && state.tombstones.patients) delete state.tombstones.patients[id];
+  if(!Array.isArray(state.agenda)) state.agenda = [];
+  (it.agenda || []).forEach(function(a){
+    if(state.agenda.some(function(x){ return x.id === a.id; })) return;
+    var c = JSON.parse(JSON.stringify(a)); c.updatedAt = now; delete c._sig; state.agenda.push(c);
+    if(state.tombstones && state.tombstones.agenda) delete state.tombstones.agenda[c.id];
+  });
+  state.trash = state.trash.filter(function(t){ return t.id !== id; });
+  resigAll(state);
+  state.selectedPatientId = id;
+  saveData(); renderAll(); updateTrashUi(); renderTrash();
+}
+document.getElementById("trashOpenBtn").addEventListener("click", function(){ renderTrash(); document.getElementById("trashOverlay").hidden = false; });
+document.getElementById("trashCloseBtn").addEventListener("click", function(){ document.getElementById("trashOverlay").hidden = true; });
+document.getElementById("trashList").addEventListener("click", function(e){
+  var b = e.target.closest("[data-trashrestore]"); if(!b) return;
+  trashRestore(b.dataset.trashrestore);
+  if(!(state.trash || []).length) document.getElementById("trashOverlay").hidden = true;
+});
 
 /* ============================================================
    SIDEBAR
@@ -4656,9 +4835,9 @@ function sessionLoad(patient, key){
   var entries = patient.program.entries[key] || [];
   if(meta.sessionRpe > 0 && meta.sessionDuree > 0) return { value: meta.sessionRpe * meta.sessionDuree, source: "session" };
   var runLoad = 0;
-  entries.forEach(function(e){ if(e.kind === 'run') runLoad += (e.durationMin||0) * (e.rpe||0); });
+  entries.forEach(function(e){ if(e.kind === 'run' || e.kind === 'functional') runLoad += (e.durationMin||0) * (e.rpe||0); });
   if(runLoad > 0) return { value: runLoad, source: "run" };
-  var loadable = entries.some(function(e){ return e.kind !== 'stretching'; });
+  var loadable = entries.some(function(e){ return e.kind !== 'stretching' && e.kind !== 'neuro'; });
   return { value: 0, source: loadable ? "missing" : "none" };
 }
 function acwlCoverage(patient, asOfKey, days){
@@ -5127,6 +5306,8 @@ function renderCalendarGrid(patient){
   var startOffset = (firstDay.getDay() + 6) % 7; // Monday=0
   var daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
   var todayKey = todayISO();
+  var rdvMap = {};
+  agList().forEach(function(a){ if(a.patientId === patient.id && a.status !== "annule"){ (rdvMap[a.date] = rdvMap[a.date] || []).push(a); } });
 
   for(var i=0;i<startOffset;i++){
     var empty = document.createElement("div");
@@ -5144,8 +5325,14 @@ function renderCalendarGrid(patient){
     var pl = getPlan(patient)[key];
     var hasDone = key <= todayKey && entries.length > 0;
     var planHtml = pl ? '<div class="cal-plan" style="color:' + (SESSION_COLORS[pl.session]||'var(--muted)') + ';" title="Séance prévue : ' + (pl.focus ? FOCUS_LABELS[pl.focus] + ' · ' : '') + SESSION_LABELS[pl.session] + '">' + (hasDone ? '✓ ' : '◌ ') + (pl.focus ? FOCUS_LABELS[pl.focus] : SESSION_LABELS[pl.session]) + '</div>' : '';
-    var dotsHtml = entries.map(function(e){ return '<span class="cal-dot" style="background:' + (SESSION_COLORS[e.session]||'#ccc') + ';"></span>'; }).join("");
-    cell.innerHTML = '<div class="cal-daynum">' + day + '</div><div class="cal-dots">' + dotsHtml + '</div>' + planHtml +
+    var neuroDone = false;
+    var dotsHtml = entries.map(function(e){
+      if(e.kind === 'neuro'){ if(neuroDone) return ''; neuroDone = true; return '<span class="cal-star" title="Neurodynamique" aria-label="Neurodynamique">★</span>'; }
+      return '<span class="cal-dot" style="background:' + (SESSION_COLORS[e.session]||'#ccc') + ';"></span>';
+    }).join("");
+    var rdvs = (rdvMap[key] || []).slice().sort(function(a, b){ return a.start.localeCompare(b.start); });
+    var rdvHtml = rdvs.length ? '<div class="cal-rdv' + (rdvs.every(function(a){ return a.status === "absent"; }) ? " abs" : "") + '" title="' + escHtml(rdvs.map(function(a){ return "Rendez-vous " + a.start + " – " + minToHhmm(hhmmToMin(a.start) + a.dur) + " · " + a.type; }).join(" ; ")) + '">RDV ' + rdvs.map(function(a){ return a.start; }).join(", ") + '</div>' : '';
+    cell.innerHTML = '<div class="cal-daynum">' + day + '</div><div class="cal-dots">' + dotsHtml + '</div>' + rdvHtml + planHtml +
       (totalLoad > 0 ? '<div class="cal-load" title="Tonnage : ' + Math.round(dayTon) + ' kg">' + Math.round(totalLoad) + ' UA</div>'
         : (sl.source === "missing" && key <= todayKey ? '<div class="cal-load" style="color:var(--orange);">à clôturer</div>' : ''));
     cell.addEventListener("click", function(){ openDayModal(this.dataset.key); });
@@ -5153,9 +5340,14 @@ function renderCalendarGrid(patient){
     grid.appendChild(cell);
   }
 
+  var up = agList().filter(function(a){ return a.patientId === patient.id && a.status !== "annule" && a.date >= todayKey; }).sort(function(a, b){ return (a.date + a.start).localeCompare(b.date + b.start); }).slice(0, 4);
+  var nx = document.getElementById("calNext");
+  if(up.length){ nx.hidden = false; nx.innerHTML = '<b>Prochains rendez-vous</b>' + up.map(function(a){ return '<button type="button" class="cal-nx" data-date="' + a.date + '">' + escHtml(fmtDate(a.date)) + ' · ' + a.start + '</button>'; }).join(""); }
+  else { nx.hidden = true; nx.innerHTML = ""; }
   renderWeekStrip(patient);
   renderAcwl(patient);
 }
+document.getElementById("calNext").addEventListener("click", function(e){ var b = e.target.closest("[data-date]"); if(b) openDayModal(b.dataset.date); });
 
 document.getElementById("calPrevBtn").addEventListener("click", function(){
   calMonth--; if(calMonth < 0){ calMonth = 11; calYear--; } renderCalendarGrid(getSelectedPatient());
@@ -5252,7 +5444,10 @@ function openDayModal(key){
   document.getElementById("runFields").hidden = true;
   document.getElementById("stretchFields").hidden = true;
   document.getElementById("isometricFields").hidden = true;
-  ["exName","exSets","exReps","exLoad","exRpe","runDistance","runDuration","runRpe","stretchName","stretchSeries","stretchDuree","stretchRpe","isoName","isoSeries","isoReps","isoDuree","isoRpe","exGroup","isoGroup","isoPct"].forEach(function(id){ document.getElementById(id).value = ""; });
+  funcActivity = "Course à pied"; funcSel = []; funcVals = {}; funcSide = ""; neuroTech = ""; neuroSide = ""; nameEditMode = false;
+  document.getElementById("neuroFields").hidden = true; document.getElementById("funcFields").hidden = true; document.getElementById("funcGeneric").hidden = true;
+  document.getElementById("sessionBlock").hidden = false;
+  ["exName","exSets","exReps","exLoad","exRpe","runDistance","runDuration","runRpe","stretchName","stretchSeries","stretchDuree","stretchRpe","isoName","isoSeries","isoReps","isoDuree","isoRpe","exGroup","isoGroup","isoPct","neuroName","neuroSeries","neuroReps","neuroHold","funcDuration","funcDistance"].forEach(function(id){ document.getElementById(id).value = ""; });
   document.getElementById("exTonnagePreview").innerHTML = "";
   document.getElementById("runLoadPreview").innerHTML = "";
   document.getElementById("stretchTotalPreview").innerHTML = "";
@@ -5294,6 +5489,9 @@ function openDayModal(key){
   var hintParts = [];
   if(__ctx) hintParts.push(QUALITY_LABELS[__ctx.meso.dominante] + " · S" + __ctx.micro.numero);
   if(plannedToday) hintParts.push('<span class="dot" style="background:' + (SESSION_COLORS[plannedToday.session] || '#999') + ';"></span>Prévu : ' + (plannedToday.focus ? FOCUS_LABELS[plannedToday.focus] + ' · ' : '') + SESSION_LABELS[plannedToday.session]);
+  agList().filter(function(a){ return a.patientId === patient.id && a.date === key && a.status !== "annule"; }).sort(function(a, b){ return a.start.localeCompare(b.start); }).forEach(function(a){
+    hintParts.push('<span class="dot" style="background:' + agTypeByName(a.type).color + ';"></span>Rendez-vous : ' + a.start + ' – ' + minToHhmm(hhmmToMin(a.start) + a.dur) + ' · ' + escHtml(a.type));
+  });
   hintEl.innerHTML = hintParts.join(' <span>·</span> ');
   if(plannedToday){
     var isRun = RUN_SESSION_KEYS.indexOf(plannedToday.session) !== -1;
@@ -5505,16 +5703,13 @@ document.getElementById("toggleMuscleTrackBtn").addEventListener("click", functi
 
 function startEditEntry(entry){
   editingEntryId = entry.id;
-  dayKind = entry.kind;
+  dayKind = entry.kind === 'run' || entry.kind === 'functional' ? 'functional' : entry.kind;
+  funcActivity = entry.kind === 'run' ? "Course à pied" : (entry.kind === 'functional' ? (entry.activity || "") : "Course à pied");
+  nameEditMode = false;
   daySession = entry.session;
 
-  document.querySelectorAll("#dayKindGrid .type-card").forEach(function(c){ c.classList.toggle("selected", c.dataset.kind === entry.kind); });
-  document.getElementById("exerciseFields").hidden = dayKind !== 'exercise';
-  document.getElementById("runFields").hidden = dayKind !== 'run';
-  document.getElementById("stretchFields").hidden = dayKind !== 'stretching';
-  document.getElementById("isometricFields").hidden = dayKind !== 'isometric';
-  document.getElementById("sessionChipGrid").hidden = dayKind === 'run';
-  document.getElementById("runSessionChipGrid").hidden = dayKind !== 'run';
+  document.querySelectorAll("#dayKindGrid .type-card").forEach(function(c){ c.classList.toggle("selected", c.dataset.kind === dayKind); });
+  applyKindUi();
 
   document.querySelectorAll("#sessionChipGrid .session-chip, #runSessionChipGrid .session-chip").forEach(function(c){
     c.classList.toggle("selected", c.dataset.session === entry.session);
@@ -5545,13 +5740,31 @@ function startEditEntry(entry){
     document.getElementById("isoPct").value = (entry.pctFmax !== undefined && entry.pctFmax !== null) ? entry.pctFmax : "";
     document.getElementById("isoGroup").value = entry.group || "";
     updateIsoPreview(); updateLastTimeReminder('isometric');
+  } else if(entry.kind === 'neuro'){
+    document.getElementById("neuroName").value = entry.name || "";
+    neuroTech = entry.technique || ""; neuroSide = entry.side || "";
+    document.getElementById("neuroSeries").value = entry.series || "";
+    document.getElementById("neuroReps").value = entry.reps || "";
+    document.getElementById("neuroHold").value = entry.dureeSec || "";
+    renderNeuroUi(); renderNameChips('neuro');
+  } else if(entry.kind === 'functional'){
+    document.getElementById("funcDuration").value = entry.durationMin || "";
+    document.getElementById("funcDistance").value = entry.distanceKm || "";
+    funcSel = []; funcVals = {}; funcSide = entry.side || "";
+    entryMeasures(entry).forEach(function(m, i){
+      var f = (state.funcMeasures || []).find(function(x){ return x.label === m.label && (x.unit || "") === (m.unit || ""); }) || { id: "t" + i, label: m.label, unit: m.unit || "" };
+      funcSel.push(f); funcVals[f.id] = m.value;
+    });
+    renderFuncUi();
   } else { // run
+    renderFuncUi();
     document.getElementById("runDistance").value = entry.distanceKm || "";
     document.getElementById("runDuration").value = entry.durationMin || "";
     document.getElementById("runRpe").value = (entry.rpe !== undefined && entry.rpe !== null) ? entry.rpe : "";
     updateRunPreview();
   }
 
+  pickUpdateLabels();
   openExSheet(true);
 }
 function resetEntryForm(){
@@ -5637,40 +5850,382 @@ function renderDayEntriesList(){
     } else if(e.kind === 'isometric'){
       name = e.name; detail = '<b>' + e.series + ' × ' + e.reps + ' × ' + e.dureeSec + ' s</b>';
       sub = (e.isoType === 'yielding' ? 'Yielding' : 'Overcoming') + (e.pctFmax ? ' · ' + e.pctFmax + ' % Fmax' : '') + (e.group ? ' · ' + escHtml(e.group) : '') + ' · tension ' + fmtNum(stretchSeconds(e)) + ' s';
+    } else if(e.kind === 'neuro'){
+      name = e.name; detail = '<b>' + e.series + ' × ' + e.reps + '</b>' + (e.dureeSec ? ' · <b>' + e.dureeSec + ' s</b>' : '');
+      sub = 'Neurodynamique · ' + (e.technique === 'glissement' ? 'Glissement' : 'Tension') + (e.side ? ' · ' + (e.side === 'D' ? 'droite' : 'gauche') : '');
+    } else if(e.kind === 'functional'){
+      name = e.activity || "Fonctionnel"; detail = (e.durationMin ? '<b>' + e.durationMin + ' min</b>' : '') + (e.durationMin && e.distanceKm ? ' · ' : '') + (e.distanceKm ? '<b>' + e.distanceKm + ' km</b>' : '');
+      sub = (entryMeasures(e).map(function(m){ return escHtml(m.label) + ' : ' + escHtml(frDec(m.value)) + (m.unit ? ' ' + escHtml(m.unit) : ''); }).join(' · ') || 'Fonctionnel') + (e.side ? ' · ' + (e.side === 'D' ? 'droite' : 'gauche') : '') + (hasRpe && e.durationMin ? ' · charge ' + fmtNum(entryLoad(e)) + ' UA' : '');
     } else {
-      name = "Course"; detail = '<b>' + e.distanceKm + ' km</b> · <b>' + e.durationMin + ' min</b>';
+      name = "Course à pied"; detail = '<b>' + e.distanceKm + ' km</b> · <b>' + e.durationMin + ' min</b>';
       sub = hasRpe ? 'Charge ' + fmtNum(entryLoad(e)) + ' UA' : 'RPE manquant pour la charge';
     }
+    var noRpe = e.kind === 'neuro';
     var right = future
       ? '<span class="planned-tag">prévu</span>'
-      : '<button type="button" class="rpe-pill' + (hasRpe ? '' : ' missing') + '" data-rpeentry="' + e.id + '" aria-label="' + (hasRpe ? 'Modifier ' : 'Ajouter ') + (isEx ? 'le RIR' : 'le RPE') + '">' + pillTxt + '</button>';
+      : (noRpe ? '' : '<button type="button" class="rpe-pill' + (hasRpe ? '' : ' missing') + '" data-rpeentry="' + e.id + '" aria-label="' + (hasRpe ? 'Modifier ' : 'Ajouter ') + (isEx ? 'le RIR' : 'le RPE') + '">' + pillTxt + '</button>');
     return '<div class="ex-card' + (future ? ' planned' : '') + '" role="button" tabindex="0" data-editentry="' + e.id + '">' +
-      '<div class="ex-tile" style="background:' + color + ';color:' + (future ? color : textOn(color)) + ';">' + (i + 1) + '</div>' +
+      (e.kind === 'neuro' ? '<div class="ex-tile star" aria-label="Neurodynamique">★</div>' : '<div class="ex-tile" style="background:' + color + ';color:' + (future ? color : textOn(color)) + ';">' + (i + 1) + '</div>') +
       '<div class="ex-main"><div class="ex-name">' + escHtml(name) + '</div><div class="ex-detail">' + detail + '</div><div class="ex-sub">' + sub + '</div></div>' + right + '</div>';
   }).join("");
 }
 
+var funcActivity = "Course à pied", funcSel = [], funcVals = {}, funcSide = "", neuroTech = "", neuroSide = "", nameEditMode = false;
+function entryMeasures(e){ return Array.isArray(e.measures) ? e.measures : (e.measure ? [e.measure] : []); }
+function funcLastMeasures(patient, activity){
+  var best = null, bestKey = "";
+  Object.keys(patient.program.entries || {}).forEach(function(k){
+    (patient.program.entries[k] || []).forEach(function(e){ if(e.kind === "functional" && e.activity === activity && entryMeasures(e).length && k >= bestKey){ best = e; bestKey = k; } });
+  });
+  if(!best) return [];
+  var lib = Array.isArray(state.funcMeasures) ? state.funcMeasures : [];
+  return entryMeasures(best).map(function(m){ return lib.find(function(x){ return x.label === m.label && (x.unit || "") === (m.unit || ""); }); }).filter(Boolean);
+}
+function funcPreselect(){
+  funcSel = []; funcVals = {};
+  document.getElementById("funcMeasRows").innerHTML = "";
+  if(editingEntryId) return;
+  funcSel = funcLastMeasures(getSelectedPatient(), funcActivity);
+}
+var FUNC_DEFAULTS = ["Course à pied", "Vélo (ergomètre)", "Rameur", "Ski-erg", "Sauts", "Circuit", "Atelier"];
+function funcIsRun(){ return dayKind === "functional" && funcActivity === "Course à pied"; }
+function applyKindUi(){
+  var run = funcIsRun();
+  document.getElementById("exerciseFields").hidden = dayKind !== 'exercise';
+  document.getElementById("neuroFields").hidden = dayKind !== 'neuro';
+  document.getElementById("funcFields").hidden = dayKind !== 'functional';
+  document.getElementById("funcGeneric").hidden = !(dayKind === 'functional' && !run);
+  document.getElementById("runFields").hidden = !run;
+  document.getElementById("stretchFields").hidden = dayKind !== 'stretching';
+  document.getElementById("isometricFields").hidden = dayKind !== 'isometric';
+  document.getElementById("sessionBlock").hidden = dayKind === 'neuro';
+  document.getElementById("sessionChipGrid").hidden = dayKind === 'functional';
+  document.getElementById("runSessionChipGrid").hidden = dayKind !== 'functional';
+}
+function funcActivityList(){
+  var extra = (Array.isArray(state.funcActivities) ? state.funcActivities : []).map(function(x){ return x.name; }).filter(function(n){ return FUNC_DEFAULTS.indexOf(n) === -1; });
+  return FUNC_DEFAULTS.concat(extra);
+}
+function funcCaptureVals(){ document.querySelectorAll("#funcMeasRows [data-measval]").forEach(function(i){ funcVals[i.dataset.measval] = i.value; }); }
+function renderFuncUi(){
+  funcCaptureVals();
+  var acts = funcActivityList(), custom = (state.funcActivities || []);
+  document.getElementById("funcActChips").innerHTML = acts.map(function(n){
+    var isCustom = custom.some(function(x){ return x.name === n; });
+    return '<button type="button" class="chip-btn' + (n === funcActivity ? ' on' : '') + (nameEditMode && isCustom ? ' editing' : '') + '" data-funcact="' + escHtml(n) + '">' + escHtml(n) + (nameEditMode && isCustom ? '<span class="x" data-funcactdel="' + escHtml(n) + '">✕</span>' : '') + '</button>';
+  }).join("") + '<button type="button" class="chip-btn add" data-funcadd="act">+ Activité</button><div class="chip-tools"><button type="button" class="chip-edit' + (nameEditMode ? ' on' : '') + '" data-nameedit="1">' + (nameEditMode ? 'Terminé' : '✎ Modifier') + '</button></div>';
+  var ms = Array.isArray(state.funcMeasures) ? state.funcMeasures : [];
+  document.getElementById("funcMeasChips").innerHTML = ms.map(function(m){
+    var on = funcSel.some(function(x){ return x.id === m.id; });
+    return '<button type="button" class="chip-btn' + (on ? ' on' : '') + (nameEditMode ? ' editing' : '') + '" data-funcmeas="' + escHtml(m.id) + '" aria-pressed="' + on + '">' + escHtml(m.label) + (m.unit ? ' (' + escHtml(m.unit) + ')' : '') + (nameEditMode ? '<span class="x" data-funcmeasdel="' + escHtml(m.id) + '">✕</span>' : '') + '</button>';
+  }).join("") + '<button type="button" class="chip-btn add" data-funcadd="meas">+ Mesure</button>';
+  document.getElementById("funcMeasRows").innerHTML = funcSel.map(function(m){
+    var v = funcVals[m.id] === undefined ? "" : funcVals[m.id];
+    return '<div class="stepper-row"><label class="st-label" for="mv-' + escHtml(m.id) + '">' + escHtml(m.label) + '</label><div class="st-ctl"><input id="mv-' + escHtml(m.id) + '" class="st-input" data-measval="' + escHtml(m.id) + '" type="number" inputmode="decimal" step="any" placeholder="0" value="' + escHtml(String(v)) + '">' + (m.unit ? '<span class="st-unit">' + escHtml(m.unit) + '</span>' : '') + '</div></div>';
+  }).join("");
+  document.querySelectorAll("#funcSideChips [data-funcside]").forEach(function(b){ b.classList.toggle("on", b.dataset.funcside === funcSide); });
+}
+function renderNeuroUi(){
+  document.querySelectorAll("#neuroTechChips [data-neurotech]").forEach(function(b){ b.classList.toggle("on", b.dataset.neurotech === neuroTech); });
+  document.querySelectorAll("#neuroSideChips [data-neuroside]").forEach(function(b){ b.classList.toggle("on", b.dataset.neuroside === neuroSide); });
+  document.getElementById("neuroHoldRow").hidden = neuroTech !== "tension";
+}
 document.getElementById("dayKindGrid").addEventListener("click", function(e){
   var card = e.target.closest(".type-card");
   if(!card) return;
-  var wasRun = (dayKind === 'run');
+  var wasFunc = (dayKind === 'functional');
   dayKind = card.dataset.kind;
-  if(wasRun !== (dayKind === 'run')){
+  nameEditMode = false;
+  if(wasFunc !== (dayKind === 'functional')){
     daySession = null;
     document.querySelectorAll("#sessionChipGrid .session-chip, #runSessionChipGrid .session-chip").forEach(function(c){ c.classList.remove("selected"); });
   }
   document.querySelectorAll("#dayKindGrid .type-card").forEach(function(c){ c.classList.remove("selected"); });
   card.classList.add("selected");
-  document.getElementById("exerciseFields").hidden = dayKind !== 'exercise';
-  document.getElementById("runFields").hidden = dayKind !== 'run';
-  document.getElementById("stretchFields").hidden = dayKind !== 'stretching';
-  document.getElementById("isometricFields").hidden = dayKind !== 'isometric';
-  document.getElementById("sessionChipGrid").hidden = dayKind === 'run';
-  document.getElementById("runSessionChipGrid").hidden = dayKind !== 'run';
+  applyKindUi();
   renderGroupChips('exercise'); renderGroupChips('isometric');
   renderNameChips(dayKind);
+  if(dayKind === 'functional') renderFuncUi();
+  if(dayKind === 'neuro') renderNeuroUi();
   refreshSessionLabel();
   renderIsoTarget();
+});
+document.getElementById("neuroTechChips").addEventListener("click", function(e){ var b = e.target.closest("[data-neurotech]"); if(!b) return; neuroTech = neuroTech === b.dataset.neurotech ? "" : b.dataset.neurotech; renderNeuroUi(); });
+document.getElementById("neuroSideChips").addEventListener("click", function(e){ var b = e.target.closest("[data-neuroside]"); if(!b) return; neuroSide = neuroSide === b.dataset.neuroside ? "" : b.dataset.neuroside; renderNeuroUi(); });
+document.getElementById("neuroName").addEventListener("input", function(){
+  renderNameChips("neuro");
+  if(editingEntryId) return;
+  var name = this.value.trim(); if(!name) return;
+  if(["neuroSeries", "neuroReps", "neuroHold"].some(function(id){ return document.getElementById(id).value !== ""; }) || neuroTech) return;
+  var last = findLastEntryByName(getSelectedPatient(), "neuro", name, dayModalDate);
+  if(last){ var en = last.entry; neuroTech = en.technique || ""; neuroSide = en.side || ""; setVal("neuroSeries", en.series || ""); setVal("neuroReps", en.reps || ""); setVal("neuroHold", en.dureeSec || ""); renderNeuroUi(); }
+});
+document.getElementById("funcFields").addEventListener("click", function(e){
+  var del = e.target.closest("[data-funcactdel]");
+  if(del){
+    e.stopPropagation();
+    var nm = del.dataset.funcactdel;
+    if(confirm("Retirer l'activité « " + nm + " » de la liste ? Les séances déjà enregistrées gardent leur activité.")){
+      var it = (state.funcActivities || []).find(function(x){ return x.name === nm; });
+      if(it){ addTombstone("funcActivities", it.id); }
+      state.funcActivities = (state.funcActivities || []).filter(function(x){ return x.name !== nm; });
+      if(funcActivity === nm) funcActivity = "Course à pied";
+      saveData(); applyKindUi(); renderFuncUi();
+    }
+    return;
+  }
+  var mdel = e.target.closest("[data-funcmeasdel]");
+  if(mdel){
+    e.stopPropagation();
+    var mm = (state.funcMeasures || []).find(function(x){ return x.id === mdel.dataset.funcmeasdel; });
+    if(mm && confirm("Retirer la mesure « " + mm.label + " » de la liste ? Les séances déjà enregistrées gardent leur mesure.")){
+      state.funcMeasures = state.funcMeasures.filter(function(x){ return x.id !== mm.id; });
+      funcSel = funcSel.filter(function(x){ return x.id !== mm.id; });
+      saveData(); renderFuncUi();
+    }
+    return;
+  }
+  var act = e.target.closest("[data-funcact]");
+  if(act){ funcActivity = act.dataset.funcact; funcPreselect(); applyKindUi(); renderFuncUi(); return; }
+  var sd = e.target.closest("[data-funcside]");
+  if(sd){ funcSide = funcSide === sd.dataset.funcside ? "" : sd.dataset.funcside; renderFuncUi(); return; }
+  var add = e.target.closest("[data-funcadd]");
+  if(add){
+    if(add.dataset.funcadd === "act"){
+      var n = prompt("Nom de l'activité (ex. Elliptique, Corde à sauter…) :", "");
+      if(n === null) return;
+      n = n.trim().replace(/\s+/g, " ").slice(0, 60);
+      if(!n) return;
+      if(funcActivityList().some(function(x){ return normTxt(x) === normTxt(n); })){ alert("Cette activité existe déjà."); return; }
+      if(!Array.isArray(state.funcActivities)) state.funcActivities = [];
+      state.funcActivities.push({ id: uid(), name: n });
+      funcActivity = n; funcPreselect(); saveData(); applyKindUi(); renderFuncUi();
+    } else {
+      var lb = prompt("Que mesures-tu ? (ex. Puissance moyenne, Allure, Split 500 m)", "");
+      if(lb === null) return;
+      lb = lb.trim().replace(/\s+/g, " ").slice(0, 60);
+      if(!lb) return;
+      var un = prompt("Unité de « " + lb + " » (ex. W, min/km, bpm) — laisse vide s'il n'y en a pas :", "");
+      if(un === null) return;
+      un = un.trim().slice(0, 12);
+      if(!Array.isArray(state.funcMeasures)) state.funcMeasures = [];
+      var mnew = { id: uid(), label: lb, unit: un };
+      funcCaptureVals(); state.funcMeasures.push(mnew); funcSel.push(mnew); saveData(); renderFuncUi();
+    }
+    return;
+  }
+  var me = e.target.closest("[data-funcmeas]");
+  if(me){
+    funcCaptureVals();
+    var on = funcSel.some(function(x){ return x.id === me.dataset.funcmeas; });
+    if(on) funcSel = funcSel.filter(function(x){ return x.id !== me.dataset.funcmeas; });
+    else { var found = (state.funcMeasures || []).find(function(x){ return x.id === me.dataset.funcmeas; }); if(found) funcSel.push(found); }
+    renderFuncUi();
+  }
+});
+document.getElementById("funcMeasRows").addEventListener("input", function(e){ var i = e.target.closest("[data-measval]"); if(i) funcVals[i.dataset.measval] = i.value; });
+/* ----- choix d'un exercice : récents, muscles, liste ----- */
+var PICK_KINDS = {
+  exercise:   { input: "exName", group: "exGroup", btn: "exPickBtn", empty: "Choisir un exercice", title: "Choisir un exercice" },
+  isometric:  { input: "isoName", group: "isoGroup", btn: "isoPickBtn", empty: "Choisir un exercice", title: "Choisir un exercice isométrique" },
+  stretching: { input: "stretchName", group: "", btn: "stretchPickBtn", empty: "Choisir un étirement", title: "Choisir un étirement" },
+  neuro:      { input: "neuroName", group: "", btn: "neuroPickBtn", empty: "Choisir un exercice", title: "Choisir un exercice neurodynamique" }
+};
+var epKind = "exercise", epLevel = "home", epGroup = "", epPending = "", epEdit = false;
+function pickUpdateLabels(){
+  Object.keys(PICK_KINDS).forEach(function(k){
+    var c = PICK_KINDS[k], lbl = document.querySelector("#" + c.btn + " .pick-lbl");
+    if(!lbl) return;
+    var name = document.getElementById(c.input).value.trim(), g = c.group ? document.getElementById(c.group).value : "";
+    lbl.textContent = name ? (g ? name + " · " + g : name) : c.empty;
+    lbl.classList.toggle("empty", !name);
+  });
+}
+["exName", "isoName", "stretchName", "neuroName"].forEach(function(id){ document.getElementById(id).addEventListener("input", pickUpdateLabels); });
+["exGroup", "isoGroup"].forEach(function(id){ document.getElementById(id).addEventListener("change", pickUpdateLabels); });
+function epCollect(kind){
+  var patient = getSelectedPatient(), map = {};
+  Object.keys(patient.program.entries || {}).forEach(function(k){
+    (patient.program.entries[k] || []).forEach(function(e){
+      if(e.kind !== kind || !e.name || exIsHidden(kind, e.name)) return;
+      var key = normTxt(e.name), m = map[key] || (map[key] = { name: e.name, group: "", last: "", entry: null }), g = entryGroup(patient, e);
+      if(g) m.group = g;
+      if(k >= m.last){ m.last = k; m.entry = e; }
+    });
+  });
+  exCatalog().forEach(function(x){
+    if(x.kind !== kind || exIsHidden(kind, x.name)) return;
+    var key = normTxt(x.name), m = map[key] || (map[key] = { name: x.name, group: "", last: "", entry: null });
+    if(!m.group && x.group) m.group = x.group;
+  });
+  return Object.keys(map).map(function(k){ return map[k]; });
+}
+function epDesc(kind, e){
+  if(!e) return "";
+  if(kind === "exercise") return (e.sets || 0) + " × " + (e.reps || 0) + " · " + (e.load || 0) + " kg";
+  if(kind === "isometric") return (e.series || 0) + " × " + (e.reps || 0) + " × " + (e.dureeSec || 0) + " s";
+  if(kind === "stretching") return (e.series || 0) + " × " + (e.dureeSec || 0) + " s";
+  if(kind === "neuro") return (e.technique === "glissement" ? "Glissement" : "Tension") + " · " + (e.series || 0) + " × " + (e.reps || 0);
+  return "";
+}
+function epRender(){
+  var c = PICK_KINDS[epKind], patient = getSelectedPatient(), q = normTxt(document.getElementById("epSearch").value), all = epCollect(epKind), body = "", hasG = !!c.group;
+  var cur = document.getElementById(c.input).value.trim();
+  var title = c.title, back = false;
+  function row(m, withG){ return '<button type="button" class="pp-item' + (normTxt(m.name) === normTxt(cur) ? ' on' : '') + '" data-epname="' + escHtml(m.name) + '" data-epg="' + escHtml(m.group) + '"><span>' + escHtml(m.name) + (withG && m.group ? ' <span class="ep-sub">· ' + escHtml(m.group) + '</span>' : '') + '</span>' + (epEdit ? '<span class="ep-sub">✎</span>' : (normTxt(m.name) === normTxt(cur) ? '<span class="pp-ck">✓</span>' : '')) + '</button>'; }
+  function byName(a, b){ return a.name.localeCompare(b.name, "fr"); }
+  function editBtn(){ return '<button type="button" class="ep-edit' + (epEdit ? ' on' : '') + '" id="epEditBtn">' + (epEdit ? 'Terminé' : '✎ Modifier') + '</button>'; }
+  if(q){
+    var res = all.filter(function(m){ return normTxt(m.name).indexOf(q) !== -1; }).sort(byName);
+    body = '<div class="ep-sec"><span>' + res.length + ' résultat' + (res.length > 1 ? 's' : '') + '</span>' + editBtn() + '</div>' + (res.length ? res.map(function(m){ return row(m, hasG); }).join("") : '<div class="pp-empty">Aucun exercice ne correspond. Touche « + Nouvel exercice » pour le créer.</div>');
+  } else if(epLevel === "assign"){
+    title = "Quel groupe ?"; back = true;
+    body = '<div class="ep-sec"><span>Dans quel groupe ranger « ' + escHtml(epPending) + ' » ?</span></div><div class="ep-grid">' + TRAIN_GROUPS.map(function(g){ return '<button type="button" class="ep-tile" data-epgroup="' + escHtml(g) + '"><b>' + escHtml(g) + '</b></button>'; }).join("") + '</div>';
+  } else if(epLevel === "group"){
+    title = epGroup; back = true;
+    var list = all.filter(function(m){ return m.group === epGroup; }).sort(byName);
+    body = '<div class="ep-sec"><span>' + list.length + ' exercice' + (list.length > 1 ? 's' : '') + '</span>' + editBtn() + '</div>' + (list.length ? list.map(function(m){ return row(m, false); }).join("") : '<div class="pp-empty">Aucun exercice dans ce groupe pour l\'instant.</div>');
+  } else {
+    var recents = all.filter(function(m){ return m.last; }).sort(function(a, b){ return b.last.localeCompare(a.last) || a.name.localeCompare(b.name); }).slice(0, 6);
+    if(recents.length) body += '<div class="ep-sec"><span>Récents de ' + escHtml(patient.name) + '</span></div><div class="ep-grid">' + recents.map(function(m){ return '<button type="button" class="ep-tile" data-epname="' + escHtml(m.name) + '" data-epg="' + escHtml(m.group) + '"><b>' + escHtml(m.name) + '</b><span>' + escHtml(epDesc(epKind, m.entry)) + '</span></button>'; }).join("") + '</div>';
+    if(hasG){
+      var counts = {}; all.forEach(function(m){ if(m.group) counts[m.group] = (counts[m.group] || 0) + 1; });
+      body += '<div class="ep-sec"><span>Quel muscle ?</span></div><div class="ep-grid">' + TRAIN_GROUPS.map(function(g){ var n = counts[g] || 0; return '<button type="button" class="ep-tile' + (n ? '' : ' empty') + '" data-epgroup="' + escHtml(g) + '"><b>' + escHtml(g) + '</b><span>' + n + ' exercice' + (n > 1 ? 's' : '') + '</span></button>'; }).join("") + '</div>';
+      var nog = all.filter(function(m){ return !m.group; }).sort(byName);
+      if(nog.length) body += '<div class="ep-sec"><span>Non classés</span>' + editBtn() + '</div>' + nog.map(function(m){ return row(m, false); }).join("");
+    } else {
+      var az = all.slice().sort(byName);
+      body += '<div class="ep-sec"><span>Tous les exercices</span>' + editBtn() + '</div>' + (az.length ? az.map(function(m){ return row(m, false); }).join("") : '<div class="pp-empty">Aucun exercice pour l\'instant.</div>');
+    }
+  }
+  body += '<button type="button" class="btn-primary ep-new" id="epNewBtn">+ Nouvel exercice' + (epLevel === "group" && !q ? ' dans ' + escHtml(epGroup) : '') + '</button>';
+  document.getElementById("epTitle").textContent = title;
+  document.getElementById("epBackBtn").hidden = !back || !!q;
+  document.getElementById("epBody").innerHTML = body;
+}
+function epOpen(kind){
+  epKind = kind; epLevel = "home"; epGroup = ""; epPending = ""; epEdit = false;
+  document.getElementById("epSearch").value = "";
+  document.getElementById("epSearch").placeholder = kind === "stretching" ? "Rechercher un étirement…" : "Rechercher un exercice…";
+  epRender();
+  document.getElementById("exPickOverlay").hidden = false;
+  document.getElementById("epScroll").scrollTop = 0;
+}
+function epPick(name, group){
+  var c = PICK_KINDS[epKind];
+  if(c.group){ var sel = document.getElementById(c.group); sel.value = group || ""; sel.dispatchEvent(new Event("change", { bubbles: true })); }
+  var inp = document.getElementById(c.input); inp.value = ""; inp.value = name; inp.dispatchEvent(new Event("input", { bubbles: true }));
+  document.getElementById("exPickOverlay").hidden = true;
+  if(c.group) renderGroupChips(epKind);
+  renderNameChips(epKind);
+  pickUpdateLabels();
+}
+document.querySelectorAll(".pick-btn").forEach(function(b){ b.addEventListener("click", function(){ epOpen(b.dataset.pickkind); }); });
+document.getElementById("epSearch").addEventListener("input", epRender);
+document.getElementById("epCloseBtn").addEventListener("click", function(){ document.getElementById("exPickOverlay").hidden = true; });
+document.getElementById("epBackBtn").addEventListener("click", function(){ epLevel = "home"; epEdit = false; epRender(); document.getElementById("epScroll").scrollTop = 0; });
+document.getElementById("exPickOverlay").addEventListener("click", function(e){
+  var eb = e.target.closest("#epEditBtn");
+  if(eb){ epEdit = !epEdit; epRender(); return; }
+  var nb = e.target.closest("#epNewBtn");
+  if(nb){
+    var nm = prompt("Nom du nouvel exercice :", document.getElementById("epSearch").value.trim());
+    if(nm === null) return;
+    nm = nm.trim().replace(/\s+/g, " ").slice(0, 80);
+    if(!nm){ alert("Indique le nom de l'exercice."); return; }
+    var dup = epCollect(epKind).find(function(m){ return normTxt(m.name) === normTxt(nm); });
+    if(dup){ if(confirm("« " + dup.name + " » existe déjà. Le choisir plutôt que d'en créer un second ?")) epPick(dup.name, dup.group); return; }
+    var hasG = !!PICK_KINDS[epKind].group;
+    if(!hasG){ epPick(nm, ""); return; }
+    if(epLevel === "group" && !document.getElementById("epSearch").value.trim()){ epPick(nm, epGroup); return; }
+    epPending = nm; epLevel = "assign"; document.getElementById("epSearch").value = ""; epRender(); document.getElementById("epScroll").scrollTop = 0;
+    return;
+  }
+  var gt = e.target.closest("[data-epgroup]");
+  if(gt){
+    if(epLevel === "assign"){ epPick(epPending, gt.dataset.epgroup); return; }
+    epLevel = "group"; epGroup = gt.dataset.epgroup; epEdit = false; document.getElementById("epSearch").value = ""; epRender(); document.getElementById("epScroll").scrollTop = 0; return;
+  }
+  var nt = e.target.closest("[data-epname]");
+  if(nt){
+    if(epEdit){ openExEdit(epKind, nt.dataset.epname); return; }
+    epPick(nt.dataset.epname, nt.dataset.epg);
+  }
+});
+/* ----- mode édition d'un exercice de la liste ----- */
+var exEditCtx = null;
+function exAllEntries(fn){ state.patients.forEach(function(p){ Object.keys(p.program.entries || {}).forEach(function(k){ (p.program.entries[k] || []).forEach(function(e){ fn(p, e); }); }); }); }
+function exCurrentGroup(kind, name){
+  var it = catalogFind(kind, name); if(it && it.group) return it.group;
+  var g = ""; exAllEntries(function(p, e){ if(!g && e.kind === kind && normTxt(e.name || "") === normTxt(name)) g = e.group || ""; });
+  return g;
+}
+function exEditRefresh(){
+  document.getElementById("exEditSheet").hidden = true;
+  if(!document.getElementById("exPickOverlay").hidden) epRender();
+  renderGroupChips("exercise"); renderGroupChips("isometric"); renderNameChips(dayKind); renderDayEntriesList();
+}
+function openExEdit(kind, name){
+  exEditCtx = { kind: kind, name: name };
+  document.getElementById("exEditTitle").textContent = name;
+  renderExEdit(false);
+  document.getElementById("exEditSheet").hidden = false;
+}
+function renderExEdit(groupMode){
+  var c = exEditCtx, body = document.getElementById("exEditBody"), hasGroups = !!GROUP_UI[c.kind];
+  if(groupMode){
+    var cur = exCurrentGroup(c.kind, c.name);
+    body.innerHTML = '<div class="as-sub">Dans quel groupe musculaire ranger « ' + escHtml(c.name) + ' » ?</div><div class="chip-row">' + TRAIN_GROUPS.map(function(g){ return '<button type="button" class="chip-btn' + (g === cur ? ' on' : '') + '" data-exsetgroup="' + escHtml(g) + '">' + escHtml(g) + '</button>'; }).join("") + '<button type="button" class="chip-btn' + (!cur ? ' on' : '') + '" data-exsetgroup="">Non classé</button></div>';
+    return;
+  }
+  body.innerHTML = (hasGroups ? '<button type="button" class="as-item" data-exact="group">Changer de groupe' + (exCurrentGroup(c.kind, c.name) ? ' (' + escHtml(exCurrentGroup(c.kind, c.name)) + ')' : '') + '</button>' : '') +
+    '<button type="button" class="as-item" data-exact="rename">Renommer…</button>' +
+    '<button type="button" class="as-item danger" data-exact="delete">Supprimer de la liste</button>';
+}
+document.getElementById("exEditClose").addEventListener("click", function(){ document.getElementById("exEditSheet").hidden = true; });
+document.getElementById("exEditSheet").addEventListener("click", function(e){
+  if(e.target === this){ this.hidden = true; return; }
+  var c = exEditCtx; if(!c) return;
+  var sg = e.target.closest("[data-exsetgroup]");
+  if(sg){
+    var g = sg.dataset.exsetgroup, n = normTxt(c.name);
+    var it = catalogFind(c.kind, c.name) || catalogAdd(c.kind, c.name, g);
+    if(it) it.group = g;
+    exAllEntries(function(p, en){ if(en.kind === c.kind && normTxt(en.name || "") === n){ if(g) en.group = g; else delete en.group; } });
+    state.patients.forEach(function(p){ var m = p.program.exerciseGroups; if(m) Object.keys(m).forEach(function(k2){ if(normTxt(k2) === n){ if(g) m[k2] = g; else delete m[k2]; } }); });
+    saveData(); exEditRefresh(); return;
+  }
+  var b = e.target.closest("[data-exact]");
+  if(!b) return;
+  if(b.dataset.exact === "group"){ renderExEdit(true); return; }
+  if(b.dataset.exact === "rename"){
+    var nn = prompt("Nouveau nom de « " + c.name + " » :", c.name);
+    if(nn === null) return;
+    nn = nn.trim().replace(/\s+/g, " ").slice(0, 80);
+    if(!nn || nn === c.name) return;
+    var oldN = normTxt(c.name), newN = normTxt(nn);
+    if(newN !== oldN && (catalogFind(c.kind, nn) || (function(){ var f = false; exAllEntries(function(p, en){ if(en.kind === c.kind && normTxt(en.name || "") === newN) f = true; }); return f; })())){ alert("Un exercice porte déjà ce nom."); return; }
+    if(!confirm("Renommer « " + c.name + " » en « " + nn + " » partout (liste et séances déjà enregistrées) ?")) return;
+    var grp = exCurrentGroup(c.kind, c.name), old = catalogFind(c.kind, c.name);
+    if(old){ addTombstone("exerciseCatalog", old.id); state.exerciseCatalog = exCatalog().filter(function(x){ return x.id !== old.id; }); }
+    catalogAdd(c.kind, nn, grp);
+    exAllEntries(function(p, en){ if(en.kind === c.kind && normTxt(en.name || "") === oldN) en.name = nn; });
+    state.patients.forEach(function(p){
+      if(Array.isArray(p.program.exerciseLibrary)) p.program.exerciseLibrary = p.program.exerciseLibrary.map(function(x){ return normTxt(x) === oldN ? nn : x; });
+      var m = p.program.exerciseGroups; if(m) Object.keys(m).forEach(function(k2){ if(normTxt(k2) === oldN){ m[nn] = m[k2]; delete m[k2]; } });
+    });
+    exUnhide(c.kind, nn);
+    var inp = document.getElementById(NAME_MAP[c.kind].input); if(normTxt(inp.value) === oldN) inp.value = nn;
+    saveData(); exEditRefresh(); return;
+  }
+  if(b.dataset.exact === "delete"){
+    if(!confirm("Retirer « " + c.name + " » de la liste ? Les séances déjà enregistrées gardent leur exercice.")) return;
+    var cat = catalogFind(c.kind, c.name);
+    if(cat){ addTombstone("exerciseCatalog", cat.id); state.exerciseCatalog = exCatalog().filter(function(x){ return x.id !== cat.id; }); }
+    exHide(c.kind, c.name);
+    state.patients.forEach(function(p){ if(Array.isArray(p.program.exerciseLibrary)) p.program.exerciseLibrary = p.program.exerciseLibrary.filter(function(x){ return normTxt(x) !== normTxt(c.name); }); });
+    saveData(); exEditRefresh();
+  }
 });
 function sessionChipClick(e){
   var chip = e.target.closest(".session-chip");
@@ -5705,8 +6260,10 @@ function updateStretchPreview(){
 
 function saveDayEntry(keepOpen){
   var patient = getSelectedPatient();
-  if(!daySession){ alert("Choisis un type de séance (pastille de couleur)."); return; }
-  var entry = { id: editingEntryId || uid(), kind: dayKind, session: daySession };
+  var runUi = funcIsRun();
+  if(!daySession && dayKind !== 'neuro' && !(dayKind === 'functional' && !runUi)){ alert("Choisis un type de séance (pastille de couleur)."); return; }
+  var entry = { id: editingEntryId || uid(), kind: dayKind === 'functional' ? (runUi ? 'run' : 'functional') : dayKind };
+  if(daySession && dayKind !== 'neuro') entry.session = daySession;
   var libName = null;
 
   if(dayKind === 'exercise'){
@@ -5745,7 +6302,32 @@ function saveDayEntry(keepOpen){
     entry.rpe = isoRpeVal === "" ? undefined : parseFloat(isoRpeVal);
     var isoPctVal = document.getElementById("isoPct").value;
     entry.pctFmax = (isoPctVal === "" || isoType === 'overcoming') ? undefined : parseFloat(isoPctVal);
-  } else { // run
+  } else if(dayKind === 'neuro'){
+    var nname = document.getElementById("neuroName").value.trim();
+    if(!nname){ alert("Nom de l'exercice manquant."); return; }
+    if(!neuroTech){ alert("Choisis Tension ou Glissement."); return; }
+    entry.name = nname; libName = nname;
+    entry.technique = neuroTech;
+    entry.series = parseFloat(document.getElementById("neuroSeries").value) || 0;
+    entry.reps = parseFloat(document.getElementById("neuroReps").value) || 0;
+    var hold = parseFloat(document.getElementById("neuroHold").value);
+    if(neuroTech === 'tension' && hold > 0) entry.dureeSec = hold;
+    if(neuroSide) entry.side = neuroSide;
+  } else if(dayKind === 'functional' && !runUi){
+    funcCaptureVals();
+    var dm = parseFloat(document.getElementById("funcDuration").value) || 0, dk = parseFloat(document.getElementById("funcDistance").value) || 0;
+    var ms2 = funcSel.filter(function(m){ return funcVals[m.id] !== undefined && funcVals[m.id] !== ""; }).map(function(m){ return { label: m.label, unit: m.unit || "", value: parseFloat(funcVals[m.id]) || 0 }; });
+    if(!dm && !dk && !ms2.length){ alert("Renseigne au moins une valeur : la durée, la distance ou une mesure."); return; }
+    entry.activity = funcActivity;
+    if(dm) entry.durationMin = dm;
+    if(dk) entry.distanceKm = dk;
+    if(ms2.length) entry.measures = ms2;
+    if(funcSide) entry.side = funcSide;
+    if(editingEntryId){
+      var oldF = (patient.program.entries[dayModalDate] || []).find(function(x){ return x.id === editingEntryId; });
+      if(oldF && oldF.rpe !== undefined) entry.rpe = oldF.rpe;
+    }
+  } else { // course (activité « Course à pied »)
     entry.distanceKm = parseFloat(document.getElementById("runDistance").value) || 0;
     entry.durationMin = parseFloat(document.getElementById("runDuration").value) || 0;
     var runRpeVal = document.getElementById("runRpe").value;
@@ -5757,6 +6339,7 @@ function saveDayEntry(keepOpen){
     if(patient.program.exerciseLibrary.indexOf(libName) === -1) patient.program.exerciseLibrary.push(libName);
     catalogMigrate();
     catalogAdd(entry.kind, libName, entry.group || "");
+    exUnhide(entry.kind, libName);
   }
   if(libName && entry.group){
     if(!patient.program.exerciseGroups) patient.program.exerciseGroups = {};
@@ -5774,7 +6357,7 @@ function saveDayEntry(keepOpen){
   resetEntryForm();
   clearEntryFields();
   renderDayEntriesList();
-  if(keepOpen){ renderGroupChips('exercise'); renderGroupChips('isometric'); renderNameChips(dayKind); refreshSessionLabel(); }
+  if(keepOpen){ renderGroupChips('exercise'); renderGroupChips('isometric'); renderNameChips(dayKind); if(dayKind === 'functional'){ funcVals = {}; funcSide = ""; renderFuncUi(); } if(dayKind === 'neuro'){ neuroTech = ""; neuroSide = ""; renderNeuroUi(); } refreshSessionLabel(); }
   else { document.getElementById("exSheet").hidden = true; }
 }
 document.getElementById("addDayEntryBtn").addEventListener("click", function(){ saveDayEntry(false); });
@@ -5813,11 +6396,16 @@ function refreshSessionLabel(){
   if(!el) return;
   el.innerHTML = daySession
     ? '<span class="dot" style="background:' + (SESSION_COLORS[daySession] || '#999') + ';"></span>' + SESSION_LABELS[daySession]
-    : 'À choisir';
+    : ((dayKind === 'functional' && !funcIsRun()) ? 'Facultatif' : 'À choisir');
 }
 
 /* ----- noms récents (boutons) + reprise de la dernière fois ----- */
-var NAME_MAP = { exercise:{input:'exName', chips:'exNameChips'}, stretching:{input:'stretchName', chips:'stretchNameChips'}, isometric:{input:'isoName', chips:'isoNameChips'} };
+var NAME_MAP = { exercise:{input:'exName', chips:'exNameChips'}, stretching:{input:'stretchName', chips:'stretchNameChips'}, isometric:{input:'isoName', chips:'isoNameChips'}, neuro:{input:'neuroName', chips:'neuroNameChips'} };
+function exHiddenList(){ if(!Array.isArray(state.exHidden)) state.exHidden = []; return state.exHidden; }
+function exHideId(kind, name){ return kind + "|" + normTxt(name); }
+function exIsHidden(kind, name){ var id = exHideId(kind, name); return exHiddenList().some(function(x){ return x.id === id; }); }
+function exHide(kind, name){ if(!exIsHidden(kind, name)) exHiddenList().push({ id: exHideId(kind, name) }); }
+function exUnhide(kind, name){ var id = exHideId(kind, name); state.exHidden = exHiddenList().filter(function(x){ return x.id !== id; }); }
 function recentNames(patient, kind){
   var last = {};
   Object.keys(patient.program.entries).forEach(function(k){
@@ -5825,9 +6413,9 @@ function recentNames(patient, kind){
       if(e.kind === kind && e.name && (!last[e.name] || k > last[e.name])) last[e.name] = k;
     });
   });
-  var own = Object.keys(last).sort(function(a,b){ return last[b].localeCompare(last[a]) || a.localeCompare(b); }).slice(0, 8), seen = {};
+  var own = Object.keys(last).filter(function(n){ return !exIsHidden(kind, n); }).sort(function(a,b){ return last[b].localeCompare(last[a]) || a.localeCompare(b); }).slice(0, 8), seen = {};
   own.forEach(function(n){ seen[normTxt(n)] = 1; });
-  exCatalog().filter(function(x){ return x.kind === kind && !seen[normTxt(x.name)]; }).map(function(x){ return x.name; }).sort(function(a, b){ return a.localeCompare(b); }).forEach(function(n){ if(own.length < 14){ own.push(n); seen[normTxt(n)] = 1; } });
+  exCatalog().filter(function(x){ return x.kind === kind && !seen[normTxt(x.name)] && !exIsHidden(kind, x.name); }).map(function(x){ return x.name; }).sort(function(a, b){ return a.localeCompare(b); }).forEach(function(n){ if(own.length < 14){ own.push(n); seen[normTxt(n)] = 1; } });
   return own;
 }
 var GROUP_UI = { exercise:{ select:"exGroup", chips:"exGroupChips" }, isometric:{ select:"isoGroup", chips:"isoGroupChips" } };
@@ -5839,9 +6427,9 @@ function namesForGroup(patient, kind, g){
       if(e.kind === kind && e.name && entryGroup(patient, e) === g && (!last[e.name] || k > last[e.name])) last[e.name] = k;
     });
   });
-  var own = Object.keys(last).sort(function(a, b){ return last[b].localeCompare(last[a]) || a.localeCompare(b); }), seen = {};
+  var own = Object.keys(last).filter(function(n){ return !exIsHidden(kind, n); }).sort(function(a, b){ return last[b].localeCompare(last[a]) || a.localeCompare(b); }), seen = {};
   own.forEach(function(n){ seen[normTxt(n)] = 1; });
-  exCatalog().filter(function(x){ return x.kind === kind && x.group === g && !seen[normTxt(x.name)]; }).map(function(x){ return x.name; }).sort(function(a, b){ return a.localeCompare(b); }).forEach(function(n){ own.push(n); });
+  exCatalog().filter(function(x){ return x.kind === kind && x.group === g && !seen[normTxt(x.name)] && !exIsHidden(kind, x.name); }).map(function(x){ return x.name; }).sort(function(a, b){ return a.localeCompare(b); }).forEach(function(n){ own.push(n); });
   return own;
 }
 function renderGroupChips(kind){
@@ -5851,12 +6439,12 @@ function renderGroupChips(kind){
   var counts = {}, seen = {};
   Object.keys(patient.program.entries).forEach(function(k){
     (patient.program.entries[k] || []).forEach(function(e){
-      if(e.kind !== kind || !e.name) return;
+      if(e.kind !== kind || !e.name || exIsHidden(kind, e.name)) return;
       var g = entryGroup(patient, e), key = g + "|" + e.name;
       if(g && !seen[key]){ seen[key] = true; counts[g] = (counts[g] || 0) + 1; }
     });
   });
-  exCatalog().forEach(function(x){ var key = x.group + "|" + x.name; if(x.kind === kind && x.group && !seen[key] && !Object.keys(seen).some(function(k2){ return k2.split("|")[0] === x.group && normTxt(k2.slice(k2.indexOf("|") + 1)) === normTxt(x.name); })){ seen[key] = true; counts[x.group] = (counts[x.group] || 0) + 1; } });
+  exCatalog().forEach(function(x){ var key = x.group + "|" + x.name; if(x.kind === kind && x.group && !exIsHidden(kind, x.name) && !seen[key] && !Object.keys(seen).some(function(k2){ return k2.split("|")[0] === x.group && normTxt(k2.slice(k2.indexOf("|") + 1)) === normTxt(x.name); })){ seen[key] = true; counts[x.group] = (counts[x.group] || 0) + 1; } });
   document.getElementById(ui.chips).innerHTML = TRAIN_GROUPS.map(function(g){
     return '<button type="button" class="chip-btn' + (g === cur ? ' on' : '') + '" data-pickgroup="' + kind + '" data-group="' + escHtml(g) + '" aria-pressed="' + (g === cur) + '">' + escHtml(g) + (counts[g] ? '<span class="cnt">' + counts[g] + '</span>' : '') + '</button>';
   }).join("");
@@ -5870,8 +6458,9 @@ function renderNameChips(kind){
   var html = "";
   if(ui) html += '<div class="chip-label">' + (g ? 'Tes exercices · ' + escHtml(g) : 'Récents (touche un groupe ci-dessus pour filtrer)') + '</div>';
   if(g && !names.length) html += '<div class="tc-sub" style="flex-basis:100%;">Aucun exercice enregistré pour ce groupe : tape un nouveau nom.</div>';
+  if(names.length) html += '<div class="chip-tools"><button type="button" class="chip-edit' + (nameEditMode ? ' on' : '') + '" data-nameedit="1">' + (nameEditMode ? 'Terminé' : '✎ Modifier') + '</button></div>';
   html += names.map(function(n){
-    return '<button type="button" class="chip-btn' + (n === cur ? ' on' : '') + '" data-pickname="' + kind + '" data-name="' + escHtml(n) + '">' + escHtml(n) + '</button>';
+    return '<button type="button" class="chip-btn' + (n === cur ? ' on' : '') + (nameEditMode ? ' editing' : '') + '" data-pickname="' + kind + '" data-name="' + escHtml(n) + '">' + escHtml(n) + '</button>';
   }).join("");
   document.getElementById(m.chips).innerHTML = html;
 }
@@ -5903,9 +6492,12 @@ function maybePrefill(kind){
   document.getElementById(NAME_MAP[kind].input).addEventListener("input", function(){ maybePrefill(kind); renderNameChips(kind); });
 });
 document.addEventListener("click", function(e){
+  var ne = e.target.closest("[data-nameedit]");
+  if(ne){ nameEditMode = !nameEditMode; renderNameChips(dayKind); if(dayKind === "functional") renderFuncUi(); return; }
   var pick = e.target.closest("[data-pickname]");
   if(pick){
     var kind = pick.dataset.pickname;
+    if(nameEditMode){ openExEdit(kind, pick.dataset.name); return; }
     var inp = document.getElementById(NAME_MAP[kind].input);
     inp.value = pick.dataset.name;
     inp.dispatchEvent(new Event("input", { bubbles:true }));
@@ -5949,7 +6541,10 @@ document.addEventListener("click", function(e){
 
 /* ----- tiroir exercice ----- */
 function clearEntryFields(){
-  ["exName","exSets","exReps","exLoad","exRpe","runDistance","runDuration","runRpe","stretchName","stretchSeries","stretchDuree","stretchRpe","isoName","isoSeries","isoReps","isoDuree","isoRpe","exGroup","isoGroup","isoPct"].forEach(function(id){ document.getElementById(id).value = ""; });
+  funcVals = {}; funcSide = "";
+  var fr0 = document.getElementById("funcMeasRows"); if(fr0) fr0.innerHTML = "";
+  setTimeout(pickUpdateLabels, 0);
+  ["exName","exSets","exReps","exLoad","exRpe","runDistance","runDuration","runRpe","stretchName","stretchSeries","stretchDuree","stretchRpe","isoName","isoSeries","isoReps","isoDuree","isoRpe","exGroup","isoGroup","isoPct","neuroName","neuroSeries","neuroReps","neuroHold","funcDuration","funcDistance"].forEach(function(id){ document.getElementById(id).value = ""; });
   ["exTonnagePreview","runLoadPreview","stretchTotalPreview","isoTotalPreview","exLastTimeReminder","stretchLastTimeReminder","isoLastTimeReminder","exRecoCard","isoTargetCard"].forEach(function(id){ document.getElementById(id).innerHTML = ""; });
   isoType = null;
   document.querySelectorAll("#isoTypeGrid .quality-chip").forEach(function(c){ c.classList.remove("selected","single"); });
@@ -7277,6 +7872,17 @@ function normalizeState(o){
   if(!Array.isArray(o.functionalMovements)) o.functionalMovements = [];
   if(!Array.isArray(o.presetsPerso)) o.presetsPerso = [];
   if(!Array.isArray(o.anamTemplates)) o.anamTemplates = [];
+  if(!Array.isArray(o.trash)) o.trash = [];
+  (function(){
+    var lim = new Date(Date.now() - 60 * 86400000).toISOString();
+    o.trash = o.trash.filter(function(t){ return t && typeof t === "object" && typeof t.id === "string" && t.patient && typeof t.patient === "object" && typeof t.at === "string" && t.at >= lim; }).slice(0, 10);
+  })();
+  if(!Array.isArray(o.funcActivities)) o.funcActivities = [];
+  o.funcActivities = o.funcActivities.filter(function(x){ return x && typeof x === "object" && typeof x.id === "string" && typeof x.name === "string" && x.name; });
+  if(!Array.isArray(o.funcMeasures)) o.funcMeasures = [];
+  o.funcMeasures = o.funcMeasures.filter(function(x){ return x && typeof x === "object" && typeof x.id === "string" && typeof x.label === "string" && x.label; });
+  if(!Array.isArray(o.exHidden)) o.exHidden = [];
+  o.exHidden = o.exHidden.filter(function(x){ return x && typeof x === "object" && typeof x.id === "string" && x.id; });
   if(!Array.isArray(o.palpLib)) o.palpLib = [];
   o.palpLib = o.palpLib.filter(function(x){ return x && typeof x === "object" && typeof x.id === "string" && typeof x.zone === "string" && typeof x.name === "string" && x.name; });
   if(!Array.isArray(o.agenda)) o.agenda = [];
@@ -8574,14 +9180,18 @@ document.getElementById("tplOverlay").addEventListener("click", function(e){
    ============================================================ */
 var SPEC_TAGS = ["Mesure à refaire", "Douleur pendant le test", "Compensation observée", "Protocole modifié"];
 var SPEC_ZONES = ["Épaule", "Coude", "Poignet / main", "Hanche", "Genou", "Cheville", "Pied"];
-var SPEC_CATS_ORDER = ["Mobilité", "Stabilité ligamentaire", "Équilibre / fonctionnel", "Proprioception", "Aide à la décision", "Palpatoire"];
+var SPEC_CATS_ORDER = ["Mobilité", "Force", "Puissance", "Stabilité ligamentaire", "Équilibre / fonctionnel", "Proprioception", "Questionnaires", "Aide à la décision", "Palpatoire"];
 var TONE_DEFAULT = { yesno: ["", "warn"] };
 var SPEC_TESTS = {
   "Cheville": [
-    { id:"cheville_ptgt", cat:"Mobilité", name:"Posterior talar glide test", hint:"Glissement postérieur du talus (mobilité tibio-talaire) : note l'amplitude en degrés.",
-      fields:[ { key:"deg", label:"Amplitude", type:"number", unit:"°", step:0.5, primary:true }, { key:"res", label:"Mobilité", type:"choice", options:["Normale", "Diminuée", "Augmentée"], tones:["ok", "warn", "warn"] } ] },
     { id:"cheville_wblt", cat:"Mobilité", name:"WBLT (Weight-Bearing Lunge Test)", hint:"Fente en appui : distance au mur.",
       fields:[ { key:"cm", label:"Distance au mur", type:"number", unit:"cm", step:0.5, primary:true } ] },
+    { id:"cheville_footlift", cat:"Équilibre / fonctionnel", name:"Foot lift test (FLT)", hint:"Appui unipodal, yeux fermés, bras croisés ou sur les hanches, 30 s. Note les erreurs et d'où elles viennent (cheville, pied ou hanche). Vidéo conseillée.",
+      fields:[ { key:"err", label:"Nombre d'erreurs", type:"number", unit:"erreurs", step:1, primary:true }, { key:"cluster", label:"Cluster (origine des erreurs)", type:"choice", options:["Cheville", "Pied", "Hanche"] } ] },
+    { id:"cheville_iso", cat:"Force", name:"Dynamométrie isométrique (inverseurs, éverseurs, releveurs)", hint:"Force maximale isométrique de chaque groupe, cheville en position neutre, 3 essais. Choisis l'unité (N ou kg) à chaque saisie.",
+      fields:[ { key:"u", label:"Unité de force", type:"choice", options:["N", "kg"] }, { key:"inv", label:"Inverseurs", type:"number", step:0.1, primary:true }, { key:"ev", label:"Éverseurs", type:"number", step:0.1 }, { key:"rel", label:"Releveurs", type:"number", step:0.1 } ] },
+    { id:"cheville_calf", cat:"Force", name:"Calf raise", hint:"Montées sur pointe de pied en appui unipodal, rythme imposé (métronome 60 BPM), amplitude complète, sans compensation, jusqu'à l'échec.",
+      fields:[ { key:"reps", label:"Nombre de répétitions", type:"number", unit:"rép.", step:1, primary:true }, { key:"h", label:"Hauteur de montée", type:"number", unit:"cm", step:0.5 } ] },
     { id:"cheville_ybt", cat:"Équilibre / fonctionnel", name:"YBT (Y Balance Test)", hint:"Longueur du membre : de l'épine iliaque antéro-supérieure à la malléole médiale. Portée en % = portée ÷ longueur × 100. Seuils : antérieure ≥ 60 %, postéro-médiale ≥ 100 %, postéro-latérale ≥ 100 %. Score composite = somme des 3 portées ÷ (3 × longueur) × 100.",
       fields:[ { key:"len", label:"Longueur du membre", type:"number", unit:"cm", step:0.5, carry:true }, { key:"ant", label:"Antérieure", type:"number", unit:"cm", step:0.5 },
         { key:"pm", label:"Postéro-médiale", type:"number", unit:"cm", step:0.5 }, { key:"pl", label:"Postéro-latérale", type:"number", unit:"cm", step:0.5 },
@@ -8589,18 +9199,77 @@ var SPEC_TESTS = {
         { key:"pm_pct", label:"Postéro-médiale (%)", type:"computed", unit:"%", formula:"ybt_dir", dir:"pm", cut:100, secondary:true },
         { key:"pl_pct", label:"Postéro-latérale (%)", type:"computed", unit:"%", formula:"ybt_dir", dir:"pl", cut:100, secondary:true },
         { key:"comp", label:"Score composite", type:"computed", unit:"%", formula:"ybt", primary:true } ] },
-    { id:"cheville_sidehop", cat:"Équilibre / fonctionnel", name:"Side hop test", hint:"Sauts latéraux : précise le protocole utilisé dans la note.",
-      fields:[ { key:"n", label:"Nombre de sauts", type:"number", unit:"sauts", step:1, primary:true }, { key:"t", label:"Temps (facultatif)", type:"number", unit:"s", step:0.1 } ] },
-    { id:"cheville_footlift", cat:"Équilibre / fonctionnel", name:"Foot lift test", hint:"Note, pour chaque côté, le nombre d'erreurs et le cluster.",
-      fields:[ { key:"err", label:"Nombre d'erreurs", type:"number", unit:"erreurs", step:1, primary:true }, { key:"cluster", label:"Cluster", type:"number", step:1 } ] },
-    { id:"cheville_jps", cat:"Proprioception", name:"Test de repositionnement articulaire", hint:"Écart, en degrés, entre la position cible et la position reproduite.",
-      fields:[ { key:"dev", label:"Écart de repositionnement", type:"number", unit:"°", step:0.5, primary:true } ] },
+    { id:"cheville_sidehop", cat:"Équilibre / fonctionnel", name:"Side hop test", hint:"Rivière de 30 cm : 10 sauts latéraux d'affilée le plus vite possible (une faute n'est pas comptée). Départ par un saut latéral externe. Vidéo conseillée.",
+      fields:[ { key:"t", label:"Temps des 10 sauts", type:"number", unit:"s", step:0.01, primary:true } ] },
+    { id:"cheville_tch", cat:"Équilibre / fonctionnel", name:"Triple crossover hop test", hint:"Trois sauts consécutifs sur un pied en zigzag de part et d'autre d'une ligne de 15 cm de large, le plus loin possible. Réception stabilisée. Saisis les 3 essais : la meilleure distance est calculée.",
+      fields:[ { key:"d1", label:"Essai 1", type:"number", unit:"cm", step:1 }, { key:"d2", label:"Essai 2", type:"number", unit:"cm", step:1 }, { key:"d3", label:"Essai 3", type:"number", unit:"cm", step:1 },
+        { key:"best", label:"Meilleure distance", type:"computed", unit:"cm", formula:"max3", primary:true } ] },
+    { id:"cheville_jps", cat:"Proprioception", name:"Test de repositionnement articulaire", hint:"Yeux fermés : la cheville est amenée à un angle cible puis ramenée au neutre ; le patient reproduit activement cet angle. Note l'angle cible et l'erreur absolue en degrés.",
+      fields:[ { key:"target", label:"Angle cible", type:"number", unit:"°", step:1, carry:true }, { key:"dors", label:"Erreur en flexion dorsale", type:"number", unit:"°", step:0.5 }, { key:"plant", label:"Erreur en flexion plantaire", type:"number", unit:"°", step:0.5, primary:true } ] },
+    { id:"cheville_stroop", cat:"Équilibre / fonctionnel", name:"Test de double tâche (Stroop)", hint:"Le foot lift test répété en réalisant en même temps un test de Stroop (dénomination de couleurs incongruentes). Vidéo si possible, sinon note la difficulté et les erreurs.",
+      fields:[ { key:"err", label:"Erreurs d'équilibre", type:"number", unit:"erreurs", step:1, primary:true }, { key:"stroop", label:"Score au Stroop", type:"number", step:1 } ] },
+    { id:"cheville_faam", cat:"Questionnaires", name:"FAAM", single:true, hint:"Foot and Ankle Ability Measure : sous-échelle activités de la vie quotidienne et sous-échelle sport (scores bruts).",
+      fields:[ { key:"adl", label:"Score vie quotidienne", type:"number", step:1, primary:true }, { key:"sport", label:"Score sport", type:"number", step:1 } ] },
+    { id:"cheville_fonction", cat:"Questionnaires", name:"Fonction perçue de la cheville", hint:"À combien de % trouves-tu la fonction de ta cheville aujourd'hui ?",
+      fields:[ { key:"score", label:"Fonction perçue", type:"number", unit:"/100", step:1, primary:true } ] },
+    { id:"cheville_cait", cat:"Questionnaires", name:"CAIT", hint:"Cumberland Ankle Instability Tool : 9 items sur l'instabilité chronique de cheville, score sur 30.",
+      fields:[ { key:"score", label:"Score CAIT", type:"number", unit:"/30", step:1, primary:true } ] },
+    { id:"cheville_ptgt", cat:"Mobilité", name:"Posterior talar glide test", hint:"Glissement postérieur du talus (mobilité tibio-talaire) : note l'amplitude en degrés.",
+      fields:[ { key:"deg", label:"Amplitude", type:"number", unit:"°", step:0.5, primary:true }, { key:"res", label:"Mobilité", type:"choice", options:["Normale", "Diminuée", "Augmentée"], tones:["ok", "warn", "warn"] } ] },
     { id:"cheville_tiroir_sup", cat:"Stabilité ligamentaire", name:"Tiroir antérieur - faisceau supérieur", hint:"Comparer au côté opposé.",
       fields:[ { key:"res", label:"Tiroir antérieur", type:"choice", options:["Négatif", "Douteux", "Positif"], tones:["ok", "warn", "ko"], primary:true }, { key:"end", label:"Fin de course", type:"choice", options:["Ferme", "Molle"], tones:["ok", "warn"] }, { key:"pain", label:"Douleur provoquée", type:"yesno" } ] },
     { id:"cheville_tiroir_inf", cat:"Stabilité ligamentaire", name:"Tiroir antérieur - faisceau inférieur", hint:"Comparer au côté opposé.",
       fields:[ { key:"res", label:"Tiroir antérieur", type:"choice", options:["Négatif", "Douteux", "Positif"], tones:["ok", "warn", "ko"], primary:true }, { key:"end", label:"Fin de course", type:"choice", options:["Ferme", "Molle"], tones:["ok", "warn"] }, { key:"pain", label:"Douleur provoquée", type:"yesno" } ] },
     { id:"cheville_ottawa", cat:"Aide à la décision", name:"Critères d'Ottawa", hint:"Coche les éléments présents à l'examen après un traumatisme de la cheville ou du pied.", rule:"ottawa" },
     { id:"cheville_bernese", cat:"Aide à la décision", name:"Critères de Bernese", hint:"Coche les manœuvres de contrainte indirecte qui provoquent la douleur (traumatisme de basse énergie en supination).", rule:"bernese" }
+  ],
+  "Hanche": [
+    { id:"hanche_copenhague", cat:"Force", name:"Copenhague (adducteurs)", hint:"Planche latérale, jambe du dessus posée sur un banc, jambe du dessous libre. Le bassin reste aligné jusqu'à l'échec.",
+      fields:[ { key:"t", label:"Temps tenu", type:"number", unit:"s", step:1, primary:true } ] },
+    { id:"hanche_starplank", cat:"Force", name:"Star plank", hint:"Planche en appui sur une main ou sur un avant-bras (fais les deux), les membres du côté opposé écartés en étoile. Position maintenue jusqu'à l'échec.",
+      fields:[ { key:"tm", label:"Appui sur la main", type:"number", unit:"s", step:1, primary:true }, { key:"ta", label:"Appui sur l'avant-bras", type:"number", unit:"s", step:1 } ] },
+    { id:"hanche_thomas", cat:"Mobilité", name:"Test de Thomas", hint:"Allongé en bord de table, une cuisse tenue contre le thorax. On observe la position de la cuisse libre (psoas, droit fémoral) et de la jambe (angle du genou).",
+      fields:[ { key:"hip", label:"Angle de hanche", type:"number", unit:"°", step:0.5, primary:true }, { key:"knee", label:"Angle de genou", type:"number", unit:"°", step:0.5 } ] }
+  ],
+  "Genou": [
+    { id:"genou_nordic", cat:"Force", name:"Nordic hamstring", hint:"À genoux, chevilles fixées, descente du tronc le plus lentement possible en contrôlant avec les ischios, répétitions jusqu'à l'échec musculaire (variante unilatérale possible).",
+      fields:[ { key:"reps", label:"Répétitions à l'échec", type:"number", unit:"rép.", step:1, primary:true } ] },
+    { id:"genou_bridge", cat:"Force", name:"Single leg bridge", hint:"Allongé, talon d'un pied posé (genou et hanche à 90°) sur un banc ou au sol, l'autre jambe en l'air. Montées de bassin à cadence imposée (60 BPM) jusqu'à l'échec.",
+      fields:[ { key:"reps", label:"Répétitions", type:"number", unit:"rép.", step:1, primary:true } ] },
+    { id:"genou_ake", cat:"Mobilité", name:"Extension active du genou (AKE)", hint:"Allongé, hanche fléchie à 90°, extension active du genou jusqu'à la limite de la mobilité, sans compensation. Photo conseillée.",
+      fields:[ { key:"def", label:"Déficit d'extension", type:"number", unit:"°", step:0.5, primary:true } ] },
+    { id:"genou_pslr", cat:"Mobilité", name:"Straight leg raise passif (PSLR)", hint:"Allongé, jambe tendue levée passivement par l'examinateur jusqu'à la tension ressentie, bassin stabilisé.",
+      fields:[ { key:"deg", label:"Flexion de hanche", type:"number", unit:"°", step:0.5, primary:true } ] },
+    { id:"genou_askling", cat:"Mobilité", name:"H-test d'Askling", hint:"Allongé sur le dos, flexion de hanche genou tendu : la jambe est levée vers le haut de façon rapide et contrôlée. On recherche douleur, appréhension ou limitation.",
+      fields:[ { key:"deg", label:"Amplitude", type:"number", unit:"°", step:0.5, primary:true }, { key:"pain", label:"Douleur", type:"number", unit:"/10", step:1 }, { key:"app", label:"Appréhension", type:"number", unit:"/10", step:1 } ] }
+  ],
+  "Épaule": [
+    { id:"epaule_cmp", cat:"Puissance", name:"CMP (push-up avec contre-mouvement)", single:true, hint:"Push-up avec contre-mouvement sur plateforme de force, le plus fort possible. Note tout ce que donne la plateforme.",
+      fields:[ { key:"force", label:"Force pic", type:"number", unit:"N", step:1, primary:true }, { key:"h", label:"Hauteur", type:"number", unit:"cm", step:0.1 }, { key:"vol", label:"Temps de vol", type:"number", unit:"ms", step:1 } ] },
+    { id:"epaule_ast", cat:"Force", name:"AST (Athletic Shoulder Test)", hint:"Force isométrique en position I, Y et T, allongé sur le ventre, au dynamomètre ou à la plateforme.",
+      fields:[ { key:"i", label:"Position I", type:"number", unit:"N", step:1, primary:true }, { key:"y", label:"Position Y", type:"number", unit:"N", step:1 }, { key:"t", label:"Position T", type:"number", unit:"N", step:1 } ] },
+    { id:"epaule_ckcuest", cat:"Équilibre / fonctionnel", name:"CKCUEST (Closed Kinetic Chain Upper Extremity Stability Test)", single:true, hint:"En position de pompe, mains écartées de 91,4 cm, pieds à largeur du bassin : toucher alternativement la main opposée pendant 15 s le plus vite possible. 4 essais avec 45 s de récupération.",
+      fields:[ { key:"n1", label:"Essai 1", type:"number", unit:"touches", step:1 }, { key:"n2", label:"Essai 2", type:"number", unit:"touches", step:1 }, { key:"n3", label:"Essai 3", type:"number", unit:"touches", step:1 }, { key:"n4", label:"Essai 4", type:"number", unit:"touches", step:1 },
+        { key:"moy", label:"Moyenne des essais", type:"computed", unit:"touches", formula:"mean", keys:["n1", "n2", "n3", "n4"], primary:true } ] },
+    { id:"epaule_smbt", cat:"Puissance", name:"SMBT (Seated Medicine Ball Throw)", single:true, hint:"Assis contre un mur, lancer à deux mains d'une médecine-ball de 2 kg le plus loin possible (comme une passe de basket). Saisis les essais : la meilleure distance est calculée.",
+      fields:[ { key:"d1", label:"Essai 1", type:"number", unit:"cm", step:1 }, { key:"d2", label:"Essai 2", type:"number", unit:"cm", step:1 }, { key:"d3", label:"Essai 3", type:"number", unit:"cm", step:1 },
+        { key:"best", label:"Meilleure distance", type:"computed", unit:"cm", formula:"max3", primary:true } ] },
+    { id:"epaule_sambt", cat:"Puissance", name:"SAMBT (Single Arm Medicine Ball Throw)", hint:"Assis, lancer d'une médecine-ball de 2 kg à une seule main, le plus loin possible.",
+      fields:[ { key:"d", label:"Distance", type:"number", unit:"cm", step:1, primary:true } ] },
+    { id:"epaule_ulrt", cat:"Équilibre / fonctionnel", name:"ULRT (Upper Limb Rotation Test)", hint:"En position de gainage, collé à un mur du côté testé : rotation du tronc avec touche du coude opposé au mur, retour en gainage, et ainsi de suite. Le plus de répétitions en 15 s, 3 fois avec 45 s de récupération. Note ensuite la difficulté du test sur 20.",
+      fields:[ { key:"r1", label:"Essai 1", type:"number", unit:"rép.", step:1 }, { key:"r2", label:"Essai 2", type:"number", unit:"rép.", step:1 }, { key:"r3", label:"Essai 3", type:"number", unit:"rép.", step:1 },
+        { key:"moy", label:"Moyenne des essais", type:"computed", unit:"rép.", formula:"mean", keys:["r1", "r2", "r3"], primary:true },
+        { key:"diff", label:"Difficulté perçue", type:"number", unit:"/20", step:1 } ] },
+    { id:"hanche_stabilite", cat:"Équilibre / fonctionnel", name:"Stabilité unipodale", hint:"Foot lift test avec observation du contrôle du bassin, du tronc et de la cheville. Note les fautes et écris les compensations observées dans la note.",
+      fields:[ { key:"fautes", label:"Nombre de fautes", type:"number", unit:"fautes", step:1, primary:true } ] },
+    { id:"genou_slsquat", cat:"Équilibre / fonctionnel", name:"Single leg squat", noteOnly:true, hint:"Squat en appui unipodal, mouvement filmé de face et de profil.", fields:[] },
+    { id:"hanche_rotations", cat:"Mobilité", name:"Rotation de hanche", hint:"Rotation médiale et rotation latérale de hanche, mesurées de façon passive ou active, à 90° de flexion de hanche et 90° de genou.",
+      fields:[ { key:"rm", label:"Rotation médiale (RM)", type:"number", unit:"°", step:0.5, primary:true }, { key:"rl", label:"Rotation latérale (RL)", type:"number", unit:"°", step:0.5 } ] },
+    { id:"hanche_planche", cat:"Force", name:"Gainage planche", single:true, hint:"Maintien de la position de planche jusqu'à l'échec, avec observation de l'alignement bassin-tronc. Vidéo conseillée ; écris les compensations observées dans la note.",
+      fields:[ { key:"t", label:"Temps tenu", type:"number", unit:"s", step:1, primary:true } ] },
+    { id:"epaule_elevation", cat:"Équilibre / fonctionnel", name:"Flexion et abduction de bras (filmées)", noteOnly:true, hint:"Élévation du bras en flexion puis en abduction, filmée de face et de dos, pour observer le rythme scapulo-huméral.", fields:[] },
+    { id:"epaule_rotations", cat:"Mobilité", name:"Rotations d'épaule", hint:"Rotation médiale et rotation latérale de l'épaule des deux côtés, à 90° d'abduction, en décubitus dorsal.",
+      fields:[ { key:"rm", label:"Rotation médiale (RM)", type:"number", unit:"°", step:0.5, primary:true }, { key:"rl", label:"Rotation latérale (RL)", type:"number", unit:"°", step:0.5 } ] }
   ],
   "Sauts": [
     { id:"saut_dj", name:"Drop Jump", hint:"Saisis les valeurs fournies par ton système de mesure.", single:true,
@@ -8631,8 +9300,26 @@ function palpStructures(zone){
   return out;
 }
 function specSides(def){ return def && def.single ? ["S"] : ["D", "G"]; }
+function specMigrateMeta(){
+  (state.patients || []).forEach(function(p){
+    (p.tests || []).forEach(function(t){
+      if(t.type !== "spec") return;
+      var zz = specZoneOfId(t.specId); if(zz && zz !== t.zone) t.zone = zz;
+      var def = specDef(t); if(!def) return;
+      var pf = specPrimaryField(def), numeric = !!(pf && !def.rule && !def.palp && !def.single && (pf.type === "number" || pf.type === "computed"));
+      t.tracksSides = numeric; t.unit = (numeric || def.single) ? (pf.unit || "") : "";
+    });
+  });
+}
+function specZoneOfId(id){
+  for(var z in SPEC_TESTS){ if(SPEC_TESTS[z].some(function(d){ return d.id === id; })) return z; }
+  return null;
+}
 function specDef(test){
-  return specList(test.zone).find(function(d){ return d.id === test.specId; }) || null;
+  var d = specList(test.zone).find(function(x){ return x.id === test.specId; });
+  if(d) return d;
+  var z = specZoneOfId(test.specId);
+  return z ? (SPEC_TESTS[z].find(function(x){ return x.id === test.specId; }) || null) : null;
 }
 function specPrimaryField(def){
   if(!def || !def.fields) return null;
@@ -8644,6 +9331,15 @@ function specComputed(f, d){
   if(f.formula === "ybt"){
     var a = toNum(d.ant), b = toNum(d.pm), c = toNum(d.pl);
     if(a !== null && b !== null && c !== null && L !== null && L > 0) return Math.round((a + b + c) / (3 * L) * 1000) / 10;
+  }
+  if((f.formula === "mean" || f.formula === "max") && f.keys){
+    var vs = f.keys.map(function(k){ return toNum(d[k]); }).filter(function(x){ return x !== null; });
+    if(!vs.length) return null;
+    return f.formula === "max" ? Math.max.apply(null, vs) : Math.round(vs.reduce(function(a, b){ return a + b; }, 0) / vs.length * 10) / 10;
+  }
+  if(f.formula === "max3"){
+    var xs = [toNum(d.d1), toNum(d.d2), toNum(d.d3)].filter(function(x){ return x !== null; });
+    return xs.length ? Math.max.apply(null, xs) : null;
   }
   if(f.formula === "ybt_dir"){
     var r = toNum(d[f.dir]);
@@ -8705,6 +9401,7 @@ function specSummaryLines(test, e){
     return out;
   }
   if(def.palp) return palpLines(e);
+  if(def.noteOnly) return e.note ? ["Observations : " + e.note] : [];
   var sides = specSides(def);
   def.fields.forEach(function(f){
     var vals = sides.map(function(sd){ return specFieldVal(e, sd, f); });
@@ -8719,7 +9416,7 @@ function specLast(test){
 }
 function specSecondaryHtml(test){
   var def = specDef(test), last = specLast(test);
-  if(!def || !last || def.rule || def.palp) return "";
+  if(!def || !last || def.rule || def.palp || def.noteOnly) return "";
   var pf = specPrimaryField(def), lines = [], sides = specSides(def);
   def.fields.forEach(function(f){
     if(f === pf || (f.type === "computed" && !f.secondary)) return;
@@ -8735,6 +9432,10 @@ function specCardBody(test){
   if(!def) return '<div class="tc-sub">Test inconnu.</div>';
   if(!last) return '<div class="tc-sub" style="margin-top:10px;">Aucune mesure : touche la carte pour en ajouter.</div>';
   var meta = fmtDate(last.date) + (last.side ? " · côté " + (last.side === "D" ? "droit" : "gauche") : "") + ((last.tags && last.tags.length) ? " · " + escHtml(last.tags.join(", ")) : "");
+  if(def.noteOnly){
+    var nt = (last.note || "").trim();
+    return '<div class="sp-sec" style="white-space:pre-wrap; margin-top:8px;">' + escHtml(nt.length > 220 ? nt.slice(0, 220) + "…" : nt) + '</div><div class="sp-sec">' + meta + '</div>';
+  }
   if(def.rule){
     var ev = specRuleEval(SPEC_RULES[def.rule], last.checks || {}), more = specSummaryLines(test, last).slice(1);
     return '<div class="sp-result ' + (ev.positive ? "tone-warn" : "") + '">' + escHtml(ev.text) + '</div>' + (more.length ? '<div class="sp-sec">' + more.map(escHtml).join("<br>") + '</div>' : '') + '<div class="sp-sec">' + meta + '</div>';
@@ -8811,6 +9512,11 @@ function openSpec(testId, entryId){
   document.getElementById("specHint").textContent = def ? (def.hint || "") : "";
   document.getElementById("specDate").value = entry ? entry.date : todayISO();
   document.getElementById("specNote").value = entry ? (entry.note || "") : "";
+  (function(){
+    var d0 = specDef(test), lab = document.querySelector('label[for="specNote"]'), ta = document.getElementById("specNote");
+    lab.textContent = d0 && d0.noteOnly ? "Observations" : "Note de qualité (facultatif)";
+    ta.placeholder = d0 && d0.noteOnly ? "Ce que tu observes : contrôle du mouvement, compensations, difficultés…" : "Qualité de la mesure, conditions, observations, protocole utilisé…";
+  })();
   document.getElementById("specSaveBtn").textContent = entry ? "Enregistrer les modifications" : "Enregistrer la mesure";
   renderSpecForm(test, def, entry);
   renderSpecTags();
@@ -8833,6 +9539,10 @@ function renderSpecForm(test, def, entry){
     h += '<div class="rule-box" id="specRuleBox"></div><div class="tc-sub" style="margin-bottom:10px;">' + escHtml(rule.note) + '</div>';
     el.innerHTML = h;
     updateSpecRuleBox();
+    return;
+  }
+  if(def.noteOnly){
+    el.innerHTML = '<div class="tc-sub" style="margin-bottom:8px;">Ce test se note librement : écris tes observations ci-dessous (la vidéo reste dans ton téléphone).</div>';
     return;
   }
   if(def.palp){
@@ -8891,7 +9601,7 @@ function specCollect(def){
 }
 function updateSpecComputed(){
   var test = getSelectedPatient().tests.find(function(t){ return t.id === specTestId; }), def = test && specDef(test);
-  if(!def || def.rule || def.palp) return;
+  if(!def || def.rule || def.palp || def.noteOnly) return;
   var data = specCollect(def);
   def.fields.forEach(function(f){
     if(f.type !== "computed") return;
@@ -8977,6 +9687,8 @@ document.getElementById("specSaveBtn").addEventListener("click", function(){
   if(def.rule){
     entry.checks = JSON.parse(JSON.stringify(specChecks)); entry.side = specSide;
     if(!Object.keys(entry.checks).some(function(k){ return entry.checks[k]; }) && !confirm("Aucune case cochée : enregistrer un résultat négatif ?")) return;
+  } else if(def.noteOnly){
+    if(!entry.note){ alert("Écris tes observations."); return; }
   } else if(def.palp){
     entry.palp = specPalpCollect();
     if(!Object.keys(entry.palp).length){ alert("Renseigne au moins une structure."); return; }
@@ -9135,6 +9847,7 @@ function agRange(){
   agDays().forEach(function(d){ agList().forEach(function(a){ if(a.date !== d) return; var s = hhmmToMin(a.start); lo = Math.min(lo, Math.floor(s / 60) * 60); hi = Math.max(hi, Math.ceil((s + a.dur) / 60) * 60); }); });
   return { lo: lo, hi: Math.min(hi, 24 * 60), step: cfg.step };
 }
+var AG_LAST_BADGE = '<span class="ag-last" title="Dernier rendez-vous de ce patient : pense à en reprendre un" aria-label="Dernier rendez-vous de ce patient"><svg viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><path d="M6 3v18M6 4.5h11l-2.5 4 2.5 4H6" fill="#fff" stroke="#fff" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></svg></span>';
 function agShortName(name){
   var parts = String(name).trim().split(/\s+/);
   if(parts.length < 2) return name;
@@ -9171,6 +9884,8 @@ function renderAgenda(){
   for(var m = Math.ceil(rg.lo / 60) * 60; m <= rg.hi; m += 60) times += '<span style="top:' + ((m - rg.lo) * AG_PX + (m === rg.lo ? 8 : 0)) + 'px;">' + pad2(m / 60) + ':00</span>';
   h += times + '</div>';
   var nowMin = (function(){ var d = new Date(); return d.getHours() * 60 + d.getMinutes(); })();
+  var lastOf = {};
+  agList().forEach(function(a){ if(a.status === "annule") return; var k = a.date + " " + a.start, c = lastOf[a.patientId]; if(!c || k > c.k) lastOf[a.patientId] = { k: k, id: a.id }; });
   days.forEach(function(d){
     var aps = agList().filter(function(a){ return a.date === d; });
     h += '<div class="ag-col' + (d === today ? ' today' : '') + '" data-date="' + d + '" style="height:' + H + 'px; background-size:100% ' + (60 * AG_PX) + 'px, 100% ' + (30 * AG_PX) + 'px;">';
@@ -9183,7 +9898,7 @@ function renderAgenda(){
       h += '<div class="ag-ap st-' + ap.status + (it.lanes > 1 ? ' multi' : '') + (ht < 56 ? ' short' : '') + '" title="' + escHtml(patientNameById(ap.patientId) + ' · ' + ap.start + ' · ' + ap.type + ((ap.zones && ap.zones.length) ? ' · ' + ap.zones.join(", ") : '') + ' · ' + ap.dur + ' min') + '" data-apid="' + escHtml(ap.id) + '" style="background:linear-gradient(' + hexToRgba(tcol, 0.14) + ',' + hexToRgba(tcol, 0.14) + '),#fff; border-left-color:' + tcol + '; --tc:' + tcol + '; top:' + top + 'px; height:' + ht + 'px; left:calc(' + (it.lane / it.lanes * 100) + '% + 2px); width:calc(' + (100 / it.lanes) + '% - 4px);">' +
         '<button type="button" class="ag-more" data-apmore="' + escHtml(ap.id) + '" aria-label="Autres actions">⋯</button>' +
         '<div class="l1">' + (ap.status === "present" ? '<span class="ag-st ok" title="Présent">✓</span>' : (ap.status === "absent" ? '<span class="ag-st ko" title="Absent">✕</span>' : "")) + '<span class="nm">' + escHtml(narrowNames ? agShortName(patientNameById(ap.patientId)) : patientNameById(ap.patientId)) + '</span><span class="tm">' + ap.start + '</span></div>' +
-        (ht >= 48 ? '<div class="sb">' + escHtml(ap.type) + ((ap.zones && ap.zones.length) ? ' · ' + escHtml(ap.zones.join(", ")) : '') + ' · ' + ap.dur + ' min' + (hasSession ? ' · séance saisie' : '') + '</div>' : '') + '</div>';
+        (ht >= 48 ? '<div class="sb">' + escHtml(ap.type) + ((ap.zones && ap.zones.length) ? ' · ' + escHtml(ap.zones.join(", ")) : '') + ' · ' + ap.dur + ' min' + (hasSession ? ' · séance saisie' : '') + '</div>' : '') + ((lastOf[ap.patientId] && lastOf[ap.patientId].id === ap.id && ap.date >= today) ? AG_LAST_BADGE : '') + '</div>';
     });
     h += '</div>';
     if(d === today && nowMin >= rg.lo && nowMin <= rg.hi) h += '<div class="ag-now" style="top:' + ((nowMin - rg.lo) * AG_PX) + 'px;"></div>';
@@ -9191,7 +9906,7 @@ function renderAgenda(){
   });
   grid.innerHTML = h;
   if(agAnimDir){ void grid.offsetWidth; grid.classList.add(agAnimDir > 0 ? "in-next" : "in-prev"); agAnimDir = 0; }
-  document.getElementById("agLegend").innerHTML = agTypes().map(function(t){ return '<span><i style="background:' + t.color + ';"></i>' + escHtml(t.name) + ' · ' + t.dur + ' min</span>'; }).join("") +
+  document.getElementById("agLegend").innerHTML = agTypes().map(function(t){ return '<span><i style="background:' + t.color + ';"></i>' + escHtml(t.name) + ' · ' + t.dur + ' min</span>'; }).join("") + '<span><i class="ag-last-key"></i>Dernier rendez-vous du patient</span>' +
     (plList().length ? '<span><i style="background:repeating-linear-gradient(135deg, rgba(11,18,32,0.35) 0 1.5px, #fff 1.5px 4px); border:1px solid #d5d9e0;"></i>Hors plage</span><span><i style="background:repeating-linear-gradient(135deg, rgba(11,18,32,0.6) 0 2px, #cfd4dc 2px 4px);"></i>Fermé</span>' : "");
   var sc = document.getElementById("agScroll");
   if(!renderAgenda.scrolled){ sc.scrollTop = Math.max(0, ((days.indexOf(today) !== -1 ? nowMin : 8 * 60) - rg.lo - 60) * AG_PX); renderAgenda.scrolled = true; }
@@ -9381,13 +10096,13 @@ function openApptSheet(id){
   document.getElementById("asBody").innerHTML =
     '<div class="as-sub">' + new Date(ap.date + "T00:00:00").toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" }) + ' · ' + ap.start + ' – ' + minToHhmm(hhmmToMin(ap.start) + ap.dur) + ' · ' + escHtml(ap.type) + ' · ' + ({ prevu: "Prévu", present: "Présent", absent: "Absent", annule: "Annulé" }[ap.status]) + (ap.note ? '<br>' + escHtml(ap.note) : '') + '</div>' +
     '<button type="button" class="as-item" data-asact="open">Ouvrir la séance du jour</button>' +
-    '<button type="button" class="as-item" data-asact="check">' + (ap.status === "present" ? "Retirer le pointage" : "Pointer : patient présent") + '</button>' +
+    '<button type="button" class="as-item" data-asact="dossier">Dossier patient</button>' +
+    (ap.status === "present" ? '<button type="button" class="as-item" data-asact="check">Retirer le pointage</button>' : '') +
     '<button type="button" class="as-item" data-asact="absent">' + (ap.status === "absent" ? "Remettre « prévu »" : "Marquer absent") + '</button>' +
-    '<button type="button" class="as-item" data-asact="cancel">' + (ap.status === "annule" ? "Remettre « prévu »" : "Annuler le rendez-vous") + '</button>' +
+    (ap.status === "annule" ? '<button type="button" class="as-item" data-asact="cancel">Remettre « prévu »</button>' : '') +
     '<button type="button" class="as-item" data-asact="edit">Modifier ou déplacer…</button>' +
     '<button type="button" class="as-item" data-asact="dup">Dupliquer à une autre date…</button>' +
-    '<button type="button" class="as-item danger" data-asact="del">Supprimer ce rendez-vous</button>' +
-    (series ? '<button type="button" class="as-item danger" data-asact="delseries">Supprimer aussi les ' + series + ' suivants de la série</button>' : '');
+    '<button type="button" class="as-item danger" data-asact="del">Supprimer le rendez-vous</button>';
   document.getElementById("apptSheet").hidden = false;
 }
 document.getElementById("asCloseBtn").addEventListener("click", function(){ document.getElementById("apptSheet").hidden = true; });
@@ -9402,13 +10117,21 @@ document.getElementById("apptSheet").addEventListener("click", function(e){
   else if(act === "check") agToggleCheck(ap);
   else if(act === "absent"){ ap.status = ap.status === "absent" ? "prevu" : "absent"; delete ap.checkedAt; saveData(); renderAgenda(); }
   else if(act === "cancel"){ ap.status = ap.status === "annule" ? "prevu" : "annule"; delete ap.checkedAt; saveData(); renderAgenda(); }
+  else if(act === "dossier"){
+    state.selectedPatientId = ap.patientId; appMode = "profils"; profilsSubview = "detail"; activeTab = "overview";
+    saveData(); renderAll();
+  }
   else if(act === "edit") openApptModal({ id: ap.id });
   else if(act === "dup") openApptModal({ patientId: ap.patientId, date: addDaysToDate(ap.date, 7), start: ap.start, dur: ap.dur, type: ap.type, note: ap.note, zones: ap.zones || [] });
-  else if(act === "del"){ if(confirm("Supprimer ce rendez-vous ?")){ addTombstone("agenda", ap.id); state.agenda = agList().filter(function(a){ return a.id !== ap.id; }); saveData(); renderAgenda(); } }
-  else if(act === "delseries"){
-    if(confirm("Supprimer ce rendez-vous et tous les suivants de la série ?")){
-      agList().forEach(function(a){ if(a.seriesId === ap.seriesId && a.date >= ap.date) addTombstone("agenda", a.id); });
-      state.agenda = agList().filter(function(a){ return !(a.seriesId === ap.seriesId && a.date >= ap.date); }); saveData(); renderAgenda();
+  else if(act === "del"){
+    if(confirm("Supprimer ce rendez-vous ?")){
+      var later = ap.seriesId ? agList().filter(function(a){ return a.seriesId === ap.seriesId && a.date > ap.date; }) : [];
+      var all = later.length > 0 && confirm("Ce rendez-vous fait partie d'une série.\n\nOK : supprimer aussi les " + later.length + " suivants.\nAnnuler : supprimer seulement celui-ci.");
+      var gone = {}; gone[ap.id] = 1;
+      if(all) later.forEach(function(a){ gone[a.id] = 1; });
+      Object.keys(gone).forEach(function(id){ addTombstone("agenda", id); });
+      state.agenda = agList().filter(function(a){ return !gone[a.id]; });
+      saveData(); renderAgenda();
     }
   }
 });
@@ -9426,6 +10149,7 @@ function openApptModal(o){
   var sel = document.getElementById("apPatient"), pid = ap ? ap.patientId : (o.patientId || state.selectedPatientId || "");
   sel.innerHTML = state.patients.slice().sort(function(a, b){ return a.name.localeCompare(b.name); }).map(function(p){ return '<option value="' + escHtml(p.id) + '"' + (p.id === pid ? " selected" : "") + '>' + escHtml(p.name) + '</option>'; }).join("") + '<option value="__new__"' + (!state.patients.length ? " selected" : "") + '>+ Nouveau patient…</option>';
   document.getElementById("apNewName").hidden = sel.value !== "__new__"; document.getElementById("apNewName").value = "";
+  apPatientUpdateLabel();
   renderApSlots([{ date: ap ? ap.date : (o.date || todayISO()), start: ap ? ap.start : (o.start || "09:00") }], !!ap);
   apType = ap ? ap.type : (o.type || agTypes()[0].name);
   apDur = ap ? ap.dur : (o.dur || agTypeByName(apType).dur); apDurManual = !!o.dur;
@@ -9488,7 +10212,7 @@ document.getElementById("apptOverlay").addEventListener("click", function(e){
 });
 document.getElementById("apAddSlotBtn").addEventListener("click", function(){
   var cur = readApSlots(), last = cur[cur.length - 1] || { date: todayISO(), start: "09:00" };
-  cur.push({ date: DATE_RE.test(last.date) ? addDaysToDate(last.date, 1) : todayISO(), start: last.start || "09:00" });
+  cur.push({ date: DATE_RE.test(last.date) ? agSkip(addDaysToDate(last.date, 1), 1) : agSkip(todayISO(), 1), start: last.start || "09:00" });
   renderApSlots(cur, false); updateApPreview();
   var rows = document.querySelectorAll("#apSlots .ap-slot"); rows[rows.length - 1].querySelector(".ap-date").focus();
 });
@@ -9501,8 +10225,73 @@ document.getElementById("apSlots").addEventListener("click", function(e){
 document.getElementById("apSlots").addEventListener("input", updateApPreview);
 document.getElementById("apSlots").addEventListener("change", updateApPreview);
 document.getElementById("apRepeatN").addEventListener("input", updateApPreview);
+/* ----- choix du patient en plein écran (rendez-vous) ----- */
+function apPatientUpdateLabel(){
+  var sel = document.getElementById("apPatient"), lbl = document.getElementById("apPatientLbl"), v = sel.value, p;
+  if(v === "__new__"){ var nm = document.getElementById("apNewName").value.trim(); lbl.textContent = nm ? "Nouveau patient : " + nm : "Nouveau patient"; lbl.classList.remove("empty"); }
+  else if((p = state.patients.find(function(x){ return x.id === v; }))){ lbl.textContent = p.name; lbl.classList.remove("empty"); }
+  else { lbl.textContent = "Choisir un patient"; lbl.classList.add("empty"); }
+}
+var ppLast = "";
+function ppRender(){
+  var q = normTxt(document.getElementById("ppSearch").value), cur = document.getElementById("apPatient").value, list = document.getElementById("ppList"), idx = document.getElementById("ppIndex");
+  var pts = state.patients.slice().filter(function(p){ return !q || normTxt(p.name).indexOf(q) !== -1; });
+  pts.sort(function(a, b){ return ((alLetter(a.name) === "#") - (alLetter(b.name) === "#")) || normTxt(a.name).localeCompare(normTxt(b.name), "fr"); });
+  if(!pts.length){ list.innerHTML = '<div class="pp-empty">' + (state.patients.length ? "Aucun patient ne correspond à « " + escHtml(document.getElementById("ppSearch").value.trim()) + " »." : "Aucun patient pour l'instant.") + '</div>'; idx.hidden = true; return; }
+  var h = "", curL = "", letters = {};
+  pts.forEach(function(p){
+    if(!q){ var L = alLetter(p.name); if(L !== curL){ curL = L; letters[L] = 1; h += '<div class="pp-h" id="pp-' + (L === "#" ? "num" : L) + '">' + L + '</div>'; } }
+    h += '<button type="button" class="pp-item' + (p.id === cur ? ' on' : '') + '" data-ppid="' + escHtml(p.id) + '"><span>' + escHtml(p.name) + '</span>' + (p.id === cur ? '<span class="pp-ck">✓</span>' : '') + '</button>';
+  });
+  list.innerHTML = h;
+  if(q || pts.length < 8){ idx.hidden = true; }
+  else { idx.hidden = false; idx.innerHTML = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#".split("").map(function(l){ return '<button type="button" class="al-l' + (letters[l] ? ' on' : '') + '" data-l="' + l + '"' + (letters[l] ? '' : ' disabled') + ' tabindex="-1" aria-label="Lettre ' + l + '">' + l + '</button>'; }).join(""); }
+}
+function ppOpen(){
+  document.getElementById("ppSearch").value = "";
+  ppRender();
+  document.getElementById("ppOverlay").hidden = false;
+  document.getElementById("ppScroll").scrollTop = 0;
+  var cur = document.querySelector("#ppList .pp-item.on"); if(cur) cur.scrollIntoView({ block: "center" });
+  if(window.innerWidth >= 600) setTimeout(function(){ document.getElementById("ppSearch").focus(); }, 60);
+}
+function ppChoose(id){
+  var sel = document.getElementById("apPatient");
+  sel.value = id; sel.dispatchEvent(new Event("change"));
+  document.getElementById("ppOverlay").hidden = true;
+}
+document.getElementById("apPatientBtn").addEventListener("click", ppOpen);
+document.getElementById("ppCloseBtn").addEventListener("click", function(){ document.getElementById("ppOverlay").hidden = true; });
+document.getElementById("ppSearch").addEventListener("input", ppRender);
+document.getElementById("ppList").addEventListener("click", function(e){ var b = e.target.closest("[data-ppid]"); if(b) ppChoose(b.dataset.ppid); });
+document.getElementById("ppNewBtn").addEventListener("click", function(){
+  var typed = document.getElementById("ppSearch").value.trim(), name = prompt("Nom du nouveau patient :", typed);
+  if(name === null) return;
+  name = name.trim().replace(/\s+/g, " ").slice(0, 80);
+  if(!name){ alert("Indique le nom du patient."); return; }
+  var dup = state.patients.find(function(p){ return normTxt(p.name) === normTxt(name); });
+  if(dup && confirm("« " + dup.name + " » existe déjà. Le choisir plutôt que d'en créer un second ?")){ ppChoose(dup.id); return; }
+  var sel = document.getElementById("apPatient");
+  sel.value = "__new__"; sel.dispatchEvent(new Event("change"));
+  document.getElementById("apNewName").value = name;
+  apPatientUpdateLabel();
+  document.getElementById("ppOverlay").hidden = true;
+});
+(function(){
+  var nav = document.getElementById("ppIndex");
+  function pick(y){
+    var best = null, bd = 1e9;
+    nav.querySelectorAll(".al-l.on").forEach(function(b){ var r = b.getBoundingClientRect(), d = Math.abs((r.top + r.bottom) / 2 - y); if(d < bd){ bd = d; best = b; } });
+    if(best && best.dataset.l !== ppLast){ ppLast = best.dataset.l; var h = document.getElementById("pp-" + (ppLast === "#" ? "num" : ppLast)); if(h) h.scrollIntoView({ block: "start" }); }
+  }
+  nav.addEventListener("pointerdown", function(e){ ppLast = ""; try{ nav.setPointerCapture(e.pointerId); }catch(x){} pick(e.clientY); e.preventDefault(); });
+  nav.addEventListener("pointermove", function(e){ if(e.buttons || e.pointerType === "touch") pick(e.clientY); });
+  nav.addEventListener("pointerup", function(){ ppLast = ""; });
+})();
+document.getElementById("apNewName").addEventListener("input", apPatientUpdateLabel);
 document.getElementById("apPatient").addEventListener("change", function(){
   document.getElementById("apNewName").hidden = this.value !== "__new__";
+  apPatientUpdateLabel();
   if(!apZonesManual){ apZones = this.value === "__new__" ? [] : zonesOfPatient(this.value); renderApZones(); }
 });
 document.getElementById("apRepeat").addEventListener("change", function(){ document.getElementById("apRepeatN").hidden = this.value !== "weekly"; updateApPreview(); });
@@ -9608,6 +10397,9 @@ function mergeStates(local, remote, opts){
   unionBy(local.functionalMovements = local.functionalMovements || [], remote.functionalMovements || [], keyOf);
   unionBy(local.presetsPerso = local.presetsPerso || [], remote.presetsPerso || [], keyOf);
   unionBy(local.palpLib = local.palpLib || [], remote.palpLib || [], keyOf);
+  unionBy(local.funcActivities = local.funcActivities || [], remote.funcActivities || [], keyOf);
+  unionBy(local.funcMeasures = local.funcMeasures || [], remote.funcMeasures || [], keyOf);
+  unionBy(local.exHidden = local.exHidden || [], remote.exHidden || [], keyOf);
   return rep;
 }
 function mergeSummaryHtml(rep){
@@ -9626,7 +10418,9 @@ var pendingImport = null;
 function openMergeChoice(imported){
   pendingImport = imported;
   var np = imported.patients.length, na = (imported.agenda || []).length;
-  document.getElementById("mergeBody").innerHTML = '<p>Cette sauvegarde contient <b>' + np + ' patient(s)</b> et <b>' + na + ' rendez-vous</b>.</p><p class="tc-sub"><b>Fusionner</b> (recommandé) : garde, pour chaque patient et chaque rendez-vous, la version la plus récente, et ajoute ce qui manque. <b>Remplacer</b> : efface tout ce qui est sur cet appareil. Dans les deux cas, tu pourras annuler.</p>';
+  var goneP = imported.patients.filter(function(p){ return !state.patients.some(function(x){ return x.id === p.id; }) && state.tombstones && state.tombstones.patients && state.tombstones.patients[p.id]; });
+  var goneHtml = goneP.length ? '<div class="merge-restore"><div class="tc-sub"><b>Patients supprimés retrouvés dans cette sauvegarde</b><br>Coche ceux que tu veux récupérer. Sinon ils restent supprimés.</div>' + goneP.map(function(p){ return '<label class="merge-row"><input type="checkbox" data-restoreid="' + escHtml(p.id) + '"> ' + escHtml(p.name) + '</label>'; }).join("") + '</div>' : '';
+  document.getElementById("mergeBody").innerHTML = goneHtml + '<p>Cette sauvegarde contient <b>' + np + ' patient(s)</b> et <b>' + na + ' rendez-vous</b>.</p><p class="tc-sub"><b>Fusionner</b> (recommandé) : garde, pour chaque patient et chaque rendez-vous, la version la plus récente, et ajoute ce qui manque. <b>Remplacer</b> : efface tout ce qui est sur cet appareil. Dans les deux cas, tu pourras annuler.</p>';
   document.getElementById("mergeActions").innerHTML = '<button class="btn-ghost btn-danger" id="mergeReplaceBtn">Remplacer tout</button><button class="btn-primary" id="mergeDoBtn">Fusionner</button>';
   document.getElementById("mergeOverlay").hidden = false;
 }
@@ -9635,6 +10429,14 @@ document.getElementById("mergeOverlay").addEventListener("click", function(e){
   if(e.target.closest("#mergeDoBtn") && pendingImport){
     snapshotBeforeMerge();
     try{
+      var nowIso = new Date().toISOString();
+      document.querySelectorAll("#mergeBody [data-restoreid]").forEach(function(cb){
+        if(!cb.checked) return;
+        var rid = cb.dataset.restoreid;
+        if(state.tombstones && state.tombstones.patients) delete state.tombstones.patients[rid];
+        (pendingImport.patients || []).forEach(function(p){ if(p.id === rid){ p.updatedAt = nowIso; delete p._sig; } });
+        (pendingImport.agenda || []).forEach(function(a){ if(a.patientId === rid){ a.updatedAt = nowIso; delete a._sig; if(state.tombstones && state.tombstones.agenda) delete state.tombstones.agenda[a.id]; } });
+      });
       var remote = normalizeState(pendingImport); pendingImport = null;
       resigAll(remote);
       var rep = mergeStates(state, remote);
@@ -10041,7 +10843,7 @@ function exCatId(kind, name){ return "x" + fnvHash(kind + "|" + normTxt(name)); 
 function catalogFind(kind, name){ var id = exCatId(kind, name); return exCatalog().find(function(x){ return x.id === id; }) || null; }
 function catalogAdd(kind, name, group){
   name = String(name || "").trim().slice(0, 80);
-  if(!name || ["exercise", "stretching", "isometric"].indexOf(kind) === -1) return null;
+  if(!name || ["exercise", "stretching", "isometric", "neuro"].indexOf(kind) === -1) return null;
   var it = catalogFind(kind, name);
   if(!it){ it = { id: exCatId(kind, name), kind: kind, name: name, group: group || "" }; exCatalog().push(it); }
   else if(group && it.group !== group) it.group = group;
@@ -10097,7 +10899,7 @@ document.getElementById("exMgrBody").addEventListener("click", function(e){
    SYNCHRONISATION AVEC LE SERVEUR (envoi + réception, le plus récent gagne)
    ============================================================ */
 var SYNC_KEY = "horusSync_v1", syncRunning = false, syncTimer = null, syncRenderPending = false;
-var SYNC_LISTS = ["patients", "agenda", "plages", "closures", "exerciseCatalog"], SYNC_META = ["anamTemplates", "functionalMovements", "presetsPerso", "palpLib"];
+var SYNC_LISTS = ["patients", "agenda", "plages", "closures", "exerciseCatalog"], SYNC_META = ["anamTemplates", "functionalMovements", "presetsPerso", "palpLib", "funcActivities", "funcMeasures", "exHidden"];
 function syncCfg(){
   try{ var c = JSON.parse(localStorage.getItem(SYNC_KEY) || "null"); if(c && typeof c === "object"){ c.pushed = c.pushed || {}; c.metaSig = c.metaSig || {}; return c; } }catch(e){}
   return { url: "", email: "", token: "", auto: true, lastRev: 0, pushed: {}, metaSig: {}, lastOkAt: "", lastError: "" };
@@ -10162,7 +10964,7 @@ function syncApplyPulled(c, docs){
     return lu === undefined || d.updatedAt > lu;
   });
   if(!news.length) return false;
-  var remote = { patients: [], agenda: [], plages: [], closures: [], exerciseCatalog: [], anamTemplates: [], functionalMovements: [], presetsPerso: [], palpLib: [], tombstones: { patients: {}, agenda: {}, plages: {}, closures: {}, exerciseCatalog: {} } };
+  var remote = { patients: [], agenda: [], plages: [], closures: [], exerciseCatalog: [], anamTemplates: [], functionalMovements: [], presetsPerso: [], palpLib: [], funcActivities: [], funcMeasures: [], exHidden: [], tombstones: { patients: {}, agenda: {}, plages: {}, closures: {}, exerciseCatalog: {} } };
   news.forEach(function(d){
     if(d.c === "meta"){ if(d.data && Array.isArray(d.data.items)) remote[d.id] = d.data.items; return; }
     if(d.deleted) remote.tombstones[d.c][d.id] = d.updatedAt; else if(d.data) remote[d.c].push(d.data);
@@ -10186,6 +10988,20 @@ function syncApplyPulled(c, docs){
 }
 async function syncPush(c){
   var docs = [], tb = state.tombstones || {};
+  /* un élément qui revient (restauré, réimporté) doit repartir au serveur, même si son contenu n'a pas changé */
+  SYNC_LISTS.forEach(function(k){
+    Object.keys(tb[k] || {}).forEach(function(id){
+      var it = (state[k] || []).find(function(x){ return x.id === id; });
+      if(it && (it.updatedAt || "") > tb[k][id]) delete tb[k][id];
+    });
+  });
+  Object.keys(c.pushed).forEach(function(key){
+    var m = /^(t:)?([A-Za-z]+):(.+)$/.exec(key);
+    if(!m) return;
+    var k = m[2], id = m[3];
+    if(m[1]){ if(!(tb[k] && tb[k][id])) delete c.pushed[key]; }
+    else if(SYNC_LISTS.indexOf(k) !== -1 && !(state[k] || []).some(function(x){ return x.id === id; })) delete c.pushed[key];
+  });
   SYNC_LISTS.forEach(function(k){
     (state[k] || []).forEach(function(it){
       var sig = it._sig || fnvHash(JSON.stringify(it)), key = k + ":" + it.id;
@@ -10762,7 +11578,7 @@ document.getElementById("newPatientBtn").addEventListener("click", function(){
 document.getElementById("deletePatientBtn").addEventListener("click", function(){
   var patient = getSelectedPatient();
   if(!patient) return;
-  if(confirm('Supprimer définitivement "' + patient.name + '" et toutes ses données ?')) deletePatient(patient.id);
+  if(confirm('Supprimer "' + patient.name + '" et toutes ses données ?\n\nIl restera récupérable pendant 60 jours dans « Patients supprimés » (sur cet appareil).')) deletePatient(patient.id);
 });
 function markExported(){
   state.lastExportAt = new Date().toISOString();
@@ -10812,7 +11628,8 @@ function shareJson(obj, filename, title, onDone){
   fallbackDownload();
 }
 function doExport(){
-  shareJson(state, "horus-sauvegarde-" + todayISO() + ".json", "Sauvegarde Horus", markExported);
+  var out = JSON.parse(JSON.stringify(state)); delete out.trash;
+  shareJson(out, "horus-sauvegarde-" + todayISO() + ".json", "Sauvegarde Horus", markExported);
 }
 function exportPatient(){
   var patient = getSelectedPatient();
@@ -10824,6 +11641,8 @@ function importPatientObject(p){
   p = normalizePatient(p);
   var renamed = false;
   if(!p.id || state.patients.some(function(x){ return x.id === p.id; })){ p.id = uid(); p.name = p.name + " (import)"; renamed = true; }
+  var tb = state.tombstones && state.tombstones.patients;
+  if(tb && tb[p.id]){ delete tb[p.id]; p.updatedAt = new Date().toISOString(); delete p._sig; }
   state.patients.push(p);
   state.selectedPatientId = p.id;
   migratePeriodizationData();
@@ -10860,8 +11679,10 @@ document.getElementById("importFile").addEventListener("change", function(e){
 if(isAutonomous()) appMode = 'today';
 seedPlagesIfNeeded();
 catalogMigrate();
+specMigrateMeta();
 renderAll();
 updateBackupUi();
+updateTrashUi();
 (function(){
   var sp = document.getElementById("splash");
   if(!sp) return;
