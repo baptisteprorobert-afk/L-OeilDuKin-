@@ -873,7 +873,7 @@
     .ag-title{ font-size:16px; min-width:0; }
     .ag-bar .ag-seg{ flex:1 1 100%; }
     .ag-seg button{ flex:1; padding:0 6px; }
-    #agPlagesBtn, #agNewBtn, #ag3Btn{ flex:1 1 0; white-space:nowrap; padding-left:8px; padding-right:8px; }
+    #agPlagesBtn, #agNewBtn, #ag3Btn, #agSetBtn{ flex:1 1 0; white-space:nowrap; padding-left:8px; padding-right:8px; }
     .ag-grid.v3 .ag-hcell{ padding:8px 2px 6px; font-size:11.5px; }
     .ag-grid.v3 .ag-hcell .n, .ag-grid.v3 .ag-hcell.today .n{ width:36px; height:36px; line-height:36px; font-size:18px; }
     .ag-grid.v3 .ag-ap{ padding:3px 19px 3px 7px; }
@@ -919,8 +919,7 @@
   .pp-index[hidden]{ display:none !important; }
 
   /* ---------- dernier rendez-vous + rendez-vous dans le programme ---------- */
-  .ag-last{ position:absolute; right:4px; bottom:3px; width:16px; height:16px; border-radius:50%; background:#ff8a00; display:flex; align-items:center; justify-content:center; box-shadow:0 1px 2px rgba(0,0,0,0.25); pointer-events:auto; }
-  .ag-last-key{ background:#ff8a00 !important; border-radius:50% !important; }
+  .ag-last{ position:absolute; right:4px; bottom:3px; width:14px; height:14px; border-radius:50%; box-shadow:0 1px 2px rgba(0,0,0,0.25); pointer-events:auto; }
   .cal-rdv{ font-size:9.5px; font-weight:700; color:#0062CC; background:#e8f2ff; border-radius:6px; padding:1px 5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; align-self:flex-start; max-width:100%; }
   .cal-rdv.abs{ color:#b3261e; background:#fdf0ef; text-decoration:line-through; }
   .cal-next{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:0 0 10px; font-size:13px; }
@@ -964,6 +963,35 @@
   .merge-restore{ margin:10px 0 12px; padding:10px 12px; border:1px solid #f5c26b; background:#fff8ea; border-radius:12px; }
   .merge-row{ display:flex; align-items:center; gap:10px; min-height:44px; font-size:16px; }
   .merge-row input{ width:22px; height:22px; }
+
+  /* ---------- unités au choix ---------- */
+  .unit-seg{ display:inline-flex; border:1px solid var(--border); border-radius:10px; overflow:hidden; flex-shrink:0; }
+  .unit-seg button{ border:0; background:var(--surface); color:var(--muted); font-size:13px; font-weight:700; min-width:34px; min-height:34px; padding:0 8px; }
+  .unit-seg button.on{ background:var(--text); color:#fff; }
+  /* ---------- paramètres de l'agenda ---------- */
+  #agPlagesBtn[hidden]{ display:none !important; }
+  .set-sec{ font-weight:800; font-size:13px; color:var(--muted); margin:6px 2px 0; }
+  .set-row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .set-swatch{ width:38px; height:38px; border-radius:50%; border:2px solid #fff; box-shadow:0 0 0 1px var(--border); padding:0; }
+  .set-swatch.on{ box-shadow:0 0 0 3px var(--text); }
+  .set-color{ width:52px; height:38px; border:1px solid var(--border); border-radius:10px; padding:2px; background:#fff; }
+  .ag-ap.is-last.last-fill .tm, .ag-ap.is-last.last-fill .sb{ color:inherit; opacity:0.85; }
+
+  #dayKindGrid{ display:grid !important; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:4px; }
+  #dayKindGrid .type-card{ white-space:nowrap; font-size:13.5px; padding-left:4px; padding-right:4px; text-align:center; }
+  .ag-ap.last-fill .ag-more{ color:inherit; opacity:0.8; }
+
+  /* ---------- statistiques : cette semaine ---------- */
+  .st-week{ display:grid; grid-template-columns:repeat(6, minmax(0, 1fr)); gap:8px; align-items:end; }
+  .st-wd{ display:flex; flex-direction:column; align-items:center; gap:4px; padding:8px 2px; border-radius:12px; }
+  .st-wd.today{ background:#e8f2ff; }
+  .st-wn{ font-size:22px; font-weight:800; }
+  .st-wd.future .st-wn{ color:var(--muted); }
+  .st-wbar{ width:70%; height:64px; display:flex; align-items:flex-end; background:#f1f3f6; border-radius:8px; overflow:hidden; }
+  .st-wbar div{ width:100%; background:#007BFF; border-radius:8px 8px 0 0; min-height:0; }
+  .st-wd.future .st-wbar div{ background:#9cc8ff; }
+  .st-wl{ font-size:12px; font-weight:700; color:var(--muted); }
+  .st-wa{ font-size:11px; color:#b3261e; font-weight:700; text-align:center; }
 </style>
 </head>
 <body>
@@ -1007,8 +1035,9 @@
         <div class="ag-title" id="agTitle"></div>
         <div class="ag-seg" id="agSeg"><button type="button" data-agview="day">Jour</button><button type="button" data-agview="3days">3 jours</button><button type="button" data-agview="week">Semaine</button></div>
         <button type="button" class="btn-ghost" id="ag3Btn" hidden style="min-height:40px;">📅 3 jours</button>
-        <button type="button" class="btn-ghost" id="agPlagesBtn" style="min-height:40px;">Plages</button>
+        <button type="button" class="btn-ghost" id="agPlagesBtn" hidden style="min-height:40px;">Plages</button>
         <button type="button" class="btn-primary" id="agNewBtn" style="min-height:40px;">+ Rendez-vous</button>
+        <button type="button" class="btn-ghost" id="agSetBtn" style="min-height:40px;" aria-label="Paramètres de l'agenda">⚙ Paramètres</button>
       </div>
       <div class="ag-legend" id="agLegend"></div>
       <div class="ag-scroll" id="agScroll"><div class="ag-grid" id="agGrid"></div></div>
@@ -1017,8 +1046,7 @@
 
     <div id="statsView" hidden>
       <h2 style="margin:0 0 4px;">📊 Statistiques de l'agenda</h2>
-      <div class="chip-row" id="stPeriod" style="margin:10px 0 8px;"></div>
-      <div class="chip-row" id="stCount" style="margin-bottom:14px;"></div>
+      <div class="chip-row" id="stPeriod" style="margin:10px 0 14px;"></div>
       <div id="stBody"></div>
     </div>
 
@@ -1260,6 +1288,11 @@
       <div><label>Droite</label><input id="entryValueD" type="number" step="any"></div>
       <div><label>Gauche</label><input id="entryValueG" type="number" step="any"></div>
     </div>
+    <div id="entryTtpWrap" hidden>
+      <label>Temps jusqu'au pic (facultatif)</label>
+      <div class="sides-entry"><div><label>Droite</label><input id="entryTtpD" type="number" step="any" placeholder="0"></div><div><label>Gauche</label><input id="entryTtpG" type="number" step="any" placeholder="0"></div></div>
+      <div style="margin:6px 0 4px;" id="entryTtpUnit"></div>
+    </div>
     <div class="modal-actions">
       <button class="btn-primary" id="addEntryBtn">Ajouter cette mesure</button>
     </div>
@@ -1356,8 +1389,8 @@
 
       <div id="runFields" class="kind-fields" hidden>
         <div class="steppers">
-          <div class="stepper-row"><label class="st-label" for="runDistance">Distance</label><div class="st-ctl"><button type="button" class="st-btn" data-stepfor="runDistance" data-step="-0.5" aria-label="Moins : distance"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button><input id="runDistance" class="st-input" type="number" inputmode="decimal" step="any" min="0" placeholder="0"><span class="st-unit">km</span><button type="button" class="st-btn" data-stepfor="runDistance" data-step="0.5" aria-label="Plus : distance"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
-          <div class="stepper-row"><label class="st-label" for="runDuration">Durée</label><div class="st-ctl"><button type="button" class="st-btn" data-stepfor="runDuration" data-step="-5" aria-label="Moins : durée"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button><input id="runDuration" class="st-input" type="number" inputmode="decimal" step="any" min="0" placeholder="0"><span class="st-unit">min</span><button type="button" class="st-btn" data-stepfor="runDuration" data-step="5" aria-label="Plus : durée"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+          <div class="stepper-row"><label class="st-label" for="runDistance">Distance</label><div class="st-ctl"><button type="button" class="st-btn" data-stepfor="runDistance" data-step="-0.5" aria-label="Moins : distance"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button><input id="runDistance" class="st-input" type="number" inputmode="decimal" step="any" min="0" placeholder="0"><span class="unit-seg" data-unitfor="runDistance"><button type="button" data-u="km" class="on">km</button><button type="button" data-u="m">m</button></span><button type="button" class="st-btn" data-stepfor="runDistance" data-step="0.5" aria-label="Plus : distance"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+          <div class="stepper-row"><label class="st-label" for="runDuration">Durée</label><div class="st-ctl"><button type="button" class="st-btn" data-stepfor="runDuration" data-step="-5" aria-label="Moins : durée"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button><input id="runDuration" class="st-input" type="number" inputmode="decimal" step="any" min="0" placeholder="0"><span class="unit-seg" data-unitfor="runDuration"><button type="button" data-u="min" class="on">min</button><button type="button" data-u="s">s</button></span><button type="button" class="st-btn" data-stepfor="runDuration" data-step="5" aria-label="Plus : durée"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
         </div>
         <div id="runLoadPreview" class="live-preview"></div>
         <div hidden><input id="runRpe" type="number"></div>
@@ -1416,7 +1449,7 @@
         <div class="fl">1 · Activité</div>
         <div id="funcActChips" class="chip-row"></div>
         <div id="funcGeneric" hidden>
-          <div class="steppers"><div class="stepper-row"><label class="st-label" for="funcDuration">Durée</label><div class="st-ctl"><button type="button" class="st-btn" data-stepfor="funcDuration" data-step="-5" aria-label="Moins : durée"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button><input id="funcDuration" class="st-input" type="number" inputmode="decimal" step="any" min="0" placeholder="0"><span class="st-unit">min</span><button type="button" class="st-btn" data-stepfor="funcDuration" data-step="5" aria-label="Plus : durée"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div></div><div class="stepper-row"><label class="st-label" for="funcDistance">Distance</label><div class="st-ctl"><button type="button" class="st-btn" data-stepfor="funcDistance" data-step="-0.5" aria-label="Moins : distance"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button><input id="funcDistance" class="st-input" type="number" inputmode="decimal" step="any" min="0" placeholder="0"><span class="st-unit">km</span><button type="button" class="st-btn" data-stepfor="funcDistance" data-step="0.5" aria-label="Plus : distance"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div></div></div>
+          <div class="steppers"><div class="stepper-row"><label class="st-label" for="funcDuration">Durée</label><div class="st-ctl"><button type="button" class="st-btn" data-stepfor="funcDuration" data-step="-5" aria-label="Moins : durée"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button><input id="funcDuration" class="st-input" type="number" inputmode="decimal" step="any" min="0" placeholder="0"><span class="unit-seg" data-unitfor="funcDuration"><button type="button" data-u="min" class="on">min</button><button type="button" data-u="s">s</button></span><button type="button" class="st-btn" data-stepfor="funcDuration" data-step="5" aria-label="Plus : durée"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div></div><div class="stepper-row"><label class="st-label" for="funcDistance">Distance</label><div class="st-ctl"><button type="button" class="st-btn" data-stepfor="funcDistance" data-step="-0.5" aria-label="Moins : distance"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button><input id="funcDistance" class="st-input" type="number" inputmode="decimal" step="any" min="0" placeholder="0"><span class="unit-seg" data-unitfor="funcDistance"><button type="button" data-u="km" class="on">km</button><button type="button" data-u="m">m</button></span><button type="button" class="st-btn" data-stepfor="funcDistance" data-step="0.5" aria-label="Plus : distance"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div></div></div>
           <div class="fl">Mesures (tu choisis ce que tu mesures)</div>
           <div id="funcMeasChips" class="chip-row"></div>
           <div class="steppers" id="funcMeasRows"></div>
@@ -1436,6 +1469,15 @@
       <button type="button" class="btn-ghost btn-lg" id="addDayEntryBtn">Enregistrer</button>
       <button type="button" class="btn-ghost btn-lg btn-danger" id="deleteEntryBtn" hidden>Supprimer cet exercice</button>
     </div>
+  </div>
+</div>
+
+<!-- Paramètres de l'agenda -->
+<div id="agSetOverlay" class="sheet-overlay" hidden>
+  <div class="sheet" role="dialog" aria-label="Paramètres de l'agenda">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head"><h3>Paramètres</h3><button type="button" class="icon-btn" id="agSetClose" aria-label="Fermer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="sheet-body" id="agSetBody"></div>
   </div>
 </div>
 
@@ -2309,6 +2351,53 @@ var MUSCLE_DB = [
 ];
 
 function getMuscle(id){ return MUSCLE_DB.find(function(m){ return m.id === id; }); }
+/* Tests isométriques : un dynamomètre mesure un mouvement, pas un muscle. Les muscles qui font le même mouvement dans la même position sont regroupés. */
+var ISO_GROUPS = [
+  { id: "g_quad",   name: "Quadriceps (extension du genou)",           rep: "vmo",           members: ["vmo", "vl", "rf"] },
+  { id: "g_ischio", name: "Ischio-jambiers (flexion du genou)",        rep: "bf",            members: ["bf", "st", "sm"] },
+  { id: "g_evers",  name: "Éverseurs de cheville (fibulaires)",        rep: "pl",            members: ["pl", "pb"] },
+  { id: "g_gastro", name: "Gastrocnémiens (flexion plantaire, genou tendu)", rep: "gcm",     members: ["gcm", "gcl"] },
+  { id: "g_ri",     name: "Rotateurs internes de l'épaule (RI à 0°)",  rep: "delt_ant",      members: ["delt_ant", "lat_dorsi", "teres_major", "pect_major", "subscap"] },
+  { id: "g_re",     name: "Rotateurs externes de l'épaule (RE à 0°)",  rep: "infraspinatus", members: ["infraspinatus", "teres_minor"] }
+];
+var ISO_MEMBER = {};
+ISO_GROUPS.forEach(function(g){
+  var r = getMuscle(g.rep); if(!r) return;
+  var rec = { id: g.id, region: r.region, group: r.group, name: g.name, accessible: true, isoGroup: true, members: g.members, mvcPosition: r.mvcPosition };
+  if(r.forceNorm) rec.forceNorm = r.forceNorm;
+  if(r.noNormReason) rec.noNormReason = r.noNormReason;
+  MUSCLE_DB.push(rec);
+  g.members.forEach(function(mid){ var m = getMuscle(mid); if(m){ m.isoMember = g.id; ISO_MEMBER[mid] = g.id; } });
+});
+function isoMigrate(){
+  var changed = false, backedUp = false;
+  state.patients.forEach(function(p){
+    if(!Array.isArray(p.tests)) return;
+    var byGroup = {};
+    p.tests.forEach(function(t){ if(t.type === "iso" && t.muscleId && ISO_MEMBER[t.muscleId]) (byGroup[ISO_MEMBER[t.muscleId]] = byGroup[ISO_MEMBER[t.muscleId]] || []).push(t); });
+    Object.keys(byGroup).forEach(function(gid){
+      var grp = getMuscle(gid), list = byGroup[gid], unitOf = function(t){ return t.unit || ""; };
+      var tgt = p.tests.find(function(t){ return t.type === "iso" && t.muscleId === gid; }) || null;
+      var counts = {}; list.forEach(function(t){ counts[unitOf(t)] = (counts[unitOf(t)] || 0) + (t.entries || []).length + 1; });
+      var u = tgt ? unitOf(tgt) : Object.keys(counts).sort(function(a, b){ return counts[b] - counts[a]; })[0];
+      var mergeable = list.filter(function(t){ return unitOf(t) === u; });
+      if(!mergeable.length) return;
+      if(!backedUp){
+        backedUp = true;
+        try{ localStorage.setItem("horus_avant_regroupement_iso", JSON.stringify({ at: new Date().toISOString(), patients: state.patients.map(function(pp){ return { id: pp.id, name: pp.name, tests: (pp.tests || []).filter(function(t){ return t.type === "iso"; }) }; }) })); }catch(e){}
+      }
+      mergeable.forEach(function(t){ var src = t.name; (t.entries || []).forEach(function(e){ if(!e.src) e.src = src; }); });
+      if(!tgt){ tgt = mergeable[0]; tgt.muscleId = gid; tgt.name = grp.name; mergeable = mergeable.slice(1); }
+      var idMap = {};
+      mergeable.forEach(function(t){ tgt.entries = (tgt.entries || []).concat(t.entries || []); idMap[t.id] = tgt.id; });
+      if(p.rts && Array.isArray(p.rts.criteria)) p.rts.criteria.forEach(function(c){ if(c.testId && idMap[c.testId]) c.testId = idMap[c.testId]; if(c.testId2 && idMap[c.testId2]) c.testId2 = idMap[c.testId2]; });
+      tgt.entries.sort(function(a, b){ return String(a.date).localeCompare(String(b.date)); });
+      p.tests = p.tests.filter(function(t){ return mergeable.indexOf(t) === -1; });
+      changed = true;
+    });
+  });
+  return changed;
+}
 
 /* ============================================================
    PERSISTENCE
@@ -2723,6 +2812,7 @@ function renderAlIndex(letters){
 function isAutonomous(){ return !!(state.settings && state.settings.mode === 'autonome'); }
 var lastViewKey = "";
 function renderAll(){
+  if(isoMigrate()) saveData();
   var vk = appMode + "|" + (typeof profilsSubview !== "undefined" ? profilsSubview : "") + "|" + activeTab + "|" + state.selectedPatientId;
   if(vk !== lastViewKey){ lastViewKey = vk; var mn = document.querySelector("main"); if(mn) mn.scrollTop = 0; }
   document.body.classList.toggle("mode-autonome", isAutonomous());
@@ -3032,6 +3122,10 @@ function renderCardsGrid(patient){
         '<div class="tc-side"><div class="tc-side-label g">Gauche</div><div class="tc-side-value">' + (lastG !== null ? lastG : '—') + '<span class="unit">' + test.unit + '</span></div>' + trendG + normG + '</div>' +
         '</div>';
 
+      if(test.type === 'iso'){
+        var tD = entries.filter(function(e){ return e.ttpD !== null && e.ttpD !== undefined; }), tG = entries.filter(function(e){ return e.ttpG !== null && e.ttpG !== undefined; });
+        if(tD.length || tG.length) bodyHtml += '<div class="tc-sub" style="margin:6px 0 2px;">Temps jusqu\'au pic · D ' + fmtTtp(tD.length ? tD[tD.length-1].ttpD : null, test.ttpUnit) + ' · G ' + fmtTtp(tG.length ? tG[tG.length-1].ttpG : null, test.ttpUnit) + '</div>';
+      }
       bodyHtml += sparklineSvg([
         { values: dVals.map(function(e){ return e.valueD; }), color:'#0B1220' },
         { values: gVals.map(function(e){ return e.valueG; }), color:'#007BFF' }
@@ -3247,6 +3341,11 @@ function openTestDetail(testId){
   document.getElementById("entryValue").value = "";
   document.getElementById("entryValueD").value = "";
   document.getElementById("entryValueG").value = "";
+  var showTtp = test.type === "iso" && test.tracksSides;
+  document.getElementById("entryTtpWrap").hidden = !showTtp;
+  document.getElementById("entryTtpD").value = ""; document.getElementById("entryTtpG").value = "";
+  unitSel.entryTtpD = test.ttpUnit || "s";
+  document.getElementById("entryTtpUnit").innerHTML = ttpSeg("entryTtpD", unitSel.entryTtpD);
 
   renderEntriesTable(test);
   document.getElementById("testDetailOverlay").hidden = false;
@@ -3256,7 +3355,7 @@ function renderEntriesTable(test){
   var head = document.getElementById("entriesTableHead");
   var body = document.getElementById("entriesTableBody");
   if(test.tracksSides){
-    head.innerHTML = "<th>Date</th><th>Droite (" + test.unit + ")</th><th>Gauche (" + test.unit + ")</th><th></th>";
+    head.innerHTML = "<th>Date</th><th>Droite (" + test.unit + ")</th><th>Gauche (" + test.unit + ")</th>" + (test.type === "iso" ? "<th>Pic D</th><th>Pic G</th>" : "") + "<th></th>";
   } else {
     head.innerHTML = "<th>Date</th><th>Valeur (" + test.unit + ")</th><th></th>";
   }
@@ -3265,11 +3364,26 @@ function renderEntriesTable(test){
   sorted.forEach(function(entry){
     var tr = document.createElement("tr");
     if(test.tracksSides){
-      tr.innerHTML = "<td>" + fmtDate(entry.date) + "</td><td>" + (entry.valueD !== null && entry.valueD !== undefined ? entry.valueD : "—") + "</td><td>" + (entry.valueG !== null && entry.valueG !== undefined ? entry.valueG : "—") + "</td><td class='del' data-entry='" + entry.id + "'>supprimer</td>";
+      tr.innerHTML = "<td>" + fmtDate(entry.date) + "</td><td>" + (entry.valueD !== null && entry.valueD !== undefined ? entry.valueD : "—") + "</td><td>" + (entry.valueG !== null && entry.valueG !== undefined ? entry.valueG : "—") + "</td>" + (test.type === "iso" ? "<td class='ttp' data-ttp='D' data-entry='" + entry.id + "' title='Temps jusqu\\'au pic, droite'>" + fmtTtp(entry.ttpD, test.ttpUnit) + "</td><td class='ttp' data-ttp='G' data-entry='" + entry.id + "' title='Temps jusqu\\'au pic, gauche'>" + fmtTtp(entry.ttpG, test.ttpUnit) + "</td>" : "") + "<td class='del' data-entry='" + entry.id + "'>supprimer</td>";
     } else {
       tr.innerHTML = "<td>" + fmtDate(entry.date) + "</td><td>" + (entry.value !== null && entry.value !== undefined ? entry.value : "—") + "</td><td class='del' data-entry='" + entry.id + "'>supprimer</td>";
     }
     body.appendChild(tr);
+  });
+  body.querySelectorAll(".ttp").forEach(function(el){
+    el.style.cursor = "pointer"; el.style.textDecoration = "underline dotted";
+    el.addEventListener("click", function(){
+      var en = test.entries.find(function(x){ return x.id === el.dataset.entry; }); if(!en) return;
+      var side = el.dataset.ttp, u = test.ttpUnit || "s", key = side === "D" ? "ttpD" : "ttpG", cur = en[key];
+      var shown = cur === null || cur === undefined ? "" : String(u === "ms" ? Math.round(cur * 1000) : Math.round(cur * 1000) / 1000);
+      var ans = prompt("Temps jusqu'au pic, " + (side === "D" ? "droite" : "gauche") + " (" + u + ") — laisse vide pour effacer :", shown);
+      if(ans === null) return;
+      var sec = ttpToSec(ans.replace(",", "."), u);
+      if(ans.trim() !== "" && sec === null){ alert("Valeur non valide."); return; }
+      if(sec === null) delete en[key]; else en[key] = sec;
+      if(sec !== null && !test.ttpUnit) test.ttpUnit = u;
+      saveData(); renderEntriesTable(test); renderAll();
+    });
   });
   body.querySelectorAll(".del").forEach(function(el){
     el.addEventListener("click", function(){
@@ -3294,6 +3408,12 @@ document.getElementById("addEntryBtn").addEventListener("click", function(){
     if(dv === "" && gv === ""){ alert("Renseigne au moins une valeur (Droite ou Gauche)."); return; }
     entry.valueD = dv === "" ? null : parseFloat(dv);
     entry.valueG = gv === "" ? null : parseFloat(gv);
+    if(test.type === "iso"){
+      var td = ttpToSec(document.getElementById("entryTtpD").value, unitSel.entryTtpD), tg = ttpToSec(document.getElementById("entryTtpG").value, unitSel.entryTtpD);
+      if(td !== null) entry.ttpD = td;
+      if(tg !== null) entry.ttpG = tg;
+      if(td !== null || tg !== null) test.ttpUnit = unitSel.entryTtpD;
+    }
   } else {
     var v = document.getElementById("entryValue").value;
     if(v === ""){ alert("Renseigne une valeur."); return; }
@@ -3304,6 +3424,7 @@ document.getElementById("addEntryBtn").addEventListener("click", function(){
   document.getElementById("entryValue").value = "";
   document.getElementById("entryValueD").value = "";
   document.getElementById("entryValueG").value = "";
+  document.getElementById("entryTtpD").value = ""; document.getElementById("entryTtpG").value = "";
   renderEntriesTable(test);
   renderAll();
 });
@@ -3331,6 +3452,7 @@ function renderPositionsTab(){
   var groups = {};
   var order = [];
   MUSCLE_DB.forEach(function(m){
+    if(m.isoGroup) return;
     var key = m.region + ' — ' + m.group;
     if(!groups[key]){ groups[key] = []; order.push(key); }
     groups[key].push(m);
@@ -3372,7 +3494,7 @@ function renderNormesTab(){
   var el = document.getElementById("normesContent");
   var rows = "";
   MUSCLE_DB.forEach(function(m){
-    if(!m.forceNorm) return;
+    if(!m.forceNorm || m.isoMember) return;
     rows += '<tr><td>' + m.name + '</td><td>' + (m.mvcPosition || '') + '</td><td class="val">' + normDisplay(m.forceNorm) + '</td><td class="src">' + m.forceNorm.source + '</td></tr>';
   });
   el.innerHTML = '<table class="norm-table"><thead><tr><th>Muscle / mouvement</th><th>Position de test</th><th>Norme</th><th>Source</th></tr></thead><tbody>' + rows + '</tbody></table>';
@@ -4755,7 +4877,7 @@ function openFonctionnelModal(){
   document.getElementById("fmMovementInput").value = "";
   var select = document.getElementById("fmMuscleSelect");
   select.innerHTML = '<option value="">— Choisir —</option>';
-  MUSCLE_DB.filter(function(m){ return m.accessible; }).forEach(function(m){
+  MUSCLE_DB.filter(function(m){ return m.accessible && !m.isoGroup; }).forEach(function(m){
     var opt = document.createElement("option");
     opt.value = m.id; opt.textContent = m.name;
     select.appendChild(opt);
@@ -5445,6 +5567,7 @@ function openDayModal(key){
   document.getElementById("stretchFields").hidden = true;
   document.getElementById("isometricFields").hidden = true;
   funcActivity = "Course à pied"; funcSel = []; funcVals = {}; funcSide = ""; neuroTech = ""; neuroSide = ""; nameEditMode = false;
+  unitSet("funcDuration", "min"); unitSet("runDuration", "min"); unitSet("funcDistance", "km"); unitSet("runDistance", "km");
   document.getElementById("neuroFields").hidden = true; document.getElementById("funcFields").hidden = true; document.getElementById("funcGeneric").hidden = true;
   document.getElementById("sessionBlock").hidden = false;
   ["exName","exSets","exReps","exLoad","exRpe","runDistance","runDuration","runRpe","stretchName","stretchSeries","stretchDuree","stretchRpe","isoName","isoSeries","isoReps","isoDuree","isoRpe","exGroup","isoGroup","isoPct","neuroName","neuroSeries","neuroReps","neuroHold","funcDuration","funcDistance"].forEach(function(id){ document.getElementById(id).value = ""; });
@@ -5748,8 +5871,8 @@ function startEditEntry(entry){
     document.getElementById("neuroHold").value = entry.dureeSec || "";
     renderNeuroUi(); renderNameChips('neuro');
   } else if(entry.kind === 'functional'){
-    document.getElementById("funcDuration").value = entry.durationMin || "";
-    document.getElementById("funcDistance").value = entry.distanceKm || "";
+    unitFill("funcDuration", entry.durationMin, entry.durUnit || "min");
+    unitFill("funcDistance", entry.distanceKm, entry.distUnit || "km");
     funcSel = []; funcVals = {}; funcSide = entry.side || "";
     entryMeasures(entry).forEach(function(m, i){
       var f = (state.funcMeasures || []).find(function(x){ return x.label === m.label && (x.unit || "") === (m.unit || ""); }) || { id: "t" + i, label: m.label, unit: m.unit || "" };
@@ -5758,8 +5881,8 @@ function startEditEntry(entry){
     renderFuncUi();
   } else { // run
     renderFuncUi();
-    document.getElementById("runDistance").value = entry.distanceKm || "";
-    document.getElementById("runDuration").value = entry.durationMin || "";
+    unitFill("runDistance", entry.distanceKm, entry.distUnit || "km");
+    unitFill("runDuration", entry.durationMin, entry.durUnit || "min");
     document.getElementById("runRpe").value = (entry.rpe !== undefined && entry.rpe !== null) ? entry.rpe : "";
     updateRunPreview();
   }
@@ -5854,10 +5977,10 @@ function renderDayEntriesList(){
       name = e.name; detail = '<b>' + e.series + ' × ' + e.reps + '</b>' + (e.dureeSec ? ' · <b>' + e.dureeSec + ' s</b>' : '');
       sub = 'Neurodynamique · ' + (e.technique === 'glissement' ? 'Glissement' : 'Tension') + (e.side ? ' · ' + (e.side === 'D' ? 'droite' : 'gauche') : '');
     } else if(e.kind === 'functional'){
-      name = e.activity || "Fonctionnel"; detail = (e.durationMin ? '<b>' + e.durationMin + ' min</b>' : '') + (e.durationMin && e.distanceKm ? ' · ' : '') + (e.distanceKm ? '<b>' + e.distanceKm + ' km</b>' : '');
+      name = e.activity || "Fonctionnel"; detail = (e.durationMin ? '<b>' + fmtDurE(e) + '</b>' : '') + (e.durationMin && e.distanceKm ? ' · ' : '') + (e.distanceKm ? '<b>' + fmtDistE(e) + '</b>' : '');
       sub = (entryMeasures(e).map(function(m){ return escHtml(m.label) + ' : ' + escHtml(frDec(m.value)) + (m.unit ? ' ' + escHtml(m.unit) : ''); }).join(' · ') || 'Fonctionnel') + (e.side ? ' · ' + (e.side === 'D' ? 'droite' : 'gauche') : '') + (hasRpe && e.durationMin ? ' · charge ' + fmtNum(entryLoad(e)) + ' UA' : '');
     } else {
-      name = "Course à pied"; detail = '<b>' + e.distanceKm + ' km</b> · <b>' + e.durationMin + ' min</b>';
+      name = "Course à pied"; detail = '<b>' + fmtDistE(e) + '</b> · <b>' + fmtDurE(e) + '</b>';
       sub = hasRpe ? 'Charge ' + fmtNum(entryLoad(e)) + ' UA' : 'RPE manquant pour la charge';
     }
     var noRpe = e.kind === 'neuro';
@@ -5870,6 +5993,53 @@ function renderDayEntriesList(){
   }).join("");
 }
 
+/* ----- unités au choix ----- */
+var UNIT_STEP = { min: 5, s: 10, km: 0.5, m: 50 };
+var unitSel = { funcDuration: "min", runDuration: "min", funcDistance: "km", runDistance: "km", wIsoTtp: "s", entryTtpD: "s" };
+function unitSet(id, u){
+  unitSel[id] = u;
+  var sg = document.querySelector('.unit-seg[data-unitfor="' + id + '"]');
+  if(sg) sg.querySelectorAll("[data-u]").forEach(function(b){ b.classList.toggle("on", b.dataset.u === u); });
+  document.querySelectorAll('[data-stepfor="' + id + '"]').forEach(function(b){ b.dataset.step = String((parseFloat(b.dataset.step) < 0 ? -1 : 1) * UNIT_STEP[u]); });
+}
+function unitConv(v, from, to){
+  if(from === to) return v;
+  var r = (from === "min" && to === "s") ? v * 60 : (from === "s" && to === "min") ? v / 60 : (from === "km" && to === "m") ? v * 1000 : (from === "m" && to === "km") ? v / 1000 : (from === "s" && to === "ms") ? v * 1000 : (from === "ms" && to === "s") ? v / 1000 : v;
+  return Math.round(r * 1000) / 1000;
+}
+function unitVal(id){
+  var raw = parseFloat(document.getElementById(id).value); if(isNaN(raw)) return 0;
+  var u = unitSel[id], v = u === "s" ? raw / 60 : (u === "m" ? raw / 1000 : raw);
+  return Math.round(v * 10000) / 10000;
+}
+function unitFill(id, canonical, u){
+  unitSet(id, u);
+  document.getElementById(id).value = canonical ? String(Math.round((u === "s" ? canonical * 60 : (u === "m" ? canonical * 1000 : canonical)) * 100) / 100) : "";
+}
+function ttpSeg(id, unit){ return '<span class="unit-seg" data-unitfor="' + id + '"><button type="button" data-u="s"' + (unit === "s" ? ' class="on"' : '') + '>s</button><button type="button" data-u="ms"' + (unit === "ms" ? ' class="on"' : '') + '>ms</button></span>'; }
+function fmtTtp(sec, unit){ if(sec === null || sec === undefined) return "—"; return unit === "ms" ? Math.round(sec * 1000) + " ms" : frDec(Math.round(sec * 1000) / 1000) + " s"; }
+function ttpToSec(raw, unit){ var v = parseFloat(raw); if(isNaN(v)) return null; return Math.round((unit === "ms" ? v / 1000 : v) * 100000) / 100000; }
+function fmtDurE(e){ return e.durUnit === "s" ? Math.round(e.durationMin * 60 * 100) / 100 + " s" : e.durationMin + " min"; }
+function fmtDistE(e){ return e.distUnit === "m" ? Math.round(e.distanceKm * 1000 * 100) / 100 + " m" : e.distanceKm + " km"; }
+function funcLastUnits(patient, activity){
+  var best = null, bk = "";
+  Object.keys(patient.program.entries || {}).forEach(function(k){
+    (patient.program.entries[k] || []).forEach(function(e){
+      var match = activity === "Course à pied" ? e.kind === "run" : (e.kind === "functional" && e.activity === activity);
+      if(match && k >= bk){ best = e; bk = k; }
+    });
+  });
+  return { dur: best && best.durUnit === "s" ? "s" : "min", dist: best && best.distUnit === "m" ? "m" : "km" };
+}
+document.addEventListener("click", function(e){
+  var b = e.target.closest(".unit-seg [data-u]"); if(!b) return;
+  var id = b.parentNode.dataset.unitfor, old = unitSel[id], nu = b.dataset.u;
+  if(old === nu) return;
+  var inp = document.getElementById(id), v = parseFloat(inp.value);
+  if(!isNaN(v) && inp.value !== "") inp.value = String(unitConv(v, old, nu));
+  if(id === "entryTtpD"){ var g2 = document.getElementById("entryTtpG"), vg = parseFloat(g2.value); if(!isNaN(vg) && g2.value !== "") g2.value = String(unitConv(vg, old, nu)); }
+  unitSet(id, nu);
+});
 var funcActivity = "Course à pied", funcSel = [], funcVals = {}, funcSide = "", neuroTech = "", neuroSide = "", nameEditMode = false;
 function entryMeasures(e){ return Array.isArray(e.measures) ? e.measures : (e.measure ? [e.measure] : []); }
 function funcLastMeasures(patient, activity){
@@ -5886,6 +6056,8 @@ function funcPreselect(){
   document.getElementById("funcMeasRows").innerHTML = "";
   if(editingEntryId) return;
   funcSel = funcLastMeasures(getSelectedPatient(), funcActivity);
+  var lu = funcLastUnits(getSelectedPatient(), funcActivity);
+  unitSet("funcDuration", lu.dur); unitSet("runDuration", lu.dur); unitSet("funcDistance", lu.dist); unitSet("runDistance", lu.dist);
 }
 var FUNC_DEFAULTS = ["Course à pied", "Vélo (ergomètre)", "Rameur", "Ski-erg", "Sauts", "Circuit", "Atelier"];
 function funcIsRun(){ return dayKind === "functional" && funcActivity === "Course à pied"; }
@@ -5945,7 +6117,7 @@ document.getElementById("dayKindGrid").addEventListener("click", function(e){
   applyKindUi();
   renderGroupChips('exercise'); renderGroupChips('isometric');
   renderNameChips(dayKind);
-  if(dayKind === 'functional') renderFuncUi();
+  if(dayKind === 'functional'){ funcPreselect(); renderFuncUi(); }
   if(dayKind === 'neuro') renderNeuroUi();
   refreshSessionLabel();
   renderIsoTarget();
@@ -6315,12 +6487,14 @@ function saveDayEntry(keepOpen){
     if(neuroSide) entry.side = neuroSide;
   } else if(dayKind === 'functional' && !runUi){
     funcCaptureVals();
-    var dm = parseFloat(document.getElementById("funcDuration").value) || 0, dk = parseFloat(document.getElementById("funcDistance").value) || 0;
+    var dm = unitVal("funcDuration"), dk = unitVal("funcDistance");
     var ms2 = funcSel.filter(function(m){ return funcVals[m.id] !== undefined && funcVals[m.id] !== ""; }).map(function(m){ return { label: m.label, unit: m.unit || "", value: parseFloat(funcVals[m.id]) || 0 }; });
     if(!dm && !dk && !ms2.length){ alert("Renseigne au moins une valeur : la durée, la distance ou une mesure."); return; }
     entry.activity = funcActivity;
     if(dm) entry.durationMin = dm;
     if(dk) entry.distanceKm = dk;
+    if(dm && unitSel.funcDuration === "s") entry.durUnit = "s";
+    if(dk && unitSel.funcDistance === "m") entry.distUnit = "m";
     if(ms2.length) entry.measures = ms2;
     if(funcSide) entry.side = funcSide;
     if(editingEntryId){
@@ -6328,8 +6502,10 @@ function saveDayEntry(keepOpen){
       if(oldF && oldF.rpe !== undefined) entry.rpe = oldF.rpe;
     }
   } else { // course (activité « Course à pied »)
-    entry.distanceKm = parseFloat(document.getElementById("runDistance").value) || 0;
-    entry.durationMin = parseFloat(document.getElementById("runDuration").value) || 0;
+    entry.distanceKm = unitVal("runDistance");
+    if(entry.distanceKm && unitSel.runDistance === "m") entry.distUnit = "m";
+    if(unitVal("runDuration") && unitSel.runDuration === "s") entry.durUnit = "s";
+    entry.durationMin = unitVal("runDuration");
     var runRpeVal = document.getElementById("runRpe").value;
     entry.rpe = runRpeVal === "" ? undefined : parseFloat(runRpeVal);
   }
@@ -6549,6 +6725,23 @@ function clearEntryFields(){
   isoType = null;
   document.querySelectorAll("#isoTypeGrid .quality-chip").forEach(function(c){ c.classList.remove("selected","single"); });
 }
+/* ----- la fenêtre de saisie garde la même taille pour tous les types ----- */
+function exSheetLockHeight(){
+  var ov = document.getElementById("exSheet"); if(ov.hidden) return;
+  var sh = ov.querySelector(".sheet"), keep = { kind: dayKind, act: funcActivity, tech: neuroTech };
+  sh.style.height = ""; var prevMax = sh.style.maxHeight; sh.style.maxHeight = "none";
+  var max = 0;
+  [["exercise", "Course à pied"], ["functional", "Course à pied"], ["functional", "Rameur"], ["neuro", ""], ["stretching", ""], ["isometric", ""]].forEach(function(c){
+    dayKind = c[0]; if(c[1]) funcActivity = c[1]; neuroTech = c[0] === "neuro" ? "tension" : neuroTech;
+    applyKindUi(); document.getElementById("neuroHoldRow").hidden = c[0] !== "neuro";
+    max = Math.max(max, sh.getBoundingClientRect().height);
+  });
+  dayKind = keep.kind; funcActivity = keep.act; neuroTech = keep.tech;
+  applyKindUi(); renderNeuroUi();
+  sh.style.maxHeight = prevMax;
+  sh.style.height = Math.min(Math.ceil(max) + 8, Math.floor(window.innerHeight * 0.92)) + "px";
+}
+window.addEventListener("resize", function(){ exSheetLockHeight(); });
 function openExSheet(editing){
   document.getElementById("exSheetTitle").textContent = editing ? "Modifier l'exercice" : "Nouvel exercice";
   document.getElementById("addDayEntryBtn").textContent = editing ? "Enregistrer les modifications" : "Enregistrer";
@@ -6559,6 +6752,7 @@ function openExSheet(editing){
   refreshSessionLabel();
   renderIsoTarget();
   document.getElementById("exSheet").hidden = false;
+  exSheetLockHeight();
 }
 function closeExSheet(){
   document.getElementById("exSheet").hidden = true;
@@ -9847,7 +10041,17 @@ function agRange(){
   agDays().forEach(function(d){ agList().forEach(function(a){ if(a.date !== d) return; var s = hhmmToMin(a.start); lo = Math.min(lo, Math.floor(s / 60) * 60); hi = Math.max(hi, Math.ceil((s + a.dur) / 60) * 60); }); });
   return { lo: lo, hi: Math.min(hi, 24 * 60), step: cfg.step };
 }
-var AG_LAST_BADGE = '<span class="ag-last" title="Dernier rendez-vous de ce patient : pense à en reprendre un" aria-label="Dernier rendez-vous de ce patient"><svg viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><path d="M6 3v18M6 4.5h11l-2.5 4 2.5 4H6" fill="#fff" stroke="#fff" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></svg></span>';
+function agLastCfg(){
+  var c = (state.settings && state.settings.agLast) || {};
+  return { color: /^#[0-9a-fA-F]{6}$/.test(c.color || "") ? c.color : "#FF8A00", style: ["fill", "frame", "dot"].indexOf(c.style) !== -1 ? c.style : "fill" };
+}
+function agLastDot(color){ return '<span class="ag-last" style="background:' + color + ';" title="Dernier rendez-vous de ce patient : pense à en reprendre un" aria-label="Dernier rendez-vous de ce patient"></span>'; }
+function agLastKey(){
+  var c = agLastCfg();
+  if(c.style === "dot") return '<i class="ag-last-key" style="background:' + c.color + ';border-radius:50%;"></i>';
+  if(c.style === "frame") return '<i class="ag-last-key" style="background:#fff;box-shadow:inset 0 0 0 2px ' + c.color + ';"></i>';
+  return '<i class="ag-last-key" style="background:' + c.color + ';"></i>';
+}
 function agShortName(name){
   var parts = String(name).trim().split(/\s+/);
   if(parts.length < 2) return name;
@@ -9884,7 +10088,7 @@ function renderAgenda(){
   for(var m = Math.ceil(rg.lo / 60) * 60; m <= rg.hi; m += 60) times += '<span style="top:' + ((m - rg.lo) * AG_PX + (m === rg.lo ? 8 : 0)) + 'px;">' + pad2(m / 60) + ':00</span>';
   h += times + '</div>';
   var nowMin = (function(){ var d = new Date(); return d.getHours() * 60 + d.getMinutes(); })();
-  var lastOf = {};
+  var lastOf = {}, lc = agLastCfg();
   agList().forEach(function(a){ if(a.status === "annule") return; var k = a.date + " " + a.start, c = lastOf[a.patientId]; if(!c || k > c.k) lastOf[a.patientId] = { k: k, id: a.id }; });
   days.forEach(function(d){
     var aps = agList().filter(function(a){ return a.date === d; });
@@ -9895,10 +10099,11 @@ function renderAgenda(){
       var ap = it.ap, top = (it.s - rg.lo) * AG_PX, ht = Math.max(it.ap.dur * AG_PX - 2, 30), pat = state.patients.find(function(p){ return p.id === ap.patientId; });
       var hasSession = pat && pat.program && (pat.program.entries[ap.date] || []).length > 0;
       var tcol = ap.status === "annule" ? "#8A93A3" : agTypeByName(ap.type).color;
-      h += '<div class="ag-ap st-' + ap.status + (it.lanes > 1 ? ' multi' : '') + (ht < 56 ? ' short' : '') + '" title="' + escHtml(patientNameById(ap.patientId) + ' · ' + ap.start + ' · ' + ap.type + ((ap.zones && ap.zones.length) ? ' · ' + ap.zones.join(", ") : '') + ' · ' + ap.dur + ' min') + '" data-apid="' + escHtml(ap.id) + '" style="background:linear-gradient(' + hexToRgba(tcol, 0.14) + ',' + hexToRgba(tcol, 0.14) + '),#fff; border-left-color:' + tcol + '; --tc:' + tcol + '; top:' + top + 'px; height:' + ht + 'px; left:calc(' + (it.lane / it.lanes * 100) + '% + 2px); width:calc(' + (100 / it.lanes) + '% - 4px);">' +
+      var isLast = !!(lastOf[ap.patientId] && lastOf[ap.patientId].id === ap.id && ap.date >= today);
+      h += '<div class="ag-ap st-' + ap.status + (it.lanes > 1 ? ' multi' : '') + (ht < 56 ? ' short' : '') + (isLast ? ' is-last last-' + lc.style : '') + '" title="' + escHtml(patientNameById(ap.patientId) + ' · ' + ap.start + ' · ' + ap.type + ((ap.zones && ap.zones.length) ? ' · ' + ap.zones.join(", ") : '') + ' · ' + ap.dur + ' min') + '" data-apid="' + escHtml(ap.id) + '"' + (isLast ? ' data-last="1"' : '') + ' style="' + (isLast && lc.style === 'fill' ? 'background:' + lc.color + '; color:' + textOn(lc.color) + ';' : 'background:linear-gradient(' + hexToRgba(tcol, 0.14) + ',' + hexToRgba(tcol, 0.14) + '),#fff;') + (isLast && lc.style === 'frame' ? ' box-shadow:inset 0 0 0 2px ' + lc.color + ';' : '') + ' border-left-color:' + tcol + '; --tc:' + tcol + '; top:' + top + 'px; height:' + ht + 'px; left:calc(' + (it.lane / it.lanes * 100) + '% + 2px); width:calc(' + (100 / it.lanes) + '% - 4px);">' +
         '<button type="button" class="ag-more" data-apmore="' + escHtml(ap.id) + '" aria-label="Autres actions">⋯</button>' +
         '<div class="l1">' + (ap.status === "present" ? '<span class="ag-st ok" title="Présent">✓</span>' : (ap.status === "absent" ? '<span class="ag-st ko" title="Absent">✕</span>' : "")) + '<span class="nm">' + escHtml(narrowNames ? agShortName(patientNameById(ap.patientId)) : patientNameById(ap.patientId)) + '</span><span class="tm">' + ap.start + '</span></div>' +
-        (ht >= 48 ? '<div class="sb">' + escHtml(ap.type) + ((ap.zones && ap.zones.length) ? ' · ' + escHtml(ap.zones.join(", ")) : '') + ' · ' + ap.dur + ' min' + (hasSession ? ' · séance saisie' : '') + '</div>' : '') + ((lastOf[ap.patientId] && lastOf[ap.patientId].id === ap.id && ap.date >= today) ? AG_LAST_BADGE : '') + '</div>';
+        (ht >= 48 ? '<div class="sb">' + escHtml(ap.type) + ((ap.zones && ap.zones.length) ? ' · ' + escHtml(ap.zones.join(", ")) : '') + ' · ' + ap.dur + ' min' + (hasSession ? ' · séance saisie' : '') + '</div>' : '') + ((isLast && lc.style === 'dot') ? agLastDot(lc.color) : '') + '</div>';
     });
     h += '</div>';
     if(d === today && nowMin >= rg.lo && nowMin <= rg.hi) h += '<div class="ag-now" style="top:' + ((nowMin - rg.lo) * AG_PX) + 'px;"></div>';
@@ -9906,7 +10111,7 @@ function renderAgenda(){
   });
   grid.innerHTML = h;
   if(agAnimDir){ void grid.offsetWidth; grid.classList.add(agAnimDir > 0 ? "in-next" : "in-prev"); agAnimDir = 0; }
-  document.getElementById("agLegend").innerHTML = agTypes().map(function(t){ return '<span><i style="background:' + t.color + ';"></i>' + escHtml(t.name) + ' · ' + t.dur + ' min</span>'; }).join("") + '<span><i class="ag-last-key"></i>Dernier rendez-vous du patient</span>' +
+  document.getElementById("agLegend").innerHTML = agTypes().map(function(t){ return '<span><i style="background:' + t.color + ';"></i>' + escHtml(t.name) + ' · ' + t.dur + ' min</span>'; }).join("") + '<span>' + agLastKey() + 'Dernier rendez-vous du patient</span>' +
     (plList().length ? '<span><i style="background:repeating-linear-gradient(135deg, rgba(11,18,32,0.35) 0 1.5px, #fff 1.5px 4px); border:1px solid #d5d9e0;"></i>Hors plage</span><span><i style="background:repeating-linear-gradient(135deg, rgba(11,18,32,0.6) 0 2px, #cfd4dc 2px 4px);"></i>Fermé</span>' : "");
   var sc = document.getElementById("agScroll");
   if(!renderAgenda.scrolled){ sc.scrollTop = Math.max(0, ((days.indexOf(today) !== -1 ? nowMin : 8 * 60) - rg.lo - 60) * AG_PX); renderAgenda.scrolled = true; }
@@ -10719,6 +10924,37 @@ function renderPlagesMgr(){
   }).join("") : '<div class="tc-sub">Aucune fermeture.</div>');
   document.getElementById("pmBody").innerHTML = h;
 }
+/* ----- paramètres de l'agenda ----- */
+var AG_SWATCHES = ["#FF8A00", "#E5484D", "#8E4EC6", "#007BFF", "#12A594", "#F5D90A"];
+function agSetRender(){
+  var c = agLastCfg();
+  document.getElementById("agSetBody").innerHTML =
+    '<button type="button" class="as-item" data-agset="plages">Plages horaires et fermetures ›</button>' +
+    '<div class="set-sec">Dernier rendez-vous d\'un patient</div>' +
+    '<div class="tc-sub" style="margin-top:-8px;">Repère les patients à qui il faut reprendre un rendez-vous.</div>' +
+    '<div class="set-row" id="agSetStyle">' + [["fill", "Bulle colorée"], ["frame", "Cadre coloré"], ["dot", "Pastille"]].map(function(x){ return '<button type="button" class="chip-btn' + (c.style === x[0] ? ' on' : '') + '" data-agstyle="' + x[0] + '">' + x[1] + '</button>'; }).join("") + '</div>' +
+    '<div class="set-row">' + AG_SWATCHES.map(function(col){ return '<button type="button" class="set-swatch' + (c.color.toLowerCase() === col.toLowerCase() ? ' on' : '') + '" style="background:' + col + ';" data-agcolor="' + col + '" aria-label="Couleur ' + col + '"></button>'; }).join("") + '<input type="color" id="agLastColor" class="set-color" value="' + c.color.toLowerCase() + '" aria-label="Autre couleur"></div>' +
+    '<div class="set-sec">Aperçu</div>' +
+    '<div class="ag-ap is-last last-' + c.style + '" style="position:relative;height:46px;' + (c.style === 'fill' ? 'background:' + c.color + ';color:' + textOn(c.color) + ';' : 'background:#fff;') + (c.style === 'frame' ? 'box-shadow:inset 0 0 0 2px ' + c.color + ';' : '') + 'border-left-color:#8A93A3;"><div class="l1"><span class="nm">Alice Martin</span><span class="tm">10:00</span></div><div class="sb">Séance · 30 min</div>' + (c.style === 'dot' ? agLastDot(c.color) : '') + '</div>';
+}
+function agSetSave(patch){
+  if(!state.settings) state.settings = {};
+  state.settings.agLast = Object.assign(agLastCfg(), patch);
+  saveData(); agSetRender(); renderAgenda();
+}
+document.getElementById("agSetBtn").addEventListener("click", function(){ agSetRender(); document.getElementById("agSetOverlay").hidden = false; });
+document.getElementById("agSetClose").addEventListener("click", function(){ document.getElementById("agSetOverlay").hidden = true; });
+document.getElementById("agSetOverlay").addEventListener("click", function(e){
+  if(e.target === this){ this.hidden = true; return; }
+  var pl = e.target.closest("[data-agset]");
+  if(pl && pl.dataset.agset === "plages"){ this.hidden = true; document.getElementById("agPlagesBtn").click(); return; }
+  var st = e.target.closest("[data-agstyle]"); if(st){ agSetSave({ style: st.dataset.agstyle }); return; }
+  var sw = e.target.closest("[data-agcolor]"); if(sw){ agSetSave({ color: sw.dataset.agcolor }); return; }
+});
+document.getElementById("agSetOverlay").addEventListener("input", function(e){
+  if(e.target.id === "agLastColor"){ if(!state.settings) state.settings = {}; state.settings.agLast = Object.assign(agLastCfg(), { color: e.target.value }); saveData(); renderAgenda(); }
+});
+document.getElementById("agSetOverlay").addEventListener("change", function(e){ if(e.target.id === "agLastColor") agSetRender(); });
 document.getElementById("agPlagesBtn").addEventListener("click", function(){ renderPlagesMgr(); document.getElementById("plagesMgrOverlay").hidden = false; });
 document.getElementById("pmCloseBtn").addEventListener("click", function(){ document.getElementById("plagesMgrOverlay").hidden = true; if(appMode === "agenda") renderAgenda(); });
 document.getElementById("pmNewBtn").addEventListener("click", function(){ openPlageModal(null); });
@@ -10741,8 +10977,8 @@ document.getElementById("pmBody").addEventListener("click", function(e){
 /* ============================================================
    STATISTIQUES DE L'AGENDA
    ============================================================ */
-var stWeeks = 8, stMode = "all";
-var ST_PERIODS = [[4, "4 semaines"], [8, "8 semaines"], [12, "12 semaines"], [26, "6 mois"], [52, "1 an"]];
+var stWeeks = 8;
+var ST_PERIODS = [[1, "1 semaine"], [4, "4 semaines"], [8, "8 semaines"], [26, "6 mois"], [52, "1 an"]];
 function niceTop(max){
   var step = Math.max(1, Math.ceil(max / 4)), mag = Math.pow(10, Math.floor(Math.log(step) / Math.LN10)), norm = step / mag;
   step = (norm <= 1 ? 1 : (norm <= 2 ? 2 : (norm <= 5 ? 5 : 10))) * mag;
@@ -10779,41 +11015,67 @@ function svgDonut(items, ariaLabel){
 }
 function renderStats(){
   document.getElementById("stPeriod").innerHTML = ST_PERIODS.map(function(p){ return '<button type="button" class="chip-btn' + (stWeeks === p[0] ? ' on' : '') + '" data-stweeks="' + p[0] + '">' + p[1] + '</button>'; }).join("");
-  document.getElementById("stCount").innerHTML = [["all", "Tous les rendez-vous (hors annulés)"], ["present", "Seulement les patients pointés présents"]].map(function(m){ return '<button type="button" class="chip-btn' + (stMode === m[0] ? ' on' : '') + '" data-stmode="' + m[0] + '">' + m[1] + '</button>'; }).join("");
-  var thisMon = weekStartOf(todayISO()), firstMon = addDaysToDate(thisMon, -7 * (stWeeks - 1)), lastSun = addDaysToDate(thisMon, 6);
-  var inPeriod = agList().filter(function(a){ return a.date >= firstMon && a.date <= lastSun; });
-  var counted = inPeriod.filter(function(a){ return stMode === "present" ? a.status === "present" : a.status !== "annule"; });
+  var today = todayISO(), thisMon = weekStartOf(today), thisSun = addDaysToDate(thisMon, 6), firstMon = addDaysToDate(thisMon, -7 * (stWeeks - 1));
+  var live = agList().filter(function(a){ return a.status !== "annule"; });
+  var passed = live.filter(function(a){ return a.date >= firstMon && a.date <= today; });
+  var venus = passed.filter(function(a){ return a.status !== "absent"; });
+  var absents = passed.length - venus.length;
   var body = document.getElementById("stBody");
-  if(!inPeriod.length){ body.innerHTML = '<div class="w-callout">Aucun rendez-vous sur cette période. Crée-en dans l\'onglet Agenda : les statistiques se remplissent toutes seules.</div>'; return; }
-  var weeks = [], pats = [], rdvs = [];
-  for(var i = 0; i < stWeeks; i++){
-    var wk = addDaysToDate(firstMon, 7 * i), set = {}, c = 0;
-    counted.forEach(function(a){ if(weekStartOf(a.date) === wk){ set[a.patientId] = 1; c++; } });
-    weeks.push(new Date(wk + "T00:00:00").toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" })); pats.push(Object.keys(set).length); rdvs.push(c);
+  var h = "";
+  /* ----- cette semaine : nombre de patients par jour (futur compris) ----- */
+  var wk = [];
+  for(var d = 0; d < 6; d++){
+    var key = addDaysToDate(thisMon, d), day = live.filter(function(a){ return a.date === key; }), set = {};
+    day.forEach(function(a){ set[a.patientId] = 1; });
+    wk.push({ key: key, label: WD_LABELS[d], n: Object.keys(set).length, rdv: day.length, abs: day.filter(function(a){ return a.status === "absent"; }).length });
   }
-  var distinct = {}; counted.forEach(function(a){ distinct[a.patientId] = 1; });
-  var present = inPeriod.filter(function(a){ return a.status === "present"; }).length, absent = inPeriod.filter(function(a){ return a.status === "absent"; }).length, annule = inPeriod.filter(function(a){ return a.status === "annule"; }).length;
-  var avgP = pats.reduce(function(a, b){ return a + b; }, 0) / stWeeks;
+  var wset = {}, wrdv = 0; live.filter(function(a){ return a.date >= thisMon && a.date <= thisSun; }).forEach(function(a){ wset[a.patientId] = 1; wrdv++; });
+  var wmax = Math.max.apply(null, wk.map(function(x){ return x.n; }).concat([1]));
+  h += '<div class="st-card"><h3>Cette semaine — patients par jour</h3><div class="tc-sub" style="margin:-4px 0 10px;">' + Object.keys(wset).length + ' patient(s) différent(s) · ' + wrdv + ' rendez-vous (à venir compris)</div><div class="st-week">' + wk.map(function(x){
+    return '<div class="st-wd' + (x.key === today ? ' today' : '') + (x.key > today ? ' future' : '') + '" data-wkday="' + x.key + '"><div class="st-wn">' + x.n + '</div><div class="st-wbar"><div style="height:' + (x.n / wmax * 100) + '%;"></div></div><div class="st-wl">' + x.label + '</div>' + (x.abs ? '<div class="st-wa">' + x.abs + ' absent' + (x.abs > 1 ? 's' : '') + '</div>' : '') + '</div>';
+  }).join("") + '</div></div>';
+  if(!passed.length){
+    body.innerHTML = h + '<div class="w-callout">Aucun rendez-vous jusqu\'à aujourd\'hui sur cette période. Crée-en dans l\'onglet Agenda : les statistiques se remplissent toutes seules.</div>';
+    return;
+  }
+  /* ----- indicateurs de la période (rendez-vous passés, hors annulés) ----- */
+  var pw = {}, seen = {}, weeks = [], pats = [], rdvs = [];
+  venus.forEach(function(a){ seen[a.patientId] = 1; (pw[a.patientId] = pw[a.patientId] || {})[weekStartOf(a.date)] = 1; });
+  var patientWeeks = 0; Object.keys(pw).forEach(function(k){ patientWeeks += Object.keys(pw[k]).length; });
+  var freq = patientWeeks ? venus.length / patientWeeks : 0;
+  for(var i = 0; i < stWeeks; i++){
+    var ws = addDaysToDate(firstMon, 7 * i), set2 = {}, c = 0;
+    venus.forEach(function(a){ if(weekStartOf(a.date) === ws){ set2[a.patientId] = 1; c++; } });
+    weeks.push(new Date(ws + "T00:00:00").toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" })); pats.push(Object.keys(set2).length); rdvs.push(c);
+  }
   var kpi = function(v, l){ return '<div class="st-kpi"><div class="v">' + v + '</div><div class="l">' + l + '</div></div>'; };
-  var h = '<div class="st-kpis">' + kpi(counted.length, 'rendez-vous') + kpi(Object.keys(distinct).length, 'patients différents') + kpi(frDec(round1(avgP)), 'patients par semaine (moyenne sur ' + stWeeks + ' sem.)') + kpi(present + absent ? Math.round(absent / (present + absent) * 100) + ' %' : '—', 'taux d\'absence (' + absent + ' absent(s), ' + present + ' présent(s))') + kpi(annule, 'annulé(s)') + '</div>';
-  h += '<div class="st-card"><h3>Patients et rendez-vous par semaine</h3>' + svgBars(weeks, [{ name: "Patients", color: "#007BFF", values: pats }, { name: "Rendez-vous", color: "#c9ced8", values: rdvs }], "Patients différents et rendez-vous par semaine") + '<div class="st-legend"><span><i style="background:#007BFF;"></i>Patients différents</span><span><i style="background:#c9ced8;"></i>Rendez-vous</span><span>Semaines commençant le (jj/mm)</span></div></div>';
-  var types = agTypes().map(function(t){ return { label: t.name, color: t.color, value: counted.filter(function(a){ return a.type === t.name; }).length }; });
+  var oldCancel = agList().filter(function(a){ return a.status === "annule" && a.date >= firstMon && a.date <= today; }).length;
+  h += '<div class="st-kpis">' +
+    kpi(passed.length, 'rendez-vous jusqu\'à aujourd\'hui' + (absents ? ' (dont ' + absents + ' absent' + (absents > 1 ? 's' : '') + ')' : '')) +
+    kpi(Object.keys(seen).length, 'patients différents venus') +
+    kpi(frDec(round1(freq)), 'rendez-vous par semaine et par patient (en moyenne, les semaines où il vient)') +
+    kpi(Math.round(absents / passed.length * 100) + ' %', 'taux d\'absence (' + absents + ' absent' + (absents > 1 ? 's' : '') + ' sur ' + passed.length + ', notés dans l\'agenda)') +
+    kpi(frDec(round1(venus.length / stWeeks)), 'rendez-vous honorés par semaine (moyenne sur ' + stWeeks + ' sem.)') +
+    (oldCancel ? kpi(oldCancel, 'annulé(s) (anciens rendez-vous)') : '') + '</div>';
+  if(stWeeks >= 4){
+    h += '<div class="st-card"><h3>Patients et rendez-vous par semaine</h3>' + svgBars(weeks, [{ name: "Patients", color: "#007BFF", values: pats }, { name: "Rendez-vous", color: "#c9ced8", values: rdvs }], "Patients différents et rendez-vous par semaine") + '<div class="st-legend"><span><i style="background:#007BFF;"></i>Patients différents</span><span><i style="background:#c9ced8;"></i>Rendez-vous honorés</span><span>Semaines commençant le (jj/mm)</span></div></div>';
+  }
+  var types = agTypes().map(function(t){ return { label: t.name, color: t.color, value: venus.filter(function(a){ return a.type === t.name; }).length }; });
   var known = {}; types.forEach(function(t){ known[t.label] = 1; });
-  var other = counted.filter(function(a){ return !known[a.type]; }).length;
+  var other = venus.filter(function(a){ return !known[a.type]; }).length;
   if(other) types.push({ label: "Autres types", color: "#cfd4dc", value: other });
   types = types.filter(function(t){ return t.value > 0; });
-  h += '<div class="st-card"><h3>Types de consultation</h3>' + (types.length ? '<div class="st-donut-wrap">' + svgDonut(types, "Répartition par type de consultation") + '<div style="flex:1; min-width:180px;">' + types.map(function(t){ return '<div class="st-hbar" style="grid-template-columns:1fr 70px;"><span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;background:' + t.color + ';"></i>' + escHtml(t.label) + '</span><span class="n">' + t.value + ' · ' + Math.round(t.value / counted.length * 100) + ' %</span></div>'; }).join("") + '</div></div>' : '<div class="tc-sub">Rien à afficher avec ce filtre.</div>') + '</div>';
-  var zc = {}; counted.forEach(function(a){ var zs = (a.zones && a.zones.length) ? a.zones : ["Non renseignée"]; zs.forEach(function(z){ zc[z] = (zc[z] || 0) + 1; }); });
+  h += '<div class="st-card"><h3>Types de consultation</h3>' + (types.length ? '<div class="st-donut-wrap">' + svgDonut(types, "Répartition par type de consultation") + '<div style="flex:1; min-width:180px;">' + types.map(function(t){ return '<div class="st-hbar" style="grid-template-columns:1fr 70px;"><span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;background:' + t.color + ';"></i>' + escHtml(t.label) + '</span><span class="n">' + t.value + ' · ' + Math.round(t.value / venus.length * 100) + ' %</span></div>'; }).join("") + '</div></div>' : '<div class="tc-sub">Rien à afficher.</div>') + '</div>';
+  var zc = {}; venus.forEach(function(a){ var zs = (a.zones && a.zones.length) ? a.zones : ["Non renseignée"]; zs.forEach(function(z){ zc[z] = (zc[z] || 0) + 1; }); });
   var zk = Object.keys(zc).sort(function(a, b){ return zc[b] - zc[a]; }), zmax = zk.length ? zc[zk[0]] : 1;
-  h += '<div class="st-card"><h3>Zones traitées</h3>' + (zk.length ? zk.map(function(z){ return '<div class="st-hbar"><span>' + escHtml(z) + '</span><div class="b"><div style="width:' + (zc[z] / zmax * 100) + '%; background:' + (z === "Non renseignée" ? "#cfd4dc" : "#007BFF") + ';"></div></div><span class="n">' + zc[z] + '</span></div>'; }).join("") : '<div class="tc-sub">Rien à afficher avec ce filtre.</div>') + '<div class="tc-sub" style="margin-top:6px;">La zone vient de la fiche clinique du patient et se règle rendez-vous par rendez-vous.</div></div>';
-  var wdc = [0, 0, 0, 0, 0, 0]; counted.forEach(function(a){ var w = isoWeekday(a.date) - 1; if(w < 6) wdc[w]++; });
+  h += '<div class="st-card"><h3>Zones traitées</h3>' + (zk.length ? zk.map(function(z){ return '<div class="st-hbar"><span>' + escHtml(z) + '</span><div class="b"><div style="width:' + (zc[z] / zmax * 100) + '%; background:' + (z === "Non renseignée" ? "#cfd4dc" : "#007BFF") + ';"></div></div><span class="n">' + zc[z] + '</span></div>'; }).join("") : '<div class="tc-sub">Rien à afficher.</div>') + '<div class="tc-sub" style="margin-top:6px;">La zone vient de la fiche clinique du patient et se règle rendez-vous par rendez-vous.</div></div>';
+  var wdc = [0, 0, 0, 0, 0, 0]; venus.forEach(function(a){ var w = isoWeekday(a.date) - 1; if(w < 6) wdc[w]++; });
   h += '<div class="st-card"><h3>Rendez-vous par jour de la semaine</h3>' + svgBars(WD_LABELS.slice(0, 6), [{ name: "Rendez-vous", color: "#0B1220", values: wdc }], "Rendez-vous par jour de la semaine") + '</div>';
   body.innerHTML = h;
 }
 document.getElementById("statsView").addEventListener("click", function(e){
-  var w = e.target.closest("[data-stweeks]"), m = e.target.closest("[data-stmode]");
+  var w = e.target.closest("[data-stweeks]");
   if(w){ stWeeks = parseInt(w.dataset.stweeks); renderStats(); }
-  if(m){ stMode = m.dataset.stmode; renderStats(); }
 });
 
 /* ----- menu « Plus » du rail ----- */
@@ -11312,7 +11574,7 @@ function renderWizardStep(){
     wTitle.textContent = "Quel muscle ?";
     var groups = {};
     var order = [];
-    MUSCLE_DB.filter(function(m){ return m.region === wizard.limb; }).forEach(function(m){
+    MUSCLE_DB.filter(function(m){ return m.region === wizard.limb && (wizard.mode === 'iso' ? (m.isoGroup || !m.isoMember) : !m.isoGroup); }).forEach(function(m){
       if(!groups[m.group]){ groups[m.group] = []; order.push(m.group); }
       groups[m.group].push(m);
     });
@@ -11457,7 +11719,10 @@ function renderWizardStep(){
         '<label class="w-field-label">Unité</label>' +
         '<div class="unit-pick"><button data-unit="N" type="button">Newton (N)</button><button data-unit="kg" type="button">Kilogramme (kg)</button></div>' +
         '<label class="w-field-label">Valeur au dynamomètre</label><input type="number" step="any" id="wIsoValue">' +
+        '<label class="w-field-label">Temps jusqu\'au pic (facultatif)</label>' +
+        '<div style="display:flex; gap:10px; align-items:center;"><input type="number" step="any" id="wIsoTtp" placeholder="0" style="flex:1;">' + ttpSeg("wIsoTtp", (existingTest && existingTest.ttpUnit) || "s") + '</div>' +
         '<div id="wNormPreview"></div>';
+      unitSel.wIsoTtp = (existingTest && existingTest.ttpUnit) || "s";
       wNextBtn.disabled = true;
 
       function refreshUnitButtons(){
@@ -11543,6 +11808,8 @@ function handleWizardNext(){
       }
       var entry2 = { id: uid(), date: date };
       if(wizard.side === 'D') entry2.valueD = isoVal; else entry2.valueG = isoVal;
+      var ttpSec = ttpToSec(document.getElementById("wIsoTtp").value, unitSel.wIsoTtp);
+      if(ttpSec !== null){ if(wizard.side === 'D') entry2.ttpD = ttpSec; else entry2.ttpG = ttpSec; test.ttpUnit = unitSel.wIsoTtp; }
       test.entries.push(entry2);
     }
     saveData();
