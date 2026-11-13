@@ -1015,6 +1015,7 @@
 .sidebar, #appNav, #bottomNav{ display:none !important; }
 #backToProfilsBtn, .tab-bar [data-tab="fiche"], .tab-bar [data-tab="fonctionnel"], .tab-bar [data-tab="periodisation"]{ display:none !important; }
 .ov-clin, .ov-anam, .ov-rts, .ov-period, .ov-ratios{ display:none !important; }
+#toggleRecoBtn, #recoPanelWrap, #toggleTargetBtn, #targetPanelWrap, #exRecoCard, #isoTargetCard{ display:none !important; }
 #athAuthView{ position:fixed; inset:0; background:#f3f4f7; z-index:9999; overflow:auto; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; color:#0B1220; }
 #athAuthView[hidden]{ display:none; }
 .aa-wrap{ max-width:520px; margin:0 auto; padding:16px; } .aa-brand{ text-align:center; padding:28px 0 10px; } .aa-brand b{ font-size:26px; letter-spacing:4px; } .aa-brand span{ display:block; font-size:12px; letter-spacing:3px; color:#8a93a3; margin-top:4px; }
@@ -1025,6 +1026,17 @@
 html.ath-lock, html.ath-lock body{ overflow:hidden !important; overscroll-behavior:none; } html.ath-lock body{ position:fixed; left:0; right:0; width:100%; }
 .modal-overlay, .sheet-overlay{ overscroll-behavior:contain; }
 .ath-toast{ position:fixed; left:50%; bottom:90px; transform:translateX(-50%); background:#0B1220; color:#fff; padding:12px 16px; border-radius:12px; z-index:100000; max-width:90%; font-size:15px; text-align:center; }
+
+.as-card{ background:#fff; border:1px solid #e3e6ec; border-radius:16px; padding:16px; margin-bottom:12px; } .as-card h3{ margin:0 0 10px; font-size:17px; display:flex; justify-content:space-between; align-items:baseline; }
+.as-sub{ font-size:13px; color:#8a93a3; margin-top:2px; } .as-big{ font-size:26px; font-weight:800; line-height:1.15; } .as-ic{ font-size:22px; margin-bottom:2px; }
+.as-level{ background:linear-gradient(135deg,#0B1220,#1d2b4a); color:#fff; border:0; } .as-level .as-sub{ color:#b9c3d6; } .as-lv{ font-size:13px; letter-spacing:2px; text-transform:uppercase; color:#8fb4ff; font-weight:700; } .as-lvn{ font-size:30px; font-weight:800; margin:2px 0 10px; }
+.as-bar{ height:10px; background:rgba(120,130,150,0.25); border-radius:99px; overflow:hidden; margin:6px 0; } .as-bar>div{ height:100%; background:linear-gradient(90deg,#1fa971,#8fe3b4); border-radius:99px; } .as-bar.sm{ height:6px; background:#e9ecf1; }
+.as-streak{ display:flex; gap:14px; align-items:center; } .as-fire{ font-size:46px; }
+.as-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; } .as-grid .as-card{ margin-bottom:0; } .as-grid{ margin-bottom:12px; }
+.as-pr{ display:flex; justify-content:space-between; align-items:center; gap:10px; padding:10px 0; border-top:1px solid #eef0f4; } .as-pr:first-of-type{ border-top:0; } .as-prv{ font-weight:800; font-size:18px; text-align:right; } .as-new{ font-size:12px; background:#fff4e0; color:#8a5200; border-radius:99px; padding:2px 8px; font-weight:800; margin-right:4px; }
+.as-trophies{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; } .as-tr{ text-align:center; padding:10px 4px; border:1px solid #e3e6ec; border-radius:14px; opacity:0.45; filter:grayscale(1); } .as-tr.ok{ opacity:1; filter:none; background:#fffaf0; border-color:#f5d68a; } .as-tri{ font-size:28px; } .as-trt{ font-size:12px; font-weight:700; margin-top:2px; }
+.as-empty{ color:#8a93a3; text-align:center; padding:14px 6px; font-size:14px; } .as-leg{ display:flex; gap:12px; flex-wrap:wrap; font-size:12px; color:#8a93a3; margin-top:6px; } .as-leg i{ display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:5px; }
+#tab-stats{ padding-bottom:30px; }
 </style>
 </head>
 <body>
@@ -12346,7 +12358,7 @@ async function doJoin(){
   try{
     var r = await http(inv.url, "/api/athlete/join", "POST", { email: inv.email, code: inv.code, password: p });
     if(r.status !== 200){ $("aaJMsg").textContent = (r.json && r.json.message) || "Impossible de créer l'accès."; return; }
-    var c = syncCfg(); c.url = inv.url; c.email = inv.email; c.token = r.json.token; c.patientId = r.json.patient; c.lastRev = 0; c.pushed = {}; c.metaSig = {}; c.ath = {}; c.base = null; c.auto = true; syncSave(c); inv = null;
+    var c = syncCfg(); c.url = inv.url; c.email = inv.email; c.token = r.json.token; c.tokAt = new Date().toISOString(); c.patientId = r.json.patient; c.lastRev = 0; c.pushed = {}; c.metaSig = {}; c.ath = {}; c.base = null; c.auto = true; syncSave(c); inv = null;
     $("athAuthView").hidden = true; startSession();
   }catch(e){ $("aaJMsg").textContent = "Serveur injoignable. Vérifie ta connexion."; }
 }
@@ -12356,7 +12368,7 @@ async function doLogin(){
     var r = await http(c.url, "/api/login", "POST", { email: c.email, password: $("aaLPass").value });
     if(r.status !== 200){ $("aaLMsg").textContent = (r.json && r.json.message) || "Connexion impossible."; return; }
     if(r.json.role !== "athlete"){ $("aaLMsg").textContent = "Ce compte n'est pas un accès athlète."; return; }
-    c.token = r.json.token; c.lastRev = 0; c.pushed = {}; c.ath = {}; c.base = null; c.auto = true; syncSave(c);
+    c.token = r.json.token; c.tokAt = new Date().toISOString(); c.lastRev = 0; c.pushed = {}; c.ath = {}; c.base = null; c.auto = true; syncSave(c);
     $("athAuthView").hidden = true; startSession();
   }catch(e){ $("aaLMsg").textContent = "Serveur injoignable. Vérifie ta connexion."; }
 }
@@ -12428,6 +12440,13 @@ function discover(c){
 }
 
 /* ---------- synchronisation ---------- */
+async function renewToken(c){
+  if(c.tokAt && Date.now() - Date.parse(c.tokAt) < 3 * 86400000) return;
+  try{
+    var r = await syncFetch(c, "/api/athlete/refresh", "POST", {});
+    if(r.status === 200 && r.json && r.json.token){ c.token = r.json.token; c.tokAt = new Date().toISOString(); }
+  }catch(e){ /* ancien serveur ou réseau : on réessaiera à la prochaine synchronisation */ }
+}
 var running = false, lastUi = "";
 function setStatus(t){ lastUi = t; var el = $("athSyncTxt"); if(el) el.textContent = t; }
 syncNow = async function(manual){
@@ -12458,6 +12477,7 @@ syncNow = async function(manual){
       batch.forEach(function(b){ c.pushed[b.key] = b.sig; });
     }
     c.lastOkAt = new Date().toISOString(); c.lastError = ""; setStatus("À jour");
+    await renewToken(c);
   }catch(e){
     if(e && e.auth){ syncSave(c); running = false; logout("Ton accès a été coupé ou a expiré : reconnecte-toi."); return; }
     c.lastError = (e && e.message) || "Erreur de synchronisation."; setStatus(e && e.network ? "Serveur injoignable : tes saisies sont gardées" : "Erreur : " + c.lastError);
@@ -12473,19 +12493,111 @@ window.addEventListener("online", function(){ syncNow(false); });
 setInterval(function(){ if(!document.hidden) syncNow(false); }, 60000);
 document.addEventListener("visibilitychange", function(){ if(!document.hidden) syncNow(false); });
 
+
+/* ---------- onglet Stats : séries, trophées, records, compteurs, ressenti, niveau ---------- */
+var LEVELS = ["Recrue", "Régulier", "Solide", "Affûté", "Machine", "Athlète", "Élite", "Légende"];
+function wk(d){ return weekStartOf(d); }
+function athStatsData(){
+  var p = state.patients[0], today = todayISO(), E = (p && p.program.entries) || {}, plan = (p && p.program.plan) || {}, dm = (p && p.program.dayMeta) || {};
+  var days = Object.keys(E).filter(function(d){ return d <= today && (E[d] || []).length; }).sort();
+  var D = { today: today, sessions: days.length, tonnage: 0, km: 0, minutes: 0, wellDays: 0, tests: 0, prs: {}, prCount: 0 };
+  var daySet = {}; days.forEach(function(d){ daySet[d] = 1; });
+  var byEx = {};
+  days.forEach(function(d){
+    var dmin = dm[d] && dm[d].sessionDuree > 0 ? dm[d].sessionDuree : 0, emin = 0;
+    (E[d] || []).forEach(function(e){
+      if(e.kind === "exercise"){ D.tonnage += (e.sets || 0) * (e.reps || 0) * (e.load || 0); if(e.name && e.load > 0) (byEx[e.name] = byEx[e.name] || []).push({ date: d, load: e.load, sets: e.sets, reps: e.reps }); }
+      if(e.kind === "run" || e.kind === "functional"){ D.km += e.distanceKm || 0; emin += e.durationMin || 0; }
+    });
+    D.minutes += dmin || emin;
+  });
+  Object.keys(dm).forEach(function(d){ var m = dm[d]; if(d <= today && ["wellSleep", "wellFatigue", "wellSoreness", "wellStress"].every(function(k){ return m[k] !== undefined; })) D.wellDays++; });
+  (p ? p.tests || [] : []).forEach(function(t){ (t.entries || []).forEach(function(e){ if(e.src === "athlete") D.tests++; }); });
+  var recentFrom = addDaysToDate(today, -14);
+  Object.keys(byEx).forEach(function(n){
+    var l = byEx[n].sort(function(a, b){ return a.date.localeCompare(b.date); }), best = 0, bestAt = null, prev = 0, improved = false;
+    l.forEach(function(x){ if(x.load > best){ if(best > 0) improved = true; prev = best; best = x.load; bestAt = x; } });
+    D.prs[n] = { best: best, at: bestAt, n: l.length, improved: improved, recent: improved && bestAt.date >= recentFrom };
+    if(improved) D.prCount++;
+  });
+  /* série : semaines d'affilée où il a fait toutes ses séances prévues */
+  function wDone(ws){ var n = 0; for(var i = 0; i < 7; i++) if(daySet[addDaysToDate(ws, i)]) n++; return n; }
+  function wPlanned(ws){ var n = 0; for(var i = 0; i < 7; i++) if(plan[addDaysToDate(ws, i)]) n++; return n; }
+  var cur = wk(today), streak = 0, thisOk = wDone(cur) >= Math.max(1, wPlanned(cur));
+  D.week = { done: wDone(cur), planned: Math.max(wPlanned(cur), wDone(cur) ? wDone(cur) : 0), ok: thisOk };
+  if(thisOk) streak++;
+  for(var k = 1; k < 520; k++){ var ws = addDaysToDate(cur, -7 * k); if(wDone(ws) >= Math.max(1, wPlanned(ws))) streak++; else break; }
+  D.streak = streak;
+  return D;
+}
+function athTrophies(D){
+  var list = [];
+  function add(id, icon, title, cur, goal, unit){ list.push({ id: id, icon: icon, title: title, cur: Math.min(cur, goal), goal: goal, unit: unit || "", ok: cur >= goal }); }
+  [[1, "🥉", "Première séance"], [10, "💪", "10 séances"], [25, "🔥", "25 séances"], [50, "⚡", "50 séances"], [100, "👑", "100 séances"]].forEach(function(t){ add("s" + t[0], t[1], t[2], D.sessions, t[0]); });
+  [[2, "✨", "2 semaines d'affilée"], [4, "🌟", "4 semaines d'affilée"], [8, "🚀", "8 semaines d'affilée"], [12, "🏔️", "12 semaines d'affilée"]].forEach(function(t){ add("w" + t[0], t[1], t[2], D.streak, t[0]); });
+  add("r1", "🏆", "Premier record", D.prCount, 1); add("r5", "🥇", "5 records battus", D.prCount, 5);
+  [[1000, "🏋️", "1 tonne soulevée"], [10000, "🚛", "10 tonnes soulevées"], [100000, "🐋", "100 tonnes soulevées"]].forEach(function(t){ add("t" + t[0], t[1], t[2], D.tonnage, t[0], "kg"); });
+  [[10, "👟", "10 km parcourus"], [50, "🏃", "50 km parcourus"], [100, "🌍", "100 km parcourus"]].forEach(function(t){ add("k" + t[0], t[1], t[2], D.km, t[0], "km"); });
+  add("e7", "🧘", "7 ressentis du jour", D.wellDays, 7); add("e30", "📈", "30 ressentis du jour", D.wellDays, 30);
+  add("m1", "🧪", "Première mesure de test", D.tests, 1);
+  return list;
+}
+function athFunTon(kg){
+  var t = kg / 1000;
+  if(kg >= 75000) return "≈ " + frDec(round1(kg / 150000)) + " baleine(s) bleue(s)";
+  if(kg >= 3000) return "≈ " + frDec(round1(kg / 6000)) + " éléphant(s) d'Afrique";
+  return "≈ " + frDec(round1(t)) + " petite(s) voiture(s)";
+}
+var MILESTONES = [["Paris → Lyon", 465], ["Paris → Marseille", 775], ["Paris → Barcelone", 1030], ["Paris → Rome", 1420], ["Le tour de la Terre", 40075]];
+function athMilestone(km){ for(var i = 0; i < MILESTONES.length; i++) if(km < MILESTONES[i][1]) return { name: MILESTONES[i][0], goal: MILESTONES[i][1], pct: Math.max(0, Math.min(100, km / MILESTONES[i][1] * 100)) }; return { name: "Le tour de la Terre", goal: 40075, pct: 100 }; }
+function athChart(){
+  var p = state.patients[0], dm = (p && p.program.dayMeta) || {}, today = todayISO(), from = addDaysToDate(today, -55), pts = [];
+  Object.keys(dm).sort().forEach(function(d){ if(d < from || d > today) return; var m = dm[d], w = m.wellness !== undefined ? m.wellness : (typeof computeWellness === "function" ? computeWellness(m) : undefined); if(w !== undefined || m.sessionRpe !== undefined) pts.push({ d: d, w: w, r: m.sessionRpe }); });
+  if(pts.length < 2) return '<div class="as-empty">Remplis ton ressenti du jour et ton RPE de fin de séance : ta courbe apparaît ici.</div>';
+  var W = 320, H = 130, x = function(d){ return 10 + (daysBetween(from, d) / 55) * (W - 20); }, y = function(v){ return H - 14 - (v / 10) * (H - 28); };
+  function line(key, col){ var l = pts.filter(function(q){ return q[key] !== undefined; }); if(!l.length) return ""; return (l.length > 1 ? '<polyline fill="none" stroke="' + col + '" stroke-width="2.5" stroke-linejoin="round" points="' + l.map(function(q){ return x(q.d).toFixed(1) + "," + y(q[key]).toFixed(1); }).join(" ") + '"/>' : "") + l.map(function(q){ return '<circle cx="' + x(q.d).toFixed(1) + '" cy="' + y(q[key]).toFixed(1) + '" r="3.5" fill="' + col + '"/>'; }).join(""); }
+  var grid = [0, 5, 10].map(function(v){ return '<line x1="10" x2="' + (W - 10) + '" y1="' + y(v).toFixed(1) + '" y2="' + y(v).toFixed(1) + '" stroke="#e3e6ec" stroke-width="1"/><text x="0" y="' + (y(v) + 3).toFixed(1) + '" font-size="8" fill="#8a93a3">' + v + '</text>'; }).join("");
+  return '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" role="img" aria-label="Évolution du ressenti et de l\'effort sur 8 semaines">' + grid + line("w", "#1fa971") + line("r", "#f59e0b") + '</svg><div class="as-leg"><span><i style="background:#1fa971"></i>Bien-être</span><span><i style="background:#f59e0b"></i>Effort de séance</span><span>8 dernières semaines</span></div>';
+}
+function renderAthStats(){
+  var el = $("tab-stats"); if(!el) return;
+  var D = athStatsData(), tr = athTrophies(D), got = tr.filter(function(t){ return t.ok; }).length;
+  var pts = D.sessions * 10 + D.wellDays * 5 + D.prCount * 25 + got * 50, lvl = Math.floor(pts / 150) + 1, into = pts % 150;
+  var hh = Math.floor(D.minutes / 60), mm = Math.round(D.minutes % 60), ms = athMilestone(D.km);
+  var prs = Object.keys(D.prs).map(function(n){ return { n: n, r: D.prs[n] }; }).sort(function(a, b){ return b.r.at.date.localeCompare(a.r.at.date); }).slice(0, 8);
+  var h = '<div class="as-card as-level"><div class="as-lv">Niveau ' + lvl + '</div><div class="as-lvn">' + esc2(LEVELS[Math.min(LEVELS.length - 1, lvl - 1)]) + '</div><div class="as-bar"><div style="width:' + (into / 150 * 100) + '%"></div></div><div class="as-sub">' + pts + ' points · encore ' + (150 - into) + ' pour le niveau ' + (lvl + 1) + '</div></div>' +
+    '<div class="as-card as-streak"><div class="as-fire">' + (D.streak ? "🔥" : "🌱") + '</div><div><div class="as-big">' + D.streak + ' semaine' + (D.streak > 1 ? "s" : "") + ' d\'affilée</div><div class="as-sub">' + (D.streak ? "Toutes tes séances prévues sont faites. Continue !" : "Fais toutes tes séances prévues cette semaine pour lancer ta série.") + '</div><div class="as-sub">Cette semaine : ' + D.week.done + ' séance' + (D.week.done > 1 ? "s" : "") + ' faite' + (D.week.done > 1 ? "s" : "") + (D.week.planned ? ' sur ' + D.week.planned + ' prévue' + (D.week.planned > 1 ? "s" : "") : "") + '</div></div></div>' +
+    '<div class="as-grid"><div class="as-card"><div class="as-ic">🗓️</div><div class="as-big" id="asSessions">' + D.sessions + '</div><div class="as-sub">séance' + (D.sessions > 1 ? "s" : "") + ' faite' + (D.sessions > 1 ? "s" : "") + '</div></div>' +
+    '<div class="as-card"><div class="as-ic">🏋️</div><div class="as-big" id="asTon">' + frDec(round1(D.tonnage / 1000)) + ' t</div><div class="as-sub">soulevées au total<br>' + athFunTon(D.tonnage) + '</div></div>' +
+    '<div class="as-card"><div class="as-ic">👟</div><div class="as-big" id="asKm">' + frDec(round1(D.km)) + ' km</div><div class="as-sub">' + esc2(ms.name) + '</div><div class="as-bar sm"><div style="width:' + ms.pct + '%"></div></div></div>' +
+    '<div class="as-card"><div class="as-ic">⏱️</div><div class="as-big" id="asTime">' + hh + ' h ' + String(mm).padStart(2, "0") + '</div><div class="as-sub">d\'entraînement</div></div></div>' +
+    '<div class="as-card"><h3>Mes records</h3>' + (prs.length ? prs.map(function(x){ return '<div class="as-pr"><div><b>' + esc2(x.n) + '</b><div class="as-sub">le ' + esc2(fmtDate(x.r.at.date)) + ' · ' + x.r.at.sets + ' × ' + x.r.at.reps + '</div></div><div class="as-prv">' + (x.r.recent ? '<span class="as-new">🏆 record !</span> ' : '') + frDec(x.r.best) + ' kg</div></div>'; }).join("") : '<div class="as-empty">Tes records apparaissent dès que tu enregistres des exercices avec une charge.</div>') + '</div>' +
+    '<div class="as-card"><h3>Trophées <span class="as-sub">' + got + ' / ' + tr.length + '</span></h3><div class="as-trophies">' + tr.map(function(t){ return '<div class="as-tr' + (t.ok ? " ok" : "") + '" title="' + esc2(t.title) + '"><div class="as-tri">' + t.icon + '</div><div class="as-trt">' + esc2(t.title) + '</div>' + (t.ok ? '<div class="as-sub">Débloqué</div>' : '<div class="as-sub">' + frDec(Math.round(t.cur * 10) / 10) + ' / ' + t.goal + (t.unit ? " " + t.unit : "") + '</div>') + '</div>'; }).join("") + '</div></div>' +
+    '<div class="as-card"><h3>Mon ressenti</h3>' + athChart() + '</div>';
+  el.innerHTML = h;
+}
+function setupStatsTab(){
+  var bar = document.querySelector(".tab-bar"); if(!bar || $("athStatsTabBtn")) return;
+  var b = document.createElement("button"); b.id = "athStatsTabBtn"; b.dataset.tab = "stats"; b.textContent = "Stats"; bar.appendChild(b);
+  b.addEventListener("click", function(){ activeTab = "stats"; renderAll(); });
+  var panel = document.createElement("div"); panel.id = "tab-stats"; panel.className = "tab-panel"; panel.hidden = true; $("tab-overview").parentNode.insertBefore(panel, $("tab-overview").nextSibling);
+}
 /* ---------- affichage : seulement sa fiche, onglets Overview et Programme ---------- */
 function enforce(){
   var p = state.patients[0]; if(!p) return;
   state.selectedPatientId = p.id; appMode = "profils"; profilsSubview = "detail";
-  if(activeTab !== "overview" && activeTab !== "programme") activeTab = "programme";
+  if(activeTab !== "overview" && activeTab !== "programme" && activeTab !== "stats") activeTab = "programme";
 }
 var _ra = renderAll;
 renderAll = function(){ enforce(); _ra(); chrome(); };
 function chrome(){
+  setupStatsTab();
+  var showStats = activeTab === "stats" && !!state.patients[0];
+  if($("tab-stats")){ $("tab-stats").hidden = !showStats; if(showStats) renderAthStats(); }
+  document.querySelectorAll(".tab-bar button").forEach(function(b){ b.classList.toggle("active", b.dataset.tab === activeTab); });
   var ha = document.querySelector(".header-actions");
-  if(ha && !$("athLogoutBtn")){
-    ha.innerHTML = '<span id="athSyncTxt" class="tc-sub" style="margin-right:8px;">' + esc2(lastUi) + '</span><button class="btn-ghost" id="athLogoutBtn">Quitter</button>';
-    $("athLogoutBtn").addEventListener("click", function(){ if(confirm("Te déconnecter de ce téléphone ?")) logout(""); });
+  if(ha && !$("athSyncTxt")){
+    ha.innerHTML = '<span id="athSyncTxt" class="tc-sub">' + esc2(lastUi) + '</span>';
   }
 }
 
