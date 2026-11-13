@@ -11419,6 +11419,10 @@ async function syncPull(c){
   return { docs: docs, maxRev: maxRev };
 }
 /* ----- accès athlète : saisies reçues / modifiées / supprimées ----- */
+var ATH_BY = "kine";
+var ATH_META_KEYS = ["wellSleep", "wellFatigue", "wellSoreness", "wellStress", "wellness", "readiness", "pain", "sessionRpe", "sessionDuree", "commentaire"];
+function athMetaPick(m){ var o = {}; ATH_META_KEYS.forEach(function(k){ if(m && m[k] !== undefined && m[k] !== null && m[k] !== "") o[k] = m[k]; }); return o; }
+function athMetaSig(m){ return fnvHash(JSON.stringify(athMetaPick(m))); }
 function athSigOf(e){ var o = {}; Object.keys(e).forEach(function(k){ if(k !== "src" && k !== "athAt" && k !== "athSig") o[k] = e[k]; }); return fnvHash(JSON.stringify(o)); }
 function athClean(e){ var o = JSON.parse(JSON.stringify(e)); delete o.src; delete o.athAt; delete o.athSig; return o; }
 function athPatientOf(docId){ var best = null; state.patients.forEach(function(p){ if(docId.indexOf(p.id + "-") === 0 && (!best || p.id.length > best.id.length)) best = p; }); return best; }
@@ -11434,9 +11438,9 @@ function athFind(rec){
   Object.keys((p.program && p.program.entries) || {}).forEach(function(d){ (p.program.entries[d] || []).forEach(function(en){ if(en.id === rec.eid){ found = en; fd = d; } }); });
   return { patient: p, entry: found, date: fd };
 }
-function athRemoveTrain(p, eid){
+function athRemoveTrain(p, eid, force){
   Object.keys(p.program.entries || {}).forEach(function(d){
-    var l = p.program.entries[d] || [], n = l.filter(function(en){ return !(en.id === eid && en.src === "athlete"); });
+    var l = p.program.entries[d] || [], n = l.filter(function(en){ return !(en.id === eid && (force || en.src === "athlete")); });
     if(n.length !== l.length){ if(n.length) p.program.entries[d] = n; else delete p.program.entries[d]; }
   });
 }
@@ -11459,6 +11463,15 @@ function athApply(c, docs){
       c.pushed["tath:" + d.id] = 1; delete c.ath[d.id];
       return;
     }
+    if(data.kind === "day"){
+      var dt = String(data.date || ""); if(!/^\d{4}-\d\d-\d\d$/.test(dt)) return;
+      if(rec.at && rec.at >= d.updatedAt) return;
+      if(!p.program.dayMeta) p.program.dayMeta = {};
+      var cur0 = p.program.dayMeta[dt] = p.program.dayMeta[dt] || {}, mt = data.meta || {};
+      ATH_META_KEYS.forEach(function(k){ if(mt[k] !== undefined) cur0[k] = mt[k]; else delete cur0[k]; });
+      c.ath[d.id] = { pid: p.id, day: dt, at: d.updatedAt }; c.pushed["ath:" + d.id] = athMetaSig(cur0); changed = true;
+      return;
+    }
     var ent = data.entry; if(!ent || typeof ent !== "object" || typeof ent.id !== "string") return;
     var ne = JSON.parse(JSON.stringify(ent)); ne.id = eid; ne.src = "athlete"; ne.athAt = d.updatedAt;
     if(data.kind === "test"){
@@ -11469,7 +11482,7 @@ function athApply(c, docs){
         t = JSON.parse(JSON.stringify(def)); t.id = tid; t.entries = []; t.src = "athlete"; if(!Array.isArray(p.tests)) p.tests = []; p.tests.push(t); changed = true;
       }
       var cur = (t.entries || []).find(function(x){ return x.id === eid; });
-      if(cur && cur.src !== "athlete") return;
+      if(cur && cur.src !== "athlete" && !data.takeover) return;
       if(cur && cur.athAt && cur.athAt >= d.updatedAt) { c.ath[d.id] = { pid: p.id, eid: eid, testId: tid }; return; }
       if(!/^\d{4}-\d\d-\d\d$/.test(String(ne.date || ""))) ne.date = String(data.date || "");
       if(!/^\d{4}-\d\d-\d\d$/.test(ne.date)) return;
@@ -11482,9 +11495,9 @@ function athApply(c, docs){
     var date = String(data.date || "");
     if(!/^\d{4}-\d\d-\d\d$/.test(date)) return;
     var ex = athFind({ pid: p.id, eid: eid });
-    if(ex.entry && ex.entry.src !== "athlete") return;
+    if(ex.entry && ex.entry.src !== "athlete" && !data.takeover) return;
     if(ex.entry && ex.entry.athAt && ex.entry.athAt >= d.updatedAt){ c.ath[d.id] = { pid: p.id, eid: eid }; return; }
-    athRemoveTrain(p, eid);
+    athRemoveTrain(p, eid, !!data.takeover);
     ne.athSig = athSigOf(ne);
     (p.program.entries[date] = p.program.entries[date] || []).push(ne);
     c.ath[d.id] = { pid: p.id, eid: eid }; c.pushed["ath:" + d.id] = ne.athSig; changed = true;
@@ -11496,7 +11509,15 @@ function athCollectPush(c, out){
   if(!c.ath) return;
   var now = new Date().toISOString();
   Object.keys(c.ath).forEach(function(docId){
-    var rec = c.ath[docId], f = athFind(rec);
+    var rec = c.ath[docId];
+    if(rec.day){
+      var pt = state.patients.find(function(x){ return x.id === rec.pid; }); if(!pt) return;
+      var mm = (pt.program.dayMeta || {})[rec.day]; if(!mm) return;
+      var sg = athMetaSig(mm); if(sg === c.pushed["ath:" + docId]) return;
+      out.push({ key: "ath:" + docId, sig: sg, doc: { c: "athEntries", id: docId, data: { id: docId, patientId: rec.pid, by: ATH_BY, kind: "day", date: rec.day, meta: athMetaPick(mm) }, updatedAt: now } });
+      return;
+    }
+    var f = athFind(rec);
     if(!f.patient) return;
     if(!f.entry){
       if(!c.pushed["tath:" + docId]) out.push({ key: "tath:" + docId, sig: 1, doc: { c: "athEntries", id: docId, deleted: true, updatedAt: now } });
@@ -11504,8 +11525,10 @@ function athCollectPush(c, out){
     }
     var sig = athSigOf(f.entry);
     if(sig === c.pushed["ath:" + docId]) return;
-    var doc = { id: docId, patientId: rec.pid, by: "kine", kind: rec.testId ? "test" : "train", date: f.date, entry: athClean(f.entry) };
+    var doc = { id: docId, patientId: rec.pid, by: ATH_BY, kind: rec.testId ? "test" : "train", date: f.date, entry: athClean(f.entry) };
     if(rec.testId) doc.testId = rec.testId;
+    if(rec.take) doc.takeover = true;
+    if(rec.def) doc.testDef = rec.def;
     out.push({ key: "ath:" + docId, sig: sig, doc: { c: "athEntries", id: docId, data: doc, updatedAt: now } });
     f.entry.athSig = sig;
   });

@@ -1,6 +1,6 @@
 // Service worker : l'app fonctionne hors connexion après la première ouverture.
 // Pour forcer une mise à jour chez tous les appareils, change CACHE_VERSION.
-const CACHE_VERSION = "horus-v42";
+const CACHE_VERSION = "horus-v43";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png", "icons/apple-touch-icon.png", "icons/horus-icon.png", "vendor/jspdf.umd.min.js"];
 
 self.addEventListener("install", (event) => {
@@ -21,6 +21,8 @@ self.addEventListener("fetch", (event) => {
 
   // Pages : réseau d'abord (version la plus récente), cache en secours si hors ligne ou lent.
   if (req.mode === "navigate") {
+    // La page athlète a son propre cache : elle ne doit jamais remplacer « index.html » (l'app du praticien).
+    const KEY = url.pathname.endsWith("/athlete.html") ? "athlete.html" : "index.html";
     event.respondWith(
       (async () => {
         const ctrl = new AbortController();
@@ -29,11 +31,11 @@ self.addEventListener("fetch", (event) => {
           const fresh = await fetch(req, { signal: ctrl.signal });
           clearTimeout(timer);
           const copy = fresh.clone();
-          caches.open(CACHE_VERSION).then((c) => c.put("index.html", copy));
+          caches.open(CACHE_VERSION).then((c) => c.put(KEY, copy));
           return fresh;
         } catch (e) {
           clearTimeout(timer);
-          return (await caches.match("index.html")) || (await caches.match("./")) || Response.error();
+          return (await caches.match(KEY)) || (KEY === "index.html" ? await caches.match("./") : null) || Response.error();
         }
       })()
     );
