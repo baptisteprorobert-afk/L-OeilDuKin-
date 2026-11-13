@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Horus athlète">
+<meta name="theme-color" content="#0B1220">
+<title>Horus — Espace athlète</title>
+<style>
+  :root{ --bg:#f3f4f7; --surface:#fff; --text:#0B1220; --muted:#8a93a3; --border:#e3e6ec; --accent:#007BFF; --ok:#0f7b5f; --bad:#b3261e; }
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; font-size:16px; }
+  body{ padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom); min-height:100vh; }
+  .wrap{ max-width:640px; margin:0 auto; padding:16px; }
+  h1{ font-size:22px; margin:0; } h2{ font-size:18px; margin:0 0 10px; }
+  .brand{ text-align:center; padding:28px 0 10px; } .brand b{ font-size:26px; letter-spacing:4px; } .brand span{ display:block; font-size:12px; letter-spacing:3px; color:var(--muted); margin-top:4px; }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:14px; margin-bottom:12px; }
+  label{ display:block; font-size:13px; font-weight:700; color:var(--muted); margin:10px 0 4px; }
+  input,select,textarea{ width:100%; min-height:48px; border:1px solid var(--border); border-radius:12px; padding:0 12px; font-size:16px; background:#fff; color:var(--text); }
+  textarea{ padding:10px 12px; }
+  .btn{ min-height:48px; border:0; border-radius:12px; padding:0 18px; font-size:16px; font-weight:700; background:var(--text); color:#fff; width:100%; }
+  .btn.ghost{ background:#fff; color:var(--text); border:1px solid var(--border); } .btn.danger{ background:#fff; color:var(--bad); border:1px solid #f1c9c6; } .btn.small{ min-height:38px; width:auto; font-size:14px; padding:0 14px; }
+  .msg{ color:var(--bad); font-size:14px; min-height:20px; margin:8px 0; } .msg.ok{ color:var(--ok); }
+  .top{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:12px 16px; background:var(--surface); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:5; }
+  .dot{ display:inline-block; width:10px; height:10px; border-radius:50%; background:#c9ced8; margin-right:6px; } .dot.ok{ background:#1fa971; } .dot.wait{ background:#f5a623; } .dot.err{ background:var(--bad); }
+  .tabs{ display:flex; gap:6px; padding:10px 16px 0; max-width:640px; margin:0 auto; }
+  .tabs button{ flex:1; min-height:44px; padding:0 4px; border:1px solid var(--border); background:#fff; border-radius:12px; font-size:15px; font-weight:700; color:var(--muted); }
+  .tabs button.on{ background:var(--text); color:#fff; border-color:var(--text); }
+  .day{ font-weight:800; font-size:14px; color:var(--muted); margin:16px 2px 6px; }
+  .row{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .ent{ cursor:pointer; } .ent.ro{ cursor:default; opacity:0.92; }
+  .ent b{ font-size:17px; } .ent .sub{ font-size:13px; color:var(--muted); margin-top:2px; }
+  .pill{ font-size:12px; font-weight:800; padding:3px 9px; border-radius:999px; background:#eef0f4; color:#5b6575; white-space:nowrap; } .pill.me{ background:#e8f2ff; color:#0062CC; } .pill.wait{ background:#fff4e0; color:#8a5200; }
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; } .chip{ min-height:42px; padding:0 14px; border:1px solid var(--border); border-radius:999px; background:#fff; font-size:15px; font-weight:600; } .chip.on{ background:var(--text); color:#fff; border-color:var(--text); }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:10px; } .grid3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .overlay{ position:fixed; inset:0; background:rgba(11,18,32,0.5); display:flex; align-items:flex-end; justify-content:center; z-index:20; } .overlay[hidden]{ display:none; }
+  .sheet{ background:var(--surface); width:100%; max-width:640px; max-height:94vh; overflow-y:auto; border-radius:20px 20px 0 0; padding:16px 16px calc(16px + env(safe-area-inset-bottom)); }
+  .sheet .head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; } .x{ border:0; background:#f1f3f6; border-radius:50%; width:40px; height:40px; font-size:20px; }
+  .seg{ display:inline-flex; border:1px solid var(--border); border-radius:10px; overflow:hidden; } .seg button{ border:0; background:#fff; color:var(--muted); min-height:36px; min-width:38px; font-weight:700; font-size:14px; } .seg button.on{ background:var(--text); color:#fff; }
+  .empty{ color:var(--muted); text-align:center; padding:24px 8px; }
+  table{ width:100%; border-collapse:collapse; font-size:14px; } td,th{ padding:8px 4px; border-bottom:1px solid var(--border); text-align:left; }
+  .cbl{ display:flex; gap:10px; align-items:flex-start; padding:8px 0; font-size:15px; font-weight:400; color:var(--text); margin:0; } .cbl input{ width:24px; min-height:24px; height:24px; flex-shrink:0; margin-top:1px; }
+  .fab{ position:fixed; right:16px; bottom:calc(16px + env(safe-area-inset-bottom)); background:var(--accent); color:#fff; border:0; border-radius:999px; min-height:54px; padding:0 22px; font-size:16px; font-weight:800; box-shadow:0 6px 18px rgba(0,123,255,0.4); z-index:6; }
+</style>
+</head>
+<body>
+
+<!-- ===== Connexion / création du compte ===== -->
+<div id="authView" hidden>
+  <div class="wrap">
+    <div class="brand"><b>HORUS</b><span>ESPACE ATHLÈTE</span></div>
+    <div class="card" id="joinCard" hidden>
+      <h2>Crée ton accès</h2>
+      <p style="color:var(--muted);margin:0 0 6px;font-size:14px;">Ton kiné t'a invité à saisir tes séances. Choisis un mot de passe (12 caractères minimum) : tu seras connecté sur ce téléphone pendant 30 jours.</p>
+      <label>Adresse e-mail</label><input id="jEmail" type="email" readonly>
+      <label>Mot de passe</label><input id="jPass" type="password" autocomplete="new-password">
+      <label>Confirme le mot de passe</label><input id="jPass2" type="password" autocomplete="new-password">
+      <div class="msg" id="jMsg"></div>
+      <button class="btn" id="jBtn">Créer mon accès</button>
+    </div>
+    <div class="card" id="loginCard" hidden>
+      <h2>Connexion</h2>
+      <label>Adresse du serveur</label><input id="lUrl" type="url" placeholder="https://…" autocapitalize="off">
+      <label>Adresse e-mail</label><input id="lEmail" type="email" autocapitalize="off">
+      <label>Mot de passe</label><input id="lPass" type="password" autocomplete="current-password">
+      <div class="msg" id="lMsg"></div>
+      <button class="btn" id="lBtn">Se connecter</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Application ===== -->
+<div id="appView" hidden>
+  <div class="top"><div><b id="who">Athlète</b><div style="font-size:12px;color:var(--muted);"><span class="dot" id="syncDot"></span><span id="syncTxt">Synchronisation…</span></div></div><button class="btn ghost small" id="logoutBtn">Quitter</button></div>
+  <div class="tabs" id="tabs"><button data-tab="programme" class="on">Programme</button><button data-tab="seances">Séances</button><button data-tab="tests">Tests</button><button data-tab="rdv">RDV</button></div>
+  <div class="wrap" id="tabBody"></div>
+  <button class="fab" id="fab">+ Ajouter</button>
+</div>
+
+<!-- ===== Saisie d'une séance ===== -->
+<div class="overlay" id="seanceOv" hidden>
+  <div class="sheet">
+    <div class="head"><h2 id="sTitle">Nouvelle séance</h2><button class="x" id="sClose" aria-label="Fermer">×</button></div>
+    <label>Date</label><input type="date" id="sDate">
+    <label>Type</label>
+    <div class="chips" id="sKind"><button class="chip on" data-k="exercise">Exercice</button><button class="chip" data-k="functional">Fonctionnel / course</button><button class="chip" data-k="neuro">Neurodynamique</button><button class="chip" data-k="stretching">Étirement</button><button class="chip" data-k="isometric">Isométrie</button></div>
+    <div id="sFields"></div>
+    <label>Effort ressenti (RPE de 1 à 10, facultatif)</label><input id="sRpe" type="number" inputmode="decimal" min="0" max="10" step="0.5" placeholder="ex. 7">
+    <div class="msg" id="sMsg"></div>
+    <button class="btn" id="sSave">Enregistrer</button>
+    <button class="btn danger" id="sDel" style="margin-top:8px;" hidden>Supprimer cette séance</button>
+  </div>
+</div>
+
+<!-- ===== Saisie d'une mesure de test ===== -->
+<div class="overlay" id="testOv" hidden>
+  <div class="sheet">
+    <div class="head"><h2 id="tTitle">Nouvelle mesure</h2><button class="x" id="tClose" aria-label="Fermer">×</button></div>
+    <label>Test</label><select id="tTest"></select>
+    <label>Date</label><input type="date" id="tDate">
+    <div id="tFields"></div>
+    <div class="msg" id="tMsg"></div>
+    <button class="btn" id="tSave">Enregistrer</button>
+    <button class="btn danger" id="tDel" style="margin-top:8px;" hidden>Supprimer cette mesure</button>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+/* ===== définitions copiées de l'app du praticien (build_athlete.py) ===== */
+var SPEC_TESTS = {
+  "Cheville": [
+    { id:"cheville_wblt", cat:"Mobilité", name:"WBLT (Weight-Bearing Lunge Test)", hint:"Fente en appui : distance au mur.",
+      fields:[ { key:"cm", label:"Distance au mur", type:"number", unit:"cm", step:0.5, primary:true } ] },
+    { id:"cheville_footlift", cat:"Équilibre / fonctionnel", name:"Foot lift test (FLT)", hint:"Appui unipodal, yeux fermés, bras croisés ou sur les hanches, 30 s. Note les erreurs et d'où elles viennent (cheville, pied ou hanche). Vidéo conseillée.",
+      fields:[ { key:"err", label:"Nombre d'erreurs", type:"number", unit:"erreurs", step:1, primary:true }, { key:"cluster", label:"Cluster (origine des erreurs)", type:"choice", options:["Cheville", "Pied", "Hanche"] } ] },
+    { id:"cheville_iso", cat:"Force", name:"Dynamométrie isométrique (inverseurs, éverseurs, releveurs)", hint:"Force maximale isométrique de chaque groupe, cheville en position neutre, 3 essais. Choisis l'unité (N ou kg) à chaque saisie.",
+      fields:[ { key:"u", label:"Unité de force", type:"choice", options:["N", "kg"] }, { key:"inv", label:"Inverseurs", type:"number", step:0.1, primary:true }, { key:"ev", label:"Éverseurs", type:"number", step:0.1 }, { key:"rel", label:"Releveurs", type:"number", step:0.1 } ] },
+    { id:"cheville_calf", cat:"Force", name:"Calf raise", hint:"Montées sur pointe de pied en appui unipodal, rythme imposé (métronome 60 BPM), amplitude complète, sans compensation, jusqu'à l'échec.",
+      fields:[ { key:"reps", label:"Nombre de répétitions", type:"number", unit:"rép.", step:1, primary:true }, { key:"h", label:"Hauteur de montée", type:"number", unit:"cm", step:0.5 } ] },
+    { id:"cheville_ybt", cat:"Équilibre / fonctionnel", name:"YBT (Y Balance Test)", hint:"Longueur du membre : de l'épine iliaque antéro-supérieure à la malléole médiale. Portée en % = portée ÷ longueur × 100. Seuils : antérieure ≥ 60 %, postéro-médiale ≥ 100 %, postéro-latérale ≥ 100 %. Score composite = somme des 3 portées ÷ (3 × longueur) × 100.",
+      fields:[ { key:"len", label:"Longueur du membre", type:"number", unit:"cm", step:0.5, carry:true }, { key:"ant", label:"Antérieure", type:"number", unit:"cm", step:0.5 },
+        { key:"pm", label:"Postéro-médiale", type:"number", unit:"cm", step:0.5 }, { key:"pl", label:"Postéro-latérale", type:"number", unit:"cm", step:0.5 },
+        { key:"ant_pct", label:"Antérieure (%)", type:"computed", unit:"%", formula:"ybt_dir", dir:"ant", cut:60, secondary:true },
+        { key:"pm_pct", label:"Postéro-médiale (%)", type:"computed", unit:"%", formula:"ybt_dir", dir:"pm", cut:100, secondary:true },
+        { key:"pl_pct", label:"Postéro-latérale (%)", type:"computed", unit:"%", formula:"ybt_dir", dir:"pl", cut:100, secondary:true },
+        { key:"comp", label:"Score composite", type:"computed", unit:"%", formula:"ybt", primary:true } ] },
+    { id:"cheville_sidehop", cat:"Équilibre / fonctionnel", name:"Side hop test", hint:"Rivière de 30 cm : 10 sauts latéraux d'affilée le plus vite possible (une faute n'est pas comptée). Départ par un saut latéral externe. Vidéo conseillée.",
+      fields:[ { key:"t", label:"Temps des 10 sauts", type:"number", unit:"s", step:0.01, primary:true } ] },
+    { id:"cheville_tch", cat:"Équilibre / fonctionnel", name:"Triple crossover hop test", hint:"Trois sauts consécutifs sur un pied en zigzag de part et d'autre d'une ligne de 15 cm de large, le plus loin possible. Réception stabilisée. Saisis les 3 essais : la meilleure distance est calculée.",
+      fields:[ { key:"d1", label:"Essai 1", type:"number", unit:"cm", step:1 }, { key:"d2", label:"Essai 2", type:"number", unit:"cm", step:1 }, { key:"d3", label:"Essai 3", type:"number", unit:"cm", step:1 },
+        { key:"best", label:"Meilleure distance", type:"computed", unit:"cm", formula:"max3", primary:true } ] },
+    { id:"cheville_jps", cat:"Proprioception", name:"Test de repositionnement articulaire", hint:"Yeux fermés : la cheville est amenée à un angle cible puis ramenée au neutre ; le patient reproduit activement cet angle. Note l'angle cible et l'erreur absolue en degrés.",
+      fields:[ { key:"target", label:"Angle cible", type:"number", unit:"°", step:1, carry:true }, { key:"dors", label:"Erreur en flexion dorsale", type:"number", unit:"°", step:0.5 }, { key:"plant", label:"Erreur en flexion plantaire", type:"number", unit:"°", step:0.5, primary:true } ] },
+    { id:"cheville_stroop", cat:"Équilibre / fonctionnel", name:"Test de double tâche (Stroop)", hint:"Le foot lift test répété en réalisant en même temps un test de Stroop (dénomination de couleurs incongruentes). Vidéo si possible, sinon note la difficulté et les erreurs.",
+      fields:[ { key:"err", label:"Erreurs d'équilibre", type:"number", unit:"erreurs", step:1, primary:true }, { key:"stroop", label:"Score au Stroop", type:"number", step:1 } ] },
+    { id:"cheville_faam", cat:"Questionnaires", name:"FAAM", single:true, hint:"Foot and Ankle Ability Measure : sous-échelle activités de la vie quotidienne et sous-échelle sport (scores bruts).",
+      fields:[ { key:"adl", label:"Score vie quotidienne", type:"number", step:1, primary:true }, { key:"sport", label:"Score sport", type:"number", step:1 } ] },
+    { id:"cheville_fonction", cat:"Questionnaires", name:"Fonction perçue de la cheville", hint:"À combien de % trouves-tu la fonction de ta cheville aujourd'hui ?",
+      fields:[ { key:"score", label:"Fonction perçue", type:"number", unit:"/100", step:1, primary:true } ] },
+    { id:"cheville_cait", cat:"Questionnaires", name:"CAIT", hint:"Cumberland Ankle Instability Tool : 9 items sur l'instabilité chronique de cheville, score sur 30.",
+      fields:[ { key:"score", label:"Score CAIT", type:"number", unit:"/30", step:1, primary:true } ] },
+    { id:"cheville_ptgt", cat:"Mobilité", name:"Posterior talar glide test", hint:"Glissement postérieur du talus (mobilité tibio-talaire) : note l'amplitude en degrés.",
+      fields:[ { key:"deg", label:"Amplitude", type:"number", unit:"°", step:0.5, primary:true }, { key:"res", label:"Mobilité", type:"choice", options:["Normale", "Diminuée", "Augmentée"], tones:["ok", "warn", "warn"] } ] },
+    { id:"cheville_tiroir_sup", cat:"Stabilité ligamentaire", name:"Tiroir antérieur - faisceau supérieur", hint:"Comparer au côté opposé.",
+      fields:[ { key:"res", label:"Tiroir antérieur", type:"choice", options:["Négatif", "Douteux", "Positif"], tones:["ok", "warn", "ko"], primary:true }, { key:"end", label:"Fin de course", type:"choice", options:["Ferme", "Molle"], tones:["ok", "warn"] }, { key:"pain", label:"Douleur provoquée", type:"yesno" } ] },
+    { id:"cheville_tiroir_inf", cat:"Stabilité ligamentaire", name:"Tiroir antérieur - faisceau inférieur", hint:"Comparer au côté opposé.",
+      fields:[ { key:"res", label:"Tiroir antérieur", type:"choice", options:["Négatif", "Douteux", "Positif"], tones:["ok", "warn", "ko"], primary:true }, { key:"end", label:"Fin de course", type:"choice", options:["Ferme", "Molle"], tones:["ok", "warn"] }, { key:"pain", label:"Douleur provoquée", type:"yesno" } ] },
+    { id:"cheville_ottawa", cat:"Aide à la décision", name:"Critères d'Ottawa", hint:"Coche les éléments présents à l'examen après un traumatisme de la cheville ou du pied.", rule:"ottawa" },
+    { id:"cheville_bernese", cat:"Aide à la décision", name:"Critères de Bernese", hint:"Coche les manœuvres de contrainte indirecte qui provoquent la douleur (traumatisme de basse énergie en supination).", rule:"bernese" }
+  ],
+  "Hanche": [
+    { id:"hanche_copenhague", cat:"Force", name:"Copenhague (adducteurs)", hint:"Planche latérale, jambe du dessus posée sur un banc, jambe du dessous libre. Le bassin reste aligné jusqu'à l'échec.",
+      fields:[ { key:"t", label:"Temps tenu", type:"number", unit:"s", step:1, primary:true } ] },
+    { id:"hanche_starplank", cat:"Force", name:"Star plank", hint:"Planche en appui sur une main ou sur un avant-bras (fais les deux), les membres du côté opposé écartés en étoile. Position maintenue jusqu'à l'échec.",
+      fields:[ { key:"tm", label:"Appui sur la main", type:"number", unit:"s", step:1, primary:true }, { key:"ta", label:"Appui sur l'avant-bras", type:"number", unit:"s", step:1 } ] },
+    { id:"hanche_thomas", cat:"Mobilité", name:"Test de Thomas", hint:"Allongé en bord de table, une cuisse tenue contre le thorax. On observe la position de la cuisse libre (psoas, droit fémoral) et de la jambe (angle du genou).",
+      fields:[ { key:"hip", label:"Angle de hanche", type:"number", unit:"°", step:0.5, primary:true }, { key:"knee", label:"Angle de genou", type:"number", unit:"°", step:0.5 } ] }
+  ],
+  "Genou": [
+    { id:"genou_nordic", cat:"Force", name:"Nordic hamstring", hint:"À genoux, chevilles fixées, descente du tronc le plus lentement possible en contrôlant avec les ischios, répétitions jusqu'à l'échec musculaire (variante unilatérale possible).",
+      fields:[ { key:"reps", label:"Répétitions à l'échec", type:"number", unit:"rép.", step:1, primary:true } ] },
+    { id:"genou_bridge", cat:"Force", name:"Single leg bridge", hint:"Allongé, talon d'un pied posé (genou et hanche à 90°) sur un banc ou au sol, l'autre jambe en l'air. Montées de bassin à cadence imposée (60 BPM) jusqu'à l'échec.",
+      fields:[ { key:"reps", label:"Répétitions", type:"number", unit:"rép.", step:1, primary:true } ] },
+    { id:"genou_ake", cat:"Mobilité", name:"Extension active du genou (AKE)", hint:"Allongé, hanche fléchie à 90°, extension active du genou jusqu'à la limite de la mobilité, sans compensation. Photo conseillée.",
+      fields:[ { key:"def", label:"Déficit d'extension", type:"number", unit:"°", step:0.5, primary:true } ] },
+    { id:"genou_pslr", cat:"Mobilité", name:"Straight leg raise passif (PSLR)", hint:"Allongé, jambe tendue levée passivement par l'examinateur jusqu'à la tension ressentie, bassin stabilisé.",
+      fields:[ { key:"deg", label:"Flexion de hanche", type:"number", unit:"°", step:0.5, primary:true } ] },
+    { id:"genou_askling", cat:"Mobilité", name:"H-test d'Askling", hint:"Allongé sur le dos, flexion de hanche genou tendu : la jambe est levée vers le haut de façon rapide et contrôlée. On recherche douleur, appréhension ou limitation.",
+      fields:[ { key:"deg", label:"Amplitude", type:"number", unit:"°", step:0.5, primary:true }, { key:"pain", label:"Douleur", type:"number", unit:"/10", step:1 }, { key:"app", label:"Appréhension", type:"number", unit:"/10", step:1 } ] }
+  ],
+  "Épaule": [
+    { id:"epaule_cmp", cat:"Puissance", name:"CMP (push-up avec contre-mouvement)", single:true, hint:"Push-up avec contre-mouvement sur plateforme de force, le plus fort possible. Note tout ce que donne la plateforme.",
+      fields:[ { key:"force", label:"Force pic", type:"number", unit:"N", step:1, primary:true }, { key:"h", label:"Hauteur", type:"number", unit:"cm", step:0.1 }, { key:"vol", label:"Temps de vol", type:"number", unit:"ms", step:1 } ] },
+    { id:"epaule_ast", cat:"Force", name:"AST (Athletic Shoulder Test)", hint:"Force isométrique en position I, Y et T, allongé sur le ventre, au dynamomètre ou à la plateforme.",
+      fields:[ { key:"i", label:"Position I", type:"number", unit:"N", step:1, primary:true }, { key:"y", label:"Position Y", type:"number", unit:"N", step:1 }, { key:"t", label:"Position T", type:"number", unit:"N", step:1 } ] },
+    { id:"epaule_ckcuest", cat:"Équilibre / fonctionnel", name:"CKCUEST (Closed Kinetic Chain Upper Extremity Stability Test)", single:true, hint:"En position de pompe, mains écartées de 91,4 cm, pieds à largeur du bassin : toucher alternativement la main opposée pendant 15 s le plus vite possible. 4 essais avec 45 s de récupération.",
+      fields:[ { key:"n1", label:"Essai 1", type:"number", unit:"touches", step:1 }, { key:"n2", label:"Essai 2", type:"number", unit:"touches", step:1 }, { key:"n3", label:"Essai 3", type:"number", unit:"touches", step:1 }, { key:"n4", label:"Essai 4", type:"number", unit:"touches", step:1 },
+        { key:"moy", label:"Moyenne des essais", type:"computed", unit:"touches", formula:"mean", keys:["n1", "n2", "n3", "n4"], primary:true } ] },
+    { id:"epaule_smbt", cat:"Puissance", name:"SMBT (Seated Medicine Ball Throw)", single:true, hint:"Assis contre un mur, lancer à deux mains d'une médecine-ball de 2 kg le plus loin possible (comme une passe de basket). Saisis les essais : la meilleure distance est calculée.",
+      fields:[ { key:"d1", label:"Essai 1", type:"number", unit:"cm", step:1 }, { key:"d2", label:"Essai 2", type:"number", unit:"cm", step:1 }, { key:"d3", label:"Essai 3", type:"number", unit:"cm", step:1 },
+        { key:"best", label:"Meilleure distance", type:"computed", unit:"cm", formula:"max3", primary:true } ] },
+    { id:"epaule_sambt", cat:"Puissance", name:"SAMBT (Single Arm Medicine Ball Throw)", hint:"Assis, lancer d'une médecine-ball de 2 kg à une seule main, le plus loin possible.",
+      fields:[ { key:"d", label:"Distance", type:"number", unit:"cm", step:1, primary:true } ] },
+    { id:"epaule_ulrt", cat:"Équilibre / fonctionnel", name:"ULRT (Upper Limb Rotation Test)", hint:"En position de gainage, collé à un mur du côté testé : rotation du tronc avec touche du coude opposé au mur, retour en gainage, et ainsi de suite. Le plus de répétitions en 15 s, 3 fois avec 45 s de récupération. Note ensuite la difficulté du test sur 20.",
+      fields:[ { key:"r1", label:"Essai 1", type:"number", unit:"rép.", step:1 }, { key:"r2", label:"Essai 2", type:"number", unit:"rép.", step:1 }, { key:"r3", label:"Essai 3", type:"number", unit:"rép.", step:1 },
+        { key:"moy", label:"Moyenne des essais", type:"computed", unit:"rép.", formula:"mean", keys:["r1", "r2", "r3"], primary:true },
+        { key:"diff", label:"Difficulté perçue", type:"number", unit:"/20", step:1 } ] },
+    { id:"hanche_stabilite", cat:"Équilibre / fonctionnel", name:"Stabilité unipodale", hint:"Foot lift test avec observation du contrôle du bassin, du tronc et de la cheville. Note les fautes et écris les compensations observées dans la note.",
+      fields:[ { key:"fautes", label:"Nombre de fautes", type:"number", unit:"fautes", step:1, primary:true } ] },
+    { id:"genou_slsquat", cat:"Équilibre / fonctionnel", name:"Single leg squat", noteOnly:true, hint:"Squat en appui unipodal, mouvement filmé de face et de profil.", fields:[] },
+    { id:"hanche_rotations", cat:"Mobilité", name:"Rotation de hanche", hint:"Rotation médiale et rotation latérale de hanche, mesurées de façon passive ou active, à 90° de flexion de hanche et 90° de genou.",
+      fields:[ { key:"rm", label:"Rotation médiale (RM)", type:"number", unit:"°", step:0.5, primary:true }, { key:"rl", label:"Rotation latérale (RL)", type:"number", unit:"°", step:0.5 } ] },
+    { id:"hanche_planche", cat:"Force", name:"Gainage planche", single:true, hint:"Maintien de la position de planche jusqu'à l'échec, avec observation de l'alignement bassin-tronc. Vidéo conseillée ; écris les compensations observées dans la note.",
+      fields:[ { key:"t", label:"Temps tenu", type:"number", unit:"s", step:1, primary:true } ] },
+    { id:"epaule_elevation", cat:"Équilibre / fonctionnel", name:"Flexion et abduction de bras (filmées)", noteOnly:true, hint:"Élévation du bras en flexion puis en abduction, filmée de face et de dos, pour observer le rythme scapulo-huméral.", fields:[] },
+    { id:"epaule_rotations", cat:"Mobilité", name:"Rotations d'épaule", hint:"Rotation médiale et rotation latérale de l'épaule des deux côtés, à 90° d'abduction, en décubitus dorsal.",
+      fields:[ { key:"rm", label:"Rotation médiale (RM)", type:"number", unit:"°", step:0.5, primary:true }, { key:"rl", label:"Rotation latérale (RL)", type:"number", unit:"°", step:0.5 } ] }
+  ],
+  "Sauts": [
+    { id:"saut_dj", name:"Drop Jump", hint:"Saisis les valeurs fournies par ton système de mesure.", single:true,
+      fields:[ { key:"rsi", label:"RSI", type:"number", step:0.01, primary:true }, { key:"flight", label:"Flight time (temps de vol)", type:"number", unit:"ms", step:1 }, { key:"contact", label:"Contact time (temps de contact)", type:"number", unit:"ms", step:1 } ] },
+    { id:"saut_dj_sl", name:"Drop Jump unilatéral (single leg)", hint:"Saisis les valeurs fournies par ton système de mesure, pour chaque jambe.",
+      fields:[ { key:"h", label:"Hauteur de saut", type:"number", unit:"cm", step:0.1, primary:true }, { key:"force", label:"Force", type:"number", unit:"N", step:1 }, { key:"vel", label:"Vélocité", type:"number", unit:"m/s", step:0.01 },
+        { key:"flight", label:"Flight time (temps de vol)", type:"number", unit:"ms", step:1 }, { key:"contact", label:"Contact time (temps de contact)", type:"number", unit:"ms", step:1 }, { key:"rsi", label:"RSI", type:"number", step:0.01 } ] }
+  ]
+};
+var SPEC_RULES = {
+  ottawa: { blocks: [
+      { id:"mall", label:"Zone malléolaire", gate:"Douleur dans la zone malléolaire", items:["Sensibilité osseuse au bord postérieur ou à la pointe de la malléole latérale (6 cm distaux)", "Sensibilité osseuse au bord postérieur ou à la pointe de la malléole médiale (6 cm distaux)", "Impossibilité de faire 4 pas, juste après le traumatisme et à l'examen"] },
+      { id:"mid", label:"Zone du médio-pied", gate:"Douleur dans la zone du médio-pied", items:["Sensibilité osseuse à la base du 5e métatarsien", "Sensibilité osseuse du naviculaire", "Impossibilité de faire 4 pas, juste après le traumatisme et à l'examen"] } ],
+    none: "Aucun élément coché",
+    note: "Règle sensible mais peu spécifique. Moins fiable en cas de lésion douloureuse distractive, de trouble de la sensibilité ou de gonflement empêchant la palpation : le jugement clinique prime." },
+  bernese: { blocks: [
+      { id:"b", label:"Manœuvres douloureuses", gate:null, items:["Contrainte fibulaire indirecte : compression de la fourche malléolaire environ 10 cm au-dessus de la pointe de la fibula", "Contrainte malléolaire médiale directe : pouce à plat sur la malléole médiale", "Compression du médio-pied et de l'arrière-pied : calcanéus fixé en neutre, charge sagittale sur l'avant-pied"], itemsLabel:"Manœuvre qui provoque la douleur" } ],
+    none: "Aucune manœuvre douloureuse cochée",
+    note: "Technique de contrainte indirecte, décrite après un traumatisme de basse énergie en supination. Les performances diagnostiques varient selon les études : à interpréter avec le jugement clinique." }
+};
+function toNum(v){ var n = parseFloat(String(v).replace(",", ".")); return isFinite(n) ? n : null; }
+function specComputed(f, d){
+  var L = toNum(d.len);
+  if(f.formula === "ybt"){
+    var a = toNum(d.ant), b = toNum(d.pm), c = toNum(d.pl);
+    if(a !== null && b !== null && c !== null && L !== null && L > 0) return Math.round((a + b + c) / (3 * L) * 1000) / 10;
+  }
+  if((f.formula === "mean" || f.formula === "max") && f.keys){
+    var vs = f.keys.map(function(k){ return toNum(d[k]); }).filter(function(x){ return x !== null; });
+    if(!vs.length) return null;
+    return f.formula === "max" ? Math.max.apply(null, vs) : Math.round(vs.reduce(function(a, b){ return a + b; }, 0) / vs.length * 10) / 10;
+  }
+  if(f.formula === "max3"){
+    var xs = [toNum(d.d1), toNum(d.d2), toNum(d.d3)].filter(function(x){ return x !== null; });
+    return xs.length ? Math.max.apply(null, xs) : null;
+  }
+  if(f.formula === "ybt_dir"){
+    var r = toNum(d[f.dir]);
+    if(r !== null && L !== null && L > 0) return Math.round(r / L * 1000) / 10;
+  }
+  return null;
+}
+
+function specComputed(f, d){
+  var L = toNum(d.len);
+  if(f.formula === "ybt"){
+    var a = toNum(d.ant), b = toNum(d.pm), c = toNum(d.pl);
+    if(a !== null && b !== null && c !== null && L !== null && L > 0) return Math.round((a + b + c) / (3 * L) * 1000) / 10;
+  }
+  if((f.formula === "mean" || f.formula === "max") && f.keys){
+    var vs = f.keys.map(function(k){ return toNum(d[k]); }).filter(function(x){ return x !== null; });
+    if(!vs.length) return null;
+    return f.formula === "max" ? Math.max.apply(null, vs) : Math.round(vs.reduce(function(a, b){ return a + b; }, 0) / vs.length * 10) / 10;
+  }
+  if(f.formula === "max3"){
+    var xs = [toNum(d.d1), toNum(d.d2), toNum(d.d3)].filter(function(x){ return x !== null; });
+    return xs.length ? Math.max.apply(null, xs) : null;
+  }
+  if(f.formula === "ybt_dir"){
+    var r = toNum(d[f.dir]);
+    if(r !== null && L !== null && L > 0) return Math.round(r / L * 1000) / 10;
+  }
+  return null;
+}
+
+var SESSION_LABELS = {
+  hypertrophie:"Hypertrophie", endurance_force:"Endurance de force", nerveux:"Nerveux",
+  tendineux:"Tendineux", rfd:"RFD", force_vitesse:"Force-Vitesse",
+  cod_deceleration:"COD / Décélération", antalgique:"Antalgique",
+  endurance_fondamentale:"Endurance fondamentale",
+  seuil:"Seuil", fractionne_vma:"Fractionné / VMA", sortie_longue:"Sortie longue",
+  cotes:"Côtes", recuperation:"Récupération", competition:"Compétition"
+};
+var FOCUS_LABELS = { full:"Full body", upper:"Haut du corps", lower:"Bas du corps", push:"Push", pull:"Pull", legs:"Legs", complement:"Complément", poitrine:"Pectoraux", dos:"Dos", jambes:"Jambes", epaules:"Épaules", bras:"Bras" };
+
+var KEY = "horusAth_v1";
+var GROUPS = ["Quadriceps","Ischio-jambiers","Fessiers","Mollets / triceps sural","Adducteurs","Abducteurs","Tibial / fibulaires","Tronc / abdos","Dorsaux","Pectoraux","Épaules","Biceps","Triceps","Autre"];
+var STRENGTH = { hypertrophie:"Hypertrophie", endurance_force:"Endurance de force", nerveux:"Nerveux", tendineux:"Tendineux", rfd:"RFD", force_vitesse:"Force-Vitesse", cod_deceleration:"COD / Décélération", antalgique:"Antalgique" };
+var RUNS = { endurance_fondamentale:"Endurance fondamentale", seuil:"Seuil", fractionne_vma:"Fractionné / VMA", sortie_longue:"Sortie longue", cotes:"Côtes", recuperation:"Récupération", competition:"Compétition" };
+var ACTS = ["Course à pied","Vélo (ergomètre)","Rameur","Ski-erg","Sauts","Circuit","Atelier"];
+var store = load();
+function load(){ try{ var s = JSON.parse(localStorage.getItem(KEY) || "null"); if(s && typeof s === "object"){ s.ath = s.ath || {}; s.pending = s.pending || {}; s.agenda = s.agenda || {}; s.catalog = s.catalog || {}; s.rev = s.rev || 0; return s; } }catch(e){} return { url:"", email:"", token:"", patientId:"", rev:0, patient:null, ath:{}, pending:{}, agenda:{}, catalog:{}, status:"", lastOk:"" }; }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} }
+function $(id){ return document.getElementById(id); }
+function esc(t){ return String(t === undefined || t === null ? "" : t).replace(/[&<>"']/g, function(c){ return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]; }); }
+function today(){ var d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+function fmtDate(iso){ try{ return new Date(iso + "T00:00:00").toLocaleDateString("fr-FR", { weekday:"long", day:"numeric", month:"long" }); }catch(e){ return iso; } }
+function dec(n){ return String(Math.round(n * 100) / 100).replace(".", ","); }
+function newId(){ return "a" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36); }
+function nowIso(){ return new Date().toISOString(); }
+
+/* ---------- serveur ---------- */
+async function api(path, method, body, noAuth){
+  var h = { "Content-Type":"application/json" }; if(store.token && !noAuth) h.Authorization = "Bearer " + store.token;
+  var r = await fetch(store.url + path, { method: method || "GET", headers: h, body: body === undefined ? undefined : JSON.stringify(body), cache:"no-store" });
+  var j = null; try{ j = await r.json(); }catch(e){} return { status: r.status, json: j };
+}
+function setStatus(kind, txt){ $("syncDot").className = "dot " + kind; $("syncTxt").textContent = txt; }
+var syncing = false, again = false;
+async function sync(){
+  if(!store.token) return;
+  if(syncing){ again = true; return; }
+  syncing = true;
+  try{
+    setStatus("wait", "Synchronisation…");
+    var guard = 0, since = store.rev || 0;
+    while(guard++ < 100){
+      var r = await api("/api/sync?since=" + since + "&limit=100");
+      if(r.status === 401 || r.status === 403){ logout("Ton accès a été coupé ou a expiré : reconnecte-toi."); return; }
+      if(r.status !== 200) throw new Error((r.json && r.json.message) || "Erreur du serveur");
+      var docs = r.json.docs || [];
+      docs.forEach(function(d){
+        if(d.c === "patients"){ if(!d.deleted && d.data) store.patient = d.data; }
+        else if(d.c === "athEntries"){ if(d.deleted){ delete store.ath[d.id]; } else if(!store.pending[d.id]) store.ath[d.id] = { id:d.id, data:d.data, updatedAt:d.updatedAt }; }
+        else if(d.c === "agenda"){ if(d.deleted) delete store.agenda[d.id]; else store.agenda[d.id] = d.data; }
+        else if(d.c === "exerciseCatalog"){ if(d.deleted) delete store.catalog[d.id]; else store.catalog[d.id] = d.data; }
+      });
+      if(docs.length) since = docs[docs.length - 1].rev;
+      if(!r.json.more) break;
+    }
+    store.rev = since;
+    var ids = Object.keys(store.pending);
+    while(ids.length){
+      var batch = ids.splice(0, 40).map(function(i){ return store.pending[i]; });
+      var p = await api("/api/sync", "POST", { docs: batch });
+      if(p.status === 401){ logout("Ton accès a été coupé ou a expiré : reconnecte-toi."); return; }
+      if(p.status === 403){ throw new Error("Cet envoi n'est pas autorisé pour ton accès."); }
+      if(p.status !== 200) throw new Error((p.json && p.json.message) || "Erreur du serveur");
+      batch.forEach(function(d){ delete store.pending[d.id]; });
+    }
+    store.lastOk = nowIso(); save(); setStatus("ok", "À jour"); render();
+  }catch(e){ save(); setStatus(navigator.onLine ? "err" : "wait", navigator.onLine ? "Erreur : " + (e && e.message || e) : "Hors ligne : tes saisies sont gardées et partiront au retour du réseau"); render(); }
+  finally{ syncing = false; if(again){ again = false; setTimeout(sync, 300); } }
+}
+function logout(msg){ var url = store.url, email = store.email; store = { url:url, email:email, token:"", patientId:"", rev:0, patient:null, ath:{}, pending:{}, agenda:{}, catalog:{}, status:"", lastOk:"" }; save(); showAuth("login", msg); }
+
+/* ---------- écrans ---------- */
+function showAuth(mode, msg){
+  $("appView").hidden = true; $("authView").hidden = false; $("fab").hidden = true;
+  $("joinCard").hidden = mode !== "join"; $("loginCard").hidden = mode !== "login";
+  if(mode === "login"){ $("lUrl").value = store.url || ""; $("lEmail").value = store.email || ""; $("lMsg").textContent = msg || ""; }
+}
+function showApp(){ $("authView").hidden = true; $("appView").hidden = false; $("fab").hidden = false; render(); sync(); }
+var tab = "programme";
+$("tabs").addEventListener("click", function(e){ var b = e.target.closest("[data-tab]"); if(!b) return; tab = b.dataset.tab; [].forEach.call($("tabs").children, function(x){ x.classList.toggle("on", x === b); }); render(); });
+function render(){
+  if($("appView").hidden) return;
+  $("who").textContent = store.patient ? store.patient.name : store.email;
+  $("fab").textContent = tab === "tests" ? "+ Mesure" : "+ Séance";
+  $("fab").hidden = tab === "rdv";
+  if(tab === "programme") renderProgramme(); else if(tab === "seances") renderSeances(); else if(tab === "tests") renderTests(); else renderRdv();
+}
+
+/* ---------- séances ---------- */
+function entryLines(e){
+  var name, detail = "", sub = "";
+  if(e.kind === "exercise"){ name = e.name; detail = (e.sets || 0) + " × " + (e.reps || 0) + " · " + (e.load || 0) + " kg"; sub = e.group || ""; }
+  else if(e.kind === "run"){ name = "Course à pied"; detail = (e.distUnit === "m" ? Math.round(e.distanceKm * 1000) + " m" : (e.distanceKm || 0) + " km") + " · " + (e.durUnit === "s" ? Math.round(e.durationMin * 60) + " s" : (e.durationMin || 0) + " min"); }
+  else if(e.kind === "functional"){ name = e.activity; detail = [e.durationMin ? (e.durUnit === "s" ? Math.round(e.durationMin * 60) + " s" : e.durationMin + " min") : "", e.distanceKm ? (e.distUnit === "m" ? Math.round(e.distanceKm * 1000) + " m" : e.distanceKm + " km") : ""].filter(Boolean).join(" · "); sub = (e.measures || []).map(function(m){ return m.label + " : " + dec(m.value) + (m.unit ? " " + m.unit : ""); }).join(" · "); }
+  else if(e.kind === "neuro"){ name = e.name; detail = (e.series || 0) + " × " + (e.reps || 0) + (e.dureeSec ? " · " + e.dureeSec + " s" : ""); sub = (e.technique === "glissement" ? "Glissement" : "Tension") + (e.side ? " · " + (e.side === "D" ? "droite" : "gauche") : ""); }
+  else if(e.kind === "stretching"){ name = e.name; detail = (e.series || 0) + " × " + (e.dureeSec || 0) + " s"; }
+  else if(e.kind === "isometric"){ name = e.name; detail = (e.series || 0) + " × " + (e.reps || 0) + " × " + (e.dureeSec || 0) + " s"; sub = e.group || ""; }
+  else { name = e.name || "Séance"; }
+  if(e.rpe !== undefined && e.rpe !== null && e.rpe !== "") sub = (sub ? sub + " · " : "") + "RPE " + e.rpe;
+  return { name: name, detail: detail, sub: sub };
+}
+function allTrain(){
+  var out = [], mine = {};
+  Object.keys(store.ath).forEach(function(id){ var d = store.ath[id].data; if(d && d.kind === "train" && d.entry){ mine[d.entry.id] = true; out.push({ date: d.date, e: d.entry, docId: id, mine: true, pending: !!store.pending[id] }); } });
+  var ent = (store.patient && store.patient.program && store.patient.program.entries) || {};
+  Object.keys(ent).forEach(function(date){ (ent[date] || []).forEach(function(e){ if(e.src === "athlete" || mine[e.id]) return; out.push({ date: date, e: e, mine: false }); }); });
+  return out;
+}
+function renderSeances(){
+  var list = allTrain().sort(function(a, b){ return b.date.localeCompare(a.date); });
+  if(!list.length){ $("tabBody").innerHTML = '<div class="empty">Aucune séance pour l\'instant.<br>Touche « + Séance » pour saisir la première.</div>'; return; }
+  var h = "", cur = "";
+  list.forEach(function(x){
+    if(x.date !== cur){ cur = x.date; h += '<div class="day">' + esc(fmtDate(x.date)) + '</div>'; }
+    var l = entryLines(x.e);
+    h += '<div class="card ent' + (x.mine ? '' : ' ro') + '"' + (x.mine ? ' data-doc="' + esc(x.docId) + '"' : '') + '><div class="row"><div><b>' + esc(l.name) + '</b><div>' + esc(l.detail) + '</div>' + (l.sub ? '<div class="sub">' + esc(l.sub) + '</div>' : '') + '</div><span class="pill ' + (x.mine ? (x.pending ? 'wait' : 'me') : '') + '">' + (x.mine ? (x.pending ? 'à envoyer' : 'toi') : 'ton kiné') + '</span></div></div>';
+  });
+  $("tabBody").innerHTML = h;
+}
+
+/* ---------- programme prévu ---------- */
+function renderProgramme(){
+  var prog = (store.patient && store.patient.program) || {}, plan = prog.plan || {}, ent = prog.entries || {}, t0 = today(), dates = {};
+  Object.keys(plan).forEach(function(d){ if(d >= t0 && plan[d]) dates[d] = 1; });
+  Object.keys(ent).forEach(function(d){ if(d >= t0 && (ent[d] || []).some(function(e){ return e.src !== "athlete"; })) dates[d] = 1; });
+  var list = Object.keys(dates).sort();
+  if(!list.length){ $("tabBody").innerHTML = '<div class="empty">Ton kiné n\'a pas encore prévu de séance.<br>Tu peux quand même saisir ce que tu fais avec « + Séance ».</div>'; return; }
+  var h = "";
+  list.forEach(function(d){
+    var pl = plan[d] || {}, label = [pl.focus ? FOCUS_LABELS[pl.focus] : "", pl.session ? SESSION_LABELS[pl.session] : ""].filter(Boolean).join(" · ");
+    var planned = (ent[d] || []).filter(function(e){ return e.src !== "athlete"; });
+    h += '<div class="day">' + (d === t0 ? "Aujourd'hui · " : "") + esc(fmtDate(d)) + '</div>';
+    if(label) h += '<div class="card"><b>' + esc(label) + '</b>' + (pl.note ? '<div class="sub" style="font-size:13px;color:var(--muted);margin-top:4px;">' + esc(pl.note) + '</div>' : '') + '</div>';
+    planned.forEach(function(e){
+      var l = entryLines(e);
+      h += '<div class="card"><div class="row"><div><b>' + esc(l.name) + '</b><div>' + esc(l.detail) + '</div>' + (l.sub ? '<div class="sub">' + esc(l.sub) + '</div>' : '') + '</div><button class="btn small ghost" data-do="' + esc(d) + '|' + esc(e.id) + '">Je l\'ai fait</button></div></div>';
+    });
+  });
+  $("tabBody").innerHTML = h;
+}
+/* ----- formulaire séance ----- */
+var sKind = "exercise", sEditId = null, units = { dur:"min", dist:"km" }, sNeuroTech = "", sNeuroSide = "", sFuncSide = "", sAct = "Course à pied";
+function sessionOptions(map, sel){ return Object.keys(map).map(function(k){ return '<option value="' + k + '"' + (k === sel ? " selected" : "") + '>' + esc(map[k]) + '</option>'; }).join(""); }
+function groupOptions(sel){ return '<option value="">—</option>' + GROUPS.map(function(g){ return '<option' + (g === sel ? " selected" : "") + '>' + esc(g) + '</option>'; }).join(""); }
+function seg(id, opts, cur){ return '<span class="seg" data-seg="' + id + '">' + opts.map(function(o){ return '<button type="button" data-u="' + o + '"' + (o === cur ? ' class="on"' : '') + '>' + o + '</button>'; }).join("") + '</span>'; }
+function namesDatalist(kinds){
+  var set = {};
+  allTrain().forEach(function(x){ if(kinds.indexOf(x.e.kind) !== -1 && x.e.name) set[x.e.name] = 1; });
+  Object.keys(store.catalog).forEach(function(k){ var c = store.catalog[k]; if(c && kinds.indexOf(c.kind) !== -1 && c.name) set[c.name] = 1; });
+  return '<datalist id="dlNames">' + Object.keys(set).sort().map(function(n){ return '<option value="' + esc(n) + '">'; }).join("") + '</datalist>';
+}
+function renderSFields(ed){
+  var e = ed || {}, h = "";
+  if(sKind === "exercise"){
+    h += namesDatalist(["exercise"]) + '<label>Exercice</label><input id="fName" list="dlNames" value="' + esc(e.name || "") + '" placeholder="ex. Squat"><label>Groupe musculaire</label><select id="fGroup">' + groupOptions(e.group) + '</select>' +
+      '<div class="grid3"><div><label>Séries</label><input id="fSets" type="number" inputmode="decimal" value="' + esc(e.sets || "") + '"></div><div><label>Répétitions</label><input id="fReps" type="number" inputmode="decimal" value="' + esc(e.reps || "") + '"></div><div><label>Charge (kg)</label><input id="fLoad" type="number" inputmode="decimal" value="' + esc(e.load === undefined ? "" : e.load) + '"></div></div>' +
+      '<label>Type de séance</label><select id="fSession">' + sessionOptions(STRENGTH, e.session || "hypertrophie") + '</select>';
+  } else if(sKind === "functional"){
+    if(ed){ sAct = e.kind === "run" ? "Course à pied" : (e.activity || ACTS[0]); }
+    var isRun = sAct === "Course à pied";
+    h += '<label>Activité</label><div class="chips" id="fActs">' + ACTS.map(function(a){ return '<button type="button" class="chip' + (a === sAct ? " on" : "") + '" data-a="' + esc(a) + '">' + esc(a) + '</button>'; }).join("") + '</div>' +
+      '<label>Autre activité (écris-la)</label><input id="fActOther" value="' + (ACTS.indexOf(sAct) === -1 ? esc(sAct) : "") + '" placeholder="ex. Elliptique">' +
+      '<div class="grid2"><div><label>Durée ' + seg("dur", ["min", "s"], units.dur) + '</label><input id="fDur" type="number" inputmode="decimal" value="' + esc(e.durationMin ? (units.dur === "s" ? Math.round(e.durationMin * 60 * 100) / 100 : e.durationMin) : "") + '"></div><div><label>Distance ' + seg("dist", ["km", "m"], units.dist) + '</label><input id="fDist" type="number" inputmode="decimal" value="' + esc(e.distanceKm ? (units.dist === "m" ? Math.round(e.distanceKm * 1000) : e.distanceKm) : "") + '"></div></div>';
+    if(!isRun){ var m = (e.measures || [])[0] || {}; h += '<label>Une mesure de ton choix (facultatif)</label><div class="grid3"><input id="fMLabel" placeholder="nom" value="' + esc(m.label || "") + '"><input id="fMVal" type="number" inputmode="decimal" placeholder="valeur" value="' + esc(m.value === undefined ? "" : m.value) + '"><input id="fMUnit" placeholder="unité" value="' + esc(m.unit || "") + '"></div>'; }
+    h += '<label>Type de séance</label><select id="fSession">' + sessionOptions(RUNS, e.session || "endurance_fondamentale") + '</select>';
+  } else if(sKind === "neuro"){
+    sNeuroTech = e.technique || sNeuroTech; sNeuroSide = e.side || sNeuroSide;
+    h += namesDatalist(["neuro"]) + '<label>Exercice</label><input id="fName" list="dlNames" value="' + esc(e.name || "") + '" placeholder="ex. Slump"><label>Technique</label><div class="chips" id="fTech"><button type="button" class="chip' + (sNeuroTech === "tension" ? " on" : "") + '" data-t="tension">Tension</button><button type="button" class="chip' + (sNeuroTech === "glissement" ? " on" : "") + '" data-t="glissement">Glissement</button></div>' +
+      '<div class="grid3"><div><label>Séries</label><input id="fSets" type="number" inputmode="decimal" value="' + esc(e.series || "") + '"></div><div><label>Répétitions</label><input id="fReps" type="number" inputmode="decimal" value="' + esc(e.reps || "") + '"></div><div><label>Maintien (s)</label><input id="fHold" type="number" inputmode="decimal" value="' + esc(e.dureeSec || "") + '"></div></div><label>Côté</label><div class="chips" id="fSide"><button type="button" class="chip' + (sNeuroSide === "D" ? " on" : "") + '" data-s="D">Droite</button><button type="button" class="chip' + (sNeuroSide === "G" ? " on" : "") + '" data-s="G">Gauche</button></div>';
+  } else if(sKind === "stretching"){
+    h += namesDatalist(["stretching"]) + '<label>Étirement</label><input id="fName" list="dlNames" value="' + esc(e.name || "") + '"><div class="grid2"><div><label>Séries</label><input id="fSets" type="number" inputmode="decimal" value="' + esc(e.series || "") + '"></div><div><label>Durée (s)</label><input id="fHold" type="number" inputmode="decimal" value="' + esc(e.dureeSec || "") + '"></div></div><label>Type de séance</label><select id="fSession">' + sessionOptions(STRENGTH, e.session || "antalgique") + '</select>';
+  } else if(sKind === "isometric"){
+    h += namesDatalist(["isometric"]) + '<label>Exercice</label><input id="fName" list="dlNames" value="' + esc(e.name || "") + '"><label>Groupe musculaire</label><select id="fGroup">' + groupOptions(e.group) + '</select><div class="grid3"><div><label>Séries</label><input id="fSets" type="number" inputmode="decimal" value="' + esc(e.series || "") + '"></div><div><label>Répétitions</label><input id="fReps" type="number" inputmode="decimal" value="' + esc(e.reps || "") + '"></div><div><label>Durée (s)</label><input id="fHold" type="number" inputmode="decimal" value="' + esc(e.dureeSec || "") + '"></div></div><label>Type de séance</label><select id="fSession">' + sessionOptions(STRENGTH, e.session || "tendineux") + '</select>';
+  }
+  $("sFields").innerHTML = h;
+}
+function openSeance(docId, pre){
+  sEditId = null; var ed = null, date = today();
+  units = { dur:"min", dist:"km" }; sNeuroTech = ""; sNeuroSide = ""; sAct = "Course à pied";
+  if(docId && store.ath[docId]){ var d = store.ath[docId].data; sEditId = docId; ed = d.entry; date = d.date; sKind = ed.kind === "run" ? "functional" : ed.kind; units = { dur: ed.durUnit === "s" ? "s" : "min", dist: ed.distUnit === "m" ? "m" : "km" }; }
+  else if(pre){ ed = JSON.parse(JSON.stringify(pre)); delete ed.id; delete ed.rpe; delete ed.src; sKind = pre.kind === "run" ? "functional" : pre.kind; units = { dur: pre.durUnit === "s" ? "s" : "min", dist: pre.distUnit === "m" ? "m" : "km" }; }
+  else sKind = "exercise";
+  var isNew = !docId;
+  $("sTitle").textContent = (ed && !pre) ? "Modifier la séance" : "Nouvelle séance"; $("sDate").value = date; $("sMsg").textContent = ""; $("sDel").hidden = !sEditId;
+  $("sRpe").value = ed && ed.rpe !== undefined && ed.rpe !== null ? ed.rpe : "";
+  [].forEach.call($("sKind").children, function(b){ b.classList.toggle("on", b.dataset.k === sKind); });
+  renderSFields(ed); $("seanceOv").hidden = false;
+}
+$("sKind").addEventListener("click", function(e){ var b = e.target.closest("[data-k]"); if(!b || sEditId) return; sKind = b.dataset.k; [].forEach.call($("sKind").children, function(x){ x.classList.toggle("on", x === b); }); renderSFields(null); });
+$("sFields").addEventListener("click", function(e){
+  var a = e.target.closest("[data-a]"); if(a){ sAct = a.dataset.a; var cur = readCommon(); renderSFields(null); return; }
+  var u = e.target.closest(".seg [data-u]"); if(u){ var id = u.parentNode.dataset.seg, inp = id === "dur" ? $("fDur") : $("fDist"), v = parseFloat(inp.value), old = units[id], nu = u.dataset.u; if(old !== nu){ if(!isNaN(v)){ var r = nu === "s" ? v * 60 : nu === "min" ? v / 60 : nu === "m" ? v * 1000 : v / 1000; inp.value = String(Math.round(r * 1000) / 1000); } units[id] = nu; [].forEach.call(u.parentNode.children, function(x){ x.classList.toggle("on", x === u); }); } return; }
+  var t = e.target.closest("[data-t]"); if(t){ sNeuroTech = sNeuroTech === t.dataset.t ? "" : t.dataset.t; [].forEach.call($("fTech").children, function(x){ x.classList.toggle("on", x.dataset.t === sNeuroTech); }); return; }
+  var s = e.target.closest("[data-s]"); if(s){ sNeuroSide = sNeuroSide === s.dataset.s ? "" : s.dataset.s; [].forEach.call($("fSide").children, function(x){ x.classList.toggle("on", x.dataset.s === sNeuroSide); }); }
+});
+function readCommon(){ return {}; }
+function num(id){ var el = $(id); if(!el) return 0; var v = parseFloat(String(el.value).replace(",", ".")); return isNaN(v) ? 0 : v; }
+function buildEntry(){
+  var e = { id: sEditId ? store.ath[sEditId].data.entry.id : newId() };
+  var rpe = parseFloat(String($("sRpe").value).replace(",", "."));
+  if(sKind === "exercise"){ var n = $("fName").value.trim(); if(!n) return { error:"Indique le nom de l'exercice." }; e.kind = "exercise"; e.name = n; e.group = $("fGroup").value || ""; if(!e.group) delete e.group; e.sets = num("fSets"); e.reps = num("fReps"); e.load = num("fLoad"); e.session = $("fSession").value; }
+  else if(sKind === "functional"){
+    var act = ($("fActOther").value.trim()) || sAct; var run = act === "Course à pied";
+    var dm = num("fDur"), dk = num("fDist"); dm = units.dur === "s" ? Math.round(dm / 60 * 10000) / 10000 : dm; dk = units.dist === "m" ? Math.round(dk / 1000 * 10000) / 10000 : dk;
+    if(!dm && !dk && !(!run && $("fMVal") && $("fMVal").value !== "")) return { error:"Renseigne au moins la durée, la distance ou une mesure." };
+    e.kind = run ? "run" : "functional"; if(!run) e.activity = act; e.session = $("fSession").value;
+    if(dm){ e.durationMin = dm; if(units.dur === "s") e.durUnit = "s"; } if(dk){ e.distanceKm = dk; if(units.dist === "m") e.distUnit = "m"; }
+    if(run){ e.distanceKm = dk; e.durationMin = dm; }
+    if(!run && $("fMLabel") && $("fMLabel").value.trim() && $("fMVal").value !== "") e.measures = [{ label: $("fMLabel").value.trim(), unit: $("fMUnit").value.trim(), value: num("fMVal") }];
+  }
+  else if(sKind === "neuro"){ var nn = $("fName").value.trim(); if(!nn) return { error:"Indique le nom de l'exercice." }; if(!sNeuroTech) return { error:"Choisis Tension ou Glissement." }; e.kind = "neuro"; e.name = nn; e.technique = sNeuroTech; e.series = num("fSets"); e.reps = num("fReps"); if(sNeuroTech === "tension" && num("fHold")) e.dureeSec = num("fHold"); if(sNeuroSide) e.side = sNeuroSide; }
+  else if(sKind === "stretching"){ var ns = $("fName").value.trim(); if(!ns) return { error:"Indique le nom de l'étirement." }; e.kind = "stretching"; e.name = ns; e.series = num("fSets"); e.dureeSec = num("fHold"); e.session = $("fSession").value; }
+  else { var ni = $("fName").value.trim(); if(!ni) return { error:"Indique le nom de l'exercice." }; e.kind = "isometric"; e.name = ni; e.group = $("fGroup").value || ""; if(!e.group) delete e.group; e.series = num("fSets"); e.reps = num("fReps"); e.dureeSec = num("fHold"); e.session = $("fSession").value; }
+  if(!isNaN(rpe)) e.rpe = rpe;
+  return { entry: e };
+}
+function putDoc(docId, data){
+  var d = { c:"athEntries", id: docId, data: data, updatedAt: nowIso() };
+  store.ath[docId] = { id: docId, data: data, updatedAt: d.updatedAt }; store.pending[docId] = d; save();
+}
+function delDoc(docId){ delete store.ath[docId]; store.pending[docId] = { c:"athEntries", id: docId, deleted:true, updatedAt: nowIso() }; save(); }
+$("sSave").addEventListener("click", function(){
+  var date = $("sDate").value; if(!/^\d{4}-\d\d-\d\d$/.test(date)){ $("sMsg").textContent = "Choisis une date."; return; }
+  var r = buildEntry(); if(r.error){ $("sMsg").textContent = r.error; return; }
+  var docId = sEditId || (store.patientId + "-" + r.entry.id);
+  putDoc(docId, { id: docId, patientId: store.patientId, by:"athlete", kind:"train", date: date, entry: r.entry });
+  $("seanceOv").hidden = true; render(); sync();
+});
+$("sDel").addEventListener("click", function(){ if(sEditId && confirm("Supprimer cette séance ?")){ delDoc(sEditId); $("seanceOv").hidden = true; render(); sync(); } });
+$("sClose").addEventListener("click", function(){ $("seanceOv").hidden = true; });
+$("tabBody").addEventListener("click", function(e){
+  var dd = e.target.closest("[data-do]");
+  if(dd){ var pr = dd.dataset["do"].split("|"), pe = ((((store.patient || {}).program || {}).entries || {})[pr[0]] || []).find(function(x){ return x.id === pr[1]; }); if(pe) openSeance(null, pe); return; }
+  var c = e.target.closest("[data-doc]"); if(c){ openSeance(c.dataset.doc); return; }
+  var m = e.target.closest("[data-mdoc]"); if(m){ openTest(m.dataset.mdoc); }
+});
+
+/* ---------- tests ---------- */
+function specSides(def){ return def && def.single ? ["S"] : ["D", "G"]; }
+function specDefOf(t){
+  if(!t || t.type !== "spec") return null;
+  var l = SPEC_TESTS[t.zone] || [], d = l.find(function(x){ return x.id === t.specId; });
+  if(d) return d;
+  for(var z in SPEC_TESTS){ var f = (SPEC_TESTS[z] || []).find(function(x){ return x.id === t.specId; }); if(f) return f; }
+  return null;
+}
+function specPrimary(def){ return def.fields.find(function(f){ return f.primary; }) || def.fields[0]; }
+function testKind(t){ if(t.type === "iso" || t.type === "jump") return t.type; if(t.type === "spec"){ var d = specDefOf(t); if(d && !d.palp) return "spec"; } return null; }
+function myTests(){ return ((store.patient && store.patient.tests) || []).filter(function(t){ return testKind(t); }); }
+function otherTests(){ return ((store.patient && store.patient.tests) || []).filter(function(t){ return !testKind(t); }); }
+function measuresOf(test){
+  var out = [], mine = {};
+  Object.keys(store.ath).forEach(function(id){ var d = store.ath[id].data; if(d && d.kind === "test" && d.testId === test.id && d.entry){ mine[d.entry.id] = true; out.push({ e: d.entry, docId: id, mine: true, pending: !!store.pending[id] }); } });
+  (test.entries || []).forEach(function(e){ if(e.src === "athlete" || mine[e.id]) return; out.push({ e: e, mine: false }); });
+  return out.sort(function(a, b){ return String(b.e.date).localeCompare(String(a.e.date)); });
+}
+function fmtTtp(sec, unit){ if(sec === undefined || sec === null) return ""; return unit === "ms" ? Math.round(sec * 1000) + " ms" : dec(sec) + " s"; }
+function specLine(t, e){
+  var def = specDefOf(t); if(!def) return "";
+  if(def.rule){ var n = Object.keys(e.checks || {}).filter(function(k){ return e.checks[k]; }).length; return (e.side === "D" ? "Droit" : (e.side === "G" ? "Gauche" : "")) + (n ? " · " + n + " case(s) cochée(s)" : " · négatif"); }
+  if(def.noteOnly) return String(e.note || "").slice(0, 90);
+  var pf = specPrimary(def);
+  return specSides(def).map(function(sd){ var d = (e.data || {})[sd] || {}, v = pf.type === "computed" ? specComputed(pf, d) : d[pf.key]; return v === null || v === undefined ? null : ((sd === "S" ? "" : sd + " ") + (typeof v === "number" ? dec(v) : v) + (pf.unit ? " " + pf.unit : "")); }).filter(Boolean).join(" · ") || "—";
+}
+function renderTests(){
+  var ts = myTests(), others = otherTests();
+  if(!ts.length){ $("tabBody").innerHTML = '<div class="empty">Ton kiné n\'a pas encore créé de test pour toi.<br>Dès qu\'il en ajoute, tu pourras y saisir tes mesures ici.</div>' + (others.length ? '<div class="card" style="color:var(--muted);font-size:14px;">À faire avec ton kiné : ' + others.map(function(t){ return esc(t.name); }).join(", ") + '.</div>' : ''); return; }
+  var h = "";
+  ts.forEach(function(t){
+    var ms = measuresOf(t), k = testKind(t);
+    h += '<div class="card"><h2>' + esc(t.name) + '</h2>';
+    if(!ms.length) h += '<div class="empty" style="padding:8px;">Aucune mesure.</div>';
+    else if(k === "spec") h += '<table><tr><th>Date</th><th>Résultat</th><th></th></tr>' + ms.slice(0, 8).map(function(m){ return '<tr' + (m.mine ? ' class="ent" data-mdoc="' + esc(m.docId) + '"' : '') + '><td>' + esc(m.e.date) + '</td><td>' + esc(specLine(t, m.e)) + '</td><td>' + (m.mine ? '<span class="pill ' + (m.pending ? 'wait' : 'me') + '">' + (m.pending ? 'à envoyer' : 'toi') + '</span>' : '') + '</td></tr>'; }).join("") + '</table>';
+    else h += '<table><tr><th>Date</th>' + (k === "iso" ? '<th>Droite</th><th>Gauche</th><th>Pic</th>' : '<th>Valeur</th>') + '<th></th></tr>' + ms.slice(0, 8).map(function(m){
+      var e = m.e;
+      return '<tr' + (m.mine ? ' class="ent" data-mdoc="' + esc(m.docId) + '"' : '') + '><td>' + esc(e.date) + '</td>' + (k === "iso" ? '<td>' + esc(e.valueD === undefined || e.valueD === null ? "—" : e.valueD) + '</td><td>' + esc(e.valueG === undefined || e.valueG === null ? "—" : e.valueG) + '</td><td>' + esc([e.ttpD !== undefined ? "D " + fmtTtp(e.ttpD, t.ttpUnit) : "", e.ttpG !== undefined ? "G " + fmtTtp(e.ttpG, t.ttpUnit) : ""].filter(Boolean).join(" · ") || "—") + '</td>' : '<td>' + esc(e.value === undefined ? "—" : e.value) + '</td>') + '<td>' + (m.mine ? '<span class="pill ' + (m.pending ? 'wait' : 'me') + '">' + (m.pending ? 'à envoyer' : 'toi') + '</span>' : '') + '</td></tr>';
+    }).join("") + '</table>';
+    if(k !== "spec") h += '<div class="sub" style="font-size:12px;color:var(--muted);margin-top:6px;">Unité : ' + esc(t.unit || "") + '</div>';
+    h += '</div>';
+  });
+  if(others.length) h += '<div class="card" style="color:var(--muted);font-size:14px;">À faire avec ton kiné : ' + others.map(function(t){ return esc(t.name); }).join(", ") + '.</div>';
+  $("tabBody").innerHTML = h;
+}
+var tEditId = null, tUnit = "s", tSide = "";
+function openTest(docId){
+  var ts = myTests();
+  if(!ts.length){ alert("Ton kiné n'a pas encore créé de test pour toi."); return; }
+  tEditId = null; var ed = null, date = today(), testId = ts[0].id; tSide = "";
+  if(docId && store.ath[docId]){ var d = store.ath[docId].data; tEditId = docId; ed = d.entry; date = d.entry.date || d.date; testId = d.testId; }
+  $("tTitle").textContent = ed ? "Modifier la mesure" : "Nouvelle mesure"; $("tTest").innerHTML = ts.map(function(t){ return '<option value="' + esc(t.id) + '"' + (t.id === testId ? " selected" : "") + '>' + esc(t.name) + '</option>'; }).join(""); $("tTest").disabled = !!ed;
+  $("tDate").value = date; $("tMsg").textContent = ""; $("tDel").hidden = !ed; renderTFields(ed); $("testOv").hidden = false;
+}
+function specInputs(def, entry){
+  var sides = specSides(def), h = "";
+  def.fields.forEach(function(f){
+    h += '<label>' + esc(f.label) + (f.unit && f.label.indexOf("(" + f.unit + ")") === -1 ? ' (' + esc(f.unit) + ')' : '') + '</label><div class="' + (sides.length === 2 ? "grid2" : "") + '">';
+    sides.forEach(function(sd){
+      var key = sd + ":" + f.key, v = entry && entry.data && entry.data[sd] ? entry.data[sd][f.key] : undefined, ph = sides.length === 2 ? (sd === "D" ? "droite" : "gauche") : "";
+      if(f.type === "number") h += '<input type="number" inputmode="decimal" step="any" data-spf="' + key + '" placeholder="' + ph + '" value="' + esc(v === undefined ? "" : v) + '">';
+      else if(f.type === "choice") h += '<select data-spf="' + key + '"><option value="">—' + (ph ? " " + ph : "") + '</option>' + (f.options || []).map(function(o){ return '<option' + (v === o ? " selected" : "") + '>' + esc(o) + '</option>'; }).join("") + '</select>';
+      else if(f.type === "yesno") h += '<select data-spf="' + key + '"><option value="">—' + (ph ? " " + ph : "") + '</option><option value="oui"' + (v === "oui" ? " selected" : "") + '>Oui</option><option value="non"' + (v === "non" ? " selected" : "") + '>Non</option></select>';
+      else h += '<div data-comp="' + key + '" style="min-height:48px;display:flex;align-items:center;font-weight:800;font-size:18px;">—</div>';
+    });
+    h += '</div>';
+  });
+  return h;
+}
+function updateComputed(def){
+  var data = {}; specSides(def).forEach(function(sd){ data[sd] = {}; });
+  document.querySelectorAll("#tFields [data-spf]").forEach(function(i){ var p = i.getAttribute("data-spf").split(":"); if(i.value === "" || !data[p[0]]) return; var f = def.fields.find(function(x){ return x.key === p[1]; }); data[p[0]][p[1]] = f && f.type === "number" ? toNum(i.value) : i.value; });
+  def.fields.forEach(function(f){ if(f.type !== "computed") return; specSides(def).forEach(function(sd){ var el = document.querySelector('#tFields [data-comp="' + sd + ":" + f.key + '"]'), v = specComputed(f, data[sd]); if(el) el.textContent = v === null ? "—" : dec(v) + (f.unit ? " " + f.unit : ""); }); });
+}
+function renderTFields(ed){
+  var t = myTests().find(function(x){ return x.id === $("tTest").value; }) || {}, e = ed || {}, h = "", k = testKind(t);
+  tUnit = t.ttpUnit || "s";
+  if(k === "iso"){ h = '<div class="grid2"><div><label>Droite (' + esc(t.unit || "") + ')</label><input id="tD" type="number" inputmode="decimal" value="' + esc(e.valueD === undefined || e.valueD === null ? "" : e.valueD) + '"></div><div><label>Gauche (' + esc(t.unit || "") + ')</label><input id="tG" type="number" inputmode="decimal" value="' + esc(e.valueG === undefined || e.valueG === null ? "" : e.valueG) + '"></div></div>' +
+    '<label>Temps jusqu\'au pic (facultatif) ' + seg("ttp", ["s", "ms"], tUnit) + '</label><div class="grid2"><input id="tPD" type="number" inputmode="decimal" placeholder="droite" value="' + esc(e.ttpD !== undefined ? (tUnit === "ms" ? Math.round(e.ttpD * 1000) : e.ttpD) : "") + '"><input id="tPG" type="number" inputmode="decimal" placeholder="gauche" value="' + esc(e.ttpG !== undefined ? (tUnit === "ms" ? Math.round(e.ttpG * 1000) : e.ttpG) : "") + '"></div>'; }
+  else if(k === "jump"){ h = '<label>Valeur (' + esc(t.unit || "") + ')</label><input id="tV" type="number" inputmode="decimal" value="' + esc(e.value === undefined ? "" : e.value) + '">'; }
+  else if(k === "spec"){
+    var def = specDefOf(t);
+    if(def.rule){
+      var rule = SPEC_RULES[def.rule]; tSide = e.side || tSide;
+      h = '<div class="tc-sub" style="color:var(--muted);font-size:13px;margin-bottom:6px;">' + esc(def.hint || "") + '</div><label>Côté examiné</label><div class="chips" id="tSideRow"><button type="button" class="chip' + (tSide === "D" ? " on" : "") + '" data-side="D">Droit</button><button type="button" class="chip' + (tSide === "G" ? " on" : "") + '" data-side="G">Gauche</button></div>' +
+        rule.blocks.map(function(b){ return '<div class="card" style="margin-top:10px;">' + (b.gate ? '<label class="cbl"><input type="checkbox" data-chk="' + b.id + '_gate"' + ((e.checks || {})[b.id + "_gate"] ? " checked" : "") + '><span><b>' + esc(b.gate) + '</b></span></label>' : '<b>' + esc(b.itemsLabel || "Éléments") + '</b>') + b.items.map(function(it, i){ return '<label class="cbl"><input type="checkbox" data-chk="' + b.id + '_' + i + '"' + ((e.checks || {})[b.id + "_" + i] ? " checked" : "") + '><span>' + esc(it) + '</span></label>'; }).join("") + '</div>'; }).join("");
+    } else if(def.noteOnly){ h = '<div class="tc-sub" style="color:var(--muted);font-size:13px;">' + esc(def.hint || "") + ' Écris tes observations ci-dessous.</div>'; }
+    else { h = '<div class="tc-sub" style="color:var(--muted);font-size:13px;margin-top:6px;">' + esc(def.hint || "") + '</div>' + specInputs(def, e); }
+    h += '<label>' + (def.noteOnly ? "Observations" : "Note (facultatif)") + '</label><textarea id="tNote" rows="3">' + esc(e.note || "") + '</textarea>';
+    $("tFields").innerHTML = h; if(!def.rule && !def.noteOnly) updateComputed(def); return;
+  }
+  $("tFields").innerHTML = h;
+}
+$("tTest").addEventListener("change", function(){ renderTFields(null); });
+$("tFields").addEventListener("input", function(){ var t = myTests().find(function(x){ return x.id === $("tTest").value; }), def = t && specDefOf(t); if(def && !def.rule && !def.noteOnly) updateComputed(def); });
+$("tFields").addEventListener("click", function(e){
+  var sb = e.target.closest("[data-side]"); if(sb){ tSide = tSide === sb.dataset.side ? "" : sb.dataset.side; [].forEach.call($("tSideRow").children, function(x){ x.classList.toggle("on", x.dataset.side === tSide); }); return; }
+  var u = e.target.closest(".seg [data-u]"); if(!u) return; var nu = u.dataset.u; if(nu === tUnit) return;
+  ["tPD", "tPG"].forEach(function(id){ var i = $(id), v = parseFloat(i.value); if(!isNaN(v)) i.value = String(nu === "ms" ? Math.round(v * 1000) : Math.round(v / 1000 * 100000) / 100000); });
+  tUnit = nu; [].forEach.call(u.parentNode.children, function(x){ x.classList.toggle("on", x === u); });
+});
+$("tSave").addEventListener("click", function(){
+  var t = myTests().find(function(x){ return x.id === $("tTest").value; }); if(!t) return;
+  var date = $("tDate").value; if(!/^\d{4}-\d\d-\d\d$/.test(date)){ $("tMsg").textContent = "Choisis une date."; return; }
+  var en = { id: tEditId ? store.ath[tEditId].data.entry.id : newId(), date: date }, k = testKind(t);
+  if(k === "iso"){
+    var d = $("tD").value, g = $("tG").value; if(d === "" && g === ""){ $("tMsg").textContent = "Renseigne au moins une valeur (droite ou gauche)."; return; }
+    if(d !== "") en.valueD = parseFloat(String(d).replace(",", ".")); if(g !== "") en.valueG = parseFloat(String(g).replace(",", "."));
+    var pd = parseFloat(String($("tPD").value).replace(",", ".")), pg = parseFloat(String($("tPG").value).replace(",", "."));
+    if(!isNaN(pd)) en.ttpD = Math.round((tUnit === "ms" ? pd / 1000 : pd) * 100000) / 100000; if(!isNaN(pg)) en.ttpG = Math.round((tUnit === "ms" ? pg / 1000 : pg) * 100000) / 100000;
+  } else if(k === "jump"){ var v = $("tV").value; if(v === ""){ $("tMsg").textContent = "Renseigne la valeur."; return; } en.value = parseFloat(String(v).replace(",", ".")); }
+  else {
+    var def = specDefOf(t); en.note = ($("tNote").value || "").trim().slice(0, 1000); en.tags = [];
+    if(def.rule){ en.checks = {}; document.querySelectorAll("#tFields [data-chk]").forEach(function(c){ if(c.checked) en.checks[c.getAttribute("data-chk")] = true; }); en.side = tSide; if(!Object.keys(en.checks).length && !confirm("Aucune case cochée : enregistrer un résultat négatif ?")) return; }
+    else if(def.noteOnly){ if(!en.note){ $("tMsg").textContent = "Écris tes observations."; return; } }
+    else { en.data = {}; specSides(def).forEach(function(sd){ en.data[sd] = {}; }); document.querySelectorAll("#tFields [data-spf]").forEach(function(i){ var p = i.getAttribute("data-spf").split(":"), f = def.fields.find(function(x){ return x.key === p[1]; }); if(i.value === "" || !en.data[p[0]]) return; if(f.type === "number"){ var n = toNum(i.value); if(n !== null) en.data[p[0]][p[1]] = n; } else en.data[p[0]][p[1]] = i.value; });
+      if(!specSides(def).some(function(sd){ return Object.keys(en.data[sd]).length; })){ $("tMsg").textContent = "Renseigne au moins une valeur."; return; } }
+  }
+  var docId = tEditId || (store.patientId + "-" + en.id);
+  var data = { id: docId, patientId: store.patientId, by:"athlete", kind:"test", testId: t.id, date: date, entry: en };
+  if(k === "iso" && (en.ttpD !== undefined || en.ttpG !== undefined)) data.ttpUnit = tUnit;
+  putDoc(docId, data); $("testOv").hidden = true; render(); sync();
+});
+$("tDel").addEventListener("click", function(){ if(tEditId && confirm("Supprimer cette mesure ?")){ delDoc(tEditId); $("testOv").hidden = true; render(); sync(); } });
+$("tClose").addEventListener("click", function(){ $("testOv").hidden = true; });
+$("fab").addEventListener("click", function(){ if(tab === "tests") openTest(null); else openSeance(null); });
+
+/* ---------- rendez-vous ---------- */
+function renderRdv(){
+  var list = Object.keys(store.agenda).map(function(k){ return store.agenda[k]; }).filter(function(a){ return a && a.date >= today() && a.status !== "annule"; }).sort(function(a, b){ return (a.date + a.start).localeCompare(b.date + b.start); });
+  $("tabBody").innerHTML = list.length ? list.map(function(a){ return '<div class="card"><div class="row"><div><b>' + esc(fmtDate(a.date)) + '</b><div class="sub" style="font-size:13px;color:var(--muted);">' + esc(a.start) + (a.dur ? " · " + esc(a.dur) + " min" : "") + (a.type ? " · " + esc(a.type) : "") + '</div></div></div></div>'; }).join("") : '<div class="empty">Aucun rendez-vous à venir.</div>';
+}
+
+/* ---------- connexion ---------- */
+$("jBtn").addEventListener("click", async function(){
+  var p = $("jPass").value, p2 = $("jPass2").value; $("jMsg").textContent = "";
+  if(p.length < 12){ $("jMsg").textContent = "12 caractères minimum."; return; } if(p !== p2){ $("jMsg").textContent = "Les deux mots de passe sont différents."; return; }
+  try{ var r = await api("/api/athlete/join", "POST", { email: store.email, code: store.code, password: p }, true);
+    if(r.status !== 200){ $("jMsg").textContent = (r.json && r.json.message) || "Impossible de créer l'accès."; return; }
+    store.token = r.json.token; store.patientId = r.json.patient; store.code = ""; save(); history.replaceState(null, "", location.pathname); showApp();
+  }catch(e){ $("jMsg").textContent = "Serveur injoignable. Vérifie ta connexion."; }
+});
+$("lBtn").addEventListener("click", async function(){
+  store.url = $("lUrl").value.trim().replace(/\/+$/, ""); store.email = $("lEmail").value.trim().toLowerCase(); $("lMsg").textContent = "";
+  try{ var r = await api("/api/login", "POST", { email: store.email, password: $("lPass").value }, true);
+    if(r.status !== 200){ $("lMsg").textContent = (r.json && r.json.message) || "Connexion impossible."; return; }
+    if(r.json.role !== "athlete"){ $("lMsg").textContent = "Ce compte n'est pas un accès athlète."; return; }
+    store.token = r.json.token; var me = await api("/api/me", "GET"); store.patientId = me.json && me.json.patient; save(); showApp();
+  }catch(e){ $("lMsg").textContent = "Serveur injoignable. Vérifie ta connexion."; }
+});
+$("logoutBtn").addEventListener("click", function(){ if(Object.keys(store.pending).length && !confirm("Des saisies n'ont pas encore été envoyées et seront perdues. Quitter quand même ?")) return; if(confirm("Te déconnecter de ce téléphone ?")){ logout(""); } });
+window.addEventListener("online", sync); setInterval(function(){ if(!document.hidden) sync(); }, 60000); document.addEventListener("visibilitychange", function(){ if(!document.hidden) sync(); });
+
+/* ---------- démarrage ---------- */
+(function init(){
+  var h = new URLSearchParams((location.hash || "").replace(/^#/, ""));
+  if(h.get("c") && h.get("s") && h.get("e")){
+    store = { url: h.get("s").replace(/\/+$/, ""), email: h.get("e").toLowerCase(), code: h.get("c"), token:"", patientId:"", rev:0, patient:null, ath:{}, pending:{}, agenda:{}, catalog:{}, status:"", lastOk:"" };
+    save(); $("jEmail").value = store.email; showAuth("join"); return;
+  }
+  if(store.token){ showApp(); return; }
+  showAuth("login");
+})();
+})();
+</script>
+</body>
+</html>

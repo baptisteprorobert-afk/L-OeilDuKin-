@@ -992,6 +992,24 @@
   .st-wd.future .st-wbar div{ background:#9cc8ff; }
   .st-wl{ font-size:12px; font-weight:700; color:var(--muted); }
   .st-wa{ font-size:11px; color:#b3261e; font-weight:700; text-align:center; }
+
+  /* ---------- ratios entre tests ISO ---------- */
+  .ov-ratios{ order:-1; grid-column:1 / -1; cursor:default; }
+  .rat-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:6px; }
+  .rat-head b{ font-size:16px; }
+  .rat-row{ padding:10px 0; border-top:1px solid var(--border); }
+  .rat-top{ display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; }
+  .rat-name{ font-weight:700; font-size:15px; }
+  .rat-vals{ display:flex; gap:14px; }
+  .rat-v{ font-size:20px; font-weight:800; }
+  .rat-v.in{ color:#0f7b5f; } .rat-v.out{ color:#b3261e; }
+  .rat-sub{ font-size:12.5px; color:var(--muted); margin-top:2px; }
+  .rat-man-row{ padding:12px 0; border-bottom:1px solid var(--border); }
+  .rat-man-row .rn{ font-weight:700; }
+  .rat-man-row .rs{ font-size:12.5px; color:var(--muted); margin:2px 0 8px; }
+  .rat-inputs{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .rat-inputs input[type="number"]{ width:84px; min-height:40px; border:1px solid var(--border); border-radius:10px; padding:0 8px; font-size:16px; }
+  .rat-add select, .rat-add input[type="text"]{ width:100%; min-height:44px; border:1px solid var(--border); border-radius:10px; padding:0 10px; font-size:16px; margin:4px 0 8px; box-sizing:border-box; }
 </style>
 </head>
 <body>
@@ -1164,6 +1182,7 @@
           <button class="btn-ghost" id="sharePatientBtn" title="Envoyer ce patient en fichier">Partager</button>
           <button class="btn-ghost" id="renamePatientBtn" title="Modifier le nom du patient">✎ Renommer</button>
           <button class="btn-ghost" id="openRefBtn" title="Positions de test & normes">📖 Référence</button>
+          <button class="btn-ghost" id="athBtn" title="Donner un accès à cet athlète pour qu'il saisisse ses séances à distance">👤 Accès athlète</button>
           <button class="btn-ghost btn-danger" id="deletePatientBtn">Supprimer</button>
         </div>
       </header>
@@ -1751,6 +1770,43 @@
     <div class="modal-header"><h2>Importer une sauvegarde</h2><button class="btn-ghost" id="mergeCloseBtn">Fermer</button></div>
     <div id="mergeBody"></div>
     <div class="modal-actions" id="mergeActions"></div>
+  </div>
+</div>
+
+<!-- Accès athlète -->
+<div id="athOverlay" class="modal-overlay" hidden>
+  <div class="modal-box">
+    <div class="modal-header"><h2>Accès athlète</h2><button class="btn-ghost" id="athCloseBtn">Fermer</button></div>
+    <p class="tc-sub" id="athIntro">L'athlète saisit ses séances et ses tests depuis son téléphone. Tout arrive dans cette fiche, marqué « saisi par l'athlète ». Il ne voit que sa propre fiche.</p>
+    <div id="athMsg" class="tc-sub" style="color:#b3261e;"></div>
+    <div id="athList"></div>
+    <div id="athNew">
+      <div class="set-sec" style="margin-top:12px;">Inviter l'athlète</div>
+      <input type="email" id="athEmail" placeholder="Adresse e-mail de l'athlète" autocomplete="off" autocapitalize="off" style="width:100%;min-height:46px;border:1px solid var(--border);border-radius:10px;padding:0 12px;font-size:16px;box-sizing:border-box;margin:6px 0 8px;">
+      <button type="button" class="btn-primary" id="athInviteBtn" style="width:100%;min-height:46px;">Créer le lien d'invitation</button>
+      <div id="athLinkBox" hidden style="margin-top:12px;">
+        <div class="tc-sub">Envoie ce lien à l'athlète (valable 7 jours, utilisable une seule fois) :</div>
+        <textarea id="athLink" readonly rows="3" style="width:100%;border:1px solid var(--border);border-radius:10px;padding:8px;font-size:13px;box-sizing:border-box;"></textarea>
+        <div style="display:flex;gap:8px;margin-top:8px;"><button type="button" class="btn-primary" id="athShareBtn" style="flex:1;min-height:44px;">Partager</button><button type="button" class="btn-ghost" id="athCopyBtn" style="flex:1;min-height:44px;">Copier</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Ratios : gestion -->
+<div id="ratioOverlay" class="modal-overlay" hidden>
+  <div class="modal-box">
+    <div class="modal-header"><h2>Ratios</h2><button class="btn-ghost" id="ratioCloseBtn">Fermer</button></div>
+    <p class="tc-sub">Un ratio divise la dernière mesure d'un test ISO par celle d'un autre, côté droit et côté gauche. Aucune cible n'est imposée : renseigne-en une seulement si tu veux voir les valeurs hors zone en rouge.</p>
+    <div id="ratioList"></div>
+    <div class="rat-add">
+      <div class="set-sec" style="margin-top:14px;">Créer un ratio</div>
+      <select id="ratioNum" aria-label="Test au numérateur"></select>
+      <div class="tc-sub" style="text-align:center;margin:-2px 0;">divisé par</div>
+      <select id="ratioDen" aria-label="Test au dénominateur"></select>
+      <input type="text" id="ratioName" placeholder="Nom du ratio (facultatif)" maxlength="60">
+      <button type="button" class="btn-primary" id="ratioAddBtn" style="width:100%;min-height:46px;">Ajouter ce ratio</button>
+    </div>
   </div>
 </div>
 
@@ -3076,6 +3132,148 @@ function renderPeriodOverviewCard(patient){
   return card;
 }
 
+/* ----- accès athlète : fenêtre de gestion ----- */
+function athSetMsg(t){ document.getElementById("athMsg").textContent = t || ""; }
+async function athRefresh(){
+  var c = syncCfg(), box = document.getElementById("athList"), patient = getSelectedPatient();
+  box.innerHTML = ""; athSetMsg("");
+  document.getElementById("athNew").hidden = !c.token;
+  if(!c.token){ athSetMsg("Connecte-toi d'abord au serveur : Plus → Mode et réglages → Serveur de synchronisation."); return; }
+  try{
+    var r = await syncFetch(c, "/api/athlete/list", "GET");
+    if(r.status === 404){ athSetMsg("Ton serveur n'est pas encore à jour pour l'accès athlète : mets-le à jour d'abord."); document.getElementById("athNew").hidden = true; return; }
+    if(r.status !== 200){ athSetMsg((r.json && r.json.message) || "Erreur du serveur."); return; }
+    var mine = (r.json.athletes || []).filter(function(a){ return a.patientId === patient.id; }), pend = (r.json.invites || []).filter(function(i){ return i.patientId === patient.id; });
+    box.innerHTML = mine.map(function(a){
+      var seen = a.lastSeen ? "vu le " + fmtDate(a.lastSeen.slice(0, 10)) : "jamais connecté";
+      return '<div class="trash-row"><div><b>' + escHtml(a.email) + '</b><span>' + (a.active ? 'accès actif' : 'accès coupé') + ' · ' + seen + '</span></div><div style="display:flex;gap:6px;"><button type="button" class="btn-ghost" data-athactive="' + a.id + '" data-to="' + (a.active ? "0" : "1") + '">' + (a.active ? 'Couper' : 'Rétablir') + '</button><button type="button" class="btn-ghost btn-danger" data-athdel="' + a.id + '">Supprimer</button></div></div>';
+    }).join("") + pend.map(function(i){
+      return '<div class="trash-row"><div><b>' + escHtml(i.email) + '</b><span>invitation en attente · expire le ' + escHtml(fmtDate(i.expiresAt.slice(0, 10))) + '</span></div><button type="button" class="btn-ghost" data-athrevoke="' + i.id + '">Annuler</button></div>';
+    }).join("");
+    if(!mine.length && !pend.length) box.innerHTML = '<div class="tc-sub" style="padding:10px 0;">Aucun accès pour ce patient pour l\'instant.</div>';
+  }catch(e){ athSetMsg(e && e.network ? "Serveur injoignable." : "Erreur : " + (e && e.message || e)); }
+}
+document.getElementById("athBtn").addEventListener("click", function(){ document.getElementById("athLinkBox").hidden = true; document.getElementById("athEmail").value = ""; document.getElementById("athOverlay").hidden = false; athRefresh(); });
+document.getElementById("athCloseBtn").addEventListener("click", function(){ document.getElementById("athOverlay").hidden = true; });
+document.getElementById("athInviteBtn").addEventListener("click", async function(){
+  var c = syncCfg(), patient = getSelectedPatient(), email = document.getElementById("athEmail").value.trim().toLowerCase();
+  athSetMsg("");
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){ athSetMsg("Adresse e-mail invalide."); return; }
+  try{
+    try{ await syncNow(true); }catch(e){}
+    var r = await syncFetch(c, "/api/athlete/invite", "POST", { email: email, patientId: patient.id });
+    if(r.status !== 200){ athSetMsg((r.json && r.json.message) || "Impossible de créer l'invitation."); return; }
+    var link = location.origin + location.pathname.replace(/[^\/]*$/, "") + "athlete.html#s=" + encodeURIComponent(c.url) + "&e=" + encodeURIComponent(email) + "&c=" + encodeURIComponent(r.json.code);
+    document.getElementById("athLink").value = link; document.getElementById("athLinkBox").hidden = false; athRefresh();
+  }catch(e){ athSetMsg(e && e.network ? "Serveur injoignable." : "Erreur : " + (e && e.message || e)); }
+});
+document.getElementById("athCopyBtn").addEventListener("click", function(){ var t = document.getElementById("athLink"); t.select(); try{ navigator.clipboard.writeText(t.value); }catch(e){ document.execCommand("copy"); } this.textContent = "Copié ✓"; var b = this; setTimeout(function(){ b.textContent = "Copier"; }, 1500); });
+document.getElementById("athShareBtn").addEventListener("click", function(){ var t = document.getElementById("athLink").value; if(navigator.share){ navigator.share({ title: "Accès Horus", text: "Voici ton accès pour saisir tes séances :", url: t }).catch(function(){}); } else document.getElementById("athCopyBtn").click(); });
+document.getElementById("athOverlay").addEventListener("click", async function(e){
+  var c = syncCfg();
+  var ac = e.target.closest("[data-athactive]"), del = e.target.closest("[data-athdel]"), rv = e.target.closest("[data-athrevoke]");
+  try{
+    if(ac){ await syncFetch(c, "/api/athlete/" + ac.dataset.athactive + "/active", "POST", { active: ac.dataset.to === "1" }); athRefresh(); }
+    else if(del){ if(confirm("Supprimer ce compte athlète ? Ses saisies déjà reçues restent dans la fiche.")){ await syncFetch(c, "/api/athlete/" + del.dataset.athdel + "/delete", "POST", {}); athRefresh(); } }
+    else if(rv){ await syncFetch(c, "/api/athlete/invites/" + rv.dataset.athrevoke + "/revoke", "POST", {}); athRefresh(); }
+  }catch(err){ athSetMsg("Erreur : " + (err && err.message || err)); }
+});
+/* ----- ratios entre tests ISO ----- */
+var RATIO_BUILTINS = [
+  { id: "r_hq",  name: "Ischio-jambiers ÷ Quadriceps",     num: "g_ischio", den: "g_quad", builtin: true },
+  { id: "r_ei",  name: "Éverseurs ÷ Inverseurs",           num: "g_evers",  den: "tp",     builtin: true },
+  { id: "r_rer", name: "Rotateurs externes ÷ internes",    num: "g_re",     den: "g_ri",   builtin: true }
+];
+function ratiosList(){ if(!Array.isArray(state.isoRatios)) state.isoRatios = []; return state.isoRatios; }
+function isoRatiosEnsure(){
+  var l = ratiosList(), ch = false;
+  RATIO_BUILTINS.forEach(function(b){ if(!l.some(function(x){ return x.id === b.id; })){ l.push(JSON.parse(JSON.stringify(b))); ch = true; } });
+  return ch;
+}
+function ratioTest(patient, mid){ return (patient.tests || []).find(function(t){ return t.type === "iso" && t.muscleId === mid; }) || null; }
+function ratioLast(test, key){
+  var es = (test.entries || []).filter(function(e){ return e[key] !== null && e[key] !== undefined && !isNaN(e[key]); }).sort(function(a, b){ return String(a.date).localeCompare(String(b.date)); });
+  return es.length ? es[es.length - 1] : null;
+}
+function ratioCompute(patient, r){
+  var tn = ratioTest(patient, r.num), td = ratioTest(patient, r.den);
+  if(!tn || !td) return { status: "missing" };
+  if((tn.unit || "") !== (td.unit || "")) return { status: "units", tn: tn, td: td };
+  var sides = {};
+  [["D", "valueD"], ["G", "valueG"]].forEach(function(sd){
+    var a = ratioLast(tn, sd[1]), b = ratioLast(td, sd[1]);
+    if(a && b && Number(b[sd[1]]) !== 0) sides[sd[0]] = { v: Number(a[sd[1]]) / Number(b[sd[1]]), a: a[sd[1]], b: b[sd[1]] };
+  });
+  return Object.keys(sides).length ? { status: "ok", sides: sides, tn: tn, td: td } : { status: "empty" };
+}
+function ratioFmt(v){ return (Math.round(v * 100) / 100).toFixed(2).replace(".", ","); }
+function ratioMuscleName(id){ var m = getMuscle(id); return m ? m.name : id; }
+function renderRatiosCard(patient){
+  if(!(patient.tests || []).some(function(t){ return t.type === "iso"; })) return null;
+  var shown = ratiosList().filter(function(r){ return !r.hidden; }), rows = "", n = 0;
+  shown.forEach(function(r){
+    var c = ratioCompute(patient, r);
+    if(c.status === "ok"){
+      n++;
+      var hasT = (r.min !== undefined && r.min !== null && r.min !== "") || (r.max !== undefined && r.max !== null && r.max !== "");
+      var cls = function(v){ if(!hasT) return ""; var lo = (r.min !== undefined && r.min !== null && r.min !== "") ? Number(r.min) : -Infinity, hi = (r.max !== undefined && r.max !== null && r.max !== "") ? Number(r.max) : Infinity; return v >= lo && v <= hi ? " in" : " out"; };
+      var u = c.tn.unit ? " " + c.tn.unit : "";
+      rows += '<div class="rat-row"><div class="rat-top"><span class="rat-name">' + escHtml(r.name) + '</span><span class="rat-vals">' +
+        ["D", "G"].map(function(sd){ return c.sides[sd] ? '<span class="rat-v' + cls(c.sides[sd].v) + '">' + sd + ' ' + ratioFmt(c.sides[sd].v) + '</span>' : '<span class="rat-v" style="color:var(--muted);">' + sd + ' —</span>'; }).join("") +
+        '</span></div><div class="rat-sub">' + ["D", "G"].filter(function(sd){ return c.sides[sd]; }).map(function(sd){ return sd + ' ' + escHtml(String(c.sides[sd].a).replace(".", ",")) + ' ÷ ' + escHtml(String(c.sides[sd].b).replace(".", ",")); }).join(' · ') + escHtml(u) + (hasT ? ' · cible ' + (r.min !== undefined && r.min !== null && r.min !== "" ? escHtml(String(r.min).replace(".", ",")) : '…') + '–' + (r.max !== undefined && r.max !== null && r.max !== "" ? escHtml(String(r.max).replace(".", ",")) : '…') : '') + '</div></div>';
+    } else if(c.status === "units"){
+      n++;
+      rows += '<div class="rat-row"><div class="rat-top"><span class="rat-name">' + escHtml(r.name) + '</span><span class="rat-sub">unités différentes (' + escHtml(c.tn.unit || "?") + ' / ' + escHtml(c.td.unit || "?") + ')</span></div></div>';
+    }
+  });
+  var card = document.createElement("div");
+  card.className = "test-card ov-ratios";
+  card.innerHTML = '<div class="rat-head"><b>Ratios</b><button type="button" class="btn-ghost" data-ratioman="1" style="min-height:36px;">⚙ Gérer</button></div>' +
+    (rows || '<div class="tc-sub" style="padding:6px 0;">' + (shown.length ? 'Aucun ratio disponible pour ce patient : il faut les deux tests ISO du ratio (par exemple Quadriceps et Ischio-jambiers).' : 'Tous les ratios sont masqués.') + '</div>');
+  card.addEventListener("click", function(e){ if(e.target.closest("[data-ratioman]")) openRatioMan(); });
+  return card;
+}
+function ratioOptions(){
+  var l = MUSCLE_DB.filter(function(m){ return m.isoGroup || !m.isoMember; });
+  return l.map(function(m){ return '<option value="' + escHtml(m.id) + '">' + escHtml(m.name) + '</option>'; }).join("");
+}
+function renderRatioMan(){
+  document.getElementById("ratioList").innerHTML = ratiosList().map(function(r){
+    return '<div class="rat-man-row" data-rid="' + escHtml(r.id) + '"><div class="rn">' + escHtml(r.name) + '</div><div class="rs">' + escHtml(ratioMuscleName(r.num)) + ' ÷ ' + escHtml(ratioMuscleName(r.den)) + '</div>' +
+      '<div class="rat-inputs"><button type="button" class="chip-btn' + (r.hidden ? '' : ' on') + '" data-ratiotoggle="' + escHtml(r.id) + '">' + (r.hidden ? 'Masqué' : 'Affiché') + '</button>' +
+      '<span class="tc-sub">cible (facultative)</span><input type="number" step="any" inputmode="decimal" placeholder="min" data-ratiomin="' + escHtml(r.id) + '" value="' + (r.min !== undefined && r.min !== null ? escHtml(String(r.min)) : '') + '"><input type="number" step="any" inputmode="decimal" placeholder="max" data-ratiomax="' + escHtml(r.id) + '" value="' + (r.max !== undefined && r.max !== null ? escHtml(String(r.max)) : '') + '">' +
+      (r.builtin ? '' : '<button type="button" class="btn-ghost btn-danger" data-ratiodel="' + escHtml(r.id) + '" style="min-height:40px;">Supprimer</button>') + '</div></div>';
+  }).join("");
+}
+function openRatioMan(){
+  isoRatiosEnsure(); renderRatioMan();
+  var opts = ratioOptions();
+  document.getElementById("ratioNum").innerHTML = opts; document.getElementById("ratioDen").innerHTML = opts;
+  document.getElementById("ratioName").value = "";
+  document.getElementById("ratioOverlay").hidden = false;
+}
+document.getElementById("ratioCloseBtn").addEventListener("click", function(){ document.getElementById("ratioOverlay").hidden = true; });
+document.getElementById("ratioOverlay").addEventListener("click", function(e){
+  var t = e.target.closest("[data-ratiotoggle]");
+  if(t){ var r = ratiosList().find(function(x){ return x.id === t.dataset.ratiotoggle; }); if(r){ if(r.hidden) delete r.hidden; else r.hidden = true; saveData(); renderRatioMan(); renderAll(); } return; }
+  var d = e.target.closest("[data-ratiodel]");
+  if(d){ if(confirm("Supprimer ce ratio ?")){ state.isoRatios = ratiosList().filter(function(x){ return x.id !== d.dataset.ratiodel; }); saveData(); renderRatioMan(); renderAll(); } return; }
+  if(e.target.id === "ratioAddBtn"){
+    var a = document.getElementById("ratioNum").value, b = document.getElementById("ratioDen").value;
+    if(!a || !b || a === b){ alert("Choisis deux tests différents."); return; }
+    var nm = document.getElementById("ratioName").value.trim().slice(0, 60) || (ratioMuscleName(a) + " ÷ " + ratioMuscleName(b));
+    ratiosList().push({ id: uid(), name: nm, num: a, den: b });
+    saveData(); renderRatioMan(); renderAll(); document.getElementById("ratioName").value = ""; return;
+  }
+});
+document.getElementById("ratioOverlay").addEventListener("change", function(e){
+  var mn = e.target.closest("[data-ratiomin]"), mx = e.target.closest("[data-ratiomax]");
+  var el = mn || mx; if(!el) return;
+  var id = mn ? mn.dataset.ratiomin : mx.dataset.ratiomax, key = mn ? "min" : "max", r = ratiosList().find(function(x){ return x.id === id; }); if(!r) return;
+  var v = parseFloat(String(el.value).replace(",", "."));
+  if(isNaN(v)) delete r[key]; else r[key] = v;
+  saveData(); renderAll();
+});
 function renderCardsGrid(patient){
   var grid = document.getElementById("cardsGrid");
   grid.innerHTML = "";
@@ -3084,6 +3282,8 @@ function renderCardsGrid(patient){
   var cClin = renderClinicalStrip(patient); cClin.classList.add("ov-clin"); grid.appendChild(cClin);
   grid.appendChild(renderAnamCard(patient));
   var cRts = renderRtsCard(patient); if(cRts) grid.appendChild(cRts);
+  isoRatiosEnsure();
+  var cRat = renderRatiosCard(patient); if(cRat) grid.appendChild(cRat);
   var periodCard = renderPeriodOverviewCard(patient);
   if(periodCard) grid.appendChild(periodCard);
 
@@ -5983,6 +6183,7 @@ function renderDayEntriesList(){
       name = "Course à pied"; detail = '<b>' + fmtDistE(e) + '</b> · <b>' + fmtDurE(e) + '</b>';
       sub = hasRpe ? 'Charge ' + fmtNum(entryLoad(e)) + ' UA' : 'RPE manquant pour la charge';
     }
+    if(e.src === "athlete") sub = (sub ? sub + " · " : "") + "👤 saisi par l'athlète";
     var noRpe = e.kind === 'neuro';
     var right = future
       ? '<span class="planned-tag">prévu</span>'
@@ -8075,6 +8276,8 @@ function normalizeState(o){
   o.funcActivities = o.funcActivities.filter(function(x){ return x && typeof x === "object" && typeof x.id === "string" && typeof x.name === "string" && x.name; });
   if(!Array.isArray(o.funcMeasures)) o.funcMeasures = [];
   o.funcMeasures = o.funcMeasures.filter(function(x){ return x && typeof x === "object" && typeof x.id === "string" && typeof x.label === "string" && x.label; });
+  if(!Array.isArray(o.isoRatios)) o.isoRatios = [];
+  o.isoRatios = o.isoRatios.filter(function(x){ return x && typeof x === "object" && typeof x.id === "string" && typeof x.name === "string" && typeof x.num === "string" && typeof x.den === "string"; });
   if(!Array.isArray(o.exHidden)) o.exHidden = [];
   o.exHidden = o.exHidden.filter(function(x){ return x && typeof x === "object" && typeof x.id === "string" && x.id; });
   if(!Array.isArray(o.palpLib)) o.palpLib = [];
@@ -10605,6 +10808,7 @@ function mergeStates(local, remote, opts){
   unionBy(local.funcActivities = local.funcActivities || [], remote.funcActivities || [], keyOf);
   unionBy(local.funcMeasures = local.funcMeasures || [], remote.funcMeasures || [], keyOf);
   unionBy(local.exHidden = local.exHidden || [], remote.exHidden || [], keyOf);
+  unionBy(local.isoRatios = local.isoRatios || [], remote.isoRatios || [], keyOf);
   return rep;
 }
 function mergeSummaryHtml(rep){
@@ -11161,7 +11365,7 @@ document.getElementById("exMgrBody").addEventListener("click", function(e){
    SYNCHRONISATION AVEC LE SERVEUR (envoi + réception, le plus récent gagne)
    ============================================================ */
 var SYNC_KEY = "horusSync_v1", syncRunning = false, syncTimer = null, syncRenderPending = false;
-var SYNC_LISTS = ["patients", "agenda", "plages", "closures", "exerciseCatalog"], SYNC_META = ["anamTemplates", "functionalMovements", "presetsPerso", "palpLib", "funcActivities", "funcMeasures", "exHidden"];
+var SYNC_LISTS = ["patients", "agenda", "plages", "closures", "exerciseCatalog"], SYNC_META = ["anamTemplates", "functionalMovements", "presetsPerso", "palpLib", "funcActivities", "funcMeasures", "exHidden", "isoRatios"];
 function syncCfg(){
   try{ var c = JSON.parse(localStorage.getItem(SYNC_KEY) || "null"); if(c && typeof c === "object"){ c.pushed = c.pushed || {}; c.metaSig = c.metaSig || {}; return c; } }catch(e){}
   return { url: "", email: "", token: "", auto: true, lastRev: 0, pushed: {}, metaSig: {}, lastOkAt: "", lastError: "" };
@@ -11214,7 +11418,105 @@ async function syncPull(c){
   }
   return { docs: docs, maxRev: maxRev };
 }
+/* ----- accès athlète : saisies reçues / modifiées / supprimées ----- */
+function athSigOf(e){ var o = {}; Object.keys(e).forEach(function(k){ if(k !== "src" && k !== "athAt" && k !== "athSig") o[k] = e[k]; }); return fnvHash(JSON.stringify(o)); }
+function athClean(e){ var o = JSON.parse(JSON.stringify(e)); delete o.src; delete o.athAt; delete o.athSig; return o; }
+function athPatientOf(docId){ var best = null; state.patients.forEach(function(p){ if(docId.indexOf(p.id + "-") === 0 && (!best || p.id.length > best.id.length)) best = p; }); return best; }
+function athFind(rec){
+  var p = state.patients.find(function(x){ return x.id === rec.pid; });
+  if(!p) return { patient: null };
+  if(rec.testId){
+    var t = (p.tests || []).find(function(x){ return x.id === rec.testId; });
+    var e = t ? (t.entries || []).find(function(x){ return x.id === rec.eid; }) : null;
+    return { patient: p, test: t || null, entry: e || null, date: e ? e.date : null };
+  }
+  var found = null, fd = null;
+  Object.keys((p.program && p.program.entries) || {}).forEach(function(d){ (p.program.entries[d] || []).forEach(function(en){ if(en.id === rec.eid){ found = en; fd = d; } }); });
+  return { patient: p, entry: found, date: fd };
+}
+function athRemoveTrain(p, eid){
+  Object.keys(p.program.entries || {}).forEach(function(d){
+    var l = p.program.entries[d] || [], n = l.filter(function(en){ return !(en.id === eid && en.src === "athlete"); });
+    if(n.length !== l.length){ if(n.length) p.program.entries[d] = n; else delete p.program.entries[d]; }
+  });
+}
+function athApply(c, docs){
+  var list = docs.filter(function(d){ return d.c === "athEntries"; });
+  if(!list.length) return false;
+  list.sort(function(a, b){ return String(a.updatedAt).localeCompare(String(b.updatedAt)); });
+  c.ath = c.ath || {};
+  var changed = false;
+  list.forEach(function(d){
+    var p = athPatientOf(d.id); if(!p) return;
+    var eid = d.id.slice(p.id.length + 1), data = d.data || {}, rec = c.ath[d.id] || {};
+    if(!p.program) p.program = { entries: {}, exerciseLibrary: [], plan: {} };
+    if(!p.program.entries) p.program.entries = {};
+    if(d.deleted){
+      if(rec.testId){
+        var tt = (p.tests || []).find(function(x){ return x.id === rec.testId; });
+        if(tt){ var before = (tt.entries || []).length; tt.entries = (tt.entries || []).filter(function(en){ return !(en.id === eid && en.src === "athlete"); }); if(tt.entries.length !== before) changed = true; }
+      } else { var ex0 = athFind({ pid: p.id, eid: eid }); if(ex0.entry && ex0.entry.src === "athlete"){ athRemoveTrain(p, eid); changed = true; } }
+      c.pushed["tath:" + d.id] = 1; delete c.ath[d.id];
+      return;
+    }
+    var ent = data.entry; if(!ent || typeof ent !== "object" || typeof ent.id !== "string") return;
+    var ne = JSON.parse(JSON.stringify(ent)); ne.id = eid; ne.src = "athlete"; ne.athAt = d.updatedAt;
+    if(data.kind === "test"){
+      var tid = String(data.testId || ""); if(!tid) return;
+      var t = (p.tests || []).find(function(x){ return x.id === tid; });
+      if(!t){
+        var def = data.testDef; if(!def || typeof def !== "object") return;
+        t = JSON.parse(JSON.stringify(def)); t.id = tid; t.entries = []; t.src = "athlete"; if(!Array.isArray(p.tests)) p.tests = []; p.tests.push(t); changed = true;
+      }
+      var cur = (t.entries || []).find(function(x){ return x.id === eid; });
+      if(cur && cur.src !== "athlete") return;
+      if(cur && cur.athAt && cur.athAt >= d.updatedAt) { c.ath[d.id] = { pid: p.id, eid: eid, testId: tid }; return; }
+      if(!/^\d{4}-\d\d-\d\d$/.test(String(ne.date || ""))) ne.date = String(data.date || "");
+      if(!/^\d{4}-\d\d-\d\d$/.test(ne.date)) return;
+      ne.athSig = athSigOf(ne);
+      t.entries = (t.entries || []).filter(function(x){ return x.id !== eid; }); t.entries.push(ne);
+      t.entries.sort(function(a, b){ return String(a.date).localeCompare(String(b.date)); });
+      c.ath[d.id] = { pid: p.id, eid: eid, testId: tid }; c.pushed["ath:" + d.id] = ne.athSig; changed = true;
+      return;
+    }
+    var date = String(data.date || "");
+    if(!/^\d{4}-\d\d-\d\d$/.test(date)) return;
+    var ex = athFind({ pid: p.id, eid: eid });
+    if(ex.entry && ex.entry.src !== "athlete") return;
+    if(ex.entry && ex.entry.athAt && ex.entry.athAt >= d.updatedAt){ c.ath[d.id] = { pid: p.id, eid: eid }; return; }
+    athRemoveTrain(p, eid);
+    ne.athSig = athSigOf(ne);
+    (p.program.entries[date] = p.program.entries[date] || []).push(ne);
+    c.ath[d.id] = { pid: p.id, eid: eid }; c.pushed["ath:" + d.id] = ne.athSig; changed = true;
+  });
+  syncSave(c);
+  return changed;
+}
+function athCollectPush(c, out){
+  if(!c.ath) return;
+  var now = new Date().toISOString();
+  Object.keys(c.ath).forEach(function(docId){
+    var rec = c.ath[docId], f = athFind(rec);
+    if(!f.patient) return;
+    if(!f.entry){
+      if(!c.pushed["tath:" + docId]) out.push({ key: "tath:" + docId, sig: 1, doc: { c: "athEntries", id: docId, deleted: true, updatedAt: now } });
+      return;
+    }
+    var sig = athSigOf(f.entry);
+    if(sig === c.pushed["ath:" + docId]) return;
+    var doc = { id: docId, patientId: rec.pid, by: "kine", kind: rec.testId ? "test" : "train", date: f.date, entry: athClean(f.entry) };
+    if(rec.testId) doc.testId = rec.testId;
+    out.push({ key: "ath:" + docId, sig: sig, doc: { c: "athEntries", id: docId, data: doc, updatedAt: now } });
+    f.entry.athSig = sig;
+  });
+}
 function syncApplyPulled(c, docs){
+  var a = athApply(c, docs);
+  var b = syncApplyPulledCore(c, docs.filter(function(d){ return d.c !== "athEntries"; }));
+  if(a && !b){ syncRenderPending = true; saveData(); }
+  return a || b;
+}
+function syncApplyPulledCore(c, docs){
   if(!docs.length) return false;
   var have = {};
   SYNC_LISTS.forEach(function(k){ (state[k] || []).forEach(function(x){ have[k + ":" + x.id] = x.updatedAt || ""; }); });
@@ -11226,7 +11528,7 @@ function syncApplyPulled(c, docs){
     return lu === undefined || d.updatedAt > lu;
   });
   if(!news.length) return false;
-  var remote = { patients: [], agenda: [], plages: [], closures: [], exerciseCatalog: [], anamTemplates: [], functionalMovements: [], presetsPerso: [], palpLib: [], funcActivities: [], funcMeasures: [], exHidden: [], tombstones: { patients: {}, agenda: {}, plages: {}, closures: {}, exerciseCatalog: {} } };
+  var remote = { patients: [], agenda: [], plages: [], closures: [], exerciseCatalog: [], anamTemplates: [], functionalMovements: [], presetsPerso: [], palpLib: [], funcActivities: [], funcMeasures: [], exHidden: [], isoRatios: [], tombstones: { patients: {}, agenda: {}, plages: {}, closures: {}, exerciseCatalog: {} } };
   news.forEach(function(d){
     if(d.c === "meta"){ if(d.data && Array.isArray(d.data.items)) remote[d.id] = d.data.items; return; }
     if(d.deleted) remote.tombstones[d.c][d.id] = d.updatedAt; else if(d.data) remote[d.c].push(d.data);
@@ -11278,6 +11580,7 @@ async function syncPush(c){
     var arr = state[n] || [], sig = fnvHash(JSON.stringify(arr));
     if(c.metaSig[n] !== sig) docs.push({ key: "m:" + n, sig: sig, meta: true, doc: { c: "meta", id: n, data: { items: arr }, updatedAt: new Date().toISOString() } });
   });
+  athCollectPush(c, docs);
   var rejected = 0, i = 0;
   while(i < docs.length){
     var batch = [], size = 0;
