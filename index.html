@@ -345,6 +345,19 @@
   .btn-lg{ width:100%; min-height:56px; border-radius:14px; font-size:17px; font-weight:700; }
   button.btn-ghost.btn-lg{ font-weight:600; }
 
+  /* paramètres d'exercice (molette) */
+  .pick-row{ display:flex; gap:8px; align-items:stretch; margin-bottom:10px; }
+  .pick-row .pick-btn{ margin-bottom:0; flex:1; min-width:0; }
+  .gear-btn{ position:relative; width:48px; flex-shrink:0; border:1px solid var(--border); border-radius:12px; background:var(--surface); color:var(--muted); display:flex; align-items:center; justify-content:center; padding:0; }
+  .gear-btn.on{ border-color:var(--blue-text); color:var(--blue-text); background:#eef2ff; }
+  .gear-btn.on::after{ content:""; position:absolute; top:7px; right:7px; width:8px; height:8px; border-radius:50%; background:var(--blue-text); }
+  .prm-sum{ font-size:12.5px; color:var(--muted); line-height:1.35; }
+  .prm-sum:empty{ display:none; }
+  .prm-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .prm-grid label{ display:block; font-size:12.5px; color:var(--muted); font-weight:600; margin-bottom:4px; }
+  .prm-grid .big-input{ height:48px; text-align:center; }
+  .ex-prm{ font-size:12px; color:var(--blue-text); margin-top:2px; }
+
   /* tiroirs */
   .sheet-overlay{ position:fixed; inset:0; background:rgba(31,36,48,0.5); display:flex; align-items:flex-end; justify-content:center; z-index:80; }
   .sheet{ background:#fff; width:100%; max-width:520px; max-height:92vh; max-height:92dvh; border-radius:24px 24px 0 0; display:flex; flex-direction:column; }
@@ -1387,7 +1400,7 @@
       </div>
 
       <div id="exerciseFields" class="kind-fields">
-        <button type="button" class="pp-btn pick-btn" id="exPickBtn" data-pickkind="exercise" aria-haspopup="dialog"><span class="pick-lbl empty">Choisir un exercice</span><span class="pp-chev" aria-hidden="true">›</span></button>
+        <div class="pick-row"><button type="button" class="pp-btn pick-btn" id="exPickBtn" data-pickkind="exercise" aria-haspopup="dialog"><span class="pick-lbl empty">Choisir un exercice</span><span class="pp-chev" aria-hidden="true">›</span></button><button type="button" class="gear-btn" id="exParamBtn" aria-label="Paramètres de l'exercice" title="Paramètres de l'exercice"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button></div>
         <div class="fl legacy-pick">1 · Groupe musculaire</div>
         <div id="exGroupChips" class="chip-row"></div>
         <label class="fl" for="exName">2 · Exercice : touche-en un dans la liste ou tape un nouveau nom</label>
@@ -1402,6 +1415,7 @@
           <div class="stepper-row"><label class="st-label" for="exLoad">Charge</label><div class="st-ctl"><button type="button" class="st-btn" data-stepfor="exLoad" data-step="-2.5" aria-label="Moins : charge"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button><input id="exLoad" class="st-input" type="number" inputmode="decimal" step="any" min="0" placeholder="0"><span class="st-unit">kg</span><button type="button" class="st-btn" data-stepfor="exLoad" data-step="2.5" aria-label="Plus : charge"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
         </div>
         <div id="exTonnagePreview" class="live-preview"></div>
+        <div id="exParamSummary" class="prm-sum"></div>
         <select id="exGroup" hidden></select>
         <div hidden><input id="exRpe" type="number"></div>
       </div>
@@ -1584,6 +1598,33 @@
       <div class="scale-legend" id="rpeLegend"><span>Très facile</span><span>Maximal</span></div>
     </div>
     <div class="sheet-foot"><button type="button" class="btn-ghost btn-lg" id="clearRpeBtn">Effacer le RPE</button></div>
+  </div>
+</div>
+
+<!-- Paramètres de l'exercice (molette) -->
+<div id="exParamSheet" class="sheet-overlay" style="z-index:90;" hidden>
+  <div class="sheet" role="dialog" aria-label="Paramètres de l'exercice">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head"><h3>Paramètres de l'exercice</h3><button type="button" class="icon-btn" id="closeExParamBtn" aria-label="Fermer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="sheet-body">
+      <div><div class="fl">Contraction</div>
+        <div class="chip-row" id="prmContr"><button type="button" class="chip-btn on" data-contr="">Standard</button><button type="button" class="chip-btn" data-contr="ecc">Excentrique seul</button><button type="button" class="chip-btn" data-contr="conc">Concentrique seul</button></div></div>
+      <div><div class="fl">Tempo : secondes par phase (laisse vide si non précisé)</div>
+        <div class="prm-grid">
+          <div><label for="prmT_e">Excentrique</label><input id="prmT_e" class="big-input" type="number" inputmode="decimal" step="any" min="0" placeholder="–"></div>
+          <div><label for="prmT_b">Pause en bas</label><input id="prmT_b" class="big-input" type="number" inputmode="decimal" step="any" min="0" placeholder="–"></div>
+          <div><label for="prmT_c">Concentrique</label><input id="prmT_c" class="big-input" type="number" inputmode="decimal" step="any" min="0" placeholder="–"></div>
+          <div><label for="prmT_h">Pause en haut</label><input id="prmT_h" class="big-input" type="number" inputmode="decimal" step="any" min="0" placeholder="–"></div>
+        </div></div>
+      <div><label class="fl" for="prmRest">Repos entre les séries (secondes)</label><input id="prmRest" class="big-input" type="number" inputmode="decimal" step="any" min="0" placeholder="–"></div>
+      <div><div class="fl">Côté</div>
+        <div class="chip-row" id="prmSide"><button type="button" class="chip-btn on" data-pside="">Non précisé</button><button type="button" class="chip-btn" data-pside="D">Droite</button><button type="button" class="chip-btn" data-pside="G">Gauche</button></div></div>
+      <div><label class="fl" for="prmNote">Note libre (amplitude, élastique, appui, consigne…)</label><input id="prmNote" class="note-input" type="text" placeholder="Ex. amplitude partielle, pause 1 s en bas" autocomplete="off"></div>
+    </div>
+    <div class="sheet-foot">
+      <button type="button" class="btn-primary btn-lg" id="prmOkBtn">Valider</button>
+      <button type="button" class="btn-ghost btn-lg" id="prmResetBtn">Tout effacer</button>
+    </div>
   </div>
 </div>
 
@@ -6045,6 +6086,7 @@ function startEditEntry(entry){
     document.getElementById("exLoad").value = entry.load || "";
     document.getElementById("exRpe").value = (entry.rir !== undefined && entry.rir !== null) ? entry.rir : "";
     document.getElementById("exGroup").value = entry.group || "";
+    exParams = prmClean(entry.params); prmRefreshBtn();
     updateExPreview(); updateLastTimeReminder('exercise');
   } else if(entry.kind === 'stretching'){
     document.getElementById("stretchName").value = entry.name || "";
@@ -6163,10 +6205,11 @@ function renderDayEntriesList(){
     var hasLegacy = isEx && !hasRir && e.rpe !== undefined && e.rpe !== null && e.rpe !== "";
     var hasRpe = isEx ? (hasRir || hasLegacy) : (e.rpe !== undefined && e.rpe !== null && e.rpe !== "");
     var pillTxt = isEx ? (hasRir ? 'RIR ' + e.rir : (hasLegacy ? 'RPE ' + e.rpe : '+ RIR')) : (hasRpe ? 'RPE ' + e.rpe : '+ RPE');
-    var name, detail, sub;
+    var name, detail, sub, prm = "";
     if(e.kind === 'exercise'){
       name = e.name; detail = '<b>' + e.sets + ' × ' + e.reps + '</b> · <b>' + e.load + ' kg</b>';
       sub = (e.group ? escHtml(e.group) + ' · ' : '') + fmtNum(entryTonnage(e)) + ' kg';
+      if(prmHas(e.params)) prm = prmSummary(e.params, e.reps);
     } else if(e.kind === 'stretching'){
       name = e.name; detail = '<b>' + e.series + ' × ' + e.dureeSec + ' s</b>';
       sub = 'Étirement · tension ' + fmtNum(stretchSeconds(e)) + ' s';
@@ -6190,7 +6233,7 @@ function renderDayEntriesList(){
       : (noRpe ? '' : '<button type="button" class="rpe-pill' + (hasRpe ? '' : ' missing') + '" data-rpeentry="' + e.id + '" aria-label="' + (hasRpe ? 'Modifier ' : 'Ajouter ') + (isEx ? 'le RIR' : 'le RPE') + '">' + pillTxt + '</button>');
     return '<div class="ex-card' + (future ? ' planned' : '') + '" role="button" tabindex="0" data-editentry="' + e.id + '">' +
       (e.kind === 'neuro' ? '<div class="ex-tile star" aria-label="Neurodynamique">★</div>' : '<div class="ex-tile" style="background:' + color + ';color:' + (future ? color : textOn(color)) + ';">' + (i + 1) + '</div>') +
-      '<div class="ex-main"><div class="ex-name">' + escHtml(name) + '</div><div class="ex-detail">' + detail + '</div><div class="ex-sub">' + sub + '</div></div>' + right + '</div>';
+      '<div class="ex-main"><div class="ex-name">' + escHtml(name) + '</div><div class="ex-detail">' + detail + '</div><div class="ex-sub">' + sub + '</div>' + (prm ? '<div class="ex-prm">⚙ ' + escHtml(prm) + '</div>' : '') + '</div>' + right + '</div>';
   }).join("");
 }
 
@@ -6649,6 +6692,7 @@ function saveDayEntry(keepOpen){
     entry.load = parseFloat(document.getElementById("exLoad").value) || 0;
     var exRpeVal = document.getElementById("exRpe").value;
     entry.rir = exRpeVal === "" ? undefined : parseFloat(exRpeVal);
+    if(prmHas(exParams)) entry.params = prmClean(exParams);
     if(editingEntryId){
       var oldE = (patient.program.entries[dayModalDate] || []).find(function(x){ return x.id === editingEntryId; });
       if(oldE && oldE.rpe !== undefined) entry.rpe = oldE.rpe;   // ancien RPE conservé
@@ -6847,7 +6891,7 @@ function setVal(id, v){
   el.dispatchEvent(new Event("input", { bubbles:true }));
 }
 function applyLast(kind, entry){
-  if(kind === 'exercise'){ setVal("exSets", entry.sets || ""); setVal("exReps", entry.reps || ""); setVal("exLoad", entry.load || ""); }
+  if(kind === 'exercise'){ setVal("exSets", entry.sets || ""); setVal("exReps", entry.reps || ""); setVal("exLoad", entry.load || ""); exParams = prmClean(entry.params); prmRefreshBtn(); }
   else if(kind === 'stretching'){ setVal("stretchSeries", entry.series || ""); setVal("stretchDuree", entry.dureeSec || ""); }
   else if(kind === 'isometric'){
     setVal("isoSeries", entry.series || ""); setVal("isoReps", entry.reps || ""); setVal("isoDuree", entry.dureeSec || "");
@@ -6917,7 +6961,67 @@ document.addEventListener("click", function(e){
 });
 
 /* ----- tiroir exercice ----- */
+/* ----- paramètres d'exercice (molette ⚙) : contraction, tempo, repos, côté, note ----- */
+var exParams = {};
+var PRM_PH = [["e","exc."],["b","pause bas"],["c","conc."],["h","pause haut"]];
+function prmClean(p){
+  var o = {}; if(!p) return o;
+  if(p.contr === "ecc" || p.contr === "conc") o.contr = p.contr;
+  var t = {}, any = false;
+  ["e","b","c","h"].forEach(function(k){ var v = p.t && p.t[k]; if(v !== undefined && v !== null && v !== "" && !isNaN(parseFloat(v)) && parseFloat(v) >= 0){ t[k] = parseFloat(v); any = true; } });
+  if(any) o.t = t;
+  if(p.rest !== undefined && p.rest !== null && p.rest !== "" && !isNaN(parseFloat(p.rest)) && parseFloat(p.rest) >= 0) o.rest = parseFloat(p.rest);
+  if(p.side === "D" || p.side === "G") o.side = p.side;
+  if(p.note && String(p.note).trim()) o.note = String(p.note).trim();
+  return o;
+}
+function prmHas(p){ return Object.keys(prmClean(p)).length > 0; }
+function prmTut(p){ if(!p || !p.t) return 0; return ["e","b","c","h"].reduce(function(a,k){ return a + (p.t[k] || 0); }, 0); }
+function prmSummary(p, reps){
+  p = prmClean(p); var parts = [];
+  if(p.contr) parts.push(p.contr === "ecc" ? "Excentrique seul" : "Concentrique seul");
+  if(p.t){
+    parts.push(PRM_PH.filter(function(ph){ return p.t[ph[0]] !== undefined; }).map(function(ph){ return ph[1] + " " + frDec(p.t[ph[0]]) + " s"; }).join(" · "));
+    var tut = prmTut(p);
+    if(tut > 0) parts.push("TUT " + frDec(Math.round(tut * 100) / 100) + " s/rép" + (reps > 0 ? " (≈ " + frDec(Math.round(tut * reps * 100) / 100) + " s/série)" : ""));
+  }
+  if(p.rest !== undefined) parts.push("repos " + frDec(p.rest) + " s");
+  if(p.side) parts.push(p.side === "D" ? "côté droit" : "côté gauche");
+  if(p.note) parts.push(p.note);
+  return parts.join(" · ");
+}
+function prmRefreshBtn(){
+  var b = document.getElementById("exParamBtn"), s = document.getElementById("exParamSummary");
+  if(!b || !s) return;
+  var has = prmHas(exParams);
+  b.classList.toggle("on", has);
+  s.textContent = has ? prmSummary(exParams, parseFloat(document.getElementById("exReps").value) || 0) : "";
+}
+function prmFillSheet(){
+  var p = prmClean(exParams);
+  document.querySelectorAll("#prmContr [data-contr]").forEach(function(c){ c.classList.toggle("on", c.dataset.contr === (p.contr || "")); });
+  document.querySelectorAll("#prmSide [data-pside]").forEach(function(c){ c.classList.toggle("on", c.dataset.pside === (p.side || "")); });
+  ["e","b","c","h"].forEach(function(k){ document.getElementById("prmT_" + k).value = (p.t && p.t[k] !== undefined) ? p.t[k] : ""; });
+  document.getElementById("prmRest").value = p.rest !== undefined ? p.rest : "";
+  document.getElementById("prmNote").value = p.note || "";
+}
+function prmReadSheet(){
+  var c = document.querySelector("#prmContr .on"), s = document.querySelector("#prmSide .on");
+  return prmClean({ contr: c ? c.dataset.contr : "", side: s ? s.dataset.pside : "", rest: document.getElementById("prmRest").value, note: document.getElementById("prmNote").value,
+    t: { e: document.getElementById("prmT_e").value, b: document.getElementById("prmT_b").value, c: document.getElementById("prmT_c").value, h: document.getElementById("prmT_h").value } });
+}
+document.getElementById("exParamBtn").addEventListener("click", function(){ prmFillSheet(); document.getElementById("exParamSheet").hidden = false; });
+document.getElementById("closeExParamBtn").addEventListener("click", function(){ document.getElementById("exParamSheet").hidden = true; });
+document.getElementById("exParamSheet").addEventListener("click", function(e){
+  if(e.target === this){ this.hidden = true; return; }
+  var c = e.target.closest("[data-contr]"); if(c){ document.querySelectorAll("#prmContr [data-contr]").forEach(function(x){ x.classList.toggle("on", x === c); }); return; }
+  var s = e.target.closest("[data-pside]"); if(s){ document.querySelectorAll("#prmSide [data-pside]").forEach(function(x){ x.classList.toggle("on", x === s); }); }
+});
+document.getElementById("prmOkBtn").addEventListener("click", function(){ exParams = prmReadSheet(); prmRefreshBtn(); document.getElementById("exParamSheet").hidden = true; });
+document.getElementById("prmResetBtn").addEventListener("click", function(){ exParams = {}; prmFillSheet(); prmRefreshBtn(); });
+document.getElementById("exReps").addEventListener("input", prmRefreshBtn);
 function clearEntryFields(){
+  exParams = {}; prmRefreshBtn();
   funcVals = {}; funcSide = "";
   var fr0 = document.getElementById("funcMeasRows"); if(fr0) fr0.innerHTML = "";
   setTimeout(pickUpdateLabels, 0);
