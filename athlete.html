@@ -358,6 +358,16 @@
   .prm-grid .big-input{ height:48px; text-align:center; }
   .ex-prm{ font-size:12px; color:var(--blue-text); margin-top:2px; }
 
+  .gear-btn.hd{ width:44px; height:44px; border:0; background:transparent; border-radius:12px; color:var(--text); padding:0; }
+  .gear-btn.hd.on{ background:#eef2ff; color:var(--blue-text); }
+  .gear-btn.hd.on::after{ top:6px; right:6px; }
+  .hd-right{ display:flex; align-items:center; gap:2px; }
+  .ov-well{ order:-5; grid-column:1 / -1; }
+  .well-leg{ display:flex; flex-wrap:wrap; gap:6px 14px; font-size:12.5px; color:var(--muted); margin:8px 0 4px; }
+  .well-leg i{ display:inline-block; width:14px; height:4px; border-radius:2px; vertical-align:middle; margin-right:5px; }
+  .well-alert{ margin-top:8px; padding:8px 12px; border-radius:12px; background:#fdecec; color:#c0171d; font-weight:700; font-size:13.5px; }
+  .well-ok{ margin-top:6px; font-size:12.5px; color:var(--muted); }
+
   /* tiroirs */
   .sheet-overlay{ position:fixed; inset:0; background:rgba(31,36,48,0.5); display:flex; align-items:flex-end; justify-content:center; z-index:80; }
   .sheet{ background:#fff; width:100%; max-width:520px; max-height:92vh; max-height:92dvh; border-radius:24px 24px 0 0; display:flex; flex-direction:column; }
@@ -1416,7 +1426,7 @@ html.ath-lock, html.ath-lock body{ overflow:hidden !important; overscroll-behavi
 <div id="exSheet" class="sheet-overlay" hidden>
   <div class="sheet" role="dialog" aria-label="Exercice">
     <div class="sheet-handle"></div>
-    <div class="sheet-head"><h3 id="exSheetTitle">Nouvel exercice</h3><button type="button" class="icon-btn" id="closeExSheetBtn" aria-label="Fermer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="sheet-head"><h3 id="exSheetTitle">Nouvel exercice</h3><span class="hd-right"><button type="button" class="gear-btn hd" id="exParamBtn" aria-label="Paramètres de l'exercice" title="Paramètres"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button><button type="button" class="icon-btn" id="closeExSheetBtn" aria-label="Fermer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></span></div>
     <div class="sheet-body">
       <div class="segmented" id="dayKindGrid">
         <div class="type-card selected" data-kind="exercise">Exercice</div>
@@ -1427,7 +1437,7 @@ html.ath-lock, html.ath-lock body{ overflow:hidden !important; overscroll-behavi
       </div>
 
       <div id="exerciseFields" class="kind-fields">
-        <div class="pick-row"><button type="button" class="pp-btn pick-btn" id="exPickBtn" data-pickkind="exercise" aria-haspopup="dialog"><span class="pick-lbl empty">Choisir un exercice</span><span class="pp-chev" aria-hidden="true">›</span></button><button type="button" class="gear-btn" id="exParamBtn" aria-label="Paramètres de l'exercice" title="Paramètres de l'exercice"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button></div>
+        <button type="button" class="pp-btn pick-btn" id="exPickBtn" data-pickkind="exercise" aria-haspopup="dialog"><span class="pick-lbl empty">Choisir un exercice</span><span class="pp-chev" aria-hidden="true">›</span></button>
         <div class="fl legacy-pick">1 · Groupe musculaire</div>
         <div id="exGroupChips" class="chip-row"></div>
         <label class="fl" for="exName">2 · Exercice : touche-en un dans la liste ou tape un nouveau nom</label>
@@ -1442,7 +1452,6 @@ html.ath-lock, html.ath-lock body{ overflow:hidden !important; overscroll-behavi
           <div class="stepper-row"><label class="st-label" for="exLoad">Charge</label><div class="st-ctl"><button type="button" class="st-btn" data-stepfor="exLoad" data-step="-2.5" aria-label="Moins : charge"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button><input id="exLoad" class="st-input" type="number" inputmode="decimal" step="any" min="0" placeholder="0"><span class="st-unit">kg</span><button type="button" class="st-btn" data-stepfor="exLoad" data-step="2.5" aria-label="Plus : charge"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
         </div>
         <div id="exTonnagePreview" class="live-preview"></div>
-        <div id="exParamSummary" class="prm-sum"></div>
         <select id="exGroup" hidden></select>
         <div hidden><input id="exRpe" type="number"></div>
       </div>
@@ -1522,6 +1531,8 @@ html.ath-lock, html.ath-lock body{ overflow:hidden !important; overscroll-behavi
         <div class="session-dots" id="sessionChipGrid"><div class="session-chip" data-session="hypertrophie" style="background:#8b5cf6;" title="Hypertrophie" aria-label="Hypertrophie"></div><div class="session-chip" data-session="endurance_force" style="background:#14b8a6;" title="Endurance de force" aria-label="Endurance de force"></div><div class="session-chip" data-session="nerveux" style="background:#f59e0b;" title="Nerveux" aria-label="Nerveux"></div><div class="session-chip" data-session="tendineux" style="background:#92400e;" title="Tendineux" aria-label="Tendineux"></div><div class="session-chip" data-session="rfd" style="background:#e0483e;" title="RFD" aria-label="RFD"></div><div class="session-chip" data-session="force_vitesse" style="background:#007BFF;" title="Force-Vitesse" aria-label="Force-Vitesse"></div><div class="session-chip" data-session="cod_deceleration" style="background:#1fa971;" title="COD / Décélération" aria-label="COD / Décélération"></div><div class="session-chip" data-session="antalgique" style="background:#8a93a3;" title="Antalgique" aria-label="Antalgique"></div></div>
         <div class="session-dots" id="runSessionChipGrid" hidden><div class="session-chip" data-session="endurance_fondamentale" style="background:#1fa971;" title="Endurance fondamentale" aria-label="Endurance fondamentale"></div><div class="session-chip" data-session="seuil" style="background:#f59e0b;" title="Seuil" aria-label="Seuil"></div><div class="session-chip" data-session="fractionne_vma" style="background:#e0483e;" title="Fractionné / VMA" aria-label="Fractionné / VMA"></div><div class="session-chip" data-session="sortie_longue" style="background:#007BFF;" title="Sortie longue" aria-label="Sortie longue"></div><div class="session-chip" data-session="cotes" style="background:#92400e;" title="Côtes" aria-label="Côtes"></div><div class="session-chip" data-session="recuperation" style="background:#8a93a3;" title="Récupération" aria-label="Récupération"></div><div class="session-chip" data-session="competition" style="background:#8b5cf6;" title="Compétition" aria-label="Compétition"></div></div>
       </div>
+      <div id="exParamSummary" class="prm-sum"></div>
+      <div id="exMoveRow" hidden><label class="fl" for="exMoveDate">Jour de cet exercice (change la date pour le déplacer à un autre jour)</label><input id="exMoveDate" class="big-input" type="date"></div>
     </div>
     <div class="sheet-foot">
       <div class="tc-sub" style="text-align:center;">L'intensité (RIR ou RPE) s'ajoute ensuite depuis la carte de l'exercice.</div>
@@ -1632,21 +1643,36 @@ html.ath-lock, html.ath-lock body{ overflow:hidden !important; overscroll-behavi
 <div id="exParamSheet" class="sheet-overlay" style="z-index:90;" hidden>
   <div class="sheet" role="dialog" aria-label="Paramètres de l'exercice">
     <div class="sheet-handle"></div>
-    <div class="sheet-head"><h3>Paramètres de l'exercice</h3><button type="button" class="icon-btn" id="closeExParamBtn" aria-label="Fermer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="sheet-head"><h3>Paramètres</h3><button type="button" class="icon-btn" id="closeExParamBtn" aria-label="Fermer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div class="sheet-body">
-      <div><div class="fl">Contraction</div>
+      <div data-pfor="exercise"><div class="fl">Contraction</div>
         <div class="chip-row" id="prmContr"><button type="button" class="chip-btn on" data-contr="">Standard</button><button type="button" class="chip-btn" data-contr="ecc">Excentrique seul</button><button type="button" class="chip-btn" data-contr="conc">Concentrique seul</button></div></div>
-      <div><div class="fl">Tempo : secondes par phase (laisse vide si non précisé)</div>
+      <div data-pfor="exercise"><div class="fl">Tempo : secondes par phase (laisse vide si non précisé)</div>
         <div class="prm-grid">
           <div><label for="prmT_e">Excentrique</label><input id="prmT_e" class="big-input" type="number" inputmode="decimal" step="any" min="0" placeholder="–"></div>
           <div><label for="prmT_b">Pause en bas</label><input id="prmT_b" class="big-input" type="number" inputmode="decimal" step="any" min="0" placeholder="–"></div>
           <div><label for="prmT_c">Concentrique</label><input id="prmT_c" class="big-input" type="number" inputmode="decimal" step="any" min="0" placeholder="–"></div>
           <div><label for="prmT_h">Pause en haut</label><input id="prmT_h" class="big-input" type="number" inputmode="decimal" step="any" min="0" placeholder="–"></div>
         </div></div>
-      <div><label class="fl" for="prmRest">Repos entre les séries (secondes)</label><input id="prmRest" class="big-input" type="number" inputmode="decimal" step="any" min="0" placeholder="–"></div>
-      <div><div class="fl">Côté</div>
+      <div data-pfor="exercise"><div class="fl">RIR cible : ce que tu demandes à l'athlète (répétitions en réserve)</div>
+        <div class="chip-row" id="prmRir"><button type="button" class="chip-btn on" data-rir="">Aucune</button><button type="button" class="chip-btn" data-rir="0">0</button><button type="button" class="chip-btn" data-rir="1">1</button><button type="button" class="chip-btn" data-rir="2">2</button><button type="button" class="chip-btn" data-rir="3">3</button><button type="button" class="chip-btn" data-rir="4">4</button><button type="button" class="chip-btn" data-rir="5">5</button></div></div>
+      <div data-pfor="isometric"><label class="fl" for="prmPct">% de la MVIC (force maximale isométrique)</label><input id="prmPct" class="big-input" type="number" inputmode="decimal" step="any" min="0" placeholder="–"></div>
+      <div data-pfor="isometric"><label class="fl" for="prmPos">Position / angle articulaire (texte libre)</label><input id="prmPos" class="note-input" type="text" placeholder="Ex. genou 60°, cheville neutre" autocomplete="off"></div>
+      <div data-pfor="functional"><div class="fl">Mode</div>
+        <div class="chip-row" id="prmFmode"><button type="button" class="chip-btn on" data-fmode="">Continu</button><button type="button" class="chip-btn" data-fmode="1">Fractionné</button></div></div>
+      <div data-pfor="functional" id="prmFrac" hidden>
+        <div class="fl">Durées exprimées en</div>
+        <div class="chip-row" id="prmFunit" style="margin-bottom:8px;"><button type="button" class="chip-btn on" data-funit="s">Secondes</button><button type="button" class="chip-btn" data-funit="min">Minutes</button></div>
+        <div class="prm-grid">
+          <div><label for="prmFn">Nombre d'intervalles</label><input id="prmFn" class="big-input" type="number" inputmode="decimal" step="any" min="0" placeholder="–"></div>
+          <div><label for="prmFw">Travail</label><input id="prmFw" class="big-input" type="number" inputmode="decimal" step="any" min="0" placeholder="–"></div>
+          <div><label for="prmFr">Récupération</label><input id="prmFr" class="big-input" type="number" inputmode="decimal" step="any" min="0" placeholder="–"></div>
+          <div><label for="prmFi">Intensité (libre)</label><input id="prmFi" class="big-input" type="text" placeholder="Ex. 85 % PMA" autocomplete="off" style="font-size:16px;"></div>
+        </div></div>
+      <div data-pfor="exercise isometric"><label class="fl" for="prmRest">Repos entre les séries (secondes)</label><input id="prmRest" class="big-input" type="number" inputmode="decimal" step="any" min="0" placeholder="–"></div>
+      <div data-pfor="exercise isometric"><div class="fl">Côté</div>
         <div class="chip-row" id="prmSide"><button type="button" class="chip-btn on" data-pside="">Non précisé</button><button type="button" class="chip-btn" data-pside="D">Droite</button><button type="button" class="chip-btn" data-pside="G">Gauche</button></div></div>
-      <div><label class="fl" for="prmNote">Note libre (amplitude, élastique, appui, consigne…)</label><input id="prmNote" class="note-input" type="text" placeholder="Ex. amplitude partielle, pause 1 s en bas" autocomplete="off"></div>
+      <div data-pfor="exercise isometric functional"><label class="fl" for="prmNote">Note libre (amplitude, élastique, appui, consigne…)</label><input id="prmNote" class="note-input" type="text" placeholder="Ex. amplitude partielle" autocomplete="off"></div>
     </div>
     <div class="sheet-foot">
       <button type="button" class="btn-primary btn-lg" id="prmOkBtn">Valider</button>
@@ -3349,6 +3375,7 @@ function renderCardsGrid(patient){
   ensurePeriodization(patient);
   var cClin = renderClinicalStrip(patient); cClin.classList.add("ov-clin"); grid.appendChild(cClin);
   grid.appendChild(renderAnamCard(patient));
+  var cWell = renderWellCard(patient); if(cWell) grid.appendChild(cWell);
   var cRts = renderRtsCard(patient); if(cRts) grid.appendChild(cRts);
   isoRatiosEnsure();
   var cRat = renderRatiosCard(patient); if(cRat) grid.appendChild(cRat);
@@ -6101,6 +6128,7 @@ function startEditEntry(entry){
 
   document.querySelectorAll("#dayKindGrid .type-card").forEach(function(c){ c.classList.toggle("selected", c.dataset.kind === dayKind); });
   applyKindUi();
+  exParams = prmClean(entry.params); prmKindUi();
 
   document.querySelectorAll("#sessionChipGrid .session-chip, #runSessionChipGrid .session-chip").forEach(function(c){
     c.classList.toggle("selected", c.dataset.session === entry.session);
@@ -6236,7 +6264,6 @@ function renderDayEntriesList(){
     if(e.kind === 'exercise'){
       name = e.name; detail = '<b>' + e.sets + ' × ' + e.reps + '</b> · <b>' + e.load + ' kg</b>';
       sub = (e.group ? escHtml(e.group) + ' · ' : '') + fmtNum(entryTonnage(e)) + ' kg';
-      if(prmHas(e.params)) prm = prmSummary(e.params, e.reps);
     } else if(e.kind === 'stretching'){
       name = e.name; detail = '<b>' + e.series + ' × ' + e.dureeSec + ' s</b>';
       sub = 'Étirement · tension ' + fmtNum(stretchSeconds(e)) + ' s';
@@ -6253,6 +6280,7 @@ function renderDayEntriesList(){
       name = "Course à pied"; detail = '<b>' + fmtDistE(e) + '</b> · <b>' + fmtDurE(e) + '</b>';
       sub = hasRpe ? 'Charge ' + fmtNum(entryLoad(e)) + ' UA' : 'RPE manquant pour la charge';
     }
+    if(['exercise','isometric','run','functional'].indexOf(e.kind) !== -1 && prmHas(e.params)) prm = prmSummary(e.params, e.kind === 'exercise' ? e.reps : 0);
     if(e.src === "athlete") sub = (sub ? sub + " · " : "") + "👤 saisi par l'athlète";
     var noRpe = e.kind === 'neuro';
     var right = future
@@ -6344,6 +6372,7 @@ function applyKindUi(){
   document.getElementById("sessionBlock").hidden = dayKind === 'neuro';
   document.getElementById("sessionChipGrid").hidden = dayKind === 'functional';
   document.getElementById("runSessionChipGrid").hidden = dayKind !== 'functional';
+  prmKindUi();
 }
 function funcActivityList(){
   var extra = (Array.isArray(state.funcActivities) ? state.funcActivities : []).map(function(x){ return x.name; }).filter(function(n){ return FUNC_DEFAULTS.indexOf(n) === -1; });
@@ -6377,6 +6406,7 @@ document.getElementById("dayKindGrid").addEventListener("click", function(e){
   var card = e.target.closest(".type-card");
   if(!card) return;
   var wasFunc = (dayKind === 'functional');
+  if(dayKind !== card.dataset.kind) exParams = {};
   dayKind = card.dataset.kind;
   nameEditMode = false;
   if(wasFunc !== (dayKind === 'functional')){
@@ -6719,7 +6749,6 @@ function saveDayEntry(keepOpen){
     entry.load = parseFloat(document.getElementById("exLoad").value) || 0;
     var exRpeVal = document.getElementById("exRpe").value;
     entry.rir = exRpeVal === "" ? undefined : parseFloat(exRpeVal);
-    if(prmHas(exParams)) entry.params = prmClean(exParams);
     if(editingEntryId){
       var oldE = (patient.program.entries[dayModalDate] || []).find(function(x){ return x.id === editingEntryId; });
       if(oldE && oldE.rpe !== undefined) entry.rpe = oldE.rpe;   // ancien RPE conservé
@@ -6745,7 +6774,7 @@ function saveDayEntry(keepOpen){
     var isoRpeVal = document.getElementById("isoRpe").value;
     entry.rpe = isoRpeVal === "" ? undefined : parseFloat(isoRpeVal);
     var isoPctVal = document.getElementById("isoPct").value;
-    entry.pctFmax = (isoPctVal === "" || isoType === 'overcoming') ? undefined : parseFloat(isoPctVal);
+    entry.pctFmax = isoPctVal === "" ? undefined : parseFloat(isoPctVal);
   } else if(dayKind === 'neuro'){
     var nname = document.getElementById("neuroName").value.trim();
     if(!nname){ alert("Nom de l'exercice manquant."); return; }
@@ -6782,6 +6811,7 @@ function saveDayEntry(keepOpen){
     entry.rpe = runRpeVal === "" ? undefined : parseFloat(runRpeVal);
   }
 
+  if(['exercise','isometric','run','functional'].indexOf(entry.kind) !== -1 && prmHas(exParams)) entry.params = prmClean(exParams);
   if(libName){
     if(!patient.program.exerciseLibrary) patient.program.exerciseLibrary = [];
     if(patient.program.exerciseLibrary.indexOf(libName) === -1) patient.program.exerciseLibrary.push(libName);
@@ -6795,9 +6825,17 @@ function saveDayEntry(keepOpen){
   }
   if(!patient.program.entries[dayModalDate]) patient.program.entries[dayModalDate] = [];
   if(editingEntryId){
-    var idx = patient.program.entries[dayModalDate].findIndex(function(e){ return e.id === editingEntryId; });
-    if(idx !== -1) patient.program.entries[dayModalDate][idx] = entry;
-    else patient.program.entries[dayModalDate].push(entry);
+    var mvEl = document.getElementById("exMoveDate"), moveTo = (mvEl && /^\d{4}-\d\d-\d\d$/.test(mvEl.value) && mvEl.value !== dayModalDate) ? mvEl.value : "";
+    var list0 = patient.program.entries[dayModalDate];
+    var idx = list0.findIndex(function(e){ return e.id === editingEntryId; });
+    var prevE = idx !== -1 ? list0[idx] : null;
+    if(prevE){ if(prevE.src) entry.src = prevE.src; if(prevE.athAt) entry.athAt = prevE.athAt; if(prevE.athSig) entry.athSig = prevE.athSig; }
+    if(moveTo){
+      if(idx !== -1) list0.splice(idx, 1);
+      if(!list0.length) delete patient.program.entries[dayModalDate];
+      (patient.program.entries[moveTo] = patient.program.entries[moveTo] || []).push(entry);
+    } else if(idx !== -1) list0[idx] = entry;
+    else list0.push(entry);
   } else {
     patient.program.entries[dayModalDate].push(entry);
   }
@@ -6988,18 +7026,29 @@ document.addEventListener("click", function(e){
 });
 
 /* ----- tiroir exercice ----- */
-/* ----- paramètres d'exercice (molette ⚙) : contraction, tempo, repos, côté, note ----- */
+/* ----- paramètres d'exercice (molette ⚙) : exercice, isométrie, fonctionnel ----- */
 var exParams = {};
 var PRM_PH = [["e","exc."],["b","pause bas"],["c","conc."],["h","pause haut"]];
+var RIR_HELP = "RIR = nombre de répétitions qu'il te restait. 0 : tu ne pouvais plus en faire. 2 : tu en aurais fait 2 de plus.";
+function prmNum(v){ if(v === undefined || v === null || v === "") return undefined; var n = parseFloat(v); return (isNaN(n) || n < 0) ? undefined : n; }
+function prmTxt(v){ return (v !== undefined && v !== null && String(v).trim()) ? String(v).trim() : ""; }
 function prmClean(p){
-  var o = {}; if(!p) return o;
+  var o = {}; if(!p || typeof p !== "object") return o;
   if(p.contr === "ecc" || p.contr === "conc") o.contr = p.contr;
   var t = {}, any = false;
-  ["e","b","c","h"].forEach(function(k){ var v = p.t && p.t[k]; if(v !== undefined && v !== null && v !== "" && !isNaN(parseFloat(v)) && parseFloat(v) >= 0){ t[k] = parseFloat(v); any = true; } });
+  ["e","b","c","h"].forEach(function(k){ var v = prmNum(p.t && p.t[k]); if(v !== undefined){ t[k] = v; any = true; } });
   if(any) o.t = t;
-  if(p.rest !== undefined && p.rest !== null && p.rest !== "" && !isNaN(parseFloat(p.rest)) && parseFloat(p.rest) >= 0) o.rest = parseFloat(p.rest);
+  var ri = prmNum(p.rirT); if(ri !== undefined) o.rirT = ri;
+  var rs = prmNum(p.rest); if(rs !== undefined) o.rest = rs;
   if(p.side === "D" || p.side === "G") o.side = p.side;
-  if(p.note && String(p.note).trim()) o.note = String(p.note).trim();
+  if(prmTxt(p.pos)) o.pos = prmTxt(p.pos);
+  if(p.frac && typeof p.frac === "object"){
+    var f = {}, n = prmNum(p.frac.n), w = prmNum(p.frac.w), r = prmNum(p.frac.r);
+    if(n !== undefined) f.n = n; if(w !== undefined) f.w = w; if(r !== undefined) f.r = r;
+    if(prmTxt(p.frac.i)) f.i = prmTxt(p.frac.i);
+    if(Object.keys(f).length){ if(p.frac.u === "min") f.u = "min"; o.frac = f; }
+  }
+  if(prmTxt(p.note)) o.note = prmTxt(p.note);
   return o;
 }
 function prmHas(p){ return Object.keys(prmClean(p)).length > 0; }
@@ -7012,41 +7061,138 @@ function prmSummary(p, reps){
     var tut = prmTut(p);
     if(tut > 0) parts.push("TUT " + frDec(Math.round(tut * 100) / 100) + " s/rép" + (reps > 0 ? " (≈ " + frDec(Math.round(tut * reps * 100) / 100) + " s/série)" : ""));
   }
+  if(p.rirT !== undefined) parts.push("RIR cible " + frDec(p.rirT));
+  if(p.pos) parts.push(p.pos);
+  if(p.frac){
+    var f = p.frac, u = f.u === "min" ? " min" : " s", s = "Fractionné", ww = [];
+    if(f.n !== undefined) s += " " + frDec(f.n) + " ×";
+    if(f.w !== undefined) ww.push("travail " + frDec(f.w) + u);
+    if(f.r !== undefined) ww.push("récup " + frDec(f.r) + u);
+    if(ww.length) s += " (" + ww.join(" / ") + ")";
+    parts.push(s);
+    if(f.i) parts.push("intensité " + f.i);
+  }
   if(p.rest !== undefined) parts.push("repos " + frDec(p.rest) + " s");
   if(p.side) parts.push(p.side === "D" ? "côté droit" : "côté gauche");
   if(p.note) parts.push(p.note);
   return parts.join(" · ");
 }
+function prmKindOk(){ return dayKind === 'exercise' || dayKind === 'isometric' || dayKind === 'functional'; }
 function prmRefreshBtn(){
   var b = document.getElementById("exParamBtn"), s = document.getElementById("exParamSummary");
   if(!b || !s) return;
-  var has = prmHas(exParams);
+  b.hidden = !prmKindOk();
+  var has = prmHas(exParams) && !b.hidden;
   b.classList.toggle("on", has);
   s.textContent = has ? prmSummary(exParams, parseFloat(document.getElementById("exReps").value) || 0) : "";
 }
+function prmKindUi(){ prmRefreshBtn(); }
+function prmOn(sel, attr, val){ document.querySelectorAll(sel).forEach(function(c){ c.classList.toggle("on", c.dataset[attr] === val); }); }
+function prmSel(sel, attr){ var c = document.querySelector(sel + " .on"); return c ? c.dataset[attr] : ""; }
+function prmFracShow(){ document.getElementById("prmFrac").hidden = prmSel("#prmFmode", "fmode") !== "1" || dayKind !== 'functional'; }
 function prmFillSheet(){
-  var p = prmClean(exParams);
-  document.querySelectorAll("#prmContr [data-contr]").forEach(function(c){ c.classList.toggle("on", c.dataset.contr === (p.contr || "")); });
-  document.querySelectorAll("#prmSide [data-pside]").forEach(function(c){ c.classList.toggle("on", c.dataset.pside === (p.side || "")); });
+  var p = prmClean(exParams), f = p.frac || {};
+  document.querySelectorAll("#exParamSheet [data-pfor]").forEach(function(sec){ sec.hidden = sec.dataset.pfor.split(" ").indexOf(dayKind) === -1; });
+  prmOn("#prmContr [data-contr]", "contr", p.contr || "");
+  prmOn("#prmSide [data-pside]", "pside", p.side || "");
+  prmOn("#prmRir [data-rir]", "rir", p.rirT !== undefined ? String(p.rirT) : "");
+  prmOn("#prmFmode [data-fmode]", "fmode", p.frac ? "1" : "");
+  prmOn("#prmFunit [data-funit]", "funit", f.u === "min" ? "min" : "s");
   ["e","b","c","h"].forEach(function(k){ document.getElementById("prmT_" + k).value = (p.t && p.t[k] !== undefined) ? p.t[k] : ""; });
   document.getElementById("prmRest").value = p.rest !== undefined ? p.rest : "";
   document.getElementById("prmNote").value = p.note || "";
+  document.getElementById("prmPos").value = p.pos || "";
+  document.getElementById("prmPct").value = document.getElementById("isoPct").value;
+  document.getElementById("prmFn").value = f.n !== undefined ? f.n : "";
+  document.getElementById("prmFw").value = f.w !== undefined ? f.w : "";
+  document.getElementById("prmFr").value = f.r !== undefined ? f.r : "";
+  document.getElementById("prmFi").value = f.i || "";
+  prmFracShow();
 }
 function prmReadSheet(){
-  var c = document.querySelector("#prmContr .on"), s = document.querySelector("#prmSide .on");
-  return prmClean({ contr: c ? c.dataset.contr : "", side: s ? s.dataset.pside : "", rest: document.getElementById("prmRest").value, note: document.getElementById("prmNote").value,
-    t: { e: document.getElementById("prmT_e").value, b: document.getElementById("prmT_b").value, c: document.getElementById("prmT_c").value, h: document.getElementById("prmT_h").value } });
+  var o = { note: document.getElementById("prmNote").value };
+  if(dayKind === 'exercise'){
+    o.contr = prmSel("#prmContr", "contr");
+    o.t = { e: document.getElementById("prmT_e").value, b: document.getElementById("prmT_b").value, c: document.getElementById("prmT_c").value, h: document.getElementById("prmT_h").value };
+    o.rirT = prmSel("#prmRir", "rir");
+  }
+  if(dayKind === 'exercise' || dayKind === 'isometric'){ o.rest = document.getElementById("prmRest").value; o.side = prmSel("#prmSide", "pside"); }
+  if(dayKind === 'isometric') o.pos = document.getElementById("prmPos").value;
+  if(dayKind === 'functional' && prmSel("#prmFmode", "fmode") === "1") o.frac = { n: document.getElementById("prmFn").value, w: document.getElementById("prmFw").value, r: document.getElementById("prmFr").value, i: document.getElementById("prmFi").value, u: prmSel("#prmFunit", "funit") };
+  return prmClean(o);
 }
 document.getElementById("exParamBtn").addEventListener("click", function(){ prmFillSheet(); document.getElementById("exParamSheet").hidden = false; });
 document.getElementById("closeExParamBtn").addEventListener("click", function(){ document.getElementById("exParamSheet").hidden = true; });
 document.getElementById("exParamSheet").addEventListener("click", function(e){
   if(e.target === this){ this.hidden = true; return; }
-  var c = e.target.closest("[data-contr]"); if(c){ document.querySelectorAll("#prmContr [data-contr]").forEach(function(x){ x.classList.toggle("on", x === c); }); return; }
-  var s = e.target.closest("[data-pside]"); if(s){ document.querySelectorAll("#prmSide [data-pside]").forEach(function(x){ x.classList.toggle("on", x === s); }); }
+  var map = [["[data-contr]","#prmContr"],["[data-pside]","#prmSide"],["[data-rir]","#prmRir"],["[data-fmode]","#prmFmode"],["[data-funit]","#prmFunit"]];
+  for(var i = 0; i < map.length; i++){
+    var c = e.target.closest(map[i][0]);
+    if(c){ document.querySelectorAll(map[i][1] + " .chip-btn").forEach(function(x){ x.classList.toggle("on", x === c); }); if(map[i][1] === "#prmFmode") prmFracShow(); return; }
+  }
 });
-document.getElementById("prmOkBtn").addEventListener("click", function(){ exParams = prmReadSheet(); prmRefreshBtn(); document.getElementById("exParamSheet").hidden = true; });
-document.getElementById("prmResetBtn").addEventListener("click", function(){ exParams = {}; prmFillSheet(); prmRefreshBtn(); });
+document.getElementById("prmOkBtn").addEventListener("click", function(){
+  exParams = prmReadSheet();
+  if(dayKind === 'isometric') document.getElementById("isoPct").value = document.getElementById("prmPct").value;
+  prmRefreshBtn(); document.getElementById("exParamSheet").hidden = true;
+});
+document.getElementById("prmResetBtn").addEventListener("click", function(){ exParams = {}; if(dayKind === 'isometric') document.getElementById("isoPct").value = ""; prmFillSheet(); prmRefreshBtn(); });
 document.getElementById("exReps").addEventListener("input", prmRefreshBtn);
+/* ----- graphique douleur · bien-être · disponibilité (overview) ----- */
+var wellRange = 30;
+function wellDiff(a, b){ return Math.round((Date.parse(b) - Date.parse(a)) / 86400000); }
+function wellData(patient){
+  var dm = patient.program.dayMeta || {}, rows = [];
+  Object.keys(dm).sort().forEach(function(k){
+    var m = dm[k] || {};
+    if(hasV(m.pain) || hasV(m.wellness) || hasV(m.readiness)) rows.push({ d: k, pain: hasV(m.pain) ? Number(m.pain) : null, well: hasV(m.wellness) ? Number(m.wellness) : null, ready: hasV(m.readiness) ? Number(m.readiness) : null });
+  });
+  return rows;
+}
+function wellSvg(rows, range){
+  var end = todayISO(); if(rows.length && rows[rows.length - 1].d > end) end = rows[rows.length - 1].d;
+  var start = range > 0 ? addDaysToDate(end, -(range - 1)) : (rows.length ? rows[0].d : end);
+  var vis = rows.filter(function(r){ return r.d >= start && r.d <= end; });
+  var n = Math.max(1, wellDiff(start, end)), W = 340, H = 200, L = 26, R = 10, T = 12, B = 24;
+  var X = function(d){ return L + (W - L - R) * wellDiff(start, d) / n; }, Y = function(v){ return T + (H - T - B) * (1 - Math.max(0, Math.min(10, v)) / 10); };
+  var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" role="img" aria-label="Douleur, bien-être et disponibilité à l\'entraînement" style="display:block;">';
+  s += '<rect x="' + L + '" y="' + Y(10) + '" width="' + (W - L - R) + '" height="' + (Y(5) - Y(10)) + '" fill="rgba(229,37,42,0.09)"/>';
+  [0, 5, 10].forEach(function(v){ s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(v) + '" y2="' + Y(v) + '" stroke="' + (v === 5 ? '#e5252a' : '#e3e6ec') + '" stroke-width="' + (v === 5 ? 1.2 : 1) + '"' + (v === 5 ? ' stroke-dasharray="5 4"' : '') + '/><text x="' + (L - 5) + '" y="' + (Y(v) + 4) + '" text-anchor="end" font-size="10.5" fill="' + (v === 5 ? '#e5252a' : '#8a93a3') + '" font-weight="' + (v === 5 ? 700 : 400) + '">' + v + '</text>'; });
+  var fd = function(d){ return d.slice(8, 10) + "/" + d.slice(5, 7); };
+  s += '<text x="' + L + '" y="' + (H - 6) + '" font-size="10.5" fill="#8a93a3">' + fd(start) + '</text><text x="' + (W - R) + '" y="' + (H - 6) + '" text-anchor="end" font-size="10.5" fill="#8a93a3">' + fd(end) + '</text>';
+  if(n >= 6){ var mid = addDaysToDate(start, Math.round(n / 2)); s += '<text x="' + X(mid) + '" y="' + (H - 6) + '" text-anchor="middle" font-size="10.5" fill="#8a93a3">' + fd(mid) + '</text>'; }
+  var line = function(key, color, w){
+    var pts = vis.filter(function(r){ return r[key] !== null; });
+    if(pts.length > 1) s += '<polyline fill="none" stroke="' + color + '" stroke-width="' + w + '" stroke-linejoin="round" stroke-linecap="round" points="' + pts.map(function(r){ return X(r.d).toFixed(1) + "," + Y(r[key]).toFixed(1); }).join(" ") + '"/>';
+    pts.forEach(function(r){ s += '<circle cx="' + X(r.d).toFixed(1) + '" cy="' + Y(r[key]).toFixed(1) + '" r="2.6" fill="' + color + '"><title>' + fd(r.d) + ' : ' + r[key] + ' / 10</title></circle>'; });
+  };
+  line("well", "#1fa971", 2); line("ready", "#007BFF", 2);
+  var pp = vis.filter(function(r){ return r.pain !== null; }), seg = function(x1, y1, x2, y2, red){ s += '<line x1="' + x1.toFixed(1) + '" y1="' + Y(y1).toFixed(1) + '" x2="' + x2.toFixed(1) + '" y2="' + Y(y2).toFixed(1) + '" stroke="' + (red ? '#e5252a' : '#f59e0b') + '" stroke-width="' + (red ? 4 : 2.5) + '" stroke-linecap="round"/>'; };
+  for(var i = 0; i < pp.length - 1; i++){
+    var a = pp[i], b = pp[i + 1], xa = X(a.d), xb = X(b.d), ha = a.pain > 5, hb = b.pain > 5;
+    if(ha === hb) seg(xa, a.pain, xb, b.pain, ha);
+    else { var t = (5 - a.pain) / (b.pain - a.pain), xm = xa + t * (xb - xa); seg(xa, a.pain, xm, 5, ha); seg(xm, 5, xb, b.pain, hb); }
+  }
+  pp.forEach(function(r){
+    var x = X(r.d).toFixed(1), y = Y(r.pain).toFixed(1);
+    if(r.pain > 5) s += '<circle cx="' + x + '" cy="' + y + '" r="6" fill="#e5252a" stroke="#fff" stroke-width="1.5"><title>' + fd(r.d) + ' : douleur ' + r.pain + ' / 10</title></circle><text x="' + x + '" y="' + (Y(r.pain) - 10).toFixed(1) + '" text-anchor="middle" font-size="12" font-weight="800" fill="#c0171d">' + frDec(r.pain) + '</text>';
+    else s += '<circle cx="' + x + '" cy="' + y + '" r="3" fill="#f59e0b"><title>' + fd(r.d) + ' : douleur ' + r.pain + ' / 10</title></circle>';
+  });
+  return { svg: s + '</svg>', vis: vis, pp: pp };
+}
+function renderWellCard(patient){
+  var rows = wellData(patient); if(!rows.length) return null;
+  var card = document.createElement("div"); card.className = "test-card ov-well";
+  var g = wellSvg(rows, wellRange), hi = g.pp.filter(function(r){ return r.pain > 5; });
+  var mx = hi.reduce(function(a, r){ return (!a || r.pain > a.pain) ? r : a; }, null);
+  var note = hi.length ? '<div class="well-alert">⚠ Douleur supérieure à 5 sur ' + hi.length + ' jour' + (hi.length > 1 ? 's' : '') + ' · maximum ' + frDec(mx.pain) + ' / 10 le ' + mx.d.slice(8, 10) + '/' + mx.d.slice(5, 7) + '</div>' : (g.pp.length ? '<div class="well-ok">Douleur restée à 5 ou moins sur la période.</div>' : '');
+  card.innerHTML = '<div class="rat-head"><b>Douleur · bien-être · disponibilité</b></div>' +
+    '<div class="chip-row" style="margin-top:8px;">' + [[14, "14 j"], [30, "30 j"], [90, "90 j"], [0, "Tout"]].map(function(r){ return '<button type="button" class="chip-btn' + (wellRange === r[0] ? ' on' : '') + '" data-wellrange="' + r[0] + '" style="min-height:36px;padding:0 12px;">' + r[1] + '</button>'; }).join("") + '</div>' +
+    '<div class="well-leg"><span><i style="background:#f59e0b"></i>Douleur</span><span><i style="background:#1fa971"></i>Bien-être</span><span><i style="background:#007BFF"></i>Prêt à s\'entraîner</span><span style="color:#c0171d;font-weight:700;"><i style="background:#e5252a"></i>Douleur &gt; 5</span></div>' +
+    g.svg + note;
+  card.addEventListener("click", function(e){ var b = e.target.closest("[data-wellrange]"); if(!b) return; wellRange = parseInt(b.dataset.wellrange, 10) || 0; var nc = renderWellCard(patient); if(nc) card.replaceWith(nc); });
+  return card;
+}
 function clearEntryFields(){
   exParams = {}; prmRefreshBtn();
   funcVals = {}; funcSide = "";
@@ -7083,6 +7229,8 @@ function openExSheet(editing){
   renderNameChips(dayKind);
   refreshSessionLabel();
   renderIsoTarget();
+  document.getElementById("exMoveRow").hidden = !editing;
+  if(editing) document.getElementById("exMoveDate").value = dayModalDate;
   document.getElementById("exSheet").hidden = false;
   exSheetLockHeight();
 }
@@ -7132,6 +7280,7 @@ function openRpeSheet(entryId){
   var isEx = !!entry && entry.kind === 'exercise';
   document.getElementById("rpeSheetTitle").textContent = (isEx ? "RIR — " : "RPE — ") + (entry && entry.name ? entry.name : "Course");
   document.getElementById("rpeHelp").hidden = !isEx;
+  document.getElementById("rpeHelp").textContent = RIR_HELP + ((isEx && entry.params && entry.params.rirT !== undefined) ? " Cible demandée : RIR " + entry.params.rirT + "." : "");
   document.getElementById("rpeLegend").innerHTML = isEx ? '<span>0 : à l\'échec</span><span>5 : 5 ou plus en réserve</span>' : '<span>Très facile</span><span>Maximal</span>';
   document.getElementById("clearRpeBtn").textContent = isEx ? "Effacer le RIR" : "Effacer le RPE";
   var cur = entry ? (isEx ? entry.rir : entry.rpe) : undefined;
@@ -11631,7 +11780,7 @@ function athApply(c, docs){
     athRemoveTrain(p, eid, !!data.takeover);
     ne.athSig = athSigOf(ne);
     (p.program.entries[date] = p.program.entries[date] || []).push(ne);
-    c.ath[d.id] = { pid: p.id, eid: eid }; c.pushed["ath:" + d.id] = ne.athSig; changed = true;
+    c.ath[d.id] = { pid: p.id, eid: eid }; c.pushed["ath:" + d.id] = ne.athSig + "@" + date; changed = true;
   });
   syncSave(c);
   return changed;
@@ -11654,13 +11803,14 @@ function athCollectPush(c, out){
       if(!c.pushed["tath:" + docId]) out.push({ key: "tath:" + docId, sig: 1, doc: { c: "athEntries", id: docId, deleted: true, updatedAt: now } });
       return;
     }
-    var sig = athSigOf(f.entry);
-    if(sig === c.pushed["ath:" + docId]) return;
+    var sig = athSigOf(f.entry), sigD = rec.testId ? sig : sig + "@" + f.date, cp = c.pushed["ath:" + docId];
+    if(cp === sig && sigD !== sig){ c.pushed["ath:" + docId] = cp = sigD; }
+    if(cp === sigD) return;
     var doc = { id: docId, patientId: rec.pid, by: ATH_BY, kind: rec.testId ? "test" : "train", date: f.date, entry: athClean(f.entry) };
     if(rec.testId) doc.testId = rec.testId;
     if(rec.take) doc.takeover = true;
     if(rec.def) doc.testDef = rec.def;
-    out.push({ key: "ath:" + docId, sig: sig, doc: { c: "athEntries", id: docId, data: doc, updatedAt: now } });
+    out.push({ key: "ath:" + docId, sig: sigD, doc: { c: "athEntries", id: docId, data: doc, updatedAt: now } });
     f.entry.athSig = sig;
   });
 }
@@ -12493,7 +12643,7 @@ function mergeBaseline(c, sp){
   Object.keys(np.program.entries).forEach(function(d){ np.program.entries[d] = (np.program.entries[d] || []).filter(function(e){ return e.src !== "athlete"; }); if(!np.program.entries[d].length) delete np.program.entries[d]; });
   np.tests.forEach(function(t){ t.entries = (t.entries || []).filter(function(e){ return e.src !== "athlete"; }); });
   var base = {};
-  Object.keys(np.program.entries).forEach(function(d){ np.program.entries[d].forEach(function(e){ base["e:" + e.id] = athSigOf(e); }); });
+  Object.keys(np.program.entries).forEach(function(d){ np.program.entries[d].forEach(function(e){ base["e:" + e.id] = athSigOf(e) + "@" + d; }); });
   np.tests.forEach(function(t){ base["t:" + t.id] = 1; t.entries.forEach(function(e){ base["te:" + e.id] = athSigOf(e); }); });
   c.base = base;
   if(local){
@@ -12522,8 +12672,8 @@ function discover(c){
   Object.keys(p.program.entries || {}).forEach(function(d){
     (p.program.entries[d] || []).forEach(function(e){
       var docId = p.id + "-" + e.id; if(c.ath[docId]) return;
-      var bs = c.base["e:" + e.id];
-      if(bs !== undefined && athSigOf(e) === bs) return;
+      var bs = c.base["e:" + e.id], sg0 = athSigOf(e);
+      if(bs !== undefined && (String(bs).indexOf("@") < 0 ? sg0 === bs : sg0 + "@" + d === bs)) return;
       e.src = "athlete"; c.ath[docId] = { pid: p.id, eid: e.id, take: bs !== undefined };
     });
   });
