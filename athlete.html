@@ -362,15 +362,28 @@
   .gear-btn.hd.on{ background:#eef2ff; color:var(--blue-text); }
   .gear-btn.hd.on::after{ top:6px; right:6px; }
   .hd-right{ display:flex; align-items:center; gap:2px; }
-  .ov-well{ order:-5; padding:12px 14px 10px; }
-  .wl-top{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
-  .wl-top b{ font-size:14px; font-weight:700; letter-spacing:-0.1px; white-space:nowrap; }
+  .ov-well{ cursor:pointer; padding:14px 16px 12px; transition:box-shadow .15s; }
+  .ov-well:hover{ box-shadow:0 4px 18px rgba(20,25,40,.10); }
+  .wl-top{ display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; }
+  .wl-top b{ font-size:15px; font-weight:700; letter-spacing:-0.1px; }
+  .wl-more{ font-size:12px; color:var(--muted); font-weight:600; }
   .wl-seg{ display:flex; background:#eef0f4; border-radius:9px; padding:2px; }
-  .wl-seg button{ border:0; background:transparent; font-size:11.5px; font-weight:600; color:var(--muted); padding:4px 9px; border-radius:7px; min-height:26px; white-space:nowrap; }
+  .wl-seg button{ border:0; background:transparent; font-size:12.5px; font-weight:600; color:var(--muted); padding:5px 12px; border-radius:7px; min-height:30px; white-space:nowrap; }
   .wl-seg button.on{ background:#fff; color:var(--text); box-shadow:0 1px 2px rgba(20,25,40,.12); }
-  .wl-leg{ display:flex; align-items:center; flex-wrap:wrap; gap:2px 12px; font-size:11.5px; color:var(--muted); margin:6px 0 2px; }
-  .wl-leg i{ display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:5px; vertical-align:0; }
-  .wl-pill{ margin-left:auto; background:#fdecec; color:#c0171d; font-weight:700; font-size:11.5px; padding:2px 9px; border-radius:20px; }
+  .wl-leg{ display:flex; align-items:center; flex-wrap:wrap; gap:3px 12px; font-size:12px; color:var(--muted); margin:8px 0 4px; }
+  .wl-leg i{ display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:5px; }
+  .wl-pill{ background:#fdecec; color:#c0171d; font-weight:700; font-size:12px; padding:2px 9px; border-radius:20px; }
+  .wl-tab{ width:100%; border-collapse:collapse; margin-top:14px; font-size:14px; }
+  .wl-tab th{ text-align:left; font-size:12px; color:var(--muted); font-weight:600; padding:6px 8px; border-bottom:1px solid var(--border); }
+  .wl-tab td{ padding:7px 8px; border-bottom:1px solid #eef0f3; }
+  .wl-tab td.hi{ color:#c0171d; font-weight:800; }
+  .ov-ratios{ cursor:pointer; padding:14px 16px 12px; }
+  .ov-ratios .rat-head b{ font-size:15px; }
+  .ov-ratios .rat-row{ padding:7px 0; }
+  .ov-ratios .rat-name{ font-size:13.5px; }
+  .ov-ratios .rat-v{ font-size:16px; }
+  .ov-ratios.ov-ratios-full{ cursor:default; padding:18px 20px; max-width:760px; }
+  .ov-ratios.ov-ratios-full .rat-row{ padding:10px 0; } .ov-ratios.ov-ratios-full .rat-name{ font-size:15px; } .ov-ratios.ov-ratios-full .rat-v{ font-size:20px; } .ov-ratios.ov-ratios-full .rat-head b{ font-size:16px; }
   /* tiroirs */
   .sheet-overlay{ position:fixed; inset:0; background:rgba(31,36,48,0.5); display:flex; align-items:flex-end; justify-content:center; z-index:80; }
   .sheet{ background:#fff; width:100%; max-width:520px; max-height:92vh; max-height:92dvh; border-radius:24px 24px 0 0; display:flex; flex-direction:column; }
@@ -1020,7 +1033,6 @@
   .st-wa{ font-size:11px; color:#b3261e; font-weight:700; text-align:center; }
 
   /* ---------- ratios entre tests ISO ---------- */
-  .ov-ratios{ order:-1; grid-column:1 / -1; cursor:default; }
   .rat-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:6px; }
   .rat-head b{ font-size:16px; }
   .rat-row{ padding:10px 0; border-top:1px solid var(--border); }
@@ -1039,7 +1051,7 @@
 </style>
 <style id="ath-css">
 .sidebar, #appNav, #bottomNav{ display:none !important; }
-#backToProfilsBtn, .tab-bar [data-tab="fiche"], .tab-bar [data-tab="fonctionnel"], .tab-bar [data-tab="periodisation"]{ display:none !important; }
+#backToProfilsBtn, .tab-bar [data-tab="fiche"], .tab-bar [data-tab="fonctionnel"], .tab-bar [data-tab="periodisation"], .tab-bar [data-tab="ratios"]{ display:none !important; }
 .ov-clin, .ov-anam, .ov-rts, .ov-period, .ov-ratios{ display:none !important; }
 #toggleRecoBtn, #recoPanelWrap, #toggleTargetBtn, #targetPanelWrap, #exRecoCard, #isoTargetCard{ display:none !important; }
 #athAuthView{ position:fixed; inset:0; background:#f3f4f7; z-index:9999; overflow:auto; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; color:#0B1220; }
@@ -1245,6 +1257,7 @@ html.ath-lock, html.ath-lock body{ overflow:hidden !important; overscroll-behavi
         <button data-tab="fiche">Fiche clinique</button>
         <button data-tab="programme">Programme</button>
         <button data-tab="fonctionnel">Mouvements fonctionnels</button>
+        <button data-tab="ratios">Ratios</button>
         <button data-tab="periodisation" class="adv-only">Périodisation</button>
       </div>
 
@@ -1273,6 +1286,8 @@ html.ath-lock, html.ath-lock body{ overflow:hidden !important; overscroll-behavi
         <div id="periodGate"></div>
         <div id="periodFooter"></div>
       </div>
+
+      <div id="tab-ratios" class="tab-panel" hidden><div id="ratiosTabBody"></div></div>
 
       <div id="tab-fonctionnel" class="tab-panel" hidden>
         <div id="fonctionnelContent"></div>
@@ -1681,6 +1696,14 @@ html.ath-lock, html.ath-lock body{ overflow:hidden !important; overscroll-behavi
       <button type="button" class="btn-primary btn-lg" id="prmOkBtn">Valider</button>
       <button type="button" class="btn-ghost btn-lg" id="prmResetBtn">Tout effacer</button>
     </div>
+  </div>
+</div>
+
+<!-- Douleur & bien-être : détail jour par jour -->
+<div id="wellOverlay" class="modal-overlay" hidden>
+  <div class="modal-box wide" style="max-width:800px;">
+    <div class="modal-header"><h2>Douleur &amp; bien-être</h2><button class="btn-ghost" id="wellCloseBtn">Fermer</button></div>
+    <div id="wellBody"></div>
   </div>
 </div>
 
@@ -3057,6 +3080,7 @@ function renderAll(){
   document.getElementById("tab-overview").hidden = activeTab !== 'overview';
   document.getElementById("tab-fonctionnel").hidden = activeTab !== 'fonctionnel';
   document.getElementById("tab-periodisation").hidden = activeTab !== 'periodisation';
+  document.getElementById("tab-ratios").hidden = activeTab !== 'ratios';
   document.getElementById("tab-fiche").hidden = activeTab !== 'fiche';
   document.getElementById("tab-programme").hidden = activeTab !== 'programme';
   if(activeTab === 'fiche') renderFicheTab(patient);
@@ -3065,6 +3089,7 @@ function renderAll(){
   if(activeTab === 'periodisation') renderPeriodTab(patient);
   if(activeTab === 'overview') renderCardsGrid(patient);
   if(activeTab === 'fonctionnel') renderFonctionnelTab();
+  if(activeTab === 'ratios') renderRatiosTab(patient);
 }
 
 document.getElementById("appNav").addEventListener("click", function(e){
@@ -3305,7 +3330,8 @@ function ratioCompute(patient, r){
 }
 function ratioFmt(v){ return (Math.round(v * 100) / 100).toFixed(2).replace(".", ","); }
 function ratioMuscleName(id){ var m = getMuscle(id); return m ? m.name : id; }
-function renderRatiosCard(patient){
+function renderRatiosCard(patient, opts){
+  var manage = !!(opts && opts.manage);
   if(!(patient.tests || []).some(function(t){ return t.type === "iso"; })) return null;
   var shown = ratiosList().filter(function(r){ return !r.hidden; }), rows = "", n = 0;
   shown.forEach(function(r){
@@ -3324,10 +3350,10 @@ function renderRatiosCard(patient){
     }
   });
   var card = document.createElement("div");
-  card.className = "test-card ov-ratios";
-  card.innerHTML = '<div class="rat-head"><b>Ratios</b><button type="button" class="btn-ghost" data-ratioman="1" style="min-height:36px;">⚙ Gérer</button></div>' +
-    (rows || '<div class="tc-sub" style="padding:6px 0;">' + (shown.length ? 'Aucun ratio disponible pour ce patient : il faut les deux tests ISO du ratio (par exemple Quadriceps et Ischio-jambiers).' : 'Tous les ratios sont masqués.') + '</div>');
-  card.addEventListener("click", function(e){ if(e.target.closest("[data-ratioman]")) openRatioMan(); });
+  card.className = "test-card ov-ratios" + (manage ? " ov-ratios-full" : "");
+  card.innerHTML = '<div class="rat-head"><b>Ratios</b>' + (manage ? '<button type="button" class="btn-ghost" data-ratioman="1" style="min-height:36px;">⚙ Gérer</button>' : '<span class="wl-more">Détails ›</span>') + '</div>' +
+    (rows || '<div class="tc-sub" style="padding:6px 0;">' + (shown.length ? (manage ? 'Aucun ratio disponible pour ce patient : il faut les deux tests ISO du ratio (par exemple Quadriceps et Ischio-jambiers).' : 'Aucun ratio disponible : il faut les deux tests ISO du ratio.') : 'Tous les ratios sont masqués.') + '</div>');
+  card.addEventListener("click", function(e){ if(e.target.closest("[data-ratioman]")){ openRatioMan(); return; } if(!manage){ activeTab = "ratios"; renderAll(); } });
   return card;
 }
 function ratioOptions(){
@@ -3378,12 +3404,12 @@ function renderCardsGrid(patient){
   ensurePeriodization(patient);
   var cClin = renderClinicalStrip(patient); cClin.classList.add("ov-clin"); grid.appendChild(cClin);
   grid.appendChild(renderAnamCard(patient));
-  var cWell = renderWellCard(patient); if(cWell) grid.appendChild(cWell);
   var cRts = renderRtsCard(patient); if(cRts) grid.appendChild(cRts);
   isoRatiosEnsure();
-  var cRat = renderRatiosCard(patient); if(cRat) grid.appendChild(cRat);
   var periodCard = renderPeriodOverviewCard(patient);
   if(periodCard) grid.appendChild(periodCard);
+  var cWell = renderWellCard(patient); if(cWell) grid.appendChild(cWell);
+  var cRat = renderRatiosCard(patient); if(cRat) grid.appendChild(cRat);
 
   patient.tests.forEach(function(test){
     var card = document.createElement("div");
@@ -7142,7 +7168,6 @@ document.getElementById("prmOkBtn").addEventListener("click", function(){
 document.getElementById("prmResetBtn").addEventListener("click", function(){ exParams = {}; if(dayKind === 'isometric') document.getElementById("isoPct").value = ""; prmFillSheet(); prmRefreshBtn(); });
 document.getElementById("exReps").addEventListener("input", prmRefreshBtn);
 /* ----- graphique douleur · bien-être · disponibilité (overview) ----- */
-var wellRange = 30;
 function wellDiff(a, b){ return Math.round((Date.parse(b) - Date.parse(a)) / 86400000); }
 function wellData(patient){
   var dm = patient.program.dayMeta || {}, rows = [];
@@ -7153,7 +7178,6 @@ function wellData(patient){
   return rows;
 }
 function wellPath(pts){
-  /* courbe lissée sans dépassement (interpolation monotone) */
   var n = pts.length; if(n < 2) return "";
   var dx = [], m = [], t = [], i;
   for(i = 0; i < n - 1; i++){ dx[i] = pts[i + 1][0] - pts[i][0]; m[i] = (pts[i + 1][1] - pts[i][1]) / (dx[i] || 1); }
@@ -7164,49 +7188,87 @@ function wellPath(pts){
   for(i = 0; i < n - 1; i++){ var c = dx[i] / 3; d += " C" + (pts[i][0] + c).toFixed(1) + "," + (pts[i][1] + t[i] * c).toFixed(1) + " " + (pts[i + 1][0] - c).toFixed(1) + "," + (pts[i + 1][1] - t[i + 1] * c).toFixed(1) + " " + pts[i + 1][0].toFixed(1) + "," + pts[i + 1][1].toFixed(1); }
   return d;
 }
-function wellSvg(rows, range){
-  var end = todayISO(); if(rows.length && rows[rows.length - 1].d > end) end = rows[rows.length - 1].d;
-  var start = range > 0 ? addDaysToDate(end, -(range - 1)) : (rows.length ? rows[0].d : end);
-  var vis = rows.filter(function(r){ return r.d >= start && r.d <= end; });
-  var n = Math.max(1, wellDiff(start, end)), W = 340, H = 112, L = 16, R = 6, T = 8, B = 16;
+/* fenêtre : les N derniers jours, comptés depuis la dernière saisie (0 = tout l'historique) */
+function wellWindow(rows, days){
+  if(!rows.length) return { start: todayISO(), end: todayISO(), vis: [] };
+  var end = rows[rows.length - 1].d, start = days > 0 ? addDaysToDate(end, -(days - 1)) : rows[0].d;
+  return { start: start, end: end, vis: rows.filter(function(r){ return r.d >= start && r.d <= end; }) };
+}
+function wellSvg(rows, days, big){
+  var w = wellWindow(rows, days), start = w.start, end = w.end, vis = w.vis;
+  var n = Math.max(1, wellDiff(start, end)), W = big ? 600 : 250, H = big ? 270 : 150, L = big ? 28 : 22, R = big ? 24 : 10, T = big ? 20 : 12, B = big ? 30 : 22, fs = big ? 12 : 10.5;
   var X = function(d){ return L + (W - L - R) * wellDiff(start, d) / n; }, Y = function(v){ return T + (H - T - B) * (1 - Math.max(0, Math.min(10, v)) / 10); };
   var fd = function(d){ return d.slice(8, 10) + "/" + d.slice(5, 7); }, y5 = Y(5).toFixed(1);
   var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" role="img" aria-label="Douleur, bien-être et disponibilité à l\'entraînement" style="display:block;font-family:inherit;">';
-  s += '<defs>' +
-       '<clipPath id="wlHi"><rect x="0" y="0" width="' + W + '" height="' + y5 + '"/></clipPath><clipPath id="wlLo"><rect x="0" y="' + y5 + '" width="' + W + '" height="' + H + '"/></clipPath></defs>';
-  [0, 5, 10].forEach(function(v){ s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(v).toFixed(1) + '" y2="' + Y(v).toFixed(1) + '" stroke="' + (v === 5 ? '#c3c9d4' : '#e6e9ef') + '" stroke-width="0.9"' + (v === 5 ? ' stroke-dasharray="3 3"' : '') + '/><text x="' + (L - 4) + '" y="' + (Y(v) + 3).toFixed(1) + '" text-anchor="end" font-size="8.5" fill="#a2a9b6">' + v + '</text>'; });
-  s += '<text x="' + L + '" y="' + (H - 3) + '" font-size="8.5" fill="#a2a9b6">' + fd(start) + '</text><text x="' + (W - R) + '" y="' + (H - 3) + '" text-anchor="end" font-size="8.5" fill="#a2a9b6">' + fd(end) + '</text>';
+  s += '<defs><clipPath id="wlHi' + (big ? 'B' : '') + '"><rect x="0" y="0" width="' + W + '" height="' + y5 + '"/></clipPath><clipPath id="wlLo' + (big ? 'B' : '') + '"><rect x="0" y="' + y5 + '" width="' + W + '" height="' + H + '"/></clipPath></defs>';
+  [0, 5, 10].forEach(function(v){ s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(v).toFixed(1) + '" y2="' + Y(v).toFixed(1) + '" stroke="' + (v === 5 ? '#b9c0cc' : '#e6e9ef') + '" stroke-width="1"' + (v === 5 ? ' stroke-dasharray="4 4"' : '') + '/><text x="' + (L - 5) + '" y="' + (Y(v) + 4).toFixed(1) + '" text-anchor="end" font-size="' + fs + '" fill="#8a93a3">' + v + '</text>'; });
+  var ticks = big ? (n <= 7 ? 1 : (n <= 16 ? 2 : Math.ceil(n / 8))) : 0;
+  if(big){ for(var di = n; di >= 0; di -= ticks){ var dd = addDaysToDate(start, di); s += '<text x="' + X(dd).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="' + fs + '" fill="#8a93a3">' + fd(dd) + '</text>'; } }
+  else {
+    s += '<text x="' + L + '" y="' + (H - 6) + '" font-size="' + fs + '" fill="#8a93a3">' + fd(start) + '</text><text x="' + (W - R) + '" y="' + (H - 6) + '" text-anchor="end" font-size="' + fs + '" fill="#8a93a3">' + fd(end) + '</text>';
+  }
   var pts = function(key){ return vis.filter(function(r){ return r[key] !== null; }).map(function(r){ return [X(r.d), Y(r[key]), r]; }); };
-  var soft = function(key, color){
+  var soft = function(key, color, label){
     var p = pts(key); if(!p.length) return;
-    if(p.length > 1) s += '<path d="' + wellPath(p) + '" fill="none" stroke="' + color + '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>';
-    var l = p[p.length - 1]; s += '<circle cx="' + l[0].toFixed(1) + '" cy="' + l[1].toFixed(1) + '" r="2.4" fill="' + color + '"><title>' + fd(l[2].d) + ' : ' + l[2][key] + ' / 10</title></circle>';
+    if(p.length > 1) s += '<path d="' + wellPath(p) + '" fill="none" stroke="' + color + '" stroke-width="' + (big ? 2.4 : 2.2) + '" stroke-linecap="round" stroke-linejoin="round"/>';
+    p.forEach(function(q, i){ if(big || i === p.length - 1 || p.length === 1) s += '<circle cx="' + q[0].toFixed(1) + '" cy="' + q[1].toFixed(1) + '" r="' + (big ? 3.4 : 3) + '" fill="#fff" stroke="' + color + '" stroke-width="2"><title>' + fd(q[2].d) + ' · ' + label + ' : ' + q[2][key] + ' / 10</title></circle>'; });
   };
-  soft("well", "#22b07d"); soft("ready", "#3b82f6");
+  soft("well", "#22b07d", "bien-être"); soft("ready", "#3b82f6", "prêt à s'entraîner");
   var pp = pts("pain");
   if(pp.length > 1){
     var d = wellPath(pp);
-    s += '<path d="' + d + '" fill="none" stroke="#9aa3b2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#wlLo)"/>';
-    s += '<path d="' + d + '" fill="none" stroke="#e5252a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#wlHi)"/>';
+    s += '<path d="' + d + '" fill="none" stroke="#9aa3b2" stroke-width="' + (big ? 2.8 : 2.4) + '" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#wlLo' + (big ? 'B' : '') + ')"/>';
+    s += '<path d="' + d + '" fill="none" stroke="#e5252a" stroke-width="' + (big ? 3.8 : 3.4) + '" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#wlHi' + (big ? 'B' : '') + ')"/>';
   }
-  pp.forEach(function(q){
+  pp.forEach(function(q, i){
     var r = q[2], x = q[0].toFixed(1), y = q[1].toFixed(1);
-    if(r.pain > 5) s += '<circle cx="' + x + '" cy="' + y + '" r="3.6" fill="#e5252a" stroke="#fff" stroke-width="1.4"><title>' + fd(r.d) + ' : douleur ' + r.pain + ' / 10</title></circle><text x="' + x + '" y="' + (q[1] - 7).toFixed(1) + '" text-anchor="middle" font-size="10" font-weight="800" fill="#c0171d">' + frDec(r.pain) + '</text>';
-    else if(pp.length === 1 || r === pp[pp.length - 1][2]) s += '<circle cx="' + x + '" cy="' + y + '" r="2.4" fill="#9aa3b2"><title>' + fd(r.d) + ' : douleur ' + r.pain + ' / 10</title></circle>';
+    if(r.pain > 5) s += '<circle cx="' + x + '" cy="' + y + '" r="' + (big ? 6 : 5) + '" fill="#e5252a" stroke="#fff" stroke-width="2"><title>' + fd(r.d) + ' · douleur ' + r.pain + ' / 10</title></circle><text x="' + x + '" y="' + (q[1] - (big ? 11 : 9)).toFixed(1) + '" text-anchor="middle" font-size="' + (big ? 13 : 11.5) + '" font-weight="800" fill="#c0171d">' + frDec(r.pain) + '</text>';
+    else if(big || i === pp.length - 1 || pp.length === 1){
+      s += '<circle cx="' + x + '" cy="' + y + '" r="' + (big ? 4 : 3.2) + '" fill="#9aa3b2" stroke="#fff" stroke-width="1.5"><title>' + fd(r.d) + ' · douleur ' + r.pain + ' / 10</title></circle>';
+      if(big) s += '<text x="' + x + '" y="' + (q[1] - 9).toFixed(1) + '" text-anchor="middle" font-size="11" fill="#6b7385">' + frDec(r.pain) + '</text>';
+    }
   });
-  return { svg: s + '</svg>', vis: vis, pp: pp.map(function(q){ return q[2]; }) };
+  return { svg: s + '</svg>', vis: vis, pp: pp.map(function(q){ return q[2]; }), start: start, end: end };
+}
+function wellLegend(g, big){
+  var hi = g.pp.filter(function(r){ return r.pain > 5; });
+  var mx = hi.reduce(function(a, r){ return (!a || r.pain > a.pain) ? r : a; }, null);
+  return '<div class="wl-leg"><span><i style="background:#9aa3b2"></i>Douleur</span><span><i style="background:#22b07d"></i>Bien-être</span><span><i style="background:#3b82f6"></i>' + (big ? "Prêt à s'entraîner" : "Prêt") + '</span>' +
+    (hi.length ? '<span class="wl-pill" title="Douleur supérieure à 5">⚠ ' + hi.length + ' j &gt; 5 · max ' + frDec(mx.pain) + '</span>' : '') + '</div>';
 }
 function renderWellCard(patient){
   var rows = wellData(patient); if(!rows.length) return null;
-  var card = document.createElement("div"); card.className = "test-card ov-well";
-  var g = wellSvg(rows, wellRange), hi = g.pp.filter(function(r){ return r.pain > 5; });
-  var mx = hi.reduce(function(a, r){ return (!a || r.pain > a.pain) ? r : a; }, null);
-  var pill = hi.length ? '<span class="wl-pill" title="Douleur supérieure à 5">⚠ ' + hi.length + ' j &gt; 5 · max ' + frDec(mx.pain) + '</span>' : "";
-  card.innerHTML = '<div class="wl-top"><b>Douleur &amp; bien-être</b><div class="wl-seg">' +
-    [[14, "14 j"], [30, "30 j"], [90, "90 j"], [0, "Tout"]].map(function(r){ return '<button type="button" class="' + (wellRange === r[0] ? 'on' : '') + '" data-wellrange="' + r[0] + '">' + r[1] + '</button>'; }).join("") + '</div></div>' +
-    '<div class="wl-leg"><span><i style="background:#9aa3b2"></i>Douleur</span><span><i style="background:#22b07d"></i>Bien-être</span><span><i style="background:#3b82f6"></i>Prêt à s\'entraîner</span>' + pill + '</div>' + g.svg;
-  card.addEventListener("click", function(e){ var b = e.target.closest("[data-wellrange]"); if(!b) return; wellRange = parseInt(b.dataset.wellrange, 10) || 0; var nc = renderWellCard(patient); if(nc) card.replaceWith(nc); });
+  var card = document.createElement("div"); card.className = "test-card ov-well"; card.title = "Voir le détail jour par jour";
+  var g = wellSvg(rows, 14, false);
+  card.innerHTML = '<div class="wl-top"><b>Douleur &amp; bien-être</b><span class="wl-more" title="14 derniers jours : touche pour le détail">14 j ⤢</span></div>' + wellLegend(g, false) + g.svg;
+  card.addEventListener("click", function(){ openWellModal(14); });
   return card;
+}
+function wellModalRender(days){
+  var p = getSelectedPatient(), rows = p ? wellData(p) : [];
+  var g = wellSvg(rows, days, true);
+  var fdl = function(d){ return new Date(d + "T00:00:00").toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "short" }); };
+  var v = function(x, hi){ return x === null ? '<td style="color:#b9c0cc">—</td>' : '<td' + (hi && x > 5 ? ' class="hi"' : '') + '>' + frDec(x) + ' / 10</td>'; };
+  document.getElementById("wellBody").innerHTML = '<div class="wl-top"><div class="wl-seg" id="wellSeg">' + [[14, "14 j"], [30, "30 j"], [90, "90 j"], [0, "Tout"]].map(function(r){ return '<button type="button" class="' + (days === r[0] ? 'on' : '') + '" data-wellrange="' + r[0] + '">' + r[1] + '</button>'; }).join("") + '</div><span class="wl-more">' + (g.vis.length ? fdl(g.start) + ' → ' + fdl(g.end) : '') + '</span></div>' +
+    wellLegend(g, true) + g.svg +
+    '<table class="wl-tab"><thead><tr><th>Jour</th><th>Douleur</th><th>Bien-être</th><th>Prêt à s\'entraîner</th></tr></thead><tbody>' +
+    g.vis.slice().reverse().map(function(r){ return '<tr><td>' + escHtml(fdl(r.d)) + '</td>' + v(r.pain, true) + v(r.well, false) + v(r.ready, false) + '</tr>'; }).join("") + '</tbody></table>';
+}
+function openWellModal(days){ wellModalRender(days); document.getElementById("wellOverlay").hidden = false; }
+document.getElementById("wellCloseBtn").addEventListener("click", function(){ document.getElementById("wellOverlay").hidden = true; });
+document.getElementById("wellOverlay").addEventListener("click", function(e){
+  if(e.target === this){ this.hidden = true; return; }
+  var b = e.target.closest("[data-wellrange]"); if(b) wellModalRender(parseInt(b.dataset.wellrange, 10) || 0);
+});
+function renderRatiosTab(patient){
+  var body = document.getElementById("ratiosTabBody"); body.innerHTML = "";
+  isoRatiosEnsure();
+  var c = renderRatiosCard(patient, { manage: true });
+  if(c){ body.appendChild(c); return; }
+  var d = document.createElement("div"); d.className = "test-card ov-ratios ov-ratios-full";
+  d.innerHTML = '<div class="rat-head"><b>Ratios</b><button type="button" class="btn-ghost" data-ratioman="1" style="min-height:36px;">⚙ Gérer</button></div><div class="tc-sub" style="padding:6px 0;">Ajoute d\'abord des tests ISO : un ratio divise la dernière mesure d\'un test ISO par celle d\'un autre.</div>';
+  d.addEventListener("click", function(e){ if(e.target.closest("[data-ratioman]")) openRatioMan(); });
+  body.appendChild(d);
 }
 function clearEntryFields(){
   exParams = {}; prmRefreshBtn();
